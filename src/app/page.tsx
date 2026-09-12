@@ -418,7 +418,7 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {ARTICLES_LIST.map((art) => (
+          {ARTICLES_LIST.slice(0, 4).map((art) => (
             <article
               key={art.slug}
               className="p-6 rounded-3xl bg-white border border-[#006B5B]/15 hover:border-[#006B5B] shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group"
