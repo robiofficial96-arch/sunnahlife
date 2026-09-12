@@ -75,27 +75,25 @@ export default function Header() {
               </Link>
 
               {/* Phone View Quick Tools: Directly beside logo as requested */}
-              <div className="flex xl:hidden items-center gap-1">
+              <div className="flex xl:hidden items-center gap-1.5 ml-1">
                 {/* Search Button */}
                 <button
                   onClick={() => setIsSearchOpen(true)}
-                  className="p-1.5 rounded-xl text-gray-700 hover:text-[#006B5B] hover:bg-[#006B5B]/10 transition-colors border border-gray-200 bg-white/90 flex items-center gap-1 shadow-2xs cursor-pointer"
+                  className="p-1.5 text-gray-700 hover:text-[#006B5B] transition-colors cursor-pointer"
                   aria-label="সার্চ করুন"
                   title="সার্চ করুন"
                 >
-                  <Search className="w-3.5 h-3.5 text-[#006B5B]" />
-                  <span className="text-[10px] font-medium text-gray-600 hidden xs:inline">খুঁজুন</span>
+                  <Search className="w-5 h-5 text-[#006B5B]" />
                 </button>
 
-                {/* Translate Button */}
+                {/* Translate Button - Icon only without any box */}
                 <button
                   onClick={() => setIsLangOpen(true)}
-                  className="p-1.5 px-2 rounded-xl text-gray-700 hover:text-[#006B5B] hover:bg-[#006B5B]/10 transition-colors border border-gray-200 bg-white/90 flex items-center gap-1 shadow-2xs cursor-pointer"
+                  className="p-1.5 text-gray-700 hover:text-[#006B5B] transition-colors cursor-pointer"
                   aria-label="ভাষা পরিবর্তন"
                   title="ভাষা পরিবর্তন / Translate"
                 >
-                  <Languages className="w-3.5 h-3.5 text-[#D4A017]" />
-                  <span className="text-[10px] font-bold text-gray-700">EN</span>
+                  <Languages className="w-5 h-5 text-[#006B5B]" />
                 </button>
               </div>
             </div>
@@ -125,24 +123,14 @@ export default function Header() {
               })}
             </nav>
 
-            {/* Desktop Action CTAs (Search, Translate, Appointment) */}
-            <div className="hidden xl:flex items-center gap-2">
-              <button
-                onClick={() => setIsSearchOpen(true)}
-                className="p-2 rounded-xl text-gray-700 hover:text-[#006B5B] hover:bg-[#FAFAF7] border border-gray-200 flex items-center gap-1.5 text-xs font-semibold cursor-pointer transition-colors"
-                title="সার্চ করুন"
-              >
-                <Search className="w-3.5 h-3.5 text-[#006B5B]" />
-                <span>সার্চ</span>
-              </button>
-
+            {/* Desktop Action CTAs (No search in web view, translate icon only without box) */}
+            <div className="hidden xl:flex items-center gap-3">
               <button
                 onClick={() => setIsLangOpen(true)}
-                className="p-2 rounded-xl text-gray-700 hover:text-[#006B5B] hover:bg-[#FAFAF7] border border-gray-200 flex items-center gap-1.5 text-xs font-semibold cursor-pointer transition-colors"
+                className="p-2 text-gray-700 hover:text-[#006B5B] transition-colors cursor-pointer"
                 title="ভাষা পরিবর্তন / Translate"
               >
-                <Languages className="w-3.5 h-3.5 text-[#D4A017]" />
-                <span>বাং / EN</span>
+                <Languages className="w-5 h-5 text-[#006B5B]" />
               </button>
 
               <Link
