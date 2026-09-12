@@ -28,6 +28,23 @@ export default function AyatPage() {
         <p className="text-sm md:text-base text-gray-600 leading-relaxed">
           আল্লাহ তাআলা ইরশাদ করেন: <em>“আর আমি অবতীর্ণ করি কুরআন, যা মুমিনদের জন্য আরোগ্য ও রহমত...”</em> (সূরা আল-ইসরা: ৮২)। নিচে রুকইয়াহর প্রধান আয়াতসমূহ বিস্তারিত দেওয়া হলো।
         </p>
+
+        {/* Link to Full 114 Surahs */}
+        <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+          <a
+            href="/quran"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#006B5B] text-white text-xs font-semibold hover:bg-[#004D40] transition-colors shadow-xs"
+          >
+            <BookOpen className="w-4 h-4 text-[#F2C94C]" />
+            <span>১১৪টি পূর্ণাঙ্গ সূরা ও অডিও তিলাওয়াত দেখুন</span>
+          </a>
+          <a
+            href="/audio"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#FAFAF7] border border-[#006B5B]/20 text-[#006B5B] text-xs font-semibold hover:bg-[#006B5B]/10 transition-colors"
+          >
+            <span>রুকইয়াহ অডিও লাইব্রেরি</span>
+          </a>
+        </div>
       </div>
 
       {/* Ayat Cards */}

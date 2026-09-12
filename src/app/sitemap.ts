@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import { TOPICS_DATA } from "@/data/topics";
 import { ARTICLES_LIST } from "@/data/articles";
+import { QURAN_SURAHS } from "@/data/quranSurahs";
 import { SITE_CONFIG } from "@/config/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -9,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
     "",
     "/assessment",
+    "/quran",
     "/services",
     "/knowledge",
     "/routine",
@@ -29,7 +31,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: "daily" as const,
-    priority: route === "" ? 1.0 : 0.8,
+    priority: route === "" ? 1.0 : route === "/quran" || route === "/assessment" ? 0.95 : 0.8,
+  }));
+
+  const quranSurahRoutes = QURAN_SURAHS.map((surah) => ({
+    url: `${baseUrl}/quran/${surah.number}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: surah.isRuqyahSpecial ? 0.9 : 0.8,
   }));
 
   const topicRoutes = TOPICS_DATA.map((topic) => ({
@@ -46,5 +55,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.85,
   }));
 
-  return [...staticRoutes, ...topicRoutes, ...articleRoutes];
+  return [...staticRoutes, ...quranSurahRoutes, ...topicRoutes, ...articleRoutes];
 }
