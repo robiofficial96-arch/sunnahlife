@@ -15,17 +15,14 @@ import {
   HelpCircle,
   AlertTriangle,
   Users,
-  Search,
-  Languages
+  Search
 } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 import SearchModal from "@/components/SearchModal";
-import LanguageModal from "@/components/LanguageModal";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isLangOpen, setIsLangOpen] = useState(false);
   const pathname = usePathname();
 
   const navLinks = [
@@ -95,27 +92,19 @@ export default function Header() {
               })}
             </nav>
 
-            {/* Desktop Action CTAs (No search in web view, translate icon only without box) */}
+            {/* Desktop Action CTAs (No search in web view, appointment button) */}
             <div className="hidden xl:flex items-center gap-3">
-              <button
-                onClick={() => setIsLangOpen(true)}
-                className="p-2 text-gray-700 hover:text-[#006B5B] transition-colors cursor-pointer"
-                title="ভাষা পরিবর্তন / Translate"
-              >
-                <Languages className="w-5 h-5 text-[#006B5B]" />
-              </button>
-
               <Link
                 href="/appointment"
-                className="px-4 py-2 text-xs md:text-sm font-semibold rounded-xl bg-[#006B5B] text-white hover:bg-[#004D40] shadow-2xs transition-all flex items-center gap-1.5 ml-1"
+                className="px-4 py-2 text-xs md:text-sm font-semibold rounded-xl bg-[#006B5B] text-white hover:bg-[#004D40] shadow-2xs transition-all flex items-center gap-1.5"
               >
                 <Calendar className="w-4 h-4 text-[#F2C94C]" />
                 <span>অ্যাপয়েন্টমেন্ট</span>
               </Link>
             </div>
 
-            {/* Mobile Actions on the Right: Search + Translate + Burger Menu */}
-            <div className="flex xl:hidden items-center gap-1 sm:gap-1.5">
+            {/* Mobile Actions on the Right: Search Icon + Burger Menu */}
+            <div className="flex xl:hidden items-center gap-1 sm:gap-2">
               {/* Search Button (Prominent & open icon) */}
               <button
                 onClick={() => setIsSearchOpen(true)}
@@ -126,20 +115,10 @@ export default function Header() {
                 <Search className="w-6 h-6 text-[#006B5B]" />
               </button>
 
-              {/* Translate Button - Pure icon without any box */}
-              <button
-                onClick={() => setIsLangOpen(true)}
-                className="p-2 text-gray-700 hover:text-[#006B5B] transition-colors cursor-pointer"
-                aria-label="ভাষা পরিবর্তন"
-                title="ভাষা পরিবর্তন / Translate"
-              >
-                <Languages className="w-6 h-6 text-[#006B5B]" />
-              </button>
-
               {/* Burger Menu Toggle */}
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-2 text-gray-700 hover:text-[#006B5B] hover:bg-[#FAFAF7] rounded-xl transition-colors cursor-pointer ml-0.5"
+                className="p-2 text-gray-700 hover:text-[#006B5B] hover:bg-[#FAFAF7] rounded-xl transition-colors cursor-pointer"
                 aria-label="Toggle Menu"
               >
                 {isOpen ? <X className="w-6 h-6 text-[#006B5B]" /> : <Menu className="w-6 h-6" />}
@@ -206,9 +185,8 @@ export default function Header() {
           </div>
         )}
 
-        {/* Global Search & Language Modals */}
+        {/* Global Search Modal */}
         <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
-        <LanguageModal isOpen={isLangOpen} onClose={() => setIsLangOpen(false)} />
       </header>
   );
 }
