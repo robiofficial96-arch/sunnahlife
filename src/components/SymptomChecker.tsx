@@ -24,7 +24,8 @@ import {
   ArrowRight,
   ShieldCheck,
   Activity,
-  HeartPulse
+  HeartPulse,
+  Loader2
 } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 
@@ -39,42 +40,63 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [userNote, setUserNote] = useState("");
   const [result, setResult] = useState<ComprehensiveResult | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const totalQuestions = ASSESSMENT_QUESTIONS.length;
   const currentQ = ASSESSMENT_QUESTIONS[currentQuestionIndex];
 
-  // Handle option select with automatic smooth transition to next question
+  // Handle option select with automatic smooth transition or auto-result on final question
   const handleSelectOption = (questionId: string, optionIndex: number) => {
-    setAnswers((prev) => ({
-      ...prev,
+    const updatedAnswers = {
+      ...answers,
       [questionId]: optionIndex,
-    }));
+    };
+    setAnswers(updatedAnswers);
 
-    // Auto-advance to next question after a brief delay if not the last question
+    // Auto-advance to next question if not the last question
     if (currentQuestionIndex < totalQuestions - 1) {
       setTimeout(() => {
         setCurrentQuestionIndex((prev) => Math.min(prev + 1, totalQuestions - 1));
       }, 300);
+    } else {
+      // Last question answered! Automatically analyze and show result
+      setIsAnalyzing(true);
+      setTimeout(() => {
+        const evalResult = evaluateComprehensiveAssessment(updatedAnswers, userNote);
+        setResult(evalResult);
+        setIsAnalyzing(false);
+        setTimeout(() => {
+          const el = document.getElementById("diagnosis-result-section");
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+          }
+        }, 150);
+      }, 500);
     }
   };
 
-  // Calculate diagnosis
+  // Calculate diagnosis manually (fallback / direct trigger)
   const handleAnalyze = () => {
-    const evalResult = evaluateComprehensiveAssessment(answers, userNote);
-    setResult(evalResult);
+    setIsAnalyzing(true);
     setTimeout(() => {
-      const el = document.getElementById("diagnosis-result-section");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-      }
-    }, 100);
+      const evalResult = evaluateComprehensiveAssessment(answers, userNote);
+      setResult(evalResult);
+      setIsAnalyzing(false);
+      setTimeout(() => {
+        const el = document.getElementById("diagnosis-result-section");
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 150);
+    }, 450);
   };
 
   const handleReset = () => {
     setAnswers({});
     setUserNote("");
     setResult(null);
+    setIsAnalyzing(false);
     setCurrentQuestionIndex(0);
   };
 
@@ -102,14 +124,29 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
       </div>
 
       {!result ? (
-        <div className="space-y-6">
-          {/* Progress Header */}
-          <div className="space-y-3 pb-4 border-b border-gray-100">
-            <div className="flex flex-wrap items-center justify-between gap-2 text-xs md:text-sm">
-              <span className="font-bold text-[#004D40] flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-[#D4A017]" />
-                {currentQ.categoryTitle}
-              </span>
+        isAnalyzing ? (
+          <div className="py-16 sm:py-24 text-center rounded-3xl bg-[#FAFAF7] border border-[#006B5B]/15 space-y-4 animate-in fade-in zoom-in-95 duration-200">
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-[#006B5B]/10 text-[#006B5B] flex items-center justify-center shadow-inner">
+              <Loader2 className="w-8 h-8 animate-spin" />
+            </div>
+            <div className="space-y-1.5 px-4">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900">
+                আপনার উত্তরসমূহ বিশ্লেষণ করা হচ্ছে...
+              </h3>
+              <p className="text-xs sm:text-sm text-gray-500 max-w-md mx-auto leading-relaxed">
+                কুরআন ও সহীহ সুন্নাহর প্রামাণ্য দিকনির্দেশনা অনুযায়ী আপনার লক্ষণসমূহের মূল্যায়ন ও করণীয় প্রস্তুত হচ্ছে
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {/* Progress Header */}
+            <div className="space-y-3 pb-4 border-b border-gray-100">
+              <div className="flex flex-wrap items-center justify-between gap-2 text-xs md:text-sm">
+                <span className="font-bold text-[#004D40] flex items-center gap-1.5">
+                  <Sparkles className="w-4 h-4 text-[#D4A017]" />
+                  {currentQ.categoryTitle}
+                </span>
               <span className="text-gray-500 text-xs font-medium">
                 প্রশ্ন <strong className="text-[#006B5B] text-sm">{currentQuestionIndex + 1}</strong> / {totalQuestions}
                 <span className="ml-2 font-mono text-gray-400">({progressPercent}% সম্পন্ন)</span>
@@ -287,19 +324,29 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
               <button
                 type="button"
                 onClick={handleAnalyze}
-                disabled={!isCurrentQuestionAnswered}
+                disabled={!isCurrentQuestionAnswered || isAnalyzing}
                 className={`px-6 sm:px-8 py-3 rounded-2xl text-xs sm:text-sm font-bold flex items-center gap-2 shadow-md transition-all cursor-pointer ${
-                  isCurrentQuestionAnswered
+                  isCurrentQuestionAnswered && !isAnalyzing
                     ? "bg-gradient-to-r from-[#006B5B] to-[#004D40] text-white hover:opacity-95"
                     : "bg-gray-200 text-gray-400 cursor-not-allowed"
                 }`}
               >
-                <Sparkles className="w-4 h-4 text-[#F2C94C]" />
-                <span>ফলাফল ও পরামর্শ বিশ্লেষণ করুন</span>
+                {isAnalyzing ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>বিশ্লেষণ হচ্ছে...</span>
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-4 h-4 text-[#F2C94C]" />
+                    <span>ফলাফল ও পরামর্শ বিশ্লেষণ করুন</span>
+                  </>
+                )}
               </button>
             )}
           </div>
         </div>
+        )
       ) : (
         /* RESULT SECTION */
         <div id="diagnosis-result-section" className="space-y-8 animate-in fade-in duration-300">
