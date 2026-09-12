@@ -144,7 +144,7 @@ export default function ResourcesPage() {
         </div>
 
         <div className="pt-4 border-t border-gray-100 text-center text-xs text-gray-500">
-          সুন্নাহলাইফ (Sunnah Life Care) | সুস্থতা হোক সুন্নাহর পথে • www.sunnahlife.care
+          সুন্নাহলাইফ (Sunnah Life Care) | সুস্থতা হোক সুন্নাহর পথে • sunnahlife.bd
         </div>
       </div>
     </div>

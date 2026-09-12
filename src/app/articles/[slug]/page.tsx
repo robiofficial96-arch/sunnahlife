@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ARTICLES_LIST } from "@/data/articles";
+import { SITE_CONFIG } from "@/config/site";
 import { 
   BookOpen, 
   Calendar, 
@@ -56,13 +57,13 @@ export default async function ArticleDetailPage({ params }: Props) {
       name: "সুন্নাহলাইফ",
       logo: {
         "@type": "ImageObject",
-        url: "https://sunnahlife.care/sunnahlife_logo.svg",
+        url: `${SITE_CONFIG.url}/sunnahlife_logo.svg`,
       },
     },
     datePublished: "2026-09-01",
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://sunnahlife.care/articles/${article.slug}`,
+      "@id": `${SITE_CONFIG.url}/articles/${article.slug}`,
     },
     articleBody: article.content.join(" "),
   };

@@ -50,7 +50,7 @@ export default async function TopicDetailPage({ params }: Props) {
     name: topic.title,
     headline: topic.subtitle,
     description: topic.shortDescription,
-    url: `https://sunnahlife.care/topics/${topic.slug}`,
+    url: `${SITE_CONFIG.url}/topics/${topic.slug}`,
     mainEntity: {
       "@type": "MedicalCondition",
       name: topic.title,
