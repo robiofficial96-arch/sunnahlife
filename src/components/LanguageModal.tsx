@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { 
   Languages, 
   X, 
@@ -24,8 +25,13 @@ declare global {
 }
 
 export default function LanguageModal({ isOpen, onClose }: Props) {
+  const [mounted, setMounted] = useState(false);
   const [currentLang, setCurrentLang] = useState<string>("bn");
   const [isTranslating, setIsTranslating] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Detect current language from cookie on mount
   useEffect(() => {
@@ -64,7 +70,7 @@ export default function LanguageModal({ isOpen, onClose }: Props) {
     }
   }, []);
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
   const handleSelectLanguage = (langCode: string) => {
     setIsTranslating(true);
@@ -128,10 +134,13 @@ export default function LanguageModal({ isOpen, onClose }: Props) {
     },
   ];
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150">
+  return createPortal(
+    <div 
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150"
+      onClick={onClose}
+    >
       <div 
-        className="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-gray-200 overflow-hidden"
+        className="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-gray-200 overflow-hidden my-auto animate-in zoom-in-95 duration-150"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Hidden Google Translate container */}
@@ -151,7 +160,7 @@ export default function LanguageModal({ isOpen, onClose }: Props) {
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
+            className="p-1.5 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -211,6 +220,7 @@ export default function LanguageModal({ isOpen, onClose }: Props) {
           </span>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

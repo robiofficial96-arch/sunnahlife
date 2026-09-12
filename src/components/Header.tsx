@@ -61,41 +61,18 @@ export default function Header() {
             {/* Logo + Mobile Quick Tools (Search & Translate directly beside Logo) */}
             <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
               {/* Full Logo Vector */}
-              <Link href="/" className="flex items-center group shrink-0" title="সুন্নাহলাইফ - সুস্থতা হোক সুন্নাহর পথে">
-                <div className="relative h-11 md:h-14 w-28 xs:w-32 sm:w-36 md:w-44">
-                  <Image
-                    src="/sunnahlife_logo.svg"
-                    alt="সুন্নাহলাইফ - সুস্থতা হোক সুন্নাহর পথে"
-                    fill
-                    sizes="(max-width: 768px) 120px, 176px"
-                    className="object-contain object-left"
-                    priority
-                  />
-                </div>
-              </Link>
-
-              {/* Phone View Quick Tools: Directly beside logo as requested */}
-              <div className="flex xl:hidden items-center gap-1.5 ml-1">
-                {/* Search Button */}
-                <button
-                  onClick={() => setIsSearchOpen(true)}
-                  className="p-1.5 text-gray-700 hover:text-[#006B5B] transition-colors cursor-pointer"
-                  aria-label="সার্চ করুন"
-                  title="সার্চ করুন"
-                >
-                  <Search className="w-5 h-5 text-[#006B5B]" />
-                </button>
-
-                {/* Translate Button - Icon only without any box */}
-                <button
-                  onClick={() => setIsLangOpen(true)}
-                  className="p-1.5 text-gray-700 hover:text-[#006B5B] transition-colors cursor-pointer"
-                  aria-label="ভাষা পরিবর্তন"
-                  title="ভাষা পরিবর্তন / Translate"
-                >
-                  <Languages className="w-5 h-5 text-[#006B5B]" />
-                </button>
+            <Link href="/" className="flex items-center group shrink-0" title="সুন্নাহলাইফ - সুস্থতা হোক সুন্নাহর পথে">
+              <div className="relative h-12 md:h-14 w-32 sm:w-36 md:w-44">
+                <Image
+                  src="/sunnahlife_logo.svg"
+                  alt="সুন্নাহলাইফ - সুস্থতা হোক সুন্নাহর পথে"
+                  fill
+                  sizes="(max-width: 768px) 130px, 176px"
+                  className="object-contain object-left"
+                  priority
+                />
               </div>
+            </Link>
             </div>
 
             {/* Desktop Nav Links */}
@@ -137,14 +114,35 @@ export default function Header() {
               </Link>
             </div>
 
-            {/* Mobile menu toggle */}
-            <div className="flex xl:hidden items-center gap-1.5">
+            {/* Mobile Actions on the Right: Search + Translate + Burger Menu */}
+            <div className="flex xl:hidden items-center gap-1 sm:gap-1.5">
+              {/* Search Button (Prominent & open icon) */}
+              <button
+                onClick={() => setIsSearchOpen(true)}
+                className="p-2 text-gray-700 hover:text-[#006B5B] transition-colors cursor-pointer"
+                aria-label="সার্চ করুন"
+                title="সার্চ করুন"
+              >
+                <Search className="w-6 h-6 text-[#006B5B]" />
+              </button>
+
+              {/* Translate Button - Pure icon without any box */}
+              <button
+                onClick={() => setIsLangOpen(true)}
+                className="p-2 text-gray-700 hover:text-[#006B5B] transition-colors cursor-pointer"
+                aria-label="ভাষা পরিবর্তন"
+                title="ভাষা পরিবর্তন / Translate"
+              >
+                <Languages className="w-6 h-6 text-[#006B5B]" />
+              </button>
+
+              {/* Burger Menu Toggle */}
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-2 text-gray-700 hover:text-[#006B5B] hover:bg-[#FAFAF7] rounded-lg transition-colors cursor-pointer"
+                className="p-2 text-gray-700 hover:text-[#006B5B] hover:bg-[#FAFAF7] rounded-xl transition-colors cursor-pointer ml-0.5"
                 aria-label="Toggle Menu"
               >
-                {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                {isOpen ? <X className="w-6 h-6 text-[#006B5B]" /> : <Menu className="w-6 h-6" />}
               </button>
             </div>
           </div>

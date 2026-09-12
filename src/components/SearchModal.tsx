@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { QURAN_SURAHS } from "@/data/quranSurahs";
@@ -26,9 +27,14 @@ interface Props {
 }
 
 export default function SearchModal({ isOpen, onClose }: Props) {
+  const [mounted, setMounted] = useState(false);
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -132,7 +138,7 @@ export default function SearchModal({ isOpen, onClose }: Props) {
     return { surahs, audios, articles, duas, tools };
   }, [query]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
   const totalResultsCount =
     results.surahs.length +
@@ -146,10 +152,13 @@ export default function SearchModal({ isOpen, onClose }: Props) {
     router.push(href);
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center p-3 sm:p-4 md:p-6 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150">
+  return createPortal(
+    <div 
+      className="fixed inset-0 z-[9999] flex items-start justify-center p-3 sm:p-4 md:p-6 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150"
+      onClick={onClose}
+    >
       <div 
-        className="w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col max-h-[85vh] mt-6 sm:mt-12"
+        className="w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col max-h-[85vh] mt-8 sm:mt-16 animate-in zoom-in-95 duration-150"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Input Bar */}
@@ -410,6 +419,7 @@ export default function SearchModal({ isOpen, onClose }: Props) {
           <span className="font-mono">ESC চেপে বন্ধ করুন</span>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
