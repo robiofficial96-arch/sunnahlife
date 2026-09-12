@@ -30,11 +30,11 @@ function YoutubeIcon({ className = "w-4 h-4" }: { className?: string }) {
 
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-[#006B5B]/15 pt-12 pb-16 md:pb-12 text-gray-600">
+    <footer className="bg-[#FAFAF7] border-t border-[#006B5B]/15 pt-12 pb-16 md:pb-12 text-gray-600">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Core Trust / Principle Badges */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-10 border-b border-gray-100">
-          <div className="flex items-start gap-3.5 p-4 rounded-xl bg-[#FAFAF7] border border-[#006B5B]/10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-10 border-b border-gray-200/70">
+          <div className="flex items-start gap-3.5 p-4 rounded-xl bg-white border border-[#006B5B]/15 shadow-2xs">
             <div className="p-2.5 rounded-lg bg-[#006B5B]/10 text-[#006B5B] shrink-0">
               <ShieldCheck className="w-5 h-5" />
             </div>
@@ -46,7 +46,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="flex items-start gap-3.5 p-4 rounded-xl bg-[#FAFAF7] border border-[#006B5B]/10">
+          <div className="flex items-start gap-3.5 p-4 rounded-xl bg-white border border-[#006B5B]/15 shadow-2xs">
             <div className="p-2.5 rounded-lg bg-[#D4A017]/15 text-[#D4A017] shrink-0">
               <CheckCircle2 className="w-5 h-5" />
             </div>
@@ -58,7 +58,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="flex items-start gap-3.5 p-4 rounded-xl bg-[#FAFAF7] border border-[#006B5B]/10">
+          <div className="flex items-start gap-3.5 p-4 rounded-xl bg-white border border-[#006B5B]/15 shadow-2xs">
             <div className="p-2.5 rounded-lg bg-emerald-100 text-emerald-800 shrink-0">
               <HeartPulse className="w-5 h-5" />
             </div>

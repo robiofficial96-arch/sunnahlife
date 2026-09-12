@@ -170,7 +170,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="bn" className={`${hindSiliguri.variable} ${amiri.variable}`}>
+    <html lang="bn" className={`${hindSiliguri.variable} ${amiri.variable} bg-[#FAFAF7]`}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -194,7 +194,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen flex flex-col bg-[#FAFAF7] text-[#1f2937] antialiased pb-20 md:pb-0 selection:bg-[#006B5B] selection:text-white">
         <Header />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 bg-[#FAFAF7]">{children}</main>
         <Footer />
         <BottomNav />
         <FloatingWhatsApp />

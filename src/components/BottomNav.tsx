@@ -42,7 +42,7 @@ export default function BottomNav() {
   ];
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-t border-[#006B5B]/15 shadow-[0_-4px_20px_rgba(0,107,91,0.08)]">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#FAFAF7]/95 backdrop-blur-lg border-t border-[#006B5B]/15 shadow-[0_-4px_20px_rgba(0,107,91,0.08)]">
       <nav className="flex items-center justify-around h-16 max-w-lg mx-auto px-1 safe-area-pb">
         {navItems.map((item) => {
           const isActive = pathname === item.href;

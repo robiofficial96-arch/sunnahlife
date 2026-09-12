@@ -52,7 +52,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#006B5B]/10 shadow-xs transition-all">
+    <header className="sticky top-0 z-40 bg-[#FAFAF7]/95 backdrop-blur-md border-b border-[#006B5B]/10 shadow-xs transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo + Mobile Quick Tools (Search & Translate directly beside Logo) */}
@@ -129,7 +129,7 @@ export default function Header() {
 
         {/* Mobile Drawer */}
         {isOpen && (
-          <div className="xl:hidden bg-white border-b border-gray-200 px-4 pt-3 pb-6 space-y-1 shadow-lg max-h-[80vh] overflow-y-auto animate-in slide-in-from-top duration-200">
+          <div className="xl:hidden bg-[#FAFAF7] border-b border-gray-200 px-4 pt-3 pb-6 space-y-1 shadow-lg max-h-[80vh] overflow-y-auto animate-in slide-in-from-top duration-200">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (

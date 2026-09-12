@@ -27,7 +27,7 @@ export default function Home() {
   return (
     <div className="space-y-16 md:space-y-24">
       {/* 1. HERO SECTION */}
-      <section className="relative overflow-hidden pt-8 pb-14 md:pt-14 md:pb-20 border-b border-[#006B5B]/10 bg-radial from-white via-[#FAFAF7] to-[#FAFAF7]">
+      <section className="relative overflow-hidden pt-8 pb-14 md:pt-14 md:pb-20 border-b border-[#006B5B]/10 bg-[#FAFAF7]">
         {/* Subtle decorative Islamic accent glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-80 bg-gradient-to-b from-[#006B5B]/5 to-transparent rounded-full blur-3xl pointer-events-none" />
 

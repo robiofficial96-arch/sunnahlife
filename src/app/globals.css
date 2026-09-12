@@ -25,8 +25,8 @@ html, body, button, input, textarea, select {
   font-family: var(--font-hind-siliguri), "Hind Siliguri", system-ui, -apple-system, sans-serif !important;
 }
 
-body {
-  background-color: #FAFAF7;
+html, body {
+  background-color: #FAFAF7 !important;
   color: #1a2e26;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
