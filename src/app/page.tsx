@@ -12,12 +12,14 @@ import {
   AlertTriangle,
   HeartPulse,
   Clock,
-  ArrowRight
+  ArrowRight,
+  UserCheck
 } from "lucide-react";
 import SymptomChecker from "@/components/SymptomChecker";
 import AudioPlayer from "@/components/AudioPlayer";
 import { RUQYAH_STEPS } from "@/data/ruqyahSteps";
 import { DUA_LIST } from "@/data/duas";
+import { ARTICLES_LIST } from "@/data/articles";
 
 import { SITE_CONFIG } from "@/config/site";
 
@@ -391,7 +393,75 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 8. APPOINTMENT BANNER */}
+      {/* 8. FEATURED ARTICLES & RESEARCH */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+          <div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#006B5B]/10 text-[#006B5B] text-xs font-semibold mb-2">
+              <BookOpen className="w-3.5 h-3.5 text-[#D4A017]" />
+              <span>শারঈ গবেষণা ও প্রবন্ধ</span>
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold text-[#004D40]">
+              গুরুত্বপূর্ণ রুকইয়াহ আর্টিকেলস ও গবেষণা
+            </h2>
+            <p className="text-xs md:text-sm text-gray-600 mt-1">
+              কুরআন ও সহীহ সুন্নাহর ভিত্তিতে কুসংস্কারমুক্ত জীবন ও আরোগ্যের প্রামাণ্য দিকনির্দেশনা
+            </p>
+          </div>
+          <Link
+            href="/articles"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#006B5B] hover:text-[#004D40]"
+          >
+            <span>সকল আর্টিকেল পড়ুন</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {ARTICLES_LIST.map((art) => (
+            <article
+              key={art.slug}
+              className="p-6 rounded-3xl bg-white border border-[#006B5B]/15 hover:border-[#006B5B] shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group"
+            >
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <span className="text-[11px] font-bold text-[#006B5B] bg-[#006B5B]/10 px-2.5 py-0.5 rounded-full">
+                    {art.categoryLabel}
+                  </span>
+                  <span className="text-[11px] text-gray-400 flex items-center gap-1">
+                    <Clock className="w-3 h-3" />
+                    {art.readTime}
+                  </span>
+                </div>
+
+                <h3 className="text-base font-bold text-gray-900 group-hover:text-[#006B5B] transition-colors mb-2 leading-snug line-clamp-2">
+                  <Link href={`/articles/${art.slug}`}>{art.title}</Link>
+                </h3>
+
+                <p className="text-xs text-gray-600 leading-relaxed line-clamp-3 mb-4">
+                  {art.excerpt}
+                </p>
+              </div>
+
+              <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
+                <span className="text-[11px] text-gray-500 flex items-center gap-1">
+                  <UserCheck className="w-3.5 h-3.5 text-[#D4A017]" />
+                  <span>সুন্নাহলাইফ</span>
+                </span>
+                <Link
+                  href={`/articles/${art.slug}`}
+                  className="font-bold text-[#006B5B] hover:underline flex items-center gap-0.5"
+                >
+                  <span>পড়ুন</span>
+                  <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* 9. APPOINTMENT BANNER */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="p-8 md:p-10 rounded-3xl bg-radial from-[#006B5B] to-[#004D40] text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
           <div className="space-y-2 text-center md:text-left">

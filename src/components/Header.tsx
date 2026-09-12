@@ -32,12 +32,12 @@ export default function Header() {
     },
     { href: "/ayat", label: "কুরআন আয়াত", icon: BookOpen },
     { href: "/self-ruqyah", label: "সেলফ-রুকইয়াহ", icon: ShieldCheck },
+    { href: "/articles", label: "আর্টিকেলস", icon: BookOpen },
     { href: "/audio", label: "অডিও", icon: Headphones },
     { href: "/duas", label: "দোয়া ও আযকার", icon: BookOpen },
     { href: "/services", label: "সেবাসমূহ" },
     { href: "/knowledge", label: "রুকইয়াহ জ্ঞান" },
     { href: "/routine", label: "আমল ট্র্যাকার" },
-    { href: "/articles", label: "আর্টিকেলস" },
     { href: "/topics", label: "বিষয়সমূহ" },
     { href: "/practitioners", label: "রাক্বী ডিরেক্টরি" },
     { href: "/resources", label: "পিডিএফ রিসোর্স" },
@@ -67,7 +67,7 @@ export default function Header() {
 
             {/* Desktop Nav Links */}
             <nav className="hidden xl:flex items-center gap-1">
-              {navLinks.slice(0, 7).map((link) => {
+              {navLinks.slice(0, 8).map((link) => {
                 const isActive = pathname === link.href;
                 return (
                   <Link
