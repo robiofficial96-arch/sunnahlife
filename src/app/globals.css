@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #006B5B;
+  --color-primary-dark: #004D40;
+  --color-gold: #D4A017;
+  --color-gold-light: #F2C94C;
+  --color-ivory: #FAFAF7;
+
+  --font-sans: var(--font-hind-siliguri), "Hind Siliguri", system-ui, -apple-system, sans-serif;
+  --font-arabic: var(--font-amiri), "Amiri", serif;
+}
+
+:root {
+  --primary: #006B5B;
+  --primary-dark: #004D40;
+  --gold: #D4A017;
+  --gold-light: #F2C94C;
+  --ivory: #FAFAF7;
+}
+
+/* Force Hind Siliguri as the primary font for all Bengali text */
+html, body, button, input, textarea, select {
+  font-family: var(--font-hind-siliguri), "Hind Siliguri", system-ui, -apple-system, sans-serif !important;
+}
+
+body {
+  background-color: #FAFAF7;
+  color: #1a2e26;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-arabic, [lang="ar"] {
+  font-family: var(--font-amiri), "Amiri", serif !important;
+}
+
+/* Custom Islamic pattern background and subtle aesthetics */
+.bg-islamic-pattern {
+  background-color: #FAFAF7;
+  background-image: radial-gradient(#006B5B 0.75px, transparent 0.75px), radial-gradient(#D4A017 0.75px, #FAFAF7 0.75px);
+  background-size: 30px 30px;
+  background-position: 0 0, 15px 15px;
+}
+
+.gold-border-gradient {
+  border-image: linear-gradient(to right, transparent, #D4A017, transparent) 1;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FAFAF7;
+}
+::-webkit-scrollbar-thumb {
+  background: #006B5B55;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #006B5B;
+}
