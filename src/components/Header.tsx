@@ -12,7 +12,6 @@ import {
   Headphones, 
   BookOpen, 
   Calendar,
-  MessageCircle,
   HelpCircle,
   AlertTriangle,
   Users
@@ -95,21 +94,11 @@ export default function Header() {
             <div className="hidden sm:flex items-center gap-2.5">
               <Link
                 href="/appointment"
-                className="px-3.5 py-2 text-xs md:text-sm font-semibold rounded-xl border border-[#006B5B] text-[#006B5B] hover:bg-[#006B5B]/5 transition-colors flex items-center gap-1.5"
+                className="px-4 py-2 text-xs md:text-sm font-semibold rounded-xl bg-[#006B5B] text-white hover:bg-[#004D40] shadow-2xs transition-all flex items-center gap-1.5"
               >
-                <Calendar className="w-3.5 h-3.5" />
+                <Calendar className="w-4 h-4 text-[#F2C94C]" />
                 <span>অ্যাপয়েন্টমেন্ট</span>
               </Link>
-              
-              <a
-                href={`https://wa.me/${SITE_CONFIG.raqiWhatsAppNumber}?text=%E0%A6%86%E0%A6%B8%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%95%E0%A7%81%E0%A6%AE%E0%A7%A4%20%E0%A6%B8%E0%A7%81%E0%A6%A8%E0%A7%8D%E0%A6%A8%E0%A6%BE%E0%A6%B9%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%AB%20%E0%A6%A5%E0%A7%87%E0%A6%95%E0%A7%87%20%E0%A6%B0%E0%A7%81%E0%A6%95%E0%A6%87%E0%A6%AF%E0%A6%BC%E0%A6%BE%E0%A6%B9%E0%A6%B0%20%E0%A6%AC%E0%A6%BF%E0%A6%B7%E0%A6%AF%E0%A6%BC%E0%A7%87%20%E0%A6%AA%E0%A6%B0%E0%A6%BE%E0%A6%AE%E0%A6%B0%E0%A7%8D%E0%A6%B6%20%E0%A6%9A%E0%A6%BE%E0%A6%9A%E0%A7%8D%E0%A6%9B%E0%A6%BF%E0%A7%81`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3.5 py-2 text-xs md:text-sm font-semibold rounded-xl bg-[#006B5B] text-white hover:bg-[#004D40] shadow-2xs transition-all flex items-center gap-1.5 group"
-              >
-                <MessageCircle className="w-4 h-4 text-[#F2C94C] group-hover:scale-110 transition-transform" />
-                <span>রাক্বী হেল্পলাইন</span>
-              </a>
             </div>
 
             {/* Mobile menu toggle */}
