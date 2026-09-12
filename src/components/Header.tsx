@@ -113,11 +113,6 @@ export default function Header() {
                     }`}
                   >
                     {link.label}
-                    {link.highlight && (
-                      <span className="text-[9px] bg-[#D4A017] text-white px-1.5 py-0.2 rounded-full font-bold ml-0.5">
-                        যাচাই
-                      </span>
-                    )}
                   </Link>
                 );
               })}
