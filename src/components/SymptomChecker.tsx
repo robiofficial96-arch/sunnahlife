@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { 
-  SYMPTOM_CATEGORIES, 
-  SYMPTOMS_LIST, 
-  evaluateSymptoms, 
-  DiagnosisResult 
-} from "@/data/symptoms";
+  ASSESSMENT_STEPS, 
+  ASSESSMENT_QUESTIONS, 
+  ComprehensiveResult, 
+  evaluateComprehensiveAssessment 
+} from "@/data/assessmentQuestions";
 import { 
   Check, 
   AlertCircle, 
@@ -16,10 +16,15 @@ import {
   BookOpen, 
   HeartHandshake, 
   ChevronRight,
+  ChevronLeft,
   Info,
   Copy,
   CheckCheck,
-  Sparkles
+  Sparkles,
+  ArrowRight,
+  ShieldCheck,
+  Activity,
+  HeartPulse
 } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 
@@ -28,25 +33,28 @@ interface SymptomCheckerProps {
   isCompact?: boolean;
 }
 
-export default function SymptomChecker({ initialCategory, isCompact = false }: SymptomCheckerProps) {
-  const [activeCategory, setActiveCategory] = useState<string>(initialCategory || "all");
-  const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
+export default function SymptomChecker({ isCompact = false }: SymptomCheckerProps) {
+  const [currentStep, setCurrentStep] = useState<number>(1);
+  const [answers, setAnswers] = useState<Record<string, number>>({});
   const [userNote, setUserNote] = useState("");
-  const [result, setResult] = useState<DiagnosisResult | null>(null);
+  const [result, setResult] = useState<ComprehensiveResult | null>(null);
   const [copied, setCopied] = useState(false);
 
-  // Toggle selection
-  const toggleSymptom = (id: string) => {
-    setSelectedSymptoms((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
+  // Handle option select
+  const handleSelectOption = (questionId: string, optionIndex: number) => {
+    setAnswers((prev) => ({
+      ...prev,
+      [questionId]: optionIndex,
+    }));
   };
 
-  // Select all or reset in category
-  const handleCalculate = () => {
-    const evaluation = evaluateSymptoms(selectedSymptoms, userNote);
-    setResult(evaluation);
-    // Smooth scroll to results
+  // Questions for the current step
+  const currentQuestions = ASSESSMENT_QUESTIONS.filter((q) => q.step === currentStep);
+
+  // Calculate diagnosis
+  const handleAnalyze = () => {
+    const evalResult = evaluateComprehensiveAssessment(answers, userNote);
+    setResult(evalResult);
     setTimeout(() => {
       const el = document.getElementById("diagnosis-result-section");
       if (el) {
@@ -56,15 +64,11 @@ export default function SymptomChecker({ initialCategory, isCompact = false }: S
   };
 
   const handleReset = () => {
-    setSelectedSymptoms([]);
+    setAnswers({});
     setUserNote("");
     setResult(null);
+    setCurrentStep(1);
   };
-
-  const filteredSymptoms =
-    activeCategory === "all"
-      ? SYMPTOMS_LIST
-      : SYMPTOMS_LIST.filter((s) => s.category === activeCategory);
 
   const copyWhatsAppText = () => {
     if (!result) return;
@@ -74,8 +78,13 @@ export default function SymptomChecker({ initialCategory, isCompact = false }: S
     setTimeout(() => setCopied(false), 2500);
   };
 
-  // WhatsApp number configuration from site configuration (01676820060 -> 8801676820060)
-  const raqiWhatsAppNumber = SITE_CONFIG.raqiWhatsAppNumber;
+  // Answered count in current step
+  const currentStepAnsweredCount = currentQuestions.filter(
+    (q) => answers[q.id] !== undefined
+  ).length;
+
+  const totalAnsweredCount = Object.keys(answers).length;
+  const progressPercent = Math.round((currentStep / 5) * 100);
 
   return (
     <div className="w-full bg-white rounded-3xl border border-[#006B5B]/15 shadow-sm p-5 md:p-8">
@@ -83,296 +92,383 @@ export default function SymptomChecker({ initialCategory, isCompact = false }: S
       <div className="mb-6 bg-[#FAFAF7] border border-[#D4A017]/30 rounded-2xl p-4 flex items-start gap-3 text-xs md:text-sm text-gray-700">
         <Info className="w-5 h-5 text-[#006B5B] shrink-0 mt-0.5" />
         <div className="leading-relaxed">
-          <strong className="text-[#006B5B] font-semibold">শারঈ রুকইয়াহ স্ব-নিরীক্ষণ:</strong>{" "}
-          নিচের লক্ষণগুলো থেকে আপনার বা আপনার পরিবারের সদস্যের যে যে সমস্যাগুলো অনুভূত হচ্ছে তা সিলেক্ট করুন। এটি কোনো অলৌকিক ভাগ্য গণনা নয়; বরং কুরআন-সুন্নাহ মোতাবেক লক্ষণ বিশ্লেষণ করে উপযুক্ত সেলফ-রুকইয়াহ ও প্রয়োজনে রাক্বীর পরামর্শ পাওয়ার জন্য তৈরি।
+          <strong className="text-[#006B5B] font-semibold">কুরআন ও সুন্নাহ ভিত্তিক বহুস্তরীয় স্ব-নিরীক্ষণ:</strong>{" "}
+          নিচের ৫টি ধাপে আপনার বর্তমান অবস্থা, ঘুম, শরীর ও পারিবারিক অভিজ্ঞতার সঠিক উত্তর নির্বাচন করুন। অন্যান্য ওয়েবসাইটের মতো এখানে একক কোনো প্রশ্নের উপর নির্ভর না করে ১৫টি সমন্বিত সূচকের মাধ্যমে আপনার সমস্যার সম্ভাব্য মাত্রা বিশ্লেষণ করা হবে।
         </div>
       </div>
 
       {!result ? (
-        <div>
-          {/* Category Tabs */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-6 no-scrollbar">
-            <button
-              onClick={() => setActiveCategory("all")}
-              className={`px-4 py-2 rounded-xl text-xs md:text-sm font-medium whitespace-nowrap transition-all ${
-                activeCategory === "all"
-                  ? "bg-[#006B5B] text-white shadow-xs"
-                  : "bg-[#FAFAF7] text-gray-700 hover:bg-gray-100 border border-gray-200"
-              }`}
-            >
-              সব লক্ষণ ({SYMPTOMS_LIST.length})
-            </button>
-            {SYMPTOM_CATEGORIES.map((cat) => {
-              const count = SYMPTOMS_LIST.filter((s) => s.category === cat.id).length;
-              const selectedCount = selectedSymptoms.filter((id) =>
-                SYMPTOMS_LIST.find((s) => s.id === id)?.category === cat.id
-              ).length;
+        <div className="space-y-8">
+          {/* Step Progress Header */}
+          <div className="space-y-3 pb-4 border-b border-gray-100">
+            <div className="flex flex-wrap items-center justify-between gap-2 text-xs md:text-sm">
+              <span className="font-bold text-[#004D40] flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-[#D4A017]" />
+                ধাপ {currentStep} / ৫: {ASSESSMENT_STEPS[currentStep - 1].title}
+              </span>
+              <span className="text-gray-500 text-xs">
+                মোট উত্তর দেওয়া হয়েছে: <strong className="text-[#006B5B]">{totalAnsweredCount}</strong> / ১৫
+              </span>
+            </div>
 
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
-                  className={`px-4 py-2 rounded-xl text-xs md:text-sm font-medium whitespace-nowrap transition-all flex items-center gap-1.5 ${
-                    activeCategory === cat.id
-                      ? "bg-[#006B5B] text-white shadow-xs"
-                      : "bg-[#FAFAF7] text-gray-700 hover:bg-gray-100 border border-gray-200"
-                  }`}
-                >
-                  <span>{cat.title}</span>
-                  <span
-                    className={`text-[10px] px-1.5 py-0.5 rounded-full ${
-                      selectedCount > 0
-                        ? "bg-[#D4A017] text-white font-bold"
-                        : activeCategory === cat.id
-                        ? "bg-white/20 text-white"
-                        : "bg-gray-200 text-gray-700"
+            {/* Progress Bar */}
+            <div className="w-full bg-gray-100 h-2.5 rounded-full overflow-hidden">
+              <div
+                className="bg-gradient-to-r from-[#006B5B] to-[#D4A017] h-full rounded-full transition-all duration-300"
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
+
+            {/* Step Pills */}
+            <div className="grid grid-cols-5 gap-1.5 pt-1">
+              {ASSESSMENT_STEPS.map((s) => {
+                const isCurrent = s.step === currentStep;
+                const isPassed = s.step < currentStep;
+                return (
+                  <button
+                    key={s.step}
+                    onClick={() => setCurrentStep(s.step)}
+                    className={`py-1.5 px-1 rounded-xl text-center text-[10px] md:text-xs font-semibold transition-all truncate ${
+                      isCurrent
+                        ? "bg-[#006B5B] text-white shadow-xs"
+                        : isPassed
+                        ? "bg-[#006B5B]/10 text-[#006B5B]"
+                        : "bg-gray-50 text-gray-400 hover:bg-gray-100"
                     }`}
                   >
-                    {selectedCount > 0 ? `${selectedCount}/${count}` : count}
-                  </span>
-                </button>
-              );
-            })}
+                    {s.short}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Symptoms Checklist Grid */}
-          <div className="space-y-3 mb-6">
-            {filteredSymptoms.map((symptom) => {
-              const isSelected = selectedSymptoms.includes(symptom.id);
+          {/* Current Step Questions */}
+          <div className="space-y-8">
+            {currentQuestions.map((q, qIndex) => {
+              const selectedOptIndex = answers[q.id];
+              const questionGlobalIndex =
+                (currentStep - 1) * 3 + qIndex + 1;
+
               return (
                 <div
-                  key={symptom.id}
-                  onClick={() => toggleSymptom(symptom.id)}
-                  className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3.5 select-none ${
-                    isSelected
-                      ? "bg-[#006B5B]/5 border-[#006B5B] shadow-xs"
-                      : "bg-white border-gray-200 hover:border-[#006B5B]/40 hover:bg-[#FAFAF7]"
-                  }`}
+                  key={q.id}
+                  className="p-5 md:p-6 rounded-3xl bg-[#FAFAF7]/70 border border-gray-200/80 hover:border-[#006B5B]/30 transition-all space-y-4"
                 >
-                  <div
-                    className={`w-5 h-5 mt-0.5 rounded-md flex items-center justify-center shrink-0 border transition-all ${
-                      isSelected
-                        ? "bg-[#006B5B] border-[#006B5B] text-white"
-                        : "border-gray-300 bg-white"
-                    }`}
-                  >
-                    {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
-                  </div>
-
-                  <div className="flex-1">
-                    <p
-                      className={`text-sm md:text-base leading-snug ${
-                        isSelected ? "text-[#004D40] font-semibold" : "text-gray-800"
-                      }`}
-                    >
-                      {symptom.label}
-                    </p>
-                    {symptom.hint && (
-                      <p className="text-xs text-gray-600 mt-1 flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#D4A017]" />
-                        {symptom.hint}
+                  <div>
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className="w-6 h-6 rounded-full bg-[#006B5B] text-white text-xs font-bold flex items-center justify-center shrink-0">
+                        {questionGlobalIndex}
+                      </span>
+                      <h3 className="text-sm md:text-base font-bold text-gray-900 leading-snug">
+                        {q.question}
+                      </h3>
+                    </div>
+                    {q.subtitle && (
+                      <p className="text-xs text-gray-500 pl-8 leading-relaxed">
+                        {q.subtitle}
                       </p>
                     )}
+                  </div>
+
+                  {/* 3 Options Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pl-0 md:pl-8">
+                    {q.options.map((opt, optIdx) => {
+                      const isSelected = selectedOptIndex === optIdx;
+
+                      // Color coding based on severity
+                      const isSevere = opt.points >= 3;
+                      const isModerate = opt.points === 1 || opt.points === 2;
+
+                      return (
+                        <button
+                          key={optIdx}
+                          type="button"
+                          onClick={() => handleSelectOption(q.id, optIdx)}
+                          className={`p-3.5 rounded-2xl text-left transition-all relative flex flex-col justify-between cursor-pointer border ${
+                            isSelected
+                              ? isSevere
+                                ? "bg-rose-50 border-rose-400 shadow-xs text-rose-950"
+                                : isModerate
+                                ? "bg-amber-50 border-amber-400 shadow-xs text-amber-950"
+                                : "bg-emerald-50 border-emerald-500 shadow-xs text-emerald-950"
+                              : "bg-white border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-50/50"
+                          }`}
+                        >
+                          <div className="flex items-start justify-between gap-2 mb-2">
+                            <span
+                              className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
+                                isSevere
+                                  ? "bg-rose-100 text-rose-800"
+                                  : isModerate
+                                  ? "bg-amber-100 text-amber-800"
+                                  : "bg-emerald-100 text-emerald-800"
+                              }`}
+                            >
+                              {optIdx === 0 ? "স্বাভাবিক" : optIdx === 1 ? "মাঝে মাঝে" : "তীব্র/ঘনঘন"}
+                            </span>
+                            <div
+                              className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                                isSelected
+                                  ? "bg-[#006B5B] border-[#006B5B] text-white"
+                                  : "border-gray-300 bg-white"
+                              }`}
+                            >
+                              {isSelected && <Check className="w-2.5 h-2.5" />}
+                            </div>
+                          </div>
+                          <p className="text-xs font-medium leading-relaxed">
+                            {opt.label}
+                          </p>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               );
             })}
           </div>
 
-          {/* User Custom Note Input */}
-          <div className="mb-6">
-            <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1.5">
-              অতিরিক্ত কোনো বিশেষ অনুভূতি বা বর্ণনা থাকলে লিখুন (ঐচ্ছিক):
-            </label>
-            <textarea
-              rows={3}
-              value={userNote}
-              onChange={(e) => setUserNote(e.target.value)}
-              placeholder="যেমন: কতদিন ধরে এই সমস্যা, কোনো ডাক্তার দেখানো হয়েছে কিনা ইত্যাদি..."
-              className="w-full p-3 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#006B5B] text-sm bg-[#FAFAF7]"
-            />
-          </div>
-
-          {/* Bottom Action Bar */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-gray-100">
-            <div className="text-xs md:text-sm text-gray-700">
-              চিহ্নিত লক্ষণ: <span className="font-bold text-[#006B5B] text-base">{selectedSymptoms.length}</span> টি
+          {/* User Note Box (Only on Step 5) */}
+          {currentStep === 5 && (
+            <div className="p-5 rounded-3xl bg-white border border-gray-200 space-y-2">
+              <label className="block text-xs font-semibold text-gray-800">
+                অতিরিক্ত কোনো লক্ষণ বা ব্যক্তিগত অভিজ্ঞতা (ঐচ্ছিক):
+              </label>
+              <textarea
+                rows={3}
+                value={userNote}
+                onChange={(e) => setUserNote(e.target.value)}
+                placeholder="যেমন: কতদিন ধরে এই সমস্যা, পূর্বে তাবীজ নেওয়া হয়েছিল কিনা বা ডাক্তার কী বলেছেন..."
+                className="w-full p-3 rounded-2xl border border-gray-200 focus:outline-hidden focus:border-[#006B5B] text-xs bg-[#FAFAF7]"
+              />
             </div>
+          )}
 
-            <div className="flex items-center gap-3 w-full sm:w-auto">
-              {selectedSymptoms.length > 0 && (
-                <button
-                  onClick={handleReset}
-                  type="button"
-                  className="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs md:text-sm font-medium flex items-center justify-center gap-1.5 transition-colors"
-                >
-                  <RotateCcw className="w-3.5 h-3.5" />
-                  রিসেট
-                </button>
-              )}
-
+          {/* Navigation Controls */}
+          <div className="pt-4 border-t border-gray-100 flex items-center justify-between gap-4">
+            {currentStep > 1 ? (
               <button
-                onClick={handleCalculate}
-                disabled={selectedSymptoms.length === 0}
-                className={`flex-1 sm:flex-none px-6 py-3 rounded-xl text-sm md:text-base font-semibold transition-all flex items-center justify-center gap-2 ${
-                  selectedSymptoms.length > 0
-                    ? "bg-[#006B5B] text-white hover:bg-[#004D40] shadow-md shadow-[#006B5B]/20 cursor-pointer"
-                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
-                }`}
+                type="button"
+                onClick={() => setCurrentStep((prev) => Math.max(1, prev - 1))}
+                className="px-5 py-2.5 rounded-xl border border-gray-300 text-gray-700 text-xs md:text-sm font-semibold hover:bg-gray-100 flex items-center gap-1.5 transition-colors"
               >
-                <span>ফলাফল ও পরামর্শ দেখুন</span>
+                <ChevronLeft className="w-4 h-4" />
+                <span>পূর্ববর্তী ধাপ</span>
+              </button>
+            ) : (
+              <div />
+            )}
+
+            {currentStep < 5 ? (
+              <button
+                type="button"
+                onClick={() => setCurrentStep((prev) => Math.min(5, prev + 1))}
+                className="px-6 py-2.5 rounded-xl bg-[#006B5B] text-white text-xs md:text-sm font-semibold hover:bg-[#004D40] flex items-center gap-1.5 shadow-xs transition-colors"
+              >
+                <span>পরবর্তী ধাপ ({currentStep + 1}/৫)</span>
                 <ChevronRight className="w-4 h-4" />
               </button>
-            </div>
+            ) : (
+              <button
+                type="button"
+                onClick={handleAnalyze}
+                className="px-7 py-3 rounded-2xl bg-gradient-to-r from-[#006B5B] to-[#004D40] text-white text-xs md:text-sm font-bold hover:opacity-95 shadow-md flex items-center gap-2 transition-all cursor-pointer"
+              >
+                <Sparkles className="w-4 h-4 text-[#F2C94C]" />
+                <span>ফলাফল বিশ্লেষণ ও রিপোর্ট দেখুন</span>
+              </button>
+            )}
           </div>
         </div>
       ) : (
-        /* Results Section */
-        <div id="diagnosis-result-section" className="space-y-6 animate-in fade-in duration-300">
-          {/* Status Header */}
-          <div className="p-6 rounded-2xl bg-radial from-[#006B5B]/10 via-[#FAFAF7] to-white border border-[#006B5B]/20">
-            <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+        /* RESULT SECTION */
+        <div id="diagnosis-result-section" className="space-y-8 animate-in fade-in duration-300">
+          {/* Main Assessment Card */}
+          <div
+            className={`p-6 md:p-8 rounded-3xl border shadow-xs space-y-4 ${
+              result.severityLevel === "severe"
+                ? "bg-rose-50/70 border-rose-200"
+                : result.severityLevel === "moderate"
+                ? "bg-amber-50/70 border-amber-200"
+                : "bg-emerald-50/70 border-emerald-200"
+            }`}
+          >
+            <div className="flex flex-wrap items-center justify-between gap-3">
               <span
-                className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 ${
-                  result.severityLevel === "high"
-                    ? "bg-rose-100 text-rose-800 border border-rose-200"
+                className={`inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold ${
+                  result.severityLevel === "severe"
+                    ? "bg-rose-100 text-rose-900 border border-rose-300"
                     : result.severityLevel === "moderate"
-                    ? "bg-amber-100 text-amber-800 border border-amber-200"
-                    : "bg-emerald-100 text-[#006B5B] border border-[#006B5B]/30"
+                    ? "bg-amber-100 text-amber-900 border border-amber-300"
+                    : "bg-emerald-100 text-emerald-900 border border-emerald-300"
                 }`}
               >
-                <ShieldAlert className="w-3.5 h-3.5" />
-                {result.severityLevel === "high"
-                  ? "উচ্চ গুরুত্বের লক্ষণাবলী"
-                  : result.severityLevel === "moderate"
-                  ? "মাঝারি লক্ষণাবলী"
-                  : "সাধারণ প্রাথমিক লক্ষণ"}
+                <AlertCircle className="w-3.5 h-3.5" />
+                {result.severityLabel}
               </span>
 
-              <span className="text-xs text-gray-700">
-                মোট নির্বাচিত লক্ষণ: <strong>{selectedSymptoms.length}</strong> টি
+              <span className="text-xs font-semibold text-gray-600 bg-white/80 px-3 py-1 rounded-full border border-gray-200">
+                মোট নির্ণীত স্কোর: <strong>{result.totalScore}</strong> / {result.maxScore}
               </span>
             </div>
 
-            <h3 className="text-lg md:text-xl font-bold text-[#004D40] mb-2">
-              সম্ভাব্য পর্যবেক্ষণ: {result.categorySummary}
+            <h2 className="text-xl md:text-2xl font-extrabold text-gray-900">
+              ১৫টি প্রশ্নের ভিত্তিতে আপনার সামগ্রিক রুকইয়াহ ডায়াগনোসিস
+            </h2>
+
+            <div className="space-y-2 text-xs md:text-sm text-gray-700 leading-relaxed">
+              <p>
+                আপনার দেওয়া উত্তরসমূহ পুঙ্খানুপুঙ্খভাবে বিশ্লেষণ করা হয়েছে। নিচে চিহ্নিত সম্ভাব্য প্রভাব ও কুরআন-সুন্নাহ মোতাবেক আরোগ্যের গাইডলাইন দেওয়া হলো:
+              </p>
+            </div>
+          </div>
+
+          {/* Multi-Factor Radar Bars */}
+          <div className="p-6 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-5">
+            <h3 className="text-base font-bold text-[#004D40] flex items-center gap-2">
+              <Activity className="w-4 h-4 text-[#D4A017]" />
+              লক্ষণভিত্তিক তুলনামূলক মাত্রা (Probability Indicators)
             </h3>
 
-            <p className="text-xs md:text-sm text-gray-700 leading-relaxed">
-              আপনার চিহ্নিত লক্ষণসমূহ বিশ্লেষণ করে প্রাথমিকভাবে এই বিষয়গুলো লক্ষ্য করা গেছে। তবে লক্ষণ থাকা মানেই নিশ্চিত সিহর বা জিনঘটিত বিষয় নয়। এটি মানসিক চাপ বা সাধারণ শারীরিক রোগও হতে পারে।
-            </p>
-          </div>
-
-          {/* Direct WhatsApp Call to Action - Requested by User */}
-          <div className="p-5 md:p-6 rounded-2xl bg-emerald-50 border-2 border-[#006B5B] shadow-md space-y-4">
-            <div className="flex items-start gap-3">
-              <div className="p-3 rounded-full bg-[#006B5B] text-white shrink-0">
-                <MessageCircle className="w-6 h-6 text-[#F2C94C]" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Evil Eye */}
+              <div className="p-4 rounded-2xl bg-[#FAFAF7] border border-gray-100 space-y-2">
+                <div className="flex justify-between text-xs font-semibold">
+                  <span className="text-gray-800">বদনজর ও হিংসার আলামত</span>
+                  <span className="text-[#006B5B] font-bold">{result.evilEyeScore}%</span>
+                </div>
+                <div className="w-full bg-gray-200 h-2.5 rounded-full overflow-hidden">
+                  <div
+                    className="bg-[#006B5B] h-full rounded-full transition-all duration-500"
+                    style={{ width: `${result.evilEyeScore}%` }}
+                  />
+                </div>
               </div>
-              <div>
-                <h4 className="text-base md:text-lg font-bold text-[#004D40]">
-                  অভিজ্ঞ শারঈ রাক্বীর সাথে WhatsApp-এ সরাসরি যোগাযোগ করুন
-                </h4>
-                <p className="text-xs md:text-sm text-gray-700 mt-1">
-                  নিচের বাটনে চাপ দিলে আপনার চিহ্নিত <strong className="text-[#006B5B]">{selectedSymptoms.length}টি লক্ষণ</strong> এবং ফলাফলের সারসংক্ষেপ স্বয়ংক্রিয়ভাবে মেসেজে চলে যাবে, যাতে রাক্বী তাৎক্ষণিকভাবে আপনার অবস্থা বুঝতে পারেন।
-                </p>
+
+              {/* Sihr */}
+              <div className="p-4 rounded-2xl bg-[#FAFAF7] border border-gray-100 space-y-2">
+                <div className="flex justify-between text-xs font-semibold">
+                  <span className="text-gray-800">সিহর ও জাদুর প্রভাব</span>
+                  <span className="text-rose-600 font-bold">{result.sihrScore}%</span>
+                </div>
+                <div className="w-full bg-gray-200 h-2.5 rounded-full overflow-hidden">
+                  <div
+                    className="bg-rose-600 h-full rounded-full transition-all duration-500"
+                    style={{ width: `${result.sihrScore}%` }}
+                  />
+                </div>
+              </div>
+
+              {/* Jinn Affliction */}
+              <div className="p-4 rounded-2xl bg-[#FAFAF7] border border-gray-100 space-y-2">
+                <div className="flex justify-between text-xs font-semibold">
+                  <span className="text-gray-800">আধ্যাত্মিক স্পর্শ ও জিনঘটিত ভীতি</span>
+                  <span className="text-purple-600 font-bold">{result.jinnScore}%</span>
+                </div>
+                <div className="w-full bg-gray-200 h-2.5 rounded-full overflow-hidden">
+                  <div
+                    className="bg-purple-600 h-full rounded-full transition-all duration-500"
+                    style={{ width: `${result.jinnScore}%` }}
+                  />
+                </div>
+              </div>
+
+              {/* Waswasah */}
+              <div className="p-4 rounded-2xl bg-[#FAFAF7] border border-gray-100 space-y-2">
+                <div className="flex justify-between text-xs font-semibold">
+                  <span className="text-gray-800">শয়তানী ওয়াসওয়াসা ও মানসিক অবসাদ</span>
+                  <span className="text-amber-600 font-bold">{result.waswasahScore}%</span>
+                </div>
+                <div className="w-full bg-gray-200 h-2.5 rounded-full overflow-hidden">
+                  <div
+                    className="bg-amber-500 h-full rounded-full transition-all duration-500"
+                    style={{ width: `${result.waswasahScore}%` }}
+                  />
+                </div>
               </div>
             </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
-              <a
-                href={`https://wa.me/${raqiWhatsAppNumber}?text=${result.whatsappMessage}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 py-3.5 px-6 rounded-xl bg-[#006B5B] hover:bg-[#004D40] text-white font-bold text-center text-sm md:text-base flex items-center justify-center gap-2.5 shadow-lg shadow-[#006B5B]/25 transition-all transform hover:-translate-y-0.5"
-              >
-                <MessageCircle className="w-5 h-5 text-[#F2C94C]" />
-                <span>ফলাফলসহ WhatsApp-এ মেসেজ পাঠান</span>
-              </a>
-
-              <button
-                onClick={copyWhatsAppText}
-                type="button"
-                className="py-3.5 px-4 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 text-xs md:text-sm font-medium flex items-center justify-center gap-1.5 transition-colors"
-                title="মেসেজের টেক্সট কপি করুন"
-              >
-                {copied ? (
-                  <>
-                    <CheckCheck className="w-4 h-4 text-emerald-600" />
-                    <span className="text-emerald-700 font-semibold">কপি হয়েছে!</span>
-                  </>
-                ) : (
-                  <>
-                    <Copy className="w-4 h-4 text-gray-500" />
-                    <span>মেসেজ কপি করুন</span>
-                  </>
-                )}
-              </button>
-            </div>
-
-            <div className="text-[11px] text-gray-700 bg-white/70 p-2.5 rounded-lg border border-emerald-200 flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-[#D4A017] shrink-0" />
-              <span><em>পরামর্শ:</em> সরাসরি ফোন দেওয়ার পূর্বে হোয়াটসঅ্যাপে লক্ষণগুলোর বিস্তারিত মেসেজ পাঠিয়ে রাক্বীর সুবিধাজনক সময় জেনে নেওয়া উত্তম।</span>
-            </div>
           </div>
 
-          {/* Recommendations Checklist */}
-          <div className="p-5 rounded-2xl bg-[#FAFAF7] border border-gray-200 space-y-3">
-            <h4 className="text-sm md:text-base font-bold text-[#004D40] flex items-center gap-2">
-              <HeartHandshake className="w-4 h-4 text-[#006B5B]" />
-              আপনার জন্য করণীয় প্রাথমিক আমল ও সতর্কতা:
-            </h4>
-            <ul className="space-y-2 text-xs md:text-sm text-gray-700">
-              {result.recommendations.map((rec, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#006B5B] mt-1.5 shrink-0" />
-                  <span>{rec}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Suggested Ayat & Dua */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-4 rounded-2xl bg-white border border-gray-200">
-              <h5 className="text-xs md:text-sm font-bold text-[#006B5B] mb-2.5 flex items-center gap-1.5">
-                <BookOpen className="w-4 h-4 text-[#D4A017]" />
-                প্রয়োজনীয় রুকইয়াহ আয়াতসমূহ:
-              </h5>
-              <ul className="space-y-1.5 text-xs text-gray-700">
-                {result.suggestedAyat.map((ayah, i) => (
-                  <li key={i} className="flex items-center gap-2">
-                    <span className="text-[#006B5B] font-bold">•</span>
-                    {ayah}
+          {/* Action Steps & Prescription */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Steps */}
+            <div className="p-6 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-3">
+              <h4 className="font-bold text-sm text-[#004D40] flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-[#006B5B]" />
+                করণীয় প্রাথমিক পদক্ষেপ
+              </h4>
+              <ul className="space-y-2 text-xs text-gray-600">
+                {result.actionSteps.map((step, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <span className="w-4 h-4 rounded-full bg-[#006B5B]/10 text-[#006B5B] text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                      {idx + 1}
+                    </span>
+                    <span>{step}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white border border-gray-200">
-              <h5 className="text-xs md:text-sm font-bold text-[#006B5B] mb-2.5 flex items-center gap-1.5">
-                <ShieldAlert className="w-4 h-4 text-[#D4A017]" />
-                মাসনুন আশ্রয় প্রার্থনার দোয়া:
-              </h5>
-              <div className="space-y-2">
-                {result.suggestedDua.map((d, i) => (
-                  <p key={i} className="text-xs font-arabic text-emerald-950 bg-[#FAFAF7] p-2 rounded-lg border border-[#006B5B]/10 leading-relaxed text-right">
-                    {d}
-                  </p>
+            {/* Recommended Ayat & Duas */}
+            <div className="p-6 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-3">
+              <h4 className="font-bold text-sm text-[#004D40] flex items-center gap-2">
+                <BookOpen className="w-4 h-4 text-[#D4A017]" />
+                আমলযোগ্য সূরা ও তিলাওয়াত
+              </h4>
+              <ul className="space-y-1.5 text-xs text-gray-600">
+                {result.recommendedSurahs.map((surah, idx) => (
+                  <li key={idx} className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#D4A017]" />
+                    <span>{surah}</span>
+                  </li>
                 ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Call to Action: WhatsApp Consultation */}
+          <div className="p-6 rounded-3xl bg-emerald-50 border border-emerald-200 text-emerald-950 space-y-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="space-y-1">
+                <h4 className="font-bold text-base text-[#004D40]">
+                  এই রিপোর্টের ভিত্তিতে সরাসরি অভিজ্ঞ রাক্বীর পরামর্শ চান?
+                </h4>
+                <p className="text-xs text-gray-600">
+                  আপনার ১৫টি প্রশ্নের উত্তর স্বয়ংক্রিয়ভাবে সাজিয়ে সুন্নাহলাইফ অফিশিয়াল হোয়াটসঅ্যাপে পাঠাতে নিচের বাটনে চাপুন।
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2 shrink-0">
+                <button
+                  onClick={copyWhatsAppText}
+                  className="px-4 py-2.5 rounded-xl bg-white border border-gray-300 text-gray-700 text-xs font-semibold hover:bg-gray-50 flex items-center gap-1.5 shadow-2xs transition-colors"
+                >
+                  {copied ? <CheckCheck className="w-4 h-4 text-[#006B5B]" /> : <Copy className="w-4 h-4" />}
+                  <span>{copied ? "কপি হয়েছে!" : "রিপোর্ট কপি করুন"}</span>
+                </button>
+
+                <a
+                  href={`https://wa.me/${SITE_CONFIG.raqiWhatsAppNumber}?text=${result.whatsappMessage}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-5 py-2.5 rounded-xl bg-[#006B5B] hover:bg-[#004D40] text-white text-xs font-bold flex items-center gap-2 shadow-xs transition-colors"
+                >
+                  <MessageCircle className="w-4 h-4 text-[#F2C94C]" />
+                  <span>WhatsApp-এ রিপোর্ট পাঠান</span>
+                </a>
               </div>
             </div>
           </div>
 
-          {/* Reset / Check Again */}
-          <div className="pt-2 text-center">
+          {/* Retake Test Button */}
+          <div className="text-center pt-2">
             <button
               onClick={handleReset}
-              className="text-xs md:text-sm text-gray-500 hover:text-[#006B5B] font-medium inline-flex items-center gap-1.5 underline"
+              className="inline-flex items-center gap-2 text-xs font-semibold text-gray-500 hover:text-[#006B5B] transition-colors"
             >
               <RotateCcw className="w-3.5 h-3.5" />
-              পুনরায় নতুন করে লক্ষণ যাচাই করুন
+              <span>পুনরায় পরীক্ষা দিন (Retake Assessment)</span>
             </button>
           </div>
         </div>
