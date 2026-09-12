@@ -44,12 +44,39 @@ export default async function TopicDetailPage({ params }: Props) {
     notFound();
   }
 
+  const topicSchema = {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    name: topic.title,
+    headline: topic.subtitle,
+    description: topic.shortDescription,
+    url: `https://sunnahlife.care/topics/${topic.slug}`,
+    mainEntity: {
+      "@type": "MedicalCondition",
+      name: topic.title,
+      possibleTreatment: topic.ruqyahTreatment.map((treatment) => ({
+        "@type": "MedicalTherapy",
+        name: treatment,
+      })),
+      signOrSymptom: topic.commonSigns.map((sign) => ({
+        "@type": "MedicalSignOrSymptom",
+        name: sign,
+      })),
+    },
+  };
+
   const defaultWhatsAppText = encodeURIComponent(
     `আসসালামু আলাইকুম। আমি সুন্নাহলাইফ প্ল্যাটফর্মের "${topic.title}" বিষয়টি পড়েছি। এই বিষয়ে আমার কিছু প্রশ্ন ও পরামর্শের জন্য অভিজ্ঞ শারঈ রাক্বীর সহায়তা চাচ্ছি।`
   );
 
   return (
     <div className="py-8 md:py-12 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      {/* Structured Data (JSON-LD) for Search & AEO Engines */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(topicSchema) }}
+      />
+
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-xs text-gray-500">
         <Link href="/" className="hover:text-[#006B5B]">হোম</Link>

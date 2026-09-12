@@ -42,8 +42,39 @@ export default async function ArticleDetailPage({ params }: Props) {
     notFound();
   }
 
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.excerpt,
+    author: {
+      "@type": "Person",
+      name: article.author,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "সুন্নাহলাইফ",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://sunnahlife.care/sunnahlife_logo.svg",
+      },
+    },
+    datePublished: "2026-09-01",
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://sunnahlife.care/articles/${article.slug}`,
+    },
+    articleBody: article.content.join(" "),
+  };
+
   return (
     <article className="py-8 md:py-12 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      {/* Structured Data (JSON-LD) for Search & AI Engines */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+
       {/* Breadcrumb & Back */}
       <div className="flex items-center justify-between text-xs text-gray-500">
         <Link href="/articles" className="inline-flex items-center gap-1.5 text-[#006B5B] hover:underline font-medium">
