@@ -21,7 +21,7 @@ export default function BottomNav() {
     },
     {
       label: "কুরআন",
-      href: "/ayat",
+      href: "/quran",
       icon: BookOpen,
     },
     {

@@ -14,12 +14,18 @@ import {
   Calendar,
   HelpCircle,
   AlertTriangle,
-  Users
+  Users,
+  Search,
+  Languages
 } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
+import SearchModal from "@/components/SearchModal";
+import LanguageModal from "@/components/LanguageModal";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isLangOpen, setIsLangOpen] = useState(false);
   const pathname = usePathname();
 
   const navLinks = [
@@ -52,19 +58,47 @@ export default function Header() {
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#006B5B]/10 shadow-xs transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
-            {/* Full Logo Vector Only - No extra text needed */}
-            <Link href="/" className="flex items-center group shrink-0" title="সুন্নাহলাইফ - সুস্থতা হোক সুন্নাহর পথে">
-              <div className="relative h-12 md:h-14 w-36 md:w-44">
-                <Image
-                  src="/sunnahlife_logo.svg"
-                  alt="সুন্নাহলাইফ - সুস্থতা হোক সুন্নাহর পথে"
-                  fill
-                  sizes="(max-width: 768px) 144px, 176px"
-                  className="object-contain object-left"
-                  priority
-                />
+            {/* Logo + Mobile Quick Tools (Search & Translate directly beside Logo) */}
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+              {/* Full Logo Vector */}
+              <Link href="/" className="flex items-center group shrink-0" title="সুন্নাহলাইফ - সুস্থতা হোক সুন্নাহর পথে">
+                <div className="relative h-11 md:h-14 w-28 xs:w-32 sm:w-36 md:w-44">
+                  <Image
+                    src="/sunnahlife_logo.svg"
+                    alt="সুন্নাহলাইফ - সুস্থতা হোক সুন্নাহর পথে"
+                    fill
+                    sizes="(max-width: 768px) 120px, 176px"
+                    className="object-contain object-left"
+                    priority
+                  />
+                </div>
+              </Link>
+
+              {/* Phone View Quick Tools: Directly beside logo as requested */}
+              <div className="flex xl:hidden items-center gap-1">
+                {/* Search Button */}
+                <button
+                  onClick={() => setIsSearchOpen(true)}
+                  className="p-1.5 rounded-xl text-gray-700 hover:text-[#006B5B] hover:bg-[#006B5B]/10 transition-colors border border-gray-200 bg-white/90 flex items-center gap-1 shadow-2xs cursor-pointer"
+                  aria-label="সার্চ করুন"
+                  title="সার্চ করুন"
+                >
+                  <Search className="w-3.5 h-3.5 text-[#006B5B]" />
+                  <span className="text-[10px] font-medium text-gray-600 hidden xs:inline">খুঁজুন</span>
+                </button>
+
+                {/* Translate Button */}
+                <button
+                  onClick={() => setIsLangOpen(true)}
+                  className="p-1.5 px-2 rounded-xl text-gray-700 hover:text-[#006B5B] hover:bg-[#006B5B]/10 transition-colors border border-gray-200 bg-white/90 flex items-center gap-1 shadow-2xs cursor-pointer"
+                  aria-label="ভাষা পরিবর্তন"
+                  title="ভাষা পরিবর্তন / Translate"
+                >
+                  <Languages className="w-3.5 h-3.5 text-[#D4A017]" />
+                  <span className="text-[10px] font-bold text-gray-700">EN</span>
+                </button>
               </div>
-            </Link>
+            </div>
 
             {/* Desktop Nav Links */}
             <nav className="hidden xl:flex items-center gap-1">
@@ -91,11 +125,29 @@ export default function Header() {
               })}
             </nav>
 
-            {/* Action CTAs */}
-            <div className="hidden sm:flex items-center gap-2.5">
+            {/* Desktop Action CTAs (Search, Translate, Appointment) */}
+            <div className="hidden xl:flex items-center gap-2">
+              <button
+                onClick={() => setIsSearchOpen(true)}
+                className="p-2 rounded-xl text-gray-700 hover:text-[#006B5B] hover:bg-[#FAFAF7] border border-gray-200 flex items-center gap-1.5 text-xs font-semibold cursor-pointer transition-colors"
+                title="সার্চ করুন"
+              >
+                <Search className="w-3.5 h-3.5 text-[#006B5B]" />
+                <span>সার্চ</span>
+              </button>
+
+              <button
+                onClick={() => setIsLangOpen(true)}
+                className="p-2 rounded-xl text-gray-700 hover:text-[#006B5B] hover:bg-[#FAFAF7] border border-gray-200 flex items-center gap-1.5 text-xs font-semibold cursor-pointer transition-colors"
+                title="ভাষা পরিবর্তন / Translate"
+              >
+                <Languages className="w-3.5 h-3.5 text-[#D4A017]" />
+                <span>বাং / EN</span>
+              </button>
+
               <Link
                 href="/appointment"
-                className="px-4 py-2 text-xs md:text-sm font-semibold rounded-xl bg-[#006B5B] text-white hover:bg-[#004D40] shadow-2xs transition-all flex items-center gap-1.5"
+                className="px-4 py-2 text-xs md:text-sm font-semibold rounded-xl bg-[#006B5B] text-white hover:bg-[#004D40] shadow-2xs transition-all flex items-center gap-1.5 ml-1"
               >
                 <Calendar className="w-4 h-4 text-[#F2C94C]" />
                 <span>অ্যাপয়েন্টমেন্ট</span>
@@ -106,7 +158,7 @@ export default function Header() {
             <div className="flex xl:hidden items-center gap-1.5">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-2 text-gray-700 hover:text-[#006B5B] hover:bg-[#FAFAF7] rounded-lg transition-colors"
+                className="p-2 text-gray-700 hover:text-[#006B5B] hover:bg-[#FAFAF7] rounded-lg transition-colors cursor-pointer"
                 aria-label="Toggle Menu"
               >
                 {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -141,6 +193,7 @@ export default function Header() {
               );
             })}
 
+            {/* Mobile Drawer CTAs */}
             <div className="pt-3 border-t border-gray-100 flex flex-col gap-2">
               <Link
                 href="/assessment"
@@ -171,6 +224,10 @@ export default function Header() {
             </div>
           </div>
         )}
+
+        {/* Global Search & Language Modals */}
+        <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+        <LanguageModal isOpen={isLangOpen} onClose={() => setIsLangOpen(false)} />
       </header>
   );
 }

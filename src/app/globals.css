@@ -63,3 +63,30 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #006B5B;
 }
+
+/* Google Translate Clean Overrides */
+.goog-te-banner-frame.skiptranslate,
+.goog-te-banner-frame {
+  display: none !important;
+}
+body {
+  top: 0px !important;
+}
+#goog-gt-tt {
+  display: none !important;
+}
+.goog-tooltip {
+  display: none !important;
+}
+.goog-tooltip:hover {
+  display: none !important;
+}
+.goog-text-highlight {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.goog-te-gadget {
+  display: none !important;
+}
+
