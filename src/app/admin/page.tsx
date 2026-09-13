@@ -899,40 +899,41 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
       {/* Main Admin Canvas */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 space-y-6">
 
-      {/* KPI Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1">
-          <span className="text-xs text-gray-500 font-medium">মোট ভিজিটর (মাসে)</span>
-          <p className="text-2xl font-bold text-[#004D40]">১২,৪৫০+</p>
-          <span className="text-[11px] text-emerald-600 font-semibold">↑ ১৮% বৃদ্ধি</span>
-        </div>
-
-        <div className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1">
-          <span className="text-xs text-gray-500 font-medium">লক্ষণ পরীক্ষা সম্পন্ন</span>
-          <p className="text-2xl font-bold text-[#004D40]">১,৮২০+</p>
-          <span className="text-[11px] text-emerald-600 font-semibold">ডায়াগনোসিস টুল</span>
-        </div>
-
-        <div className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1">
-          <span className="text-xs text-gray-500 font-medium">নিবন্ধিত রোগী</span>
-          <p className="text-2xl font-bold text-[#D4A017]">{patientsList.length} জন</p>
-          <span className="text-[11px] text-[#006B5B] font-semibold">
-            {patientsList.filter((p) => p.status === "followup").length} জনের ফলো-আপ প্রয়োজন
-          </span>
-        </div>
-
-        <div className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1">
-          <span className="text-xs text-gray-500 font-medium">প্রকাশিত কনটেন্ট</span>
-          <p className="text-2xl font-bold text-[#006B5B]">
-            {ARTICLES_LIST.length + RUQYAH_AYAT_LIST.length + DUA_LIST.length} টি
-          </p>
-          <span className="text-[11px] text-[#006B5B] font-semibold">আয়াত, দোয়া ও আর্টিকেল</span>
-        </div>
-      </div>
-
       {/* Content based on Tab */}
       {activeTab === "overview" && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-6">
+          {/* KPI Stats Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1">
+              <span className="text-xs text-gray-500 font-medium">মোট ভিজিটর (মাসে)</span>
+              <p className="text-2xl font-bold text-[#004D40]">১২,৪৫০+</p>
+              <span className="text-[11px] text-emerald-600 font-semibold">↑ ১৮% বৃদ্ধি</span>
+            </div>
+
+            <div className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1">
+              <span className="text-xs text-gray-500 font-medium">লক্ষণ পরীক্ষা সম্পন্ন</span>
+              <p className="text-2xl font-bold text-[#004D40]">১,৮২০+</p>
+              <span className="text-[11px] text-emerald-600 font-semibold">ডায়াগনোসিস টুল</span>
+            </div>
+
+            <div className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1">
+              <span className="text-xs text-gray-500 font-medium">নিবন্ধিত রোগী</span>
+              <p className="text-2xl font-bold text-[#D4A017]">{patientsList.length} জন</p>
+              <span className="text-[11px] text-[#006B5B] font-semibold">
+                {patientsList.filter((p) => p.status === "followup").length} জনের ফলো-আপ প্রয়োজন
+              </span>
+            </div>
+
+            <div className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1">
+              <span className="text-xs text-gray-500 font-medium">প্রকাশিত কনটেন্ট</span>
+              <p className="text-2xl font-bold text-[#006B5B]">
+                {ARTICLES_LIST.length + RUQYAH_AYAT_LIST.length + DUA_LIST.length} টি
+              </p>
+              <span className="text-[11px] text-[#006B5B] font-semibold">আয়াত, দোয়া ও আর্টিকেল</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Quick Patients Table */}
           <div className="p-6 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-gray-100 pb-3">
@@ -1023,6 +1024,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               </div>
             </div>
           </div>
+        </div>
         </div>
       )}
 
