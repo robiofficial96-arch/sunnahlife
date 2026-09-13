@@ -37,15 +37,21 @@ export default function ShopPage() {
   const [customerAddress, setCustomerAddress] = useState("");
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem("sunnahlife_custom_products");
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setProducts(parsed);
+    const loadProducts = () => {
+      try {
+        const stored = localStorage.getItem("sunnahlife_custom_products");
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setProducts(parsed);
+          }
         }
-      }
-    } catch {}
+      } catch {}
+    };
+
+    loadProducts();
+    window.addEventListener("storage", loadProducts);
+    return () => window.removeEventListener("storage", loadProducts);
   }, []);
 
   const categories = [

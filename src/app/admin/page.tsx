@@ -150,43 +150,10 @@ export default function AdminDashboardPage() {
     }
   };
 
-  const handleAddProductSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newProduct.banglaName) {
-      alert("অনুগ্রহ করে পণ্যের বাংলা নাম দিন");
-      return;
-    }
+  const [editingProductId, setEditingProductId] = useState<string | null>(null);
 
-    const catLabels: Record<string, string> = {
-      ruqyah_items: "রুকইয়াহ সামগ্রী",
-      oils_honey: "খাঁটি তেল ও মধু",
-      sunnah_food: "সুন্নাহ খাদ্য ও আজওয়া",
-      hijama: "হিজামা সামগ্রী"
-    };
-
-    const item: ProductItem = {
-      id: "prod-" + Date.now(),
-      name: newProduct.name || newProduct.banglaName,
-      banglaName: newProduct.banglaName,
-      category: newProduct.category as any,
-      categoryLabel: catLabels[newProduct.category] || "রুকইয়াহ সামগ্রী",
-      price: Number(newProduct.price) || 100,
-      regularPrice: newProduct.regularPrice ? Number(newProduct.regularPrice) : undefined,
-      weightOrQuantity: newProduct.weightOrQuantity || "১ পিস",
-      description: newProduct.description || "কুরআন ও সুন্নাহ নির্দেশিত খাঁটি পণ্য।",
-      benefits: newProduct.benefitsText 
-        ? newProduct.benefitsText.split("\n").filter(Boolean)
-        : ["১০০% বিশুদ্ধ ও প্রাকৃতিক সুন্নাহ উপাদান"],
-      usageInstructions: newProduct.usageInstructions || "সুন্নাহ নিয়মে সঠিক নিয়তে ব্যবহার করুন।",
-      inStock: newProduct.inStock,
-      image: newProduct.image || "/banners/special-offer-tuesday.jpg",
-      badge: newProduct.badge || undefined
-    };
-
-    const updated = [item, ...productsList];
-    setProductsList(updated);
-    localStorage.setItem("sunnahlife_custom_products", JSON.stringify(updated));
-    setShowAddProductModal(false);
+  const handleOpenAddProduct = () => {
+    setEditingProductId(null);
     setNewProduct({
       banglaName: "",
       name: "",
@@ -202,7 +169,110 @@ export default function AdminDashboardPage() {
       image: "/banners/special-offer-tuesday.jpg",
       badge: "নতুন পণ্য"
     });
-    setPopupSaveMessage("নতুন পণ্য সফলভাবে যোগ করা হয়েছে এবং স্টোরে লাইভ হয়েছে!");
+    setShowAddProductModal(true);
+  };
+
+  const handleOpenEditProduct = (product: ProductItem) => {
+    setEditingProductId(product.id);
+    setNewProduct({
+      banglaName: product.banglaName,
+      name: product.name || product.banglaName,
+      category: product.category,
+      categoryLabel: product.categoryLabel,
+      price: product.price,
+      regularPrice: product.regularPrice || 0,
+      weightOrQuantity: product.weightOrQuantity,
+      description: product.description,
+      benefitsText: product.benefits ? product.benefits.join("\n") : "",
+      usageInstructions: product.usageInstructions || "",
+      inStock: product.inStock,
+      image: product.image || "/banners/special-offer-tuesday.jpg",
+      badge: product.badge || ""
+    });
+    setShowAddProductModal(true);
+  };
+
+  const handleAddProductSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newProduct.banglaName) {
+      alert("অনুগ্রহ করে পণ্যের বাংলা নাম দিন");
+      return;
+    }
+
+    const catLabels: Record<string, string> = {
+      ruqyah_items: "রুকইয়াহ সামগ্রী",
+      oils_honey: "খাঁটি তেল ও মধু",
+      sunnah_food: "সুন্নাহ খাদ্য ও আজওয়া",
+      hijama: "হিজামা সামগ্রী"
+    };
+
+    let updated: ProductItem[];
+    if (editingProductId) {
+      updated = productsList.map(p => {
+        if (p.id === editingProductId) {
+          return {
+            ...p,
+            name: newProduct.name || newProduct.banglaName,
+            banglaName: newProduct.banglaName,
+            category: newProduct.category as any,
+            categoryLabel: catLabels[newProduct.category] || "রুকইয়াহ সামগ্রী",
+            price: Number(newProduct.price) || 100,
+            regularPrice: newProduct.regularPrice ? Number(newProduct.regularPrice) : undefined,
+            weightOrQuantity: newProduct.weightOrQuantity || "১ পিস",
+            description: newProduct.description || "কুরআন ও সুন্নাহ নির্দেশিত খাঁটি পণ্য।",
+            benefits: newProduct.benefitsText 
+              ? newProduct.benefitsText.split("\n").filter(Boolean)
+              : ["১০০% বিশুদ্ধ ও প্রাকৃতিক সুন্নাহ উপাদান"],
+            usageInstructions: newProduct.usageInstructions || "সুন্নাহ নিয়মে সঠিক নিয়তে ব্যবহার করুন।",
+            inStock: newProduct.inStock,
+            badge: newProduct.badge || undefined
+          };
+        }
+        return p;
+      });
+      setPopupSaveMessage("পণ্যটির তথ্য সফলভাবে আপডেট ও সেভ করা হয়েছে!");
+    } else {
+      const item: ProductItem = {
+        id: "prod-" + Date.now(),
+        name: newProduct.name || newProduct.banglaName,
+        banglaName: newProduct.banglaName,
+        category: newProduct.category as any,
+        categoryLabel: catLabels[newProduct.category] || "রুকইয়াহ সামগ্রী",
+        price: Number(newProduct.price) || 100,
+        regularPrice: newProduct.regularPrice ? Number(newProduct.regularPrice) : undefined,
+        weightOrQuantity: newProduct.weightOrQuantity || "১ পিস",
+        description: newProduct.description || "কুরআন ও সুন্নাহ নির্দেশিত খাঁটি পণ্য।",
+        benefits: newProduct.benefitsText 
+          ? newProduct.benefitsText.split("\n").filter(Boolean)
+          : ["১০০% বিশুদ্ধ ও প্রাকৃতিক সুন্নাহ উপাদান"],
+        usageInstructions: newProduct.usageInstructions || "সুন্নাহ নিয়মে সঠিক নিয়তে ব্যবহার করুন।",
+        inStock: newProduct.inStock,
+        image: newProduct.image || "/banners/special-offer-tuesday.jpg",
+        badge: newProduct.badge || undefined
+      };
+      updated = [item, ...productsList];
+      setPopupSaveMessage("নতুন পণ্য সফলভাবে যোগ করা হয়েছে এবং স্টোরে লাইভ হয়েছে!");
+    }
+
+    setProductsList(updated);
+    localStorage.setItem("sunnahlife_custom_products", JSON.stringify(updated));
+    setShowAddProductModal(false);
+    setEditingProductId(null);
+    setNewProduct({
+      banglaName: "",
+      name: "",
+      category: "ruqyah_items",
+      categoryLabel: "রুকইয়াহ সামগ্রী",
+      price: 250,
+      regularPrice: 350,
+      weightOrQuantity: "১০০ গ্রাম",
+      description: "",
+      benefitsText: "",
+      usageInstructions: "",
+      inStock: true,
+      image: "/banners/special-offer-tuesday.jpg",
+      badge: "নতুন পণ্য"
+    });
     setTimeout(() => setPopupSaveMessage(""), 3500);
   };
 
@@ -914,7 +984,7 @@ export default function AdminDashboardPage() {
 
             <button
               type="button"
-              onClick={() => setShowAddProductModal(true)}
+              onClick={handleOpenAddProduct}
               className="px-5 py-2.5 rounded-xl bg-[#006B5B] hover:bg-[#004D40] text-white font-bold text-xs flex items-center gap-2 transition-colors cursor-pointer shadow-sm shrink-0"
             >
               <PlusCircle className="w-4 h-4" />
@@ -971,7 +1041,14 @@ export default function AdminDashboardPage() {
                     )}
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      onClick={() => handleOpenEditProduct(product)}
+                      className="p-2 rounded-xl text-gray-500 hover:text-[#006B5B] hover:bg-emerald-50 transition-colors cursor-pointer"
+                      title="পণ্য এডিট / মূল্য পরিবর্তন করুন"
+                    >
+                      <Edit3 className="w-4 h-4" />
+                    </button>
                     <button
                       onClick={() => handleDeleteProduct(product.id)}
                       className="p-2 rounded-xl text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
@@ -992,7 +1069,9 @@ export default function AdminDashboardPage() {
                 <div className="px-6 py-4 bg-[#004D40] text-white flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <ShoppingBag className="w-4 h-4 text-[#F2C94C]" />
-                    <h4 className="font-bold text-sm md:text-base">নতুন পণ্য যোগ করুন</h4>
+                    <h4 className="font-bold text-sm md:text-base">
+                      {editingProductId ? "পণ্যের তথ্য সম্পাদনা করুন" : "নতুন পণ্য যোগ করুন"}
+                    </h4>
                   </div>
                   <button
                     onClick={() => setShowAddProductModal(false)}
@@ -1112,7 +1191,7 @@ export default function AdminDashboardPage() {
                       type="submit"
                       className="px-5 py-2 rounded-xl bg-[#006B5B] hover:bg-[#004D40] text-white font-bold cursor-pointer"
                     >
-                      পণ্য সেভ করুন
+                      {editingProductId ? "পরিবর্তন সেভ করুন" : "পণ্য সেভ করুন"}
                     </button>
                   </div>
                 </form>
