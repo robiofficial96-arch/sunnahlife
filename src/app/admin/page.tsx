@@ -31,7 +31,15 @@ import {
   ExternalLink,
   Upload,
   ImageIcon,
-  Camera
+  Camera,
+  UserPlus,
+  MapPin,
+  Activity,
+  FileSpreadsheet,
+  HeartHandshake,
+  FileText,
+  CheckCheck,
+  Send
 } from "lucide-react";
 import Image from "next/image";
 import { DEFAULT_POPUP_CONFIG, PopupNoticeConfig } from "@/data/popupNotice";
@@ -41,43 +49,92 @@ import { RUQYAH_AYAT_LIST } from "@/data/ayat";
 import { DUA_LIST } from "@/data/duas";
 import { RUQYAH_AUDIO_LIST } from "@/data/ruqyahAudio";
 
-interface DemoBooking {
+export interface PatientRecord {
   id: string;
   name: string;
   phone: string;
-  service: string;
+  address: string;
+  type: "online" | "offline";
+  problemType: string;
+  service?: string;
+  notes: string;
+  prescription: string;
   date: string;
-  timeSlot: string;
-  status: "pending" | "confirmed" | "completed";
+  timeSlot?: string;
+  status: "new" | "running" | "followup" | "cured";
+  lastFollowupDate?: string;
 }
 
-const INITIAL_BOOKINGS: DemoBooking[] = [
+const INITIAL_PATIENTS: PatientRecord[] = [
   {
-    id: "B-101",
+    id: "P-101",
     name: "মুহাম্মদ তারিকুল ইসলাম",
     phone: "01711223344",
+    address: "মিরপুর-১০, ঢাকা",
+    type: "online",
+    problemType: "ওয়াসওয়াসা ও মানসিক অস্থিরতা",
     service: "অনলাইন শারঈ রুকইয়াহ কনসালটেশন",
+    notes: "দীর্ঘদিন ধরে সালাতে মনোযোগ বিঘ্নিত হওয়া ও অতিরিক্ত মৃত্যুভয়। রুকইয়াহ আয়াত ও আজকার আমল দেওয়া হয়েছে।",
+    prescription: "সকাল-সন্ধ্যা আজকার, ঘুমানোর আগে ৩ কুল আমল ও রুকইয়াহ পানি পান।",
     date: "১৪ সেপ্টেম্বর, ২০২৬",
     timeSlot: "রাত ৮:০০ - ৯:০০",
-    status: "confirmed",
+    status: "followup",
   },
   {
-    id: "B-102",
+    id: "P-102",
     name: "ফাতিমা আক্তার (স্বামীর মাধ্যমে)",
     phone: "01822334455",
+    address: "উত্তরা, ঢাকা",
+    type: "offline",
+    problemType: "সিহর / জাদু (পেটের জাদু)",
     service: "সরাসরি চেম্বারে রুকইয়াহ সেশন",
+    notes: "খাওয়ানো জাদুর লক্ষণ—দীর্ঘ পেটের ব্যথা, বমির ভাব। সানা মাক্কি ডিটক্স ও সিদর পাতা গোসল প্রেসক্রাইব করা হয়েছে। চেম্বারে ১ম সেশন সম্পন্ন।",
+    prescription: "সানা মাক্কি ডিটক্স চা সপ্তাহে ২ দিন, প্রতিদিন রুকইয়াহ তেল পেটে মালিশ।",
     date: "১৫ সেপ্টেম্বর, ২০২৬",
     timeSlot: "দুপুর ১২:০০ - ১:০০",
-    status: "pending",
+    status: "running",
   },
   {
-    id: "B-103",
+    id: "P-103",
     name: "আব্দুর রহমান",
     phone: "01933445566",
+    address: "জিইসি মোড়, চট্টগ্রাম",
+    type: "online",
+    problemType: "দাম্পত্য বিরোধ ও বদনজর",
     service: "দাম্পত্য ও পারিবারিক কাউন্সেলিং",
-    date: "১৬ সেপ্টেম্বর, ২০২৬",
+    notes: "পারিবারিক অশান্তি ও হঠাৎ সম্পর্কের অবনতি। ঘরে সূরা বাকারা তিলাওয়াত ও অডিও শোনার নির্দেশ দেওয়া হয়েছে।",
+    prescription: "প্রতিদিন ঘরে সূরা বাকারা বাজানো, নিয়মিত বদনজরের দোয়া পাঠ।",
+    date: "১২ সেপ্টেম্বর, ২০২৬",
     timeSlot: "সন্ধ্যা ৬:৩০ - ৭:৩০",
-    status: "pending",
+    status: "followup",
+  },
+  {
+    id: "P-104",
+    name: "হাফেজ তানভীর আহমেদ",
+    phone: "01688997711",
+    address: "ধানমন্ডি, ঢাকা",
+    type: "offline",
+    problemType: "হিজামা ও শারীরিক অবসাদ",
+    service: "সুন্নাহ পয়েন্টে হিজামা থেরাপি",
+    notes: "পিঠের তীব্র ব্যথা ও মাইগ্রেন। সুন্নাহ পয়েন্টে হিজামা ও কালোজিরা তেল সেবন সম্পন্ন। আলহামদুলিল্লাহ সম্পূর্ণ সুস্থ।",
+    prescription: "পর্যাপ্ত পানি ও মধু সেবন, হালকা শরীরচর্চা।",
+    date: "১০ সেপ্টেম্বর, ২০২৬",
+    timeSlot: "সকাল ১১:০০ - ১২:০০",
+    status: "cured",
+  },
+  {
+    id: "P-105",
+    name: "মোসাম্মৎ রুকসানা পারভীন",
+    phone: "01521443322",
+    address: "শিবগঞ্জ, সিলেট",
+    type: "online",
+    problemType: "জিনের আছর ও দুঃস্বপ্ন",
+    service: "অনলাইন শারঈ রুকইয়াহ কনসালটেশন",
+    notes: "ঘুমের মধ্যে ভীতি, ভারী অনুভব ও দুঃস্বপ্ন দেখা। নতুন রোগী, প্রাথমিক কাউন্সেলিং সম্পন্ন।",
+    prescription: "ঘুমানোর পূর্বে আযানের অডিও ও শয়নকালীন মাসনুন দোয়া।",
+    date: "১৭ সেপ্টেম্বর, ২০২৬",
+    timeSlot: "রাত ৯:০০ - ১০:০০",
+    status: "new",
   },
 ];
 
@@ -88,7 +145,24 @@ export default function AdminDashboardPage() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const [activeTab, setActiveTab] = useState<"overview" | "bookings" | "content" | "popup" | "store">("overview");
-  const [bookings, setBookings] = useState<DemoBooking[]>(INITIAL_BOOKINGS);
+  const [patientsList, setPatientsList] = useState<PatientRecord[]>(INITIAL_PATIENTS);
+  const [patientFilter, setPatientFilter] = useState<"all" | "online" | "offline" | "followup" | "cured">("all");
+  const [patientSearch, setPatientSearch] = useState("");
+  const [showAddPatientModal, setShowAddPatientModal] = useState(false);
+  const [editingPatientId, setEditingPatientId] = useState<string | null>(null);
+
+  const [patientForm, setPatientForm] = useState<Omit<PatientRecord, "id">>({
+    name: "",
+    phone: "",
+    address: "",
+    type: "online",
+    problemType: "বদনজর (Evil Eye)",
+    notes: "",
+    prescription: "",
+    date: "১৪ সেপ্টেম্বর, ২০২৬",
+    timeSlot: "রাত ৮:০০ - ৯:০০",
+    status: "new",
+  });
   const [searchFilter, setSearchFilter] = useState("");
   const [popupConfig, setPopupConfig] = useState<PopupNoticeConfig>(DEFAULT_POPUP_CONFIG);
   const [popupSaveMessage, setPopupSaveMessage] = useState("");
@@ -184,6 +258,16 @@ export default function AdminDashboardPage() {
         const parsed = JSON.parse(savedProducts);
         if (Array.isArray(parsed) && parsed.length > 0) {
           setProductsList(parsed);
+        }
+      }
+    } catch {}
+
+    try {
+      const savedPatients = localStorage.getItem("sunnahlife_patients_records");
+      if (savedPatients) {
+        const parsed = JSON.parse(savedPatients);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setPatientsList(parsed);
         }
       }
     } catch {}
@@ -375,29 +459,193 @@ export default function AdminDashboardPage() {
     setPasscode("");
   };
 
-  const toggleBookingStatus = (id: string) => {
-    setBookings((prev) =>
-      prev.map((b) => {
-        if (b.id === id) {
-          const nextStatus: DemoBooking["status"] =
-            b.status === "pending"
-              ? "confirmed"
-              : b.status === "confirmed"
-              ? "completed"
-              : "pending";
-          return { ...b, status: nextStatus };
-        }
-        return b;
-      })
-    );
+  const handleOpenAddPatient = () => {
+    setEditingPatientId(null);
+    setPatientForm({
+      name: "",
+      phone: "",
+      address: "",
+      type: "online",
+      problemType: "বদনজর (Evil Eye)",
+      notes: "",
+      prescription: "",
+      date: new Date().toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" }),
+      timeSlot: "রাত ৮:০০ - ৯:০০",
+      status: "new",
+    });
+    setShowAddPatientModal(true);
   };
 
-  const filteredBookings = bookings.filter(
-    (b) =>
-      b.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
-      b.phone.includes(searchFilter) ||
-      b.service.toLowerCase().includes(searchFilter.toLowerCase())
-  );
+  const handleOpenEditPatient = (p: PatientRecord) => {
+    setEditingPatientId(p.id);
+    setPatientForm({
+      name: p.name,
+      phone: p.phone,
+      address: p.address || "",
+      type: p.type || "online",
+      problemType: p.problemType || "বদনজর (Evil Eye)",
+      notes: p.notes || "",
+      prescription: p.prescription || "",
+      date: p.date,
+      timeSlot: p.timeSlot || "",
+      status: p.status,
+    });
+    setShowAddPatientModal(true);
+  };
+
+  const handleSavePatientSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!patientForm.name.trim() || !patientForm.phone.trim()) {
+      alert("রোগীর নাম ও মোবাইল নম্বর আবশ্যক!");
+      return;
+    }
+
+    let updated: PatientRecord[];
+    if (editingPatientId) {
+      updated = patientsList.map((p) =>
+        p.id === editingPatientId
+          ? {
+              ...p,
+              ...patientForm,
+            }
+          : p
+      );
+      setPopupSaveMessage("রোগীর তথ্য ও প্রেসক্রিপশন সফলভাবে আপডেট করা হয়েছে!");
+    } else {
+      const newEntry: PatientRecord = {
+        id: "P-" + (patientsList.length + 101),
+        ...patientForm,
+      };
+      updated = [newEntry, ...patientsList];
+      setPopupSaveMessage("নতুন রোগীর তথ্য সফলভাবে যুক্ত করা হয়েছে!");
+    }
+
+    setPatientsList(updated);
+    localStorage.setItem("sunnahlife_patients_records", JSON.stringify(updated));
+    setShowAddPatientModal(false);
+    setEditingPatientId(null);
+    setTimeout(() => setPopupSaveMessage(""), 3500);
+  };
+
+  const handleDeletePatient = (id: string) => {
+    if (window.confirm("আপনি কি নিশ্চিতভাবে এই রোগীর রেকর্ড মুছে ফেলতে চান?")) {
+      const updated = patientsList.filter((p) => p.id !== id);
+      setPatientsList(updated);
+      localStorage.setItem("sunnahlife_patients_records", JSON.stringify(updated));
+      setPopupSaveMessage("রোগীর রেকর্ড সফলভাবে মুছে ফেলা হয়েছে!");
+      setTimeout(() => setPopupSaveMessage(""), 3000);
+    }
+  };
+
+  const handleUpdatePatientStatus = (id: string, newStatus: PatientRecord["status"]) => {
+    const updated = patientsList.map((p) =>
+      p.id === id ? { ...p, status: newStatus } : p
+    );
+    setPatientsList(updated);
+    localStorage.setItem("sunnahlife_patients_records", JSON.stringify(updated));
+    setPopupSaveMessage("রোগীর চিকিৎসা স্ট্যাটাস আপডেট করা হয়েছে!");
+    setTimeout(() => setPopupSaveMessage(""), 3000);
+  };
+
+  const handleExportCSV = () => {
+    const headers = [
+      "আইডি",
+      "রোগীর নাম",
+      "ফোন নম্বর",
+      "ঠিকানা",
+      "ধরন",
+      "সমস্যার ক্যাটাগরি",
+      "স্ট্যাটাস",
+      "তারিখ",
+      "সময়",
+      "আমল ও প্রেসক্রিপশন",
+      "বিস্তারিত নোট"
+    ];
+    const statusLabels: Record<string, string> = {
+      new: "নতুন রোগী",
+      running: "চিকিৎসা চলছে",
+      followup: "ফলো-আপ প্রয়োজন",
+      cured: "সুস্থ ও সমাপ্ত"
+    };
+
+    const rows = patientsList.map((p) => [
+      `"${p.id}"`,
+      `"${p.name.replace(/"/g, '""')}"`,
+      `"${p.phone}"`,
+      `"${(p.address || '').replace(/"/g, '""')}"`,
+      `"${p.type === 'online' ? 'অনলাইন' : 'সরাসরি চেম্বার'}"`,
+      `"${(p.problemType || p.service || '').replace(/"/g, '""')}"`,
+      `"${statusLabels[p.status] || p.status}"`,
+      `"${p.date}"`,
+      `"${(p.timeSlot || '').replace(/"/g, '""')}"`,
+      `"${(p.prescription || '').replace(/"/g, '""')}"`,
+      `"${(p.notes || '').replace(/"/g, '""')}"`,
+    ]);
+
+    const csvContent = "\uFEFF" + [headers.join(","), ...rows.map((r) => r.join(","))].join("\r\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `sunnahlife_patients_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setPopupSaveMessage("রোগীদের সকল ডাটা সফলভাবে এক্সেল (CSV) ফাইলে ডাউনলোড হয়েছে!");
+    setTimeout(() => setPopupSaveMessage(""), 3500);
+  };
+
+  const getFollowupWhatsAppUrl = (p: PatientRecord) => {
+    const cleanPhone = p.phone.replace(/^0/, "880").replace(/\D/g, "");
+    const text = `আসসালামু আলাইকুম ${p.name} ভাই/বোন।
+সুন্নাহলাইফ শারঈ রুকইয়াহ কেয়ার থেকে আপনার খোঁজ নেওয়ার জন্য যোগাযোগ করছি।
+
+আপনার "${p.problemType || p.service || 'সমস্যা'}"-এর সমস্যাটি এখন কেমন আছে? আলহামদুলিল্লাহ কোনো উন্নতি লক্ষ্য করছেন কি?
+
+প্রেসক্রিপশন অনুযায়ী রুকইয়াহ আমল ও সুন্নাহ সামগ্রীগুলো নিয়মিত মেনে চলছেন তো? কোনো পরামর্শ বা সহায়তার প্রয়োজন হলে নির্দ্বিধায় আমাদের লিখে জানান। আল্লাহ আপনাকে পূর্ণ সুস্থতা দান করুন।
+
+— সুন্নাহলাইফ টিম
+📞 ০১৬৭৬৮২০০৬০`;
+    return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`;
+  };
+
+  const getDirectChatWhatsAppUrl = (p: PatientRecord) => {
+    const cleanPhone = p.phone.replace(/^0/, "880").replace(/\D/g, "");
+    const text = `আসসালামু আলাইকুম ${p.name}। সুন্নাহলাইফ থেকে আপনার শারঈ রুকইয়াহ চিকিৎসার বিষয়ে যোগাযোগ করছি...`;
+    return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`;
+  };
+
+  const getPrescriptionWhatsAppUrl = (p: PatientRecord) => {
+    const cleanPhone = p.phone.replace(/^0/, "880").replace(/\D/g, "");
+    const text = `আসসালামু আলাইকুম ${p.name}।
+সুন্নাহলাইফ থেকে আপনার নির্ধারিত রুকইয়াহ আমল ও নির্দেশনাবলী:
+
+📌 সমস্যা: ${p.problemType || p.service || 'রুকইয়াহ চিকিৎসা'}
+📋 আমল ও প্রেসক্রিপশন:
+${p.prescription || p.notes || "সকাল-সন্ধ্যার মাসনুন আজকার ও নিয়মিত রুকইয়াহ আমল করুন।"}
+
+আল্লাহর ওপর পূর্ণ ভরসা রেখে নিয়মিত আমল চালিয়ে যান। যেকোনো প্রশ্নে আমাদের সাথে যোগাযোগ রাখুন।
+— সুন্নাহলাইফ`;
+    return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`;
+  };
+
+  const filteredPatients = patientsList.filter((p) => {
+    const query = patientSearch.toLowerCase();
+    const matchesSearch =
+      p.name.toLowerCase().includes(query) ||
+      p.phone.includes(query) ||
+      (p.address && p.address.toLowerCase().includes(query)) ||
+      (p.problemType && p.problemType.toLowerCase().includes(query)) ||
+      (p.notes && p.notes.toLowerCase().includes(query));
+
+    if (!matchesSearch) return false;
+
+    if (patientFilter === "online") return p.type === "online";
+    if (patientFilter === "offline") return p.type === "offline";
+    if (patientFilter === "followup") return p.status === "followup";
+    if (patientFilter === "cured") return p.status === "cured";
+    return true;
+  });
 
   if (!isLoaded) {
     return null;
@@ -538,8 +786,13 @@ export default function AdminDashboardPage() {
                     : "text-gray-600 hover:text-[#006B5B] hover:bg-white"
                 }`}
               >
-                <Calendar className="w-3.5 h-3.5" />
-                <span>অ্যাপয়েন্টমেন্ট ({bookings.length})</span>
+                <Users className="w-3.5 h-3.5" />
+                <span>রোগী ও ফলো-আপ ({patientsList.length})</span>
+                {patientsList.filter((p) => p.status === "followup").length > 0 && (
+                  <span className="px-1.5 py-0.2 text-[9px] font-extrabold rounded-full bg-purple-600 text-white animate-pulse">
+                    {patientsList.filter((p) => p.status === "followup").length}
+                  </span>
+                )}
               </button>
 
               <button
@@ -601,9 +854,11 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1">
-          <span className="text-xs text-gray-500 font-medium">অ্যাপয়েন্টমেন্ট বুকিং</span>
-          <p className="text-2xl font-bold text-[#D4A017]">৪৩ টি</p>
-          <span className="text-[11px] text-amber-600 font-semibold">২টি অপেক্ষমান</span>
+          <span className="text-xs text-gray-500 font-medium">নিবন্ধিত রোগী</span>
+          <p className="text-2xl font-bold text-[#D4A017]">{patientsList.length} জন</p>
+          <span className="text-[11px] text-purple-700 font-semibold">
+            {patientsList.filter((p) => p.status === "followup").length} জনের ফলো-আপ প্রয়োজন
+          </span>
         </div>
 
         <div className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1">
@@ -618,37 +873,65 @@ export default function AdminDashboardPage() {
       {/* Content based on Tab */}
       {activeTab === "overview" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Quick Bookings Table */}
+          {/* Quick Patients Table */}
           <div className="p-6 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-gray-100 pb-3">
               <h3 className="font-bold text-base text-[#004D40] flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-[#006B5B]" />
-                সর্বশেষ অ্যাপয়েন্টমেন্টসমূহ
+                <Users className="w-4 h-4 text-[#006B5B]" />
+                সর্বশেষ রোগী ও কনসালটেশন
               </h3>
               <button
                 onClick={() => setActiveTab("bookings")}
-                className="text-xs text-[#006B5B] font-semibold hover:underline"
+                className="text-xs text-[#006B5B] font-semibold hover:underline cursor-pointer"
               >
-                সব দেখুন →
+                সকল রোগী দেখুন →
               </button>
             </div>
 
             <div className="space-y-3">
-              {bookings.slice(0, 3).map((b) => (
-                <div key={b.id} className="p-3.5 rounded-2xl bg-[#FAFAF7] border border-gray-100 flex items-center justify-between">
-                  <div>
-                    <h4 className="text-xs font-bold text-gray-900">{b.name}</h4>
-                    <p className="text-[11px] text-gray-500">{b.service} • {b.timeSlot}</p>
+              {patientsList.slice(0, 4).map((p) => (
+                <div key={p.id} className="p-3 rounded-2xl bg-[#FAFAF7] border border-gray-100 flex items-center justify-between gap-3">
+                  <div className="space-y-0.5">
+                    <div className="flex items-center gap-2">
+                      <h4 className="text-xs font-bold text-gray-900">{p.name}</h4>
+                      <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded-md ${
+                        p.type === "online" ? "bg-sky-100 text-sky-800" : "bg-teal-100 text-teal-800"
+                      }`}>
+                        {p.type === "online" ? "অনলাইন" : "চেম্বার"}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-gray-500">{p.problemType} • {p.address || "ঠিকানা নেই"}</p>
                   </div>
-                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                    b.status === "confirmed"
-                      ? "bg-emerald-100 text-emerald-800"
-                      : b.status === "completed"
-                      ? "bg-gray-200 text-gray-700"
-                      : "bg-amber-100 text-amber-800"
-                  }`}>
-                    {b.status === "confirmed" ? "নিশ্চিত" : b.status === "completed" ? "সম্পন্ন" : "অপেক্ষমান"}
-                  </span>
+
+                  <div className="flex items-center gap-2">
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                      p.status === "running"
+                        ? "bg-blue-100 text-blue-800"
+                        : p.status === "followup"
+                        ? "bg-purple-100 text-purple-800"
+                        : p.status === "cured"
+                        ? "bg-emerald-100 text-emerald-800"
+                        : "bg-amber-100 text-amber-800"
+                    }`}>
+                      {p.status === "running"
+                        ? "চলমান"
+                        : p.status === "followup"
+                        ? "ফলো-আপ"
+                        : p.status === "cured"
+                        ? "সুস্থ"
+                        : "নতুন"}
+                    </span>
+
+                    <a
+                      href={getFollowupWhatsAppUrl(p)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 transition-colors"
+                      title="WhatsApp ফলো-আপ"
+                    >
+                      <MessageCircle className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
                 </div>
               ))}
             </div>
@@ -684,82 +967,380 @@ export default function AdminDashboardPage() {
       )}
 
       {activeTab === "bookings" && (
-        <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 pb-4">
-            <h3 className="font-bold text-lg text-[#004D40]">
-              সকল অ্যাপয়েন্টমেন্ট রিকোয়েস্ট তালিকা
-            </h3>
+        <div className="space-y-6">
+          {/* Top Header Card */}
+          <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-100 pb-5">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="p-2 rounded-xl bg-emerald-50 text-[#006B5B]">
+                    <Users className="w-5 h-5" />
+                  </span>
+                  <h3 className="font-extrabold text-xl text-[#004D40]">
+                    রোগী ও কনসালটেশন রেকর্ড (Patient Management & CRM)
+                  </h3>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  অনলাইন ও সরাসরি চেম্বার রোগীদের তালিকা, কেস হিস্ট্রি ও ১-ক্লিক হোয়াটসঅ্যাপ ফলো-আপ
+                </p>
+              </div>
 
-            <div className="relative">
-              <Search className="w-4 h-4 text-gray-400 absolute left-3 top-3" />
-              <input
-                type="text"
-                value={searchFilter}
-                onChange={(e) => setSearchFilter(e.target.value)}
-                placeholder="নাম বা ফোন দিয়ে খুঁজুন..."
-                className="pl-9 pr-3 py-2 rounded-xl border border-gray-200 text-xs w-full sm:w-64"
-              />
+              <div className="flex flex-wrap items-center gap-2.5">
+                <button
+                  onClick={handleExportCSV}
+                  className="px-4 py-2.5 rounded-xl border border-gray-200 hover:border-[#006B5B] text-gray-700 hover:text-[#006B5B] text-xs font-bold flex items-center gap-2 transition-colors cursor-pointer shadow-2xs"
+                  title="সকল রোগীর তথ্য এক্সেল (CSV) ফাইলে ডাউনলোড করুন"
+                >
+                  <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
+                  <span>এক্সেল (CSV) ব্যাকআপ</span>
+                </button>
+
+                <button
+                  onClick={handleOpenAddPatient}
+                  className="px-5 py-2.5 rounded-xl bg-[#006B5B] hover:bg-[#004D40] text-white text-xs font-bold flex items-center gap-2 transition-all shadow-xs cursor-pointer active:scale-98"
+                >
+                  <UserPlus className="w-4 h-4" />
+                  <span>নতুন রোগী এন্ট্রি করুন</span>
+                </button>
+              </div>
+            </div>
+
+            {/* KPI Stats Mini Cards */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
+              <div 
+                onClick={() => setPatientFilter("all")}
+                className={`p-4 rounded-2xl border transition-all cursor-pointer ${
+                  patientFilter === "all" 
+                    ? "bg-[#004D40] text-white border-[#004D40] shadow-sm" 
+                    : "bg-[#FAFAF7] border-gray-200 text-gray-800 hover:border-[#006B5B]/30"
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className={`text-xs font-semibold ${patientFilter === "all" ? "text-white/80" : "text-gray-500"}`}>
+                    মোট রোগী
+                  </span>
+                  <Users className="w-4 h-4" />
+                </div>
+                <div className="text-2xl font-bold mt-1">{patientsList.length} জন</div>
+                <span className={`text-[10px] ${patientFilter === "all" ? "text-emerald-200" : "text-gray-400"}`}>
+                  সকল নিবন্ধিত রোগী
+                </span>
+              </div>
+
+              <div 
+                onClick={() => setPatientFilter("online")}
+                className={`p-4 rounded-2xl border transition-all cursor-pointer ${
+                  patientFilter === "online" 
+                    ? "bg-[#006B5B] text-white border-[#006B5B] shadow-sm" 
+                    : "bg-[#FAFAF7] border-gray-200 text-gray-800 hover:border-[#006B5B]/30"
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className={`text-xs font-semibold ${patientFilter === "online" ? "text-white/80" : "text-gray-500"}`}>
+                    🌐 অনলাইন কনসালটেশন
+                  </span>
+                  <Globe className="w-4 h-4" />
+                </div>
+                <div className="text-2xl font-bold mt-1">
+                  {patientsList.filter((p) => p.type === "online").length} জন
+                </div>
+                <span className={`text-[10px] ${patientFilter === "online" ? "text-emerald-200" : "text-emerald-700"}`}>
+                  ফোন / ভিডিও কলে সেবা
+                </span>
+              </div>
+
+              <div 
+                onClick={() => setPatientFilter("offline")}
+                className={`p-4 rounded-2xl border transition-all cursor-pointer ${
+                  patientFilter === "offline" 
+                    ? "bg-teal-700 text-white border-teal-700 shadow-sm" 
+                    : "bg-[#FAFAF7] border-gray-200 text-gray-800 hover:border-[#006B5B]/30"
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className={`text-xs font-semibold ${patientFilter === "offline" ? "text-white/80" : "text-gray-500"}`}>
+                    🏥 সরাসরি চেম্বার (অফলাইন)
+                  </span>
+                  <MapPin className="w-4 h-4" />
+                </div>
+                <div className="text-2xl font-bold mt-1">
+                  {patientsList.filter((p) => p.type === "offline").length} জন
+                </div>
+                <span className={`text-[10px] ${patientFilter === "offline" ? "text-teal-200" : "text-teal-700"}`}>
+                  সেন্টারে উপস্থিত হয়ে
+                </span>
+              </div>
+
+              <div 
+                onClick={() => setPatientFilter("followup")}
+                className={`p-4 rounded-2xl border transition-all cursor-pointer ${
+                  patientFilter === "followup" 
+                    ? "bg-purple-700 text-white border-purple-700 shadow-sm" 
+                    : "bg-purple-50/70 border-purple-200 text-purple-900 hover:border-purple-300"
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className={`text-xs font-bold ${patientFilter === "followup" ? "text-white" : "text-purple-800"}`}>
+                    🔔 ফলো-আপ প্রয়োজন
+                  </span>
+                  <HeartHandshake className="w-4 h-4 text-purple-600" />
+                </div>
+                <div className="text-2xl font-bold mt-1">
+                  {patientsList.filter((p) => p.status === "followup").length} জন
+                </div>
+                <span className={`text-[10px] ${patientFilter === "followup" ? "text-purple-200" : "text-purple-600 font-semibold"}`}>
+                  পুরাতন রোগীর খোঁজ নেওয়ার সময়
+                </span>
+              </div>
+            </div>
+
+            {/* Filter Tabs & Search Bar */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+              {/* Filter Pills */}
+              <div className="flex flex-wrap items-center gap-1.5 bg-gray-100/80 p-1 rounded-2xl">
+                <button
+                  onClick={() => setPatientFilter("all")}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                    patientFilter === "all" ? "bg-white text-gray-900 shadow-xs" : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  সকল ({patientsList.length})
+                </button>
+                <button
+                  onClick={() => setPatientFilter("online")}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                    patientFilter === "online" ? "bg-white text-[#006B5B] shadow-xs" : "text-gray-600 hover:text-[#006B5B]"
+                  }`}
+                >
+                  🌐 অনলাইন ({patientsList.filter((p) => p.type === "online").length})
+                </button>
+                <button
+                  onClick={() => setPatientFilter("offline")}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                    patientFilter === "offline" ? "bg-white text-teal-800 shadow-xs" : "text-gray-600 hover:text-teal-800"
+                  }`}
+                >
+                  🏥 চেম্বার ({patientsList.filter((p) => p.type === "offline").length})
+                </button>
+                <button
+                  onClick={() => setPatientFilter("followup")}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                    patientFilter === "followup" ? "bg-purple-600 text-white shadow-xs" : "text-purple-700 hover:bg-purple-100"
+                  }`}
+                >
+                  🔔 ফলো-আপ ({patientsList.filter((p) => p.status === "followup").length})
+                </button>
+                <button
+                  onClick={() => setPatientFilter("cured")}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                    patientFilter === "cured" ? "bg-emerald-600 text-white shadow-xs" : "text-emerald-700 hover:bg-emerald-100"
+                  }`}
+                >
+                  🟢 সুস্থ/সমাপ্ত ({patientsList.filter((p) => p.status === "cured").length})
+                </button>
+              </div>
+
+              {/* Search Box */}
+              <div className="relative w-full sm:w-72">
+                <Search className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" />
+                <input
+                  type="text"
+                  value={patientSearch}
+                  onChange={(e) => setPatientSearch(e.target.value)}
+                  placeholder="নাম, ফোন, এলাকা বা সমস্যা দিয়ে খুঁজুন..."
+                  className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200 text-xs outline-none focus:border-[#006B5B] bg-[#FAFAF7]"
+                />
+              </div>
             </div>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-gray-600">
-              <thead className="bg-[#FAFAF7] text-gray-800 border-b border-gray-100 font-bold">
-                <tr>
-                  <th className="p-3">আইডি</th>
-                  <th className="p-3">রোগীর নাম</th>
-                  <th className="p-3">ফোন নম্বর</th>
-                  <th className="p-3">সেবার ধরন</th>
-                  <th className="p-3">তারিখ ও সময়</th>
-                  <th className="p-3">স্ট্যাটাস</th>
-                  <th className="p-3 text-right">পদক্ষেপ</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {filteredBookings.map((b) => (
-                  <tr key={b.id} className="hover:bg-gray-50/80 transition-colors">
-                    <td className="p-3 font-mono text-gray-400">{b.id}</td>
-                    <td className="p-3 font-semibold text-gray-900">{b.name}</td>
-                    <td className="p-3 font-mono">{b.phone}</td>
-                    <td className="p-3">{b.service}</td>
-                    <td className="p-3">
-                      <div>{b.date}</div>
-                      <div className="text-[11px] text-gray-400">{b.timeSlot}</div>
-                    </td>
-                    <td className="p-3">
-                      <button
-                        onClick={() => toggleBookingStatus(b.id)}
-                        className={`px-2.5 py-1 rounded-full text-[10px] font-bold cursor-pointer transition-colors ${
-                          b.status === "confirmed"
-                            ? "bg-emerald-100 text-emerald-800"
-                            : b.status === "completed"
-                            ? "bg-gray-200 text-gray-700"
-                            : "bg-amber-100 text-amber-800"
+          {/* Patients List Cards */}
+          <div className="space-y-4">
+            {filteredPatients.length === 0 ? (
+              <div className="p-12 text-center bg-white rounded-3xl border border-dashed border-gray-200 space-y-3">
+                <Users className="w-12 h-12 text-gray-300 mx-auto" />
+                <h4 className="font-bold text-gray-600 text-sm">কোনো রোগীর রেকর্ড পাওয়া যায়নি</h4>
+                <p className="text-xs text-gray-400 max-w-sm mx-auto">
+                  আপনার অনুসন্ধান অনুযায়ী কোনো তথ্য নেই। ফিল্টার পরিবর্তন করুন অথবা নতুন রোগী যুক্ত করুন।
+                </p>
+                <button
+                  onClick={handleOpenAddPatient}
+                  className="px-4 py-2 rounded-xl bg-[#006B5B] text-white text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer"
+                >
+                  <UserPlus className="w-3.5 h-3.5" />
+                  <span>নতুন রোগী যুক্ত করুন</span>
+                </button>
+              </div>
+            ) : (
+              filteredPatients.map((p) => (
+                <div
+                  key={p.id}
+                  className="p-5 md:p-6 rounded-3xl bg-white border border-gray-200 hover:border-[#006B5B]/30 shadow-xs transition-all space-y-4"
+                >
+                  {/* Card Top: Name, Badges, Status Dropdown */}
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="font-mono text-xs font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">
+                        {p.id}
+                      </span>
+                      <h4 className="font-bold text-base text-gray-900">
+                        {p.name}
+                      </h4>
+                      <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-md flex items-center gap-1 ${
+                        p.type === "online" 
+                          ? "bg-sky-50 text-sky-800 border border-sky-200" 
+                          : "bg-teal-50 text-teal-800 border border-teal-200"
+                      }`}>
+                        {p.type === "online" ? <Globe className="w-3 h-3" /> : <MapPin className="w-3 h-3" />}
+                        <span>{p.type === "online" ? "অনলাইন কনসালটেশন" : "চেম্বার রোগী (সরাসরি)"}</span>
+                      </span>
+                      <span className="text-[11px] font-semibold text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-md border border-amber-200">
+                        {p.problemType}
+                      </span>
+                    </div>
+
+                    {/* Status Dropdown */}
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="text-xs text-gray-400 hidden sm:inline">স্ট্যাটাস:</span>
+                      <select
+                        value={p.status}
+                        onChange={(e) => handleUpdatePatientStatus(p.id, e.target.value as any)}
+                        className={`text-xs font-bold px-3 py-1.5 rounded-xl border outline-none cursor-pointer ${
+                          p.status === "new"
+                            ? "bg-amber-50 text-amber-900 border-amber-200"
+                            : p.status === "running"
+                            ? "bg-blue-50 text-blue-900 border-blue-200"
+                            : p.status === "followup"
+                            ? "bg-purple-100 text-purple-900 border-purple-300 font-extrabold"
+                            : "bg-emerald-50 text-emerald-900 border-emerald-200"
                         }`}
-                        title="স্ট্যাটাস পরিবর্তন করতে ক্লিক করুন"
                       >
-                        {b.status === "confirmed"
-                          ? "নিশ্চিত (Confirmed)"
-                          : b.status === "completed"
-                          ? "সম্পন্ন (Completed)"
-                          : "অপেক্ষমান (Pending)"}
-                      </button>
-                    </td>
-                    <td className="p-3 text-right">
+                        <option value="new">🟡 নতুন রোগী</option>
+                        <option value="running">🔵 চিকিৎসা/আমল চলছে</option>
+                        <option value="followup">🟣 ফলো-আপ প্রয়োজন (খোঁজ নিন)</option>
+                        <option value="cured">🟢 সুস্থ ও সমাপ্ত</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Card Middle: Info Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs text-gray-600">
+                    <div className="flex items-center gap-2 bg-[#FAFAF7] p-2.5 rounded-xl border border-gray-100">
+                      <Phone className="w-4 h-4 text-[#006B5B] shrink-0" />
+                      <div>
+                        <span className="text-gray-400 block text-[10px]">ফোন নম্বর:</span>
+                        <a href={`tel:${p.phone}`} className="font-bold text-gray-900 hover:text-[#006B5B]">
+                          {p.phone}
+                        </a>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 bg-[#FAFAF7] p-2.5 rounded-xl border border-gray-100">
+                      <MapPin className="w-4 h-4 text-[#006B5B] shrink-0" />
+                      <div>
+                        <span className="text-gray-400 block text-[10px]">ঠিকানা / এলাকা:</span>
+                        <span className="font-medium text-gray-800">{p.address || "উল্লেখ নেই"}</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 bg-[#FAFAF7] p-2.5 rounded-xl border border-gray-100">
+                      <Clock className="w-4 h-4 text-[#006B5B] shrink-0" />
+                      <div>
+                        <span className="text-gray-400 block text-[10px]">ভিজিট তারিখ ও সময়:</span>
+                        <span className="font-medium text-gray-800">{p.date} {p.timeSlot ? `(${p.timeSlot})` : ""}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Notes & Prescription Section */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {/* Symptoms & Notes */}
+                    <div className="p-3.5 rounded-2xl bg-gray-50 border border-gray-200/80 space-y-1">
+                      <span className="text-[11px] font-bold text-gray-700 flex items-center gap-1.5">
+                        <FileText className="w-3.5 h-3.5 text-gray-500" />
+                        <span>রোগের লক্ষণ ও কেস হিস্ট্রি:</span>
+                      </span>
+                      <p className="text-xs text-gray-600 leading-relaxed">
+                        {p.notes || "কোনো বিশেষ নোট দেওয়া হয়নি।"}
+                      </p>
+                    </div>
+
+                    {/* Prescription & Routine */}
+                    <div className="p-3.5 rounded-2xl bg-emerald-50/50 border border-emerald-200/60 space-y-1">
+                      <span className="text-[11px] font-bold text-[#004D40] flex items-center gap-1.5">
+                        <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>আমল ও প্রেসক্রিপশন:</span>
+                      </span>
+                      <p className="text-xs text-gray-700 leading-relaxed font-medium">
+                        {p.prescription || "দৈনিক ৩ কুল ও সকাল-সন্ধ্যার মাসনুন আজকার।"}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Card Bottom: WhatsApp Actions, Edit, Delete */}
+                  <div className="pt-2 flex flex-wrap items-center justify-between gap-2.5 border-t border-gray-100">
+                    {/* WhatsApp Action Buttons */}
+                    <div className="flex flex-wrap items-center gap-2">
+                      {/* Follow-up Button */}
                       <a
-                        href={`https://wa.me/${b.phone.replace(/^0/, "880")}?text=%E0%A6%86%E0%A6%B8%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%95%E0%A7%81%E0%A6%AE%E0%A7%A4%20%E0%A6%B8%E0%A7%81%E0%A6%A8%E0%A7%8D%E0%A6%A8%E0%A6%BE%E0%A6%B9%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%AB%20%E0%A6%A5%E0%A7%87%E0%A6%95%E0%A7%87%20%E0%A6%86%E0%A6%AA%E0%A6%A8%E0%A6%BE%E0%A6%B0%20%E0%A6%AC%E0%A7%81%E0%A6%95%E0%A6%BF%E0%A6%82%E0%A6%AF%E0%A6%BC%E0%A7%87%E0%A6%B0%20%E0%A6%AC%E0%A6%BF%E0%A6%B7%E0%A6%AF%E0%A6%BC%E0%A7%87%20%E0%A6%AF%E0%A7%8B%E0%A6%97%E0%A6%BE%E0%A6%AF%E0%A6%BC%E0%A7%8B%E0%A6%97%20%E0%A6%95%E0%A6%B0%E0%A6%9B%E0%A6%BF...`}
+                        href={getFollowupWhatsAppUrl(p)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-[#006B5B] hover:text-[#004D40] font-bold"
+                        className="px-3.5 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
+                        title="রোগীর খোঁজ নেওয়ার জন্য স্বয়ংক্রিয় বাংলা ফলো-আপ মেসেজ পাঠান"
+                      >
+                        <HeartHandshake className="w-4 h-4" />
+                        <span>🤝 খোঁজ নিন (ফলো-আপ)</span>
+                      </a>
+
+                      {/* Amal Reminder Button */}
+                      <a
+                        href={getPrescriptionWhatsAppUrl(p)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
+                        title="নির্ধারিত আমল ও রুকইয়াহ রুটিন রিমাইন্ডার পাঠান"
+                      >
+                        <Send className="w-3.5 h-3.5" />
+                        <span>📋 আমল রিমাইন্ডার</span>
+                      </a>
+
+                      {/* Direct WhatsApp Chat */}
+                      <a
+                        href={getDirectChatWhatsAppUrl(p)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-2 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
+                        title="সরাসরি WhatsApp চ্যাট শুরু করুন"
                       >
                         <MessageCircle className="w-3.5 h-3.5" />
-                        <span>WhatsApp</span>
+                        <span>চ্যাট</span>
                       </a>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    </div>
+
+                    {/* Edit & Delete Actions */}
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={() => handleOpenEditPatient(p)}
+                        className="px-3 py-2 rounded-xl text-gray-600 hover:text-[#006B5B] hover:bg-emerald-50 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
+                        title="রোগীর তথ্য ও প্রেসক্রিপশন সম্পাদন করুন"
+                      >
+                        <Edit3 className="w-3.5 h-3.5" />
+                        <span>এডিট</span>
+                      </button>
+
+                      <button
+                        onClick={() => handleDeletePatient(p.id)}
+                        className="p-2 rounded-xl text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                        title="এই রোগীর রেকর্ড মুছে ফেলুন"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       )}
@@ -1398,6 +1979,187 @@ export default function AdminDashboardPage() {
               </div>
             </div>
           )}
+        </div>
+      )}
+      {/* Add / Edit Patient Modal */}
+      {showAddPatientModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="relative w-full max-w-xl bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
+            <div className="px-6 py-4 bg-[#004D40] text-white flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Users className="w-4 h-4 text-[#F2C94C]" />
+                <h4 className="font-bold text-sm md:text-base">
+                  {editingPatientId ? "রোগীর তথ্য ও প্রেসক্রিপশন সম্পাদন করুন" : "নতুন রোগী এন্ট্রি করুন"}
+                </h4>
+              </div>
+              <button
+                onClick={() => setShowAddPatientModal(false)}
+                className="p-1 rounded-full bg-white/10 hover:bg-white/20 text-white cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSavePatientSubmit} className="p-6 overflow-y-auto space-y-4 text-xs">
+              {/* Name & Phone */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-gray-700 mb-1">রোগীর নাম *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="যেমন: মুহাম্মদ আব্দুল্লাহ"
+                    value={patientForm.name}
+                    onChange={(e) => setPatientForm({ ...patientForm, name: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-semibold text-gray-700 mb-1">মোবাইল নম্বর (WhatsApp) *</label>
+                  <input
+                    type="tel"
+                    required
+                    placeholder="যেমন: 017xxxxxxxx"
+                    value={patientForm.phone}
+                    onChange={(e) => setPatientForm({ ...patientForm, phone: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                  />
+                </div>
+              </div>
+
+              {/* Address / Location & Patient Type */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-gray-700 mb-1">ঠিকানা / এলাকা / জেলা</label>
+                  <input
+                    type="text"
+                    placeholder="যেমন: মিরপুর ১০, ঢাকা / চট্টগ্রাম"
+                    value={patientForm.address}
+                    onChange={(e) => setPatientForm({ ...patientForm, address: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-semibold text-gray-700 mb-1">রোগীর ধরন *</label>
+                  <select
+                    value={patientForm.type}
+                    onChange={(e) => setPatientForm({ ...patientForm, type: e.target.value as any })}
+                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white font-semibold"
+                  >
+                    <option value="online">🌐 অনলাইন কনসালটেশন (ফোন / ভিডিও)</option>
+                    <option value="offline">🏥 সরাসরি চেম্বার (সেন্টারে উপস্থিত)</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Problem Category & Status */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-gray-700 mb-1">সমস্যার ক্যাটাগরি *</label>
+                  <select
+                    value={patientForm.problemType}
+                    onChange={(e) => setPatientForm({ ...patientForm, problemType: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white"
+                  >
+                    <option value="বদনজর (Evil Eye)">বদনজর (Evil Eye)</option>
+                    <option value="সিহর / জাদু (Black Magic)">সিহর / জাদু (Black Magic)</option>
+                    <option value="জিনের সমস্যা ও আছর">জিনের সমস্যা ও আছর</option>
+                    <option value="ওয়াসওয়াসা ও মানসিক অস্থিরতা">ওয়াসওয়াসা ও মানসিক অস্থিরতা</option>
+                    <option value="হিজামা ও শারীরিক ব্যথা">হিজামা ও শারীরিক ব্যথা</option>
+                    <option value="দাম্পত্য ও পারিবারিক বিরোধ">দাম্পত্য ও পারিবারিক বিরোধ</option>
+                    <option value="সাধারণ শারঈ রুকইয়াহ">সাধারণ শারঈ রুকইয়াহ</option>
+                    <option value="অন্যান্য সমস্যা">অন্যান্য সমস্যা</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block font-semibold text-gray-700 mb-1">বর্তমান চিকিৎসা স্ট্যাটাস *</label>
+                  <select
+                    value={patientForm.status}
+                    onChange={(e) => setPatientForm({ ...patientForm, status: e.target.value as any })}
+                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white font-semibold"
+                  >
+                    <option value="new">🟡 নতুন রোগী (New)</option>
+                    <option value="running">🔵 চিকিৎসা/আমল চলছে (Running)</option>
+                    <option value="followup">🟣 ফলো-আপ প্রয়োজন (Follow-up Due)</option>
+                    <option value="cured">🟢 সুস্থ ও চিকিৎসা সমাপ্ত (Cured)</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Visit Date & Time Slot */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-gray-700 mb-1">সাক্ষাৎ বা কনসালটেশনের তারিখ</label>
+                  <input
+                    type="text"
+                    placeholder="যেমন: ১৫ সেপ্টেম্বর, ২০২৬"
+                    value={patientForm.date}
+                    onChange={(e) => setPatientForm({ ...patientForm, date: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-semibold text-gray-700 mb-1">সময় বা স্লট (ঐচ্ছিক)</label>
+                  <input
+                    type="text"
+                    placeholder="যেমন: রাত ৮:০০ - ৯:০০ / দুপুর ১২:০০"
+                    value={patientForm.timeSlot || ""}
+                    onChange={(e) => setPatientForm({ ...patientForm, timeSlot: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                  />
+                </div>
+              </div>
+
+              {/* Symptoms and Case History */}
+              <div>
+                <label className="block font-semibold text-gray-700 mb-1">
+                  রোগের লক্ষণ ও কেস হিস্ট্রি (বিস্তারিত নোট)
+                </label>
+                <textarea
+                  rows={3}
+                  placeholder="রোগীর কী কী শারীরিক বা আধ্যাত্মিক সমস্যা অনুভূত হচ্ছে, কতদিন ধরে সমস্যা, পূর্বের কোনো চিকিৎসা ইত্যাদি..."
+                  value={patientForm.notes}
+                  onChange={(e) => setPatientForm({ ...patientForm, notes: e.target.value })}
+                  className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                />
+              </div>
+
+              {/* Prescriptions & Amals */}
+              <div>
+                <label className="block font-semibold text-gray-700 mb-1">
+                  নির্ধারিত আমল ও প্রেসক্রিপশন (Treatment Routine)
+                </label>
+                <textarea
+                  rows={2}
+                  placeholder="যেমন: প্রতিদিন সকালে খালি পেটে সানা মাক্কি চা, ৩ কুল আমল, রুকইয়াহ তেল মালিশ, ঘরে সূরা বাকারা বাজানো..."
+                  value={patientForm.prescription}
+                  onChange={(e) => setPatientForm({ ...patientForm, prescription: e.target.value })}
+                  className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                />
+              </div>
+
+              {/* Modal Buttons */}
+              <div className="pt-2 flex items-center justify-end gap-3 border-t border-gray-100">
+                <button
+                  type="button"
+                  onClick={() => setShowAddPatientModal(false)}
+                  className="px-4 py-2 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 cursor-pointer"
+                >
+                  বাতিল
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-xl bg-[#006B5B] hover:bg-[#004D40] text-white font-bold cursor-pointer transition-colors shadow-xs"
+                >
+                  {editingPatientId ? "তথ্য আপডেট করুন" : "রোগী সেভ করুন"}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </main>
