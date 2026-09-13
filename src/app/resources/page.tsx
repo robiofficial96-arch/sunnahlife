@@ -154,7 +154,7 @@ export default function ResourcesPage() {
           <span className="text-xs font-semibold text-[#F2C94C] uppercase tracking-wider">মাল্টিমিডিয়া রিসোর্স</span>
           <h3 className="text-xl md:text-2xl font-bold">রুকইয়াহ অডিও ও অফিসিয়াল ভিডিও শুনুন</h3>
           <p className="text-xs md:text-sm text-emerald-100 max-w-xl leading-relaxed">
-            বদনজর, হাসাদ, খাওয়ানো জাদু ও সিহর নবায়ন রোধে শাইখ মাহমুদ আল হুসাইনীর অফিসিয়াল ভিডিও এবং প্রখ্যাত ক্বারীদের কুরআন তিলাওয়াত।
+            বদনজর, হাসাদ, খাওয়ানো জাদু ও সিহর নবায়ন রোধে শাইখ মাহমুদ হুসাইনীর অফিসিয়াল ভিডিও এবং প্রখ্যাত ক্বারীদের কুরআন তিলাওয়াত।
           </p>
         </div>
 
