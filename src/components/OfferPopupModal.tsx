@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { DEFAULT_POPUP_CONFIG, PopupNoticeConfig } from "@/data/popupNotice";
 import { 
   X, 
@@ -27,6 +28,7 @@ export default function OfferPopupModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [config, setConfig] = useState<PopupNoticeConfig>(DEFAULT_POPUP_CONFIG);
+  const pathname = usePathname();
 
   useEffect(() => {
     // Check if admin has set local override or use default
@@ -62,7 +64,7 @@ export default function OfferPopupModal() {
     sessionStorage.setItem("sunnahlife_offer_popup_dismissed", "true");
   };
 
-  if (!isOpen || !config.isActive) {
+  if (pathname?.startsWith("/admin") || !isOpen || !config.isActive) {
     return null;
   }
 

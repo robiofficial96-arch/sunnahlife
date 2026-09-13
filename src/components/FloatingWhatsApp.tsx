@@ -2,6 +2,7 @@
 
 import { X } from "lucide-react";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { SITE_CONFIG } from "@/config/site";
 
 function WhatsAppOfficialIcon({ className = "w-7 h-7" }: { className?: string }) {
@@ -14,6 +15,11 @@ function WhatsAppOfficialIcon({ className = "w-7 h-7" }: { className?: string })
 
 export default function FloatingWhatsApp() {
   const [showTooltip, setShowTooltip] = useState(true);
+  const pathname = usePathname();
+
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <div className="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-40 flex flex-col items-end gap-2 group">

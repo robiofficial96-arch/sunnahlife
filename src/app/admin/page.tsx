@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { 
   Users, 
   Calendar, 
@@ -25,7 +26,9 @@ import {
   Trash2,
   PlusCircle,
   Edit3,
-  X
+  X,
+  Globe,
+  ExternalLink
 } from "lucide-react";
 import Image from "next/image";
 import { DEFAULT_POPUP_CONFIG, PopupNoticeConfig } from "@/data/popupNotice";
@@ -272,8 +275,18 @@ export default function AdminDashboardPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-[65vh] flex items-center justify-center px-4 py-16">
+      <div className="min-h-screen bg-[#FAFAF7] flex flex-col items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-3xl border border-[#006B5B]/20 p-6 md:p-8 shadow-sm space-y-6 text-center">
+          <div className="relative h-12 w-44 mx-auto">
+            <Image
+              src="/sunnahlife_logo.svg"
+              alt="সুন্নাহলাইফ"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
+
           <div className="w-14 h-14 mx-auto rounded-2xl bg-[#006B5B]/10 text-[#006B5B] flex items-center justify-center">
             <Lock className="w-7 h-7" />
           </div>
@@ -309,8 +322,11 @@ export default function AdminDashboardPage() {
             </button>
           </form>
 
-          <div className="pt-2 text-[11px] text-gray-400 border-t border-gray-100">
-            নিরাপত্তা কোড: <span className="font-mono font-semibold text-gray-600">7860</span>
+          <div className="pt-2 flex items-center justify-between text-[11px] text-gray-400 border-t border-gray-100">
+            <span>নিরাপত্তা কোড: <span className="font-mono font-semibold text-gray-600">7860</span></span>
+            <Link href="/" className="text-[#006B5B] hover:underline font-semibold flex items-center gap-1">
+              <span>← মূল ওয়েবসাইট</span>
+            </Link>
           </div>
         </div>
       </div>
@@ -318,87 +334,127 @@ export default function AdminDashboardPage() {
   }
 
   return (
-    <div className="py-8 md:py-12 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-      {/* Top Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 pb-5">
-        <div>
-          <div className="flex items-center gap-2 text-xs font-bold text-[#D4A017] uppercase tracking-wider">
-            <ShieldCheck className="w-4 h-4 text-[#006B5B]" />
-            <span>অ্যাডমিন ম্যানেজমেন্ট পোর্টাল (RPD Section 28)</span>
+    <div className="min-h-screen bg-[#FAFAF7] flex flex-col">
+      {/* Dedicated Admin Sticky Header */}
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#006B5B]/15 shadow-2xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 sm:h-18">
+            {/* Left: Logo & Admin Badge */}
+            <div className="flex items-center gap-3">
+              <Link href="/admin" className="flex items-center gap-2 group">
+                <div className="relative h-10 sm:h-12 w-32 sm:w-40">
+                  <Image
+                    src="/sunnahlife_logo.svg"
+                    alt="সুন্নাহলাইফ"
+                    fill
+                    className="object-contain object-left"
+                    priority
+                  />
+                </div>
+              </Link>
+              <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#006B5B]/10 text-[#006B5B] text-xs font-bold border border-[#006B5B]/20">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                <span>অ্যাডমিন পোর্টাল</span>
+              </span>
+            </div>
+
+            {/* Right: View Site & Logout */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              <Link
+                href="/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-[#006B5B] text-xs font-bold flex items-center gap-1.5 border border-[#006B5B]/20 transition-all cursor-pointer shadow-2xs"
+                title="নতুন ট্যাবে মূল ওয়েবসাইট দেখুন"
+              >
+                <Globe className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">মূল ওয়েবসাইট দেখুন</span>
+                <ExternalLink className="w-3 h-3 text-[#006B5B]/70" />
+              </Link>
+
+              <button
+                onClick={handleLogout}
+                className="px-3.5 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+                title="অ্যাডমিন প্যানেল থেকে লগআউট"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span>লগআউট</span>
+              </button>
+            </div>
           </div>
-          <h1 className="text-2xl md:text-3xl font-extrabold text-[#004D40] mt-1">
-            সুন্নাহলাইফ ড্যাশবোর্ড ও কনটেন্ট কন্ট্রোল
-          </h1>
         </div>
 
-        {/* Tab Switcher & Logout */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-2 bg-white p-1 rounded-2xl border border-gray-200 shadow-2xs">
-            <button
-              onClick={() => setActiveTab("overview")}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                activeTab === "overview"
-                  ? "bg-[#006B5B] text-white shadow-xs"
-                  : "text-gray-600 hover:text-[#006B5B]"
-              }`}
-            >
-              ওভারভিউ
-            </button>
-            <button
-              onClick={() => setActiveTab("bookings")}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                activeTab === "bookings"
-                  ? "bg-[#006B5B] text-white shadow-xs"
-                  : "text-gray-600 hover:text-[#006B5B]"
-              }`}
-            >
-              অ্যাপয়েন্টমেন্ট ({bookings.length})
-            </button>
-            <button
-              onClick={() => setActiveTab("content")}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                activeTab === "content"
-                  ? "bg-[#006B5B] text-white shadow-xs"
-                  : "text-gray-600 hover:text-[#006B5B]"
-              }`}
-            >
-              কনটেন্ট তালিকা
-            </button>
-            <button
-              onClick={() => setActiveTab("popup")}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-                activeTab === "popup"
-                  ? "bg-[#006B5B] text-white shadow-xs"
-                  : "text-gray-600 hover:text-[#006B5B]"
-              }`}
-            >
-              <Gift className="w-3.5 h-3.5 text-[#D4A017]" />
-              <span>পপআপ ও অফার</span>
-              <span className={`w-2 h-2 rounded-full ${popupConfig.isActive ? "bg-emerald-500 animate-pulse" : "bg-gray-300"}`} />
-            </button>
-            <button
-              onClick={() => setActiveTab("store")}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-                activeTab === "store"
-                  ? "bg-[#006B5B] text-white shadow-xs"
-                  : "text-gray-600 hover:text-[#006B5B]"
-              }`}
-            >
-              <ShoppingBag className="w-3.5 h-3.5 text-[#006B5B]" />
-              <span>স্টোর ও পণ্য ({productsList.length})</span>
-            </button>
-          </div>
+        {/* Admin Navigation Tabs Sub-bar */}
+        <div className="border-t border-gray-100 bg-[#FAFAF7]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center gap-1.5 overflow-x-auto py-2.5 scrollbar-none">
+              <button
+                onClick={() => setActiveTab("overview")}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer ${
+                  activeTab === "overview"
+                    ? "bg-[#006B5B] text-white shadow-xs"
+                    : "text-gray-600 hover:text-[#006B5B] hover:bg-white"
+                }`}
+              >
+                <BarChart3 className="w-3.5 h-3.5" />
+                <span>ওভারভিউ</span>
+              </button>
 
-          <button
-            onClick={handleLogout}
-            className="px-3 py-1.5 rounded-xl text-xs font-semibold text-red-600 hover:bg-red-50 border border-red-200 transition-colors flex items-center gap-1 cursor-pointer"
-            title="অ্যাডমিন প্যানেল থেকে লগআউট"
-          >
-            <LogOut className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">লগআউট</span>
-          </button>
+              <button
+                onClick={() => setActiveTab("bookings")}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer ${
+                  activeTab === "bookings"
+                    ? "bg-[#006B5B] text-white shadow-xs"
+                    : "text-gray-600 hover:text-[#006B5B] hover:bg-white"
+                }`}
+              >
+                <Calendar className="w-3.5 h-3.5" />
+                <span>অ্যাপয়েন্টমেন্ট ({bookings.length})</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab("content")}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer ${
+                  activeTab === "content"
+                    ? "bg-[#006B5B] text-white shadow-xs"
+                    : "text-gray-600 hover:text-[#006B5B] hover:bg-white"
+                }`}
+              >
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>কনটেন্ট তালিকা</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab("popup")}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer ${
+                  activeTab === "popup"
+                    ? "bg-[#006B5B] text-white shadow-xs"
+                    : "text-gray-600 hover:text-[#006B5B] hover:bg-white"
+                }`}
+              >
+                <Gift className="w-3.5 h-3.5 text-[#D4A017]" />
+                <span>পপআপ ও অফার</span>
+                <span className={`w-2 h-2 rounded-full ${popupConfig.isActive ? "bg-emerald-500 animate-pulse" : "bg-gray-300"}`} />
+              </button>
+
+              <button
+                onClick={() => setActiveTab("store")}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer ${
+                  activeTab === "store"
+                    ? "bg-[#006B5B] text-white shadow-xs"
+                    : "text-gray-600 hover:text-[#006B5B] hover:bg-white"
+                }`}
+              >
+                <ShoppingBag className="w-3.5 h-3.5" />
+                <span>স্টোর ও পণ্য ({productsList.length})</span>
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      </header>
+
+      {/* Main Admin Canvas */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 space-y-6">
 
       {/* KPI Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -1065,6 +1121,7 @@ export default function AdminDashboardPage() {
           )}
         </div>
       )}
-    </div>
-  );
+    </main>
+  </div>
+);
 }

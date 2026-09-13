@@ -7,6 +7,10 @@ import { Home, Stethoscope, ShieldCheck, Headphones, BookOpen, HeartPulse } from
 export default function BottomNav() {
   const pathname = usePathname();
 
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
+
   const navItems = [
     {
       label: "হোম",
