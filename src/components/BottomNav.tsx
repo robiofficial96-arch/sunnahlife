@@ -61,27 +61,21 @@ export default function BottomNav() {
               {/* Highlight pill for assessment / active tab */}
               {item.highlight ? (
                 <div
-                  className={`relative p-1.5 rounded-full transition-all ${
+                  className={`p-1.5 rounded-2xl transition-all ${
                     isActive
                       ? "bg-[#006B5B] text-white shadow-md shadow-[#006B5B]/30 scale-105"
                       : "bg-[#006B5B]/10 text-[#006B5B]"
                   }`}
                 >
                   <IconComponent className="w-5 h-5" />
-                  {!isActive && (
-                    <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#D4A017] rounded-full border-2 border-white animate-pulse" />
-                  )}
                 </div>
               ) : (
-                <div className="relative">
+                <div>
                   <IconComponent
                     className={`w-5 h-5 transition-transform ${
                       isActive ? "scale-110 text-[#006B5B]" : "text-gray-500"
                     }`}
                   />
-                  {isActive && (
-                    <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#006B5B] rounded-full" />
-                  )}
                 </div>
               )}
 
