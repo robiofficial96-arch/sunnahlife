@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Stethoscope, ShieldCheck, Headphones, BookOpen, Sparkles } from "lucide-react";
+import { Home, Stethoscope, ShieldCheck, Headphones, BookOpen, HeartPulse } from "lucide-react";
 
 export default function BottomNav() {
   const pathname = usePathname();
@@ -20,6 +20,11 @@ export default function BottomNav() {
       highlight: true,
     },
     {
+      label: "সেবাসমূহ",
+      href: "/services",
+      icon: HeartPulse,
+    },
+    {
       label: "কুরআন",
       href: "/quran",
       icon: BookOpen,
@@ -33,11 +38,6 @@ export default function BottomNav() {
       label: "অডিও",
       href: "/audio",
       icon: Headphones,
-    },
-    {
-      label: "দোয়া",
-      href: "/duas",
-      icon: Sparkles,
     },
   ];
 

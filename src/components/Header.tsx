@@ -15,7 +15,8 @@ import {
   HelpCircle,
   AlertTriangle,
   Users,
-  Search
+  Search,
+  HeartPulse
 } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 import SearchModal from "@/components/SearchModal";
@@ -33,13 +34,13 @@ export default function Header() {
       icon: Stethoscope, 
       highlight: true 
     },
+    { href: "/services", label: "সেবাসমূহ", icon: HeartPulse },
     { href: "/quran", label: "আল-কুরআন", icon: BookOpen },
     { href: "/audio", label: "রুকইয়াহ অডিও", icon: Headphones },
     { href: "/self-ruqyah", label: "সেলফ-রুকইয়াহ", icon: ShieldCheck },
-    { href: "/ayat", label: "রুকইয়াহ আয়াত", icon: BookOpen },
     { href: "/articles", label: "আর্টিকেলস", icon: BookOpen },
     { href: "/duas", label: "দোয়া ও আযকার", icon: BookOpen },
-    { href: "/services", label: "সেবাসমূহ" },
+    { href: "/ayat", label: "রুকইয়াহ আয়াত", icon: BookOpen },
     { href: "/knowledge", label: "রুকইয়াহ জ্ঞান" },
     { href: "/routine", label: "আমল ট্র্যাকার" },
     { href: "/topics", label: "বিষয়সমূহ" },
