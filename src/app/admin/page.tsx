@@ -15,8 +15,15 @@ import {
   Filter,
   BarChart3,
   Lock,
-  LogOut
+  LogOut,
+  Gift,
+  Power,
+  RotateCcw,
+  Save,
+  AlertCircle
 } from "lucide-react";
+import Image from "next/image";
+import { DEFAULT_POPUP_CONFIG, PopupNoticeConfig } from "@/data/popupNotice";
 import { ARTICLES_LIST } from "@/data/articles";
 import { RUQYAH_AYAT_LIST } from "@/data/ayat";
 import { DUA_LIST } from "@/data/duas";
@@ -68,17 +75,47 @@ export default function AdminDashboardPage() {
   const [error, setError] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<"overview" | "bookings" | "content">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "bookings" | "content" | "popup">("overview");
   const [bookings, setBookings] = useState<DemoBooking[]>(INITIAL_BOOKINGS);
   const [searchFilter, setSearchFilter] = useState("");
+  const [popupConfig, setPopupConfig] = useState<PopupNoticeConfig>(DEFAULT_POPUP_CONFIG);
+  const [popupSaveMessage, setPopupSaveMessage] = useState("");
 
   useEffect(() => {
     const auth = sessionStorage.getItem("sunnahlife_admin_auth");
     if (auth === "true") {
       setIsAuthenticated(true);
     }
+    try {
+      const savedPopup = localStorage.getItem("sunnahlife_popup_config");
+      if (savedPopup) {
+        setPopupConfig(JSON.parse(savedPopup));
+      }
+    } catch {}
     setIsLoaded(true);
   }, []);
+
+  const togglePopupActive = () => {
+    const updated = { ...popupConfig, isActive: !popupConfig.isActive };
+    setPopupConfig(updated);
+    localStorage.setItem("sunnahlife_popup_config", JSON.stringify(updated));
+    setPopupSaveMessage(updated.isActive ? "পপআপ চালু করা হয়েছে!" : "পপআপ বন্ধ করা হয়েছে!");
+    setTimeout(() => setPopupSaveMessage(""), 3500);
+  };
+
+  const handleSavePopup = (e: React.FormEvent) => {
+    e.preventDefault();
+    localStorage.setItem("sunnahlife_popup_config", JSON.stringify(popupConfig));
+    setPopupSaveMessage("পপআপ কনফিগারেশন সফলভাবে সেভ করা হয়েছে!");
+    setTimeout(() => setPopupSaveMessage(""), 3500);
+  };
+
+  const handleResetPopup = () => {
+    setPopupConfig(DEFAULT_POPUP_CONFIG);
+    localStorage.removeItem("sunnahlife_popup_config");
+    setPopupSaveMessage("ডিফল্ট কনফিগারেশনে রিসেট করা হয়েছে!");
+    setTimeout(() => setPopupSaveMessage(""), 3500);
+  };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -218,6 +255,18 @@ export default function AdminDashboardPage() {
               }`}
             >
               কনটেন্ট তালিকা
+            </button>
+            <button
+              onClick={() => setActiveTab("popup")}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                activeTab === "popup"
+                  ? "bg-[#006B5B] text-white shadow-xs"
+                  : "text-gray-600 hover:text-[#006B5B]"
+              }`}
+            >
+              <Gift className="w-3.5 h-3.5 text-[#D4A017]" />
+              <span>পপআপ ও অফার</span>
+              <span className={`w-2 h-2 rounded-full ${popupConfig.isActive ? "bg-emerald-500 animate-pulse" : "bg-gray-300"}`} />
             </button>
           </div>
 
@@ -443,6 +492,233 @@ export default function AdminDashboardPage() {
                 </li>
               ))}
             </ul>
+          </div>
+        </div>
+      )}
+
+      {activeTab === "popup" && (
+        <div className="space-y-6">
+          {/* Notification Toast */}
+          {popupSaveMessage && (
+            <div className="p-4 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs sm:text-sm font-semibold flex items-center justify-between shadow-xs animate-in fade-in">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                <span>{popupSaveMessage}</span>
+              </div>
+            </div>
+          )}
+
+          {/* Top Status & Quick Toggle Card */}
+          <div className="p-6 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-gray-500">বর্তমান অবস্থা</span>
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 ${
+                    popupConfig.isActive
+                      ? "bg-emerald-100 text-emerald-800"
+                      : "bg-red-100 text-red-700"
+                  }`}
+                >
+                  <span className={`w-2 h-2 rounded-full ${popupConfig.isActive ? "bg-emerald-500 animate-pulse" : "bg-red-500"}`} />
+                  {popupConfig.isActive ? "সক্রিয় (ভিজিটরদের সামনে প্রদর্শিত হচ্ছে)" : "নিষ্ক্রিয় (পপআপ বন্ধ রয়েছে)"}
+                </span>
+              </div>
+              <h3 className="text-lg font-bold text-[#004D40]">
+                হোমপেজ ও সাইটওয়াইড অফার পপআপ
+              </h3>
+              <p className="text-xs text-gray-500">
+                এই সুইচটি দিয়ে যেকোনো সময় তাৎক্ষণিক ওয়েবসাইটে পপআপ চালু বা বন্ধ করা যায়।
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={togglePopupActive}
+                className={`px-5 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-sm ${
+                  popupConfig.isActive
+                    ? "bg-red-600 hover:bg-red-700 text-white"
+                    : "bg-emerald-600 hover:bg-emerald-700 text-white"
+                }`}
+              >
+                <Power className="w-4 h-4" />
+                <span>{popupConfig.isActive ? "পপআপ বন্ধ করুন" : "পপআপ চালু করুন"}</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* Left: Live Preview */}
+            <div className="lg:col-span-5 p-6 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
+              <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+                <h4 className="font-bold text-[#004D40] text-sm flex items-center gap-2">
+                  <Gift className="w-4 h-4 text-[#D4A017]" />
+                  <span>লাইভ প্রিভিউ (Preview)</span>
+                </h4>
+                <span className="text-[11px] text-gray-400">ভিজিটর যেভাবে দেখবে</span>
+              </div>
+
+              {/* Mini Preview Card */}
+              <div className="rounded-2xl border border-gray-200 overflow-hidden bg-[#FAFAF7] shadow-sm">
+                <div className="relative aspect-[4/3] bg-emerald-950">
+                  <Image
+                    src={popupConfig.image}
+                    alt={popupConfig.title}
+                    fill
+                    className="object-cover object-top"
+                  />
+                  <div className="absolute bottom-2 left-2 px-2.5 py-0.5 rounded-full bg-black/75 text-white text-[10px] font-semibold">
+                    {popupConfig.badge}
+                  </div>
+                </div>
+
+                <div className="p-4 space-y-3">
+                  <h5 className="font-bold text-sm text-[#004D40] leading-snug">
+                    {popupConfig.title}
+                  </h5>
+                  <p className="text-xs text-gray-600">
+                    {popupConfig.subtitle}
+                  </p>
+
+                  <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between text-xs">
+                    <span className="line-through text-gray-400">{popupConfig.regularFee}</span>
+                    <span className="font-bold text-emerald-700">{popupConfig.offerFee}</span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-1.5 text-[11px] text-gray-600">
+                    <div>🕕 {popupConfig.timeText}</div>
+                    <div>🎟️ {popupConfig.seatsText}</div>
+                  </div>
+
+                  <div className="pt-2">
+                    <div className="w-full py-2 rounded-xl bg-[#25D366] text-white text-center text-xs font-bold">
+                      WhatsApp-এ ফ্রি সিরিয়াল নিন
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Form Editor */}
+            <div className="lg:col-span-7 p-6 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
+              <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+                <h4 className="font-bold text-[#004D40] text-sm">পপআপ তথ্য এডিটর</h4>
+                <button
+                  type="button"
+                  onClick={handleResetPopup}
+                  className="text-xs text-gray-500 hover:text-red-600 flex items-center gap-1 cursor-pointer"
+                  title="ডিফল্ট কনফিগারেশনে ফেরত যান"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>রিসেট</span>
+                </button>
+              </div>
+
+              <form onSubmit={handleSavePopup} className="space-y-4 text-xs">
+                <div>
+                  <label className="block font-semibold text-gray-700 mb-1">অফার ব্যাজ (Badge)</label>
+                  <input
+                    type="text"
+                    value={popupConfig.badge}
+                    onChange={(e) => setPopupConfig({ ...popupConfig, badge: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#006B5B] outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-semibold text-gray-700 mb-1">মূল শিরোনাম (Title)</label>
+                  <input
+                    type="text"
+                    value={popupConfig.title}
+                    onChange={(e) => setPopupConfig({ ...popupConfig, title: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#006B5B] outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-semibold text-gray-700 mb-1">উপ-শিরোনাম (Subtitle)</label>
+                  <input
+                    type="text"
+                    value={popupConfig.subtitle}
+                    onChange={(e) => setPopupConfig({ ...popupConfig, subtitle: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#006B5B] outline-none"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-semibold text-gray-700 mb-1">নিয়মিত ফি</label>
+                    <input
+                      type="text"
+                      value={popupConfig.regularFee}
+                      onChange={(e) => setPopupConfig({ ...popupConfig, regularFee: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#006B5B] outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-semibold text-gray-700 mb-1">অফার ফি</label>
+                    <input
+                      type="text"
+                      value={popupConfig.offerFee}
+                      onChange={(e) => setPopupConfig({ ...popupConfig, offerFee: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#006B5B] outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-semibold text-gray-700 mb-1">সময়</label>
+                    <input
+                      type="text"
+                      value={popupConfig.timeText}
+                      onChange={(e) => setPopupConfig({ ...popupConfig, timeText: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#006B5B] outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-semibold text-gray-700 mb-1">আসন সংখ্যা</label>
+                    <input
+                      type="text"
+                      value={popupConfig.seatsText}
+                      onChange={(e) => setPopupConfig({ ...popupConfig, seatsText: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#006B5B] outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block font-semibold text-gray-700 mb-1">কল / হেল্পলাইন নম্বর</label>
+                  <input
+                    type="text"
+                    value={popupConfig.phone}
+                    onChange={(e) => setPopupConfig({ ...popupConfig, phone: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#006B5B] outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-semibold text-gray-700 mb-1">WhatsApp ড্রাফট মেসেজ</label>
+                  <textarea
+                    rows={3}
+                    value={popupConfig.whatsappMessage}
+                    onChange={(e) => setPopupConfig({ ...popupConfig, whatsappMessage: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#006B5B] outline-none text-xs"
+                  />
+                </div>
+
+                <div className="pt-2 flex items-center gap-3">
+                  <button
+                    type="submit"
+                    className="px-6 py-2.5 rounded-xl bg-[#006B5B] hover:bg-[#004D40] text-white font-bold text-xs flex items-center gap-2 transition-colors cursor-pointer shadow-sm"
+                  >
+                    <Save className="w-4 h-4" />
+                    <span>পরিবর্তন সেভ করুন</span>
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       )}

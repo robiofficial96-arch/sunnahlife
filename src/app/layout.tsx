@@ -5,6 +5,7 @@ import BottomNav from "@/components/BottomNav";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
+import OfferPopupModal from "@/components/OfferPopupModal";
 import { SITE_CONFIG } from "@/config/site";
 
 const hindSiliguri = Hind_Siliguri({
@@ -201,6 +202,7 @@ export default function RootLayout({
         <Footer />
         <BottomNav />
         <FloatingWhatsApp />
+        <OfferPopupModal />
       </body>
     </html>
   );
