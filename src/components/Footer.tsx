@@ -174,6 +174,12 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
+                <Link href="/shop" className="hover:text-[#006B5B] transition-colors flex items-center gap-1.5 font-semibold text-emerald-800">
+                  <span className="w-1 h-1 rounded-full bg-[#006B5B]" />
+                  সুন্নাহ স্টোর (রুকইয়াহ সামগ্রী)
+                </Link>
+              </li>
+              <li>
                 <Link href="/assessment" className="hover:text-[#006B5B] transition-colors flex items-center gap-1.5">
                   <span className="w-1 h-1 rounded-full bg-[#006B5B]" />
                   লক্ষণ ও সমস্যা যাচাই (Diagnosis)

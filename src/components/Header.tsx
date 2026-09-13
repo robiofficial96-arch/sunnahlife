@@ -16,7 +16,8 @@ import {
   AlertTriangle,
   Users,
   Search,
-  HeartPulse
+  HeartPulse,
+  ShoppingBag
 } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 import SearchModal from "@/components/SearchModal";
@@ -28,6 +29,12 @@ export default function Header() {
 
   const navLinks = [
     { href: "/", label: "হোম" },
+    { 
+      href: "/shop", 
+      label: "সুন্নাহ স্টোর", 
+      icon: ShoppingBag, 
+      badge: "নতুন" 
+    },
     { 
       href: "/assessment", 
       label: "লক্ষণ পরীক্ষা", 
@@ -88,6 +95,11 @@ export default function Header() {
                     }`}
                   >
                     {link.label}
+                    {link.badge && (
+                      <span className="text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded-full font-bold">
+                        {link.badge}
+                      </span>
+                    )}
                   </Link>
                 );
               })}
@@ -144,7 +156,15 @@ export default function Header() {
                       : "text-gray-700 hover:bg-gray-50"
                   }`}
                 >
-                  <span>{link.label}</span>
+                  <span className="flex items-center gap-2">
+                    {link.icon && <link.icon className="w-4 h-4 text-[#006B5B]" />}
+                    {link.label}
+                  </span>
+                  {link.badge && (
+                    <span className="text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded-full font-bold">
+                      {link.badge}
+                    </span>
+                  )}
                   {link.highlight && (
                     <span className="text-[10px] bg-[#D4A017] text-white px-2 py-0.5 rounded-full font-bold">
                       লক্ষণ যাচাই

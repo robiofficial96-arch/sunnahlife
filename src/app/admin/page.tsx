@@ -20,10 +20,16 @@ import {
   Power,
   RotateCcw,
   Save,
-  AlertCircle
+  AlertCircle,
+  ShoppingBag,
+  Trash2,
+  PlusCircle,
+  Edit3,
+  X
 } from "lucide-react";
 import Image from "next/image";
 import { DEFAULT_POPUP_CONFIG, PopupNoticeConfig } from "@/data/popupNotice";
+import { DEFAULT_PRODUCTS, ProductItem } from "@/data/products";
 import { ARTICLES_LIST } from "@/data/articles";
 import { RUQYAH_AYAT_LIST } from "@/data/ayat";
 import { DUA_LIST } from "@/data/duas";
@@ -75,11 +81,28 @@ export default function AdminDashboardPage() {
   const [error, setError] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<"overview" | "bookings" | "content" | "popup">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "bookings" | "content" | "popup" | "store">("overview");
   const [bookings, setBookings] = useState<DemoBooking[]>(INITIAL_BOOKINGS);
   const [searchFilter, setSearchFilter] = useState("");
   const [popupConfig, setPopupConfig] = useState<PopupNoticeConfig>(DEFAULT_POPUP_CONFIG);
   const [popupSaveMessage, setPopupSaveMessage] = useState("");
+  const [productsList, setProductsList] = useState<ProductItem[]>(DEFAULT_PRODUCTS);
+  const [showAddProductModal, setShowAddProductModal] = useState(false);
+  const [newProduct, setNewProduct] = useState({
+    banglaName: "",
+    name: "",
+    category: "ruqyah_items",
+    categoryLabel: "রুকইয়াহ সামগ্রী",
+    price: 250,
+    regularPrice: 350,
+    weightOrQuantity: "১০০ গ্রাম",
+    description: "",
+    benefitsText: "",
+    usageInstructions: "",
+    inStock: true,
+    image: "/banners/special-offer-tuesday.jpg",
+    badge: "নতুন পণ্য"
+  });
 
   useEffect(() => {
     const auth = sessionStorage.getItem("sunnahlife_admin_auth");
@@ -92,8 +115,93 @@ export default function AdminDashboardPage() {
         setPopupConfig(JSON.parse(savedPopup));
       }
     } catch {}
+
+    try {
+      const savedProducts = localStorage.getItem("sunnahlife_custom_products");
+      if (savedProducts) {
+        const parsed = JSON.parse(savedProducts);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setProductsList(parsed);
+        }
+      }
+    } catch {}
+
     setIsLoaded(true);
   }, []);
+
+  const toggleProductStock = (id: string) => {
+    const updated = productsList.map(p => p.id === id ? { ...p, inStock: !p.inStock } : p);
+    setProductsList(updated);
+    localStorage.setItem("sunnahlife_custom_products", JSON.stringify(updated));
+    setPopupSaveMessage("পণ্যের স্টক স্ট্যাটাস আপডেট করা হয়েছে!");
+    setTimeout(() => setPopupSaveMessage(""), 3000);
+  };
+
+  const handleDeleteProduct = (id: string) => {
+    if (confirm("আপনি কি নিশ্চিত এই পণ্যটি ডিলিট করতে চান?")) {
+      const updated = productsList.filter(p => p.id !== id);
+      setProductsList(updated);
+      localStorage.setItem("sunnahlife_custom_products", JSON.stringify(updated));
+      setPopupSaveMessage("পণ্য সফলভাবে মুছে ফেলা হয়েছে!");
+      setTimeout(() => setPopupSaveMessage(""), 3000);
+    }
+  };
+
+  const handleAddProductSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newProduct.banglaName) {
+      alert("অনুগ্রহ করে পণ্যের বাংলা নাম দিন");
+      return;
+    }
+
+    const catLabels: Record<string, string> = {
+      ruqyah_items: "রুকইয়াহ সামগ্রী",
+      oils_honey: "খাঁটি তেল ও মধু",
+      sunnah_food: "সুন্নাহ খাদ্য ও আজওয়া",
+      hijama: "হিজামা সামগ্রী"
+    };
+
+    const item: ProductItem = {
+      id: "prod-" + Date.now(),
+      name: newProduct.name || newProduct.banglaName,
+      banglaName: newProduct.banglaName,
+      category: newProduct.category as any,
+      categoryLabel: catLabels[newProduct.category] || "রুকইয়াহ সামগ্রী",
+      price: Number(newProduct.price) || 100,
+      regularPrice: newProduct.regularPrice ? Number(newProduct.regularPrice) : undefined,
+      weightOrQuantity: newProduct.weightOrQuantity || "১ পিস",
+      description: newProduct.description || "কুরআন ও সুন্নাহ নির্দেশিত খাঁটি পণ্য।",
+      benefits: newProduct.benefitsText 
+        ? newProduct.benefitsText.split("\n").filter(Boolean)
+        : ["১০০% বিশুদ্ধ ও প্রাকৃতিক সুন্নাহ উপাদান"],
+      usageInstructions: newProduct.usageInstructions || "সুন্নাহ নিয়মে সঠিক নিয়তে ব্যবহার করুন।",
+      inStock: newProduct.inStock,
+      image: newProduct.image || "/banners/special-offer-tuesday.jpg",
+      badge: newProduct.badge || undefined
+    };
+
+    const updated = [item, ...productsList];
+    setProductsList(updated);
+    localStorage.setItem("sunnahlife_custom_products", JSON.stringify(updated));
+    setShowAddProductModal(false);
+    setNewProduct({
+      banglaName: "",
+      name: "",
+      category: "ruqyah_items",
+      categoryLabel: "রুকইয়াহ সামগ্রী",
+      price: 250,
+      regularPrice: 350,
+      weightOrQuantity: "১০০ গ্রাম",
+      description: "",
+      benefitsText: "",
+      usageInstructions: "",
+      inStock: true,
+      image: "/banners/special-offer-tuesday.jpg",
+      badge: "নতুন পণ্য"
+    });
+    setPopupSaveMessage("নতুন পণ্য সফলভাবে যোগ করা হয়েছে এবং স্টোরে লাইভ হয়েছে!");
+    setTimeout(() => setPopupSaveMessage(""), 3500);
+  };
 
   const togglePopupActive = () => {
     const updated = { ...popupConfig, isActive: !popupConfig.isActive };
@@ -267,6 +375,17 @@ export default function AdminDashboardPage() {
               <Gift className="w-3.5 h-3.5 text-[#D4A017]" />
               <span>পপআপ ও অফার</span>
               <span className={`w-2 h-2 rounded-full ${popupConfig.isActive ? "bg-emerald-500 animate-pulse" : "bg-gray-300"}`} />
+            </button>
+            <button
+              onClick={() => setActiveTab("store")}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                activeTab === "store"
+                  ? "bg-[#006B5B] text-white shadow-xs"
+                  : "text-gray-600 hover:text-[#006B5B]"
+              }`}
+            >
+              <ShoppingBag className="w-3.5 h-3.5 text-[#006B5B]" />
+              <span>স্টোর ও পণ্য ({productsList.length})</span>
             </button>
           </div>
 
@@ -720,6 +839,230 @@ export default function AdminDashboardPage() {
               </form>
             </div>
           </div>
+        </div>
+      )}
+
+      {activeTab === "store" && (
+        <div className="space-y-6">
+          {/* Header Action Bar */}
+          <div className="p-6 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-wider text-gray-500">সুন্নাহ স্টোর ক্যাটালগ</span>
+              <h3 className="text-lg font-bold text-[#004D40] flex items-center gap-2">
+                <span>পণ্য ও সামগ্রী তালিকা ({productsList.length}টি)</span>
+              </h3>
+              <p className="text-xs text-gray-500">
+                নতুন পণ্য যোগ করুন, স্টক পরিবর্তন করুন বা মূল্য আপডেট করুন। এখানে পরিবর্তন করলে তা সরাসরি স্টোর পেজে লাইভ হবে।
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowAddProductModal(true)}
+              className="px-5 py-2.5 rounded-xl bg-[#006B5B] hover:bg-[#004D40] text-white font-bold text-xs flex items-center gap-2 transition-colors cursor-pointer shadow-sm shrink-0"
+            >
+              <PlusCircle className="w-4 h-4" />
+              <span>নতুন পণ্য যোগ করুন</span>
+            </button>
+          </div>
+
+          {/* Products List Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {productsList.map((product) => (
+              <div
+                key={product.id}
+                className="p-5 rounded-3xl bg-white border border-gray-200 hover:border-[#006B5B]/30 shadow-xs flex flex-col justify-between space-y-3"
+              >
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-semibold text-[#006B5B] bg-emerald-50 px-2.5 py-0.5 rounded-md">
+                      {product.categoryLabel}
+                    </span>
+                    <button
+                      onClick={() => toggleProductStock(product.id)}
+                      className={`text-[11px] font-bold px-2 py-0.5 rounded-md transition-colors cursor-pointer ${
+                        product.inStock 
+                          ? "bg-emerald-100 text-emerald-800 hover:bg-emerald-200" 
+                          : "bg-red-100 text-red-700 hover:bg-red-200"
+                      }`}
+                      title="স্টক পরিবর্তন করতে ক্লিক করুন"
+                    >
+                      {product.inStock ? "● স্টকে আছে" : "○ স্টক শেষ"}
+                    </button>
+                  </div>
+
+                  <h4 className="font-bold text-base text-gray-900 leading-snug">
+                    {product.banglaName}
+                  </h4>
+                  <p className="text-xs text-gray-500 line-clamp-2">
+                    {product.description}
+                  </p>
+
+                  <div className="text-xs text-gray-400">
+                    পরিমাণ: <span className="font-semibold text-gray-700">{product.weightOrQuantity}</span>
+                  </div>
+                </div>
+
+                <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
+                  <div>
+                    <span className="text-lg font-extrabold text-[#004D40]">
+                      ৳{product.price}
+                    </span>
+                    {product.regularPrice && (
+                      <span className="text-xs text-gray-400 line-through ml-1.5">
+                        ৳{product.regularPrice}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleDeleteProduct(product.id)}
+                      className="p-2 rounded-xl text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                      title="পণ্য ডিলিট করুন"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Add Product Modal */}
+          {showAddProductModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-200">
+              <div className="relative w-full max-w-xl bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
+                <div className="px-6 py-4 bg-[#004D40] text-white flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <ShoppingBag className="w-4 h-4 text-[#F2C94C]" />
+                    <h4 className="font-bold text-sm md:text-base">নতুন পণ্য যোগ করুন</h4>
+                  </div>
+                  <button
+                    onClick={() => setShowAddProductModal(false)}
+                    className="p-1 rounded-full bg-white/10 hover:bg-white/20 text-white cursor-pointer"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <form onSubmit={handleAddProductSubmit} className="p-6 overflow-y-auto space-y-4 text-xs">
+                  <div>
+                    <label className="block font-semibold text-gray-700 mb-1">পণ্যের বাংলা নাম *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="যেমন: খাঁটি মধু, সিদর পাউডার..."
+                      value={newProduct.banglaName}
+                      onChange={(e) => setNewProduct({ ...newProduct, banglaName: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block font-semibold text-gray-700 mb-1">ক্যাটাগরি</label>
+                      <select
+                        value={newProduct.category}
+                        onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
+                        className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white"
+                      >
+                        <option value="ruqyah_items">রুকইয়াহ সামগ্রী</option>
+                        <option value="oils_honey">খাঁটি তেল ও মধু</option>
+                        <option value="sunnah_food">সুন্নাহ খাদ্য ও আজওয়া</option>
+                        <option value="hijama">হিজামা সামগ্রী</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block font-semibold text-gray-700 mb-1">ওজন / পরিমাণ</label>
+                      <input
+                        type="text"
+                        placeholder="যেমন: ১০০ গ্রাম / ২৫০ মিলি"
+                        value={newProduct.weightOrQuantity}
+                        onChange={(e) => setNewProduct({ ...newProduct, weightOrQuantity: e.target.value })}
+                        className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block font-semibold text-gray-700 mb-1">বিক্রয় মূল্য (টাকা) *</label>
+                      <input
+                        type="number"
+                        required
+                        placeholder="250"
+                        value={newProduct.price}
+                        onChange={(e) => setNewProduct({ ...newProduct, price: Number(e.target.value) })}
+                        className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block font-semibold text-gray-700 mb-1">রেগুলার মূল্য (ঐচ্ছিক)</label>
+                      <input
+                        type="number"
+                        placeholder="350"
+                        value={newProduct.regularPrice}
+                        onChange={(e) => setNewProduct({ ...newProduct, regularPrice: Number(e.target.value) })}
+                        className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block font-semibold text-gray-700 mb-1">সংক্ষিপ্ত বিবরণ</label>
+                    <textarea
+                      rows={2}
+                      placeholder="পণ্যটির গুরুত্ব ও কার্যকারিতা..."
+                      value={newProduct.description}
+                      onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-semibold text-gray-700 mb-1">উপকারিতাসমূহ (প্রতি লাইনে একটি)</label>
+                    <textarea
+                      rows={2}
+                      placeholder="হাদীসের নির্দেশনা...&#10;শারীরিক আরোগ্য..."
+                      value={newProduct.benefitsText}
+                      onChange={(e) => setNewProduct({ ...newProduct, benefitsText: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-semibold text-gray-700 mb-1">ব্যবহারের নিয়ম / রুকইয়াহ আমল</label>
+                    <input
+                      type="text"
+                      placeholder="পানিতে গুলিয়ে সেবন / শরীরে মালিশ..."
+                      value={newProduct.usageInstructions}
+                      onChange={(e) => setNewProduct({ ...newProduct, usageInstructions: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                    />
+                  </div>
+
+                  <div className="pt-2 flex items-center justify-end gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setShowAddProductModal(false)}
+                      className="px-4 py-2 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 cursor-pointer"
+                    >
+                      বাতিল
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-5 py-2 rounded-xl bg-[#006B5B] hover:bg-[#004D40] text-white font-bold cursor-pointer"
+                    >
+                      পণ্য সেভ করুন
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
