@@ -680,12 +680,12 @@ export default function AdminDashboardPage() {
 
               {/* Mini Preview Card */}
               <div className="rounded-2xl border border-gray-200 overflow-hidden bg-[#FAFAF7] shadow-sm">
-                <div className="relative aspect-[4/3] bg-emerald-950">
+                <div className="relative aspect-[682/1024] max-h-80 bg-[#00382E] mx-auto">
                   <Image
                     src={popupConfig.image}
                     alt={popupConfig.title}
                     fill
-                    className="object-cover object-top"
+                    className="object-contain"
                   />
                   <div className="absolute bottom-2 left-2 px-2.5 py-0.5 rounded-full bg-black/75 text-white text-[10px] font-semibold">
                     {popupConfig.badge}
