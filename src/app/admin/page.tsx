@@ -39,7 +39,13 @@ import {
   HeartHandshake,
   FileText,
   CheckCheck,
-  Send
+  Send,
+  ChevronDown,
+  ChevronUp,
+  ChevronRight,
+  PanelRight,
+  Maximize2,
+  Minimize2
 } from "lucide-react";
 import Image from "next/image";
 import { DEFAULT_POPUP_CONFIG, PopupNoticeConfig } from "@/data/popupNotice";
@@ -150,6 +156,9 @@ export default function AdminDashboardPage() {
   const [patientSearch, setPatientSearch] = useState("");
   const [showAddPatientModal, setShowAddPatientModal] = useState(false);
   const [editingPatientId, setEditingPatientId] = useState<string | null>(null);
+  const [selectedPatientForDrawer, setSelectedPatientForDrawer] = useState<PatientRecord | null>(null);
+  const [expandedPatientIds, setExpandedPatientIds] = useState<string[]>([]);
+  const [patientViewPreference, setPatientViewPreference] = useState<"drawer" | "accordion">("drawer");
 
   const [patientForm, setPatientForm] = useState<Omit<PatientRecord, "id">>({
     name: "",
@@ -273,6 +282,16 @@ export default function AdminDashboardPage() {
     } catch {}
 
     setIsLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setSelectedPatientForDrawer(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   const toggleProductStock = (id: string) => {
@@ -502,14 +521,16 @@ export default function AdminDashboardPage() {
 
     let updated: PatientRecord[];
     if (editingPatientId) {
+      const updatedRecord: PatientRecord = {
+        ...patientForm,
+        id: editingPatientId,
+      };
       updated = patientsList.map((p) =>
-        p.id === editingPatientId
-          ? {
-              ...p,
-              ...patientForm,
-            }
-          : p
+        p.id === editingPatientId ? updatedRecord : p
       );
+      if (selectedPatientForDrawer && selectedPatientForDrawer.id === editingPatientId) {
+        setSelectedPatientForDrawer(updatedRecord);
+      }
       setPopupSaveMessage("রোগীর তথ্য ও প্রেসক্রিপশন সফলভাবে আপডেট করা হয়েছে!");
     } else {
       const newEntry: PatientRecord = {
@@ -532,6 +553,10 @@ export default function AdminDashboardPage() {
       const updated = patientsList.filter((p) => p.id !== id);
       setPatientsList(updated);
       localStorage.setItem("sunnahlife_patients_records", JSON.stringify(updated));
+      if (selectedPatientForDrawer && selectedPatientForDrawer.id === id) {
+        setSelectedPatientForDrawer(null);
+      }
+      setExpandedPatientIds((prev) => prev.filter((itemId) => itemId !== id));
       setPopupSaveMessage("রোগীর রেকর্ড সফলভাবে মুছে ফেলা হয়েছে!");
       setTimeout(() => setPopupSaveMessage(""), 3000);
     }
@@ -543,8 +568,34 @@ export default function AdminDashboardPage() {
     );
     setPatientsList(updated);
     localStorage.setItem("sunnahlife_patients_records", JSON.stringify(updated));
+    if (selectedPatientForDrawer && selectedPatientForDrawer.id === id) {
+      setSelectedPatientForDrawer({ ...selectedPatientForDrawer, status: newStatus });
+    }
     setPopupSaveMessage("রোগীর চিকিৎসা স্ট্যাটাস আপডেট করা হয়েছে!");
     setTimeout(() => setPopupSaveMessage(""), 3000);
+  };
+
+  const togglePatientExpand = (id: string, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setExpandedPatientIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
+  const handleExpandAll = () => {
+    setExpandedPatientIds(filteredPatients.map((p) => p.id));
+  };
+
+  const handleCollapseAll = () => {
+    setExpandedPatientIds([]);
+  };
+
+  const handleOpenPatientDrawer = (patient: PatientRecord) => {
+    setSelectedPatientForDrawer(patient);
+  };
+
+  const handleClosePatientDrawer = () => {
+    setSelectedPatientForDrawer(null);
   };
 
   const handleExportCSV = () => {
@@ -1155,10 +1206,72 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 />
               </div>
             </div>
+
+            {/* View Mode Bar: Drawer vs Accordion & Expand/Collapse All */}
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-gray-100">
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-semibold text-gray-500 hidden sm:inline">ভিউ স্টাইল:</span>
+                <div className="flex items-center bg-gray-100 p-1 rounded-xl text-xs font-semibold">
+                  <button
+                    type="button"
+                    onClick={() => setPatientViewPreference("drawer")}
+                    className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer ${
+                      patientViewPreference === "drawer"
+                        ? "bg-white text-[#004D40] font-bold shadow-2xs"
+                        : "text-gray-500 hover:text-gray-900"
+                    }`}
+                    title="ক্লিক করলে ডান পাশে স্লাইড-ওভার প্যানেল খুলবে"
+                  >
+                    <PanelRight className="w-3.5 h-3.5" />
+                    <span>সাইড ড্রয়ার (পাশে খুলবে)</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPatientViewPreference("accordion")}
+                    className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer ${
+                      patientViewPreference === "accordion"
+                        ? "bg-white text-[#004D40] font-bold shadow-2xs"
+                        : "text-gray-500 hover:text-gray-900"
+                    }`}
+                    title="ক্লিক করলে কার্ডের নিচেই বিস্তারিত খুলবে"
+                  >
+                    <ChevronDown className="w-3.5 h-3.5" />
+                    <span>এক্সপ্যান্ড ভিউ (নিচে খুলবে)</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Expand All / Collapse All Controls */}
+              {filteredPatients.length > 0 && (
+                <div className="flex items-center gap-2 text-xs">
+                  {expandedPatientIds.length > 0 ? (
+                    <button
+                      type="button"
+                      onClick={handleCollapseAll}
+                      className="px-3 py-1.5 rounded-xl border border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-gray-50 font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+                      title="সকল এক্সপ্যান্ড করা রেকর্ড বন্ধ করুন"
+                    >
+                      <Minimize2 className="w-3.5 h-3.5" />
+                      <span>সব সংক্ষেপ করুন</span>
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={handleExpandAll}
+                      className="px-3 py-1.5 rounded-xl border border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-gray-50 font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+                      title="সকল রোগীর তথ্য একসাথে খুলুন"
+                    >
+                      <Maximize2 className="w-3.5 h-3.5" />
+                      <span>সব বিস্তারিত দেখুন ({filteredPatients.length})</span>
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Patients List Cards */}
-          <div className="space-y-4">
+          {/* Patients List (Compact Rows & Expandable Accordion) */}
+          <div className="space-y-2.5">
             {filteredPatients.length === 0 ? (
               <div className="p-12 text-center bg-white rounded-3xl border border-dashed border-gray-200 space-y-3">
                 <Users className="w-12 h-12 text-gray-300 mx-auto" />
@@ -1175,45 +1288,349 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 </button>
               </div>
             ) : (
-              filteredPatients.map((p) => (
-                <div
-                  key={p.id}
-                  className="p-5 md:p-6 rounded-3xl bg-white border border-gray-200 hover:border-[#006B5B]/30 shadow-xs transition-all space-y-4"
-                >
-                  {/* Card Top: Name, Badges, Status Dropdown */}
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-mono text-xs font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">
-                        {p.id}
-                      </span>
-                      <h4 className="font-bold text-base text-gray-900">
-                        {p.name}
-                      </h4>
-                      <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-md flex items-center gap-1 ${
-                        p.type === "online" 
-                          ? "bg-sky-50 text-sky-800 border border-sky-200" 
-                          : "bg-teal-50 text-teal-800 border border-teal-200"
-                      }`}>
-                        {p.type === "online" ? <Globe className="w-3 h-3" /> : <MapPin className="w-3 h-3" />}
-                        <span>{p.type === "online" ? "অনলাইন কনসালটেশন" : "চেম্বার রোগী (সরাসরি)"}</span>
-                      </span>
-                      <span className="text-[11px] font-semibold text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-md border border-amber-200">
-                        {p.problemType}
-                      </span>
+              filteredPatients.map((p) => {
+                const isExpanded = expandedPatientIds.includes(p.id);
+                const isSelectedInDrawer = selectedPatientForDrawer?.id === p.id;
+
+                return (
+                  <div
+                    key={p.id}
+                    className={`rounded-2xl border transition-all duration-200 overflow-hidden bg-white ${
+                      isSelectedInDrawer
+                        ? "border-[#006B5B] ring-2 ring-[#006B5B]/20 shadow-xs"
+                        : "border-gray-200 hover:border-[#006B5B]/30 shadow-2xs hover:shadow-xs"
+                    }`}
+                  >
+                    {/* Compact Main Row */}
+                    <div
+                      onClick={() => {
+                        if (patientViewPreference === "drawer") {
+                          handleOpenPatientDrawer(p);
+                        } else {
+                          togglePatientExpand(p.id);
+                        }
+                      }}
+                      className="p-3.5 sm:p-4 cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3 select-none hover:bg-[#FAFAF7]/80 transition-colors"
+                    >
+                      {/* Left: ID, Name, Type, Problem, Status */}
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 min-w-0">
+                        <span className="font-mono text-[11px] font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded-md shrink-0">
+                          {p.id}
+                        </span>
+
+                        <h4 className="font-bold text-sm sm:text-base text-gray-900 truncate">
+                          {p.name}
+                        </h4>
+
+                        <span className={`text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-md flex items-center gap-1 shrink-0 ${
+                          p.type === "online" 
+                            ? "bg-sky-50 text-sky-800 border border-sky-200" 
+                            : "bg-teal-50 text-teal-800 border border-teal-200"
+                        }`}>
+                          {p.type === "online" ? <Globe className="w-3 h-3" /> : <MapPin className="w-3 h-3" />}
+                          <span>{p.type === "online" ? "অনলাইন" : "চেম্বার"}</span>
+                        </span>
+
+                        <span className="text-[10px] sm:text-[11px] font-medium text-amber-900 bg-amber-50 px-2.5 py-0.5 rounded-md border border-amber-200/80 shrink-0">
+                          {p.problemType}
+                        </span>
+
+                        {/* Status Badge */}
+                        <span className={`text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-md shrink-0 ${
+                          p.status === "new"
+                            ? "bg-amber-50 text-amber-900 border border-amber-200"
+                            : p.status === "running"
+                            ? "bg-blue-50 text-blue-900 border border-blue-200"
+                            : p.status === "followup"
+                            ? "bg-purple-100 text-purple-900 border border-purple-300 font-extrabold animate-pulse"
+                            : "bg-emerald-50 text-emerald-900 border border-emerald-200"
+                        }`}>
+                          {p.status === "new" && "🟡 নতুন"}
+                          {p.status === "running" && "🔵 চলছে"}
+                          {p.status === "followup" && "🟣 ফলো-আপ"}
+                          {p.status === "cured" && "🟢 সুস্থ"}
+                        </span>
+                      </div>
+
+                      {/* Right: Phone, Date, Quick WhatsApp, Action Buttons */}
+                      <div className="flex items-center justify-between sm:justify-end gap-2 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-gray-100">
+                        <div className="flex items-center gap-2 text-xs text-gray-500">
+                          <span className="font-mono font-medium text-gray-700">{p.phone}</span>
+                          <span className="text-gray-300 hidden sm:inline">•</span>
+                          <span className="text-[11px] text-gray-400 hidden md:inline">{p.date}</span>
+                        </div>
+
+                        <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+                          {/* Quick 1-Click WhatsApp Direct Chat */}
+                          <a
+                            href={getDirectChatWhatsAppUrl(p)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-1.5 rounded-lg bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white transition-all cursor-pointer"
+                            title="সরাসরি WhatsApp চ্যাট শুরু করুন"
+                          >
+                            <MessageCircle className="w-4 h-4" />
+                          </a>
+
+                          {/* Quick Follow-up button if status is followup */}
+                          {p.status === "followup" && (
+                            <a
+                              href={getFollowupWhatsAppUrl(p)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-2 py-1 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-[11px] font-bold flex items-center gap-1 shadow-2xs cursor-pointer"
+                              title="রোগীর খোঁজ নেওয়ার জন্য স্বয়ংক্রিয় বাংলা ফলো-আপ মেসেজ পাঠান"
+                            >
+                              <HeartHandshake className="w-3.5 h-3.5" />
+                              <span className="hidden sm:inline">খোঁজ নিন</span>
+                            </a>
+                          )}
+
+                          {/* Side Drawer Trigger Button */}
+                          <button
+                            type="button"
+                            onClick={() => handleOpenPatientDrawer(p)}
+                            className="px-2.5 py-1 rounded-lg bg-gray-100 hover:bg-[#006B5B] hover:text-white text-gray-700 text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer"
+                            title="পাশে বিস্তারিত প্যানেল খুলুন"
+                          >
+                            <span>বিস্তারিত</span>
+                            <PanelRight className="w-3.5 h-3.5" />
+                          </button>
+
+                          {/* Expand Inline Chevron Toggle */}
+                          <button
+                            type="button"
+                            onClick={(e) => togglePatientExpand(p.id, e)}
+                            className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition-colors cursor-pointer"
+                            title={isExpanded ? "সংক্ষেপ করুন" : "নিচে বিস্তারিত দেখুন"}
+                          >
+                            {isExpanded ? (
+                              <ChevronUp className="w-4 h-4 text-[#006B5B]" />
+                            ) : (
+                              <ChevronDown className="w-4 h-4" />
+                            )}
+                          </button>
+                        </div>
+                      </div>
                     </div>
 
-                    {/* Status Dropdown */}
-                    <div className="flex items-center gap-2 shrink-0">
-                      <span className="text-xs text-gray-400 hidden sm:inline">স্ট্যাটাস:</span>
+                    {/* Inline Accordion Expandable Section */}
+                    {isExpanded && (
+                      <div className="p-4 sm:p-5 bg-[#FAFAF7] border-t border-gray-100 space-y-4 animate-in fade-in slide-in-from-top-1 duration-200">
+                        {/* Status dropdown & Visit slot */}
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3 rounded-xl border border-gray-100">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-semibold text-gray-500">চিকিৎসা স্ট্যাটাস:</span>
+                            <select
+                              value={p.status}
+                              onChange={(e) => handleUpdatePatientStatus(p.id, e.target.value as any)}
+                              className={`text-xs font-bold px-3 py-1.5 rounded-xl border outline-none cursor-pointer ${
+                                p.status === "new"
+                                  ? "bg-amber-50 text-amber-900 border-amber-200"
+                                  : p.status === "running"
+                                  ? "bg-blue-50 text-blue-900 border-blue-200"
+                                  : p.status === "followup"
+                                  ? "bg-purple-100 text-purple-900 border-purple-300 font-extrabold"
+                                  : "bg-emerald-50 text-emerald-900 border-emerald-200"
+                              }`}
+                            >
+                              <option value="new">🟡 নতুন রোগী</option>
+                              <option value="running">🔵 চিকিৎসা/আমল চলছে</option>
+                              <option value="followup">🟣 ফলো-আপ প্রয়োজন (খোঁজ নিন)</option>
+                              <option value="cured">🟢 সুস্থ ও সমাপ্ত</option>
+                            </select>
+                          </div>
+
+                          <div className="text-xs text-gray-500 flex items-center gap-2">
+                            <Clock className="w-3.5 h-3.5 text-[#006B5B]" />
+                            <span>ভিজিট: {p.date} {p.timeSlot ? `(${p.timeSlot})` : ""}</span>
+                          </div>
+                        </div>
+
+                        {/* Contact & Location */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-gray-600">
+                          <div className="flex items-center gap-2 bg-white p-2.5 rounded-xl border border-gray-100">
+                            <Phone className="w-4 h-4 text-[#006B5B] shrink-0" />
+                            <div>
+                              <span className="text-gray-400 block text-[10px]">মোবাইল (WhatsApp):</span>
+                              <a href={`tel:${p.phone}`} className="font-bold text-gray-900 hover:text-[#006B5B]">
+                                {p.phone}
+                              </a>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2 bg-white p-2.5 rounded-xl border border-gray-100">
+                            <MapPin className="w-4 h-4 text-[#006B5B] shrink-0" />
+                            <div>
+                              <span className="text-gray-400 block text-[10px]">ঠিকানা / এলাকা:</span>
+                              <span className="font-medium text-gray-800">{p.address || "ঠিকানা উল্লেখ নেই"}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Symptoms & Prescription */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div className="p-3.5 rounded-xl bg-white border border-gray-200/80 space-y-1">
+                            <span className="text-[11px] font-bold text-gray-700 flex items-center gap-1.5">
+                              <FileText className="w-3.5 h-3.5 text-gray-500" />
+                              <span>রোগের লক্ষণ ও কেস হিস্ট্রি:</span>
+                            </span>
+                            <p className="text-xs text-gray-600 leading-relaxed">
+                              {p.notes || "কোনো বিশেষ নোট নেই।"}
+                            </p>
+                          </div>
+
+                          <div className="p-3.5 rounded-xl bg-emerald-50/70 border border-emerald-200/80 space-y-1">
+                            <span className="text-[11px] font-bold text-[#004D40] flex items-center gap-1.5">
+                              <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
+                              <span>আমল ও প্রেসক্রিপশন:</span>
+                            </span>
+                            <p className="text-xs text-gray-700 leading-relaxed font-medium">
+                              {p.prescription || "দৈনিক ৩ কুল ও সকাল-সন্ধ্যার মাসনুন আজকার।"}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="pt-2 flex flex-wrap items-center justify-between gap-2.5 border-t border-gray-200/60">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <a
+                              href={getFollowupWhatsAppUrl(p)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
+                              title="স্বয়ংক্রিয় বাংলা ফলো-আপ মেসেজ পাঠান"
+                            >
+                              <HeartHandshake className="w-3.5 h-3.5" />
+                              <span>🤝 খোঁজ নিন (ফলো-আপ)</span>
+                            </a>
+
+                            <a
+                              href={getPrescriptionWhatsAppUrl(p)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
+                              title="নির্ধারিত প্রেসক্রিপশন রিমাইন্ডার পাঠান"
+                            >
+                              <Send className="w-3.5 h-3.5" />
+                              <span>📋 আমল রিমাইন্ডার</span>
+                            </a>
+
+                            <a
+                              href={getDirectChatWhatsAppUrl(p)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-3 py-1.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
+                              title="সরাসরি WhatsApp চ্যাট শুরু করুন"
+                            >
+                              <MessageCircle className="w-3.5 h-3.5" />
+                              <span>চ্যাট</span>
+                            </a>
+                          </div>
+
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              onClick={() => handleOpenEditPatient(p)}
+                              className="px-3 py-1.5 rounded-xl text-gray-600 hover:text-[#006B5B] hover:bg-emerald-50 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
+                            >
+                              <Edit3 className="w-3.5 h-3.5" />
+                              <span>এডিট</span>
+                            </button>
+
+                            <button
+                              onClick={() => handleDeletePatient(p.id)}
+                              className="p-1.5 rounded-xl text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                              title="মুছে ফেলুন"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })
+            )}
+          </div>
+
+          {/* Slide-Over Side Drawer (ক্লিক করলে যেকোনো এক পাশে খুলবে) */}
+          {selectedPatientForDrawer && (
+            <div className="fixed inset-0 z-50 overflow-hidden">
+              {/* Backdrop Overlay */}
+              <div
+                onClick={handleClosePatientDrawer}
+                className="absolute inset-0 bg-black/50 backdrop-blur-xs transition-opacity animate-in fade-in duration-200"
+              />
+
+              {/* Side Panel Sheet */}
+              <div className="fixed inset-y-0 right-0 w-full sm:w-[480px] md:w-[540px] bg-white shadow-2xl flex flex-col justify-between animate-in slide-in-from-right duration-300 border-l border-gray-200">
+                {/* Drawer Sticky Top Header */}
+                <div className="px-5 py-4 bg-[#004D40] text-white flex items-center justify-between shrink-0 shadow-sm">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <span className="font-mono text-xs font-bold bg-white/20 text-white px-2 py-0.5 rounded-md shrink-0">
+                      {selectedPatientForDrawer.id}
+                    </span>
+                    <div className="min-w-0">
+                      <h4 className="font-bold text-base sm:text-lg leading-tight truncate">
+                        {selectedPatientForDrawer.name}
+                      </h4>
+                      <span className="text-[11px] text-emerald-200 block truncate">
+                        {selectedPatientForDrawer.date} {selectedPatientForDrawer.timeSlot ? `• ${selectedPatientForDrawer.timeSlot}` : ""}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button
+                      onClick={() => handleOpenEditPatient(selectedPatientForDrawer)}
+                      className="px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-white transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-semibold"
+                      title="রোগীর তথ্য সম্পাদনা করুন"
+                    >
+                      <Edit3 className="w-3.5 h-3.5" />
+                      <span>এডিট</span>
+                    </button>
+                    <button
+                      onClick={handleClosePatientDrawer}
+                      className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                      title="প্যানেল বন্ধ করুন (Esc)"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Drawer Scrollable Body Content */}
+                <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-5 text-xs text-gray-700">
+                  {/* Badges & Status Selector */}
+                  <div className="p-4 rounded-2xl bg-[#FAFAF7] border border-gray-200/80 space-y-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-md flex items-center gap-1 ${
+                          selectedPatientForDrawer.type === "online" 
+                            ? "bg-sky-50 text-sky-800 border border-sky-200" 
+                            : "bg-teal-50 text-teal-800 border border-teal-200"
+                        }`}>
+                          {selectedPatientForDrawer.type === "online" ? <Globe className="w-3 h-3" /> : <MapPin className="w-3 h-3" />}
+                          <span>{selectedPatientForDrawer.type === "online" ? "অনলাইন কনসালটেশন" : "চেম্বার রোগী (সরাসরি)"}</span>
+                        </span>
+                        <span className="text-[11px] font-medium text-amber-900 bg-amber-50 px-2.5 py-0.5 rounded-md border border-amber-200/80">
+                          {selectedPatientForDrawer.problemType}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-semibold text-gray-500 mb-1">চিকিৎসা স্ট্যাটাস পরিবর্তন করুন:</label>
                       <select
-                        value={p.status}
-                        onChange={(e) => handleUpdatePatientStatus(p.id, e.target.value as any)}
-                        className={`text-xs font-bold px-3 py-1.5 rounded-xl border outline-none cursor-pointer ${
-                          p.status === "new"
+                        value={selectedPatientForDrawer.status}
+                        onChange={(e) => handleUpdatePatientStatus(selectedPatientForDrawer.id, e.target.value as any)}
+                        className={`w-full text-xs font-bold p-2.5 rounded-xl border outline-none cursor-pointer ${
+                          selectedPatientForDrawer.status === "new"
                             ? "bg-amber-50 text-amber-900 border-amber-200"
-                            : p.status === "running"
+                            : selectedPatientForDrawer.status === "running"
                             ? "bg-blue-50 text-blue-900 border-blue-200"
-                            : p.status === "followup"
+                            : selectedPatientForDrawer.status === "followup"
                             ? "bg-purple-100 text-purple-900 border-purple-300 font-extrabold"
                             : "bg-emerald-50 text-emerald-900 border-emerald-200"
                         }`}
@@ -1226,125 +1643,136 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     </div>
                   </div>
 
-                  {/* Card Middle: Info Grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs text-gray-600">
-                    <div className="flex items-center gap-2 bg-[#FAFAF7] p-2.5 rounded-xl border border-gray-100">
-                      <Phone className="w-4 h-4 text-[#006B5B] shrink-0" />
-                      <div>
-                        <span className="text-gray-400 block text-[10px]">ফোন নম্বর:</span>
-                        <a href={`tel:${p.phone}`} className="font-bold text-gray-900 hover:text-[#006B5B]">
-                          {p.phone}
-                        </a>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 bg-[#FAFAF7] p-2.5 rounded-xl border border-gray-100">
-                      <MapPin className="w-4 h-4 text-[#006B5B] shrink-0" />
-                      <div>
-                        <span className="text-gray-400 block text-[10px]">ঠিকানা / এলাকা:</span>
-                        <span className="font-medium text-gray-800">{p.address || "উল্লেখ নেই"}</span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 bg-[#FAFAF7] p-2.5 rounded-xl border border-gray-100">
-                      <Clock className="w-4 h-4 text-[#006B5B] shrink-0" />
-                      <div>
-                        <span className="text-gray-400 block text-[10px]">ভিজিট তারিখ ও সময়:</span>
-                        <span className="font-medium text-gray-800">{p.date} {p.timeSlot ? `(${p.timeSlot})` : ""}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Notes & Prescription Section */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {/* Symptoms & Notes */}
-                    <div className="p-3.5 rounded-2xl bg-gray-50 border border-gray-200/80 space-y-1">
-                      <span className="text-[11px] font-bold text-gray-700 flex items-center gap-1.5">
-                        <FileText className="w-3.5 h-3.5 text-gray-500" />
-                        <span>রোগের লক্ষণ ও কেস হিস্ট্রি:</span>
-                      </span>
-                      <p className="text-xs text-gray-600 leading-relaxed">
-                        {p.notes || "কোনো বিশেষ নোট দেওয়া হয়নি।"}
-                      </p>
-                    </div>
-
-                    {/* Prescription & Routine */}
-                    <div className="p-3.5 rounded-2xl bg-emerald-50/50 border border-emerald-200/60 space-y-1">
-                      <span className="text-[11px] font-bold text-[#004D40] flex items-center gap-1.5">
-                        <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
-                        <span>আমল ও প্রেসক্রিপশন:</span>
-                      </span>
-                      <p className="text-xs text-gray-700 leading-relaxed font-medium">
-                        {p.prescription || "দৈনিক ৩ কুল ও সকাল-সন্ধ্যার মাসনুন আজকার।"}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Card Bottom: WhatsApp Actions, Edit, Delete */}
-                  <div className="pt-2 flex flex-wrap items-center justify-between gap-2.5 border-t border-gray-100">
-                    {/* WhatsApp Action Buttons */}
-                    <div className="flex flex-wrap items-center gap-2">
+                  {/* 1-Click WhatsApp CRM Super-Actions */}
+                  <div className="space-y-2.5">
+                    <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider block">
+                      ১-ক্লিক WhatsApp অটোমেশন
+                    </span>
+                    <div className="grid grid-cols-1 gap-2">
                       {/* Follow-up Button */}
                       <a
-                        href={getFollowupWhatsAppUrl(p)}
+                        href={getFollowupWhatsAppUrl(selectedPatientForDrawer)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-3.5 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
-                        title="রোগীর খোঁজ নেওয়ার জন্য স্বয়ংক্রিয় বাংলা ফলো-আপ মেসেজ পাঠান"
+                        className="w-full p-3 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs flex items-center justify-between shadow-xs transition-colors cursor-pointer"
                       >
-                        <HeartHandshake className="w-4 h-4" />
-                        <span>🤝 খোঁজ নিন (ফলো-আপ)</span>
+                        <div className="flex items-center gap-2">
+                          <HeartHandshake className="w-4 h-4" />
+                          <span>🤝 খোঁজ নিন (স্বয়ংক্রিয় বাংলা ফলো-আপ)</span>
+                        </div>
+                        <span className="text-[10px] bg-white/20 px-2 py-0.5 rounded-full">১-ক্লিক</span>
                       </a>
 
                       {/* Amal Reminder Button */}
                       <a
-                        href={getPrescriptionWhatsAppUrl(p)}
+                        href={getPrescriptionWhatsAppUrl(selectedPatientForDrawer)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
-                        title="নির্ধারিত আমল ও রুকইয়াহ রুটিন রিমাইন্ডার পাঠান"
+                        className="w-full p-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-between shadow-xs transition-colors cursor-pointer"
                       >
-                        <Send className="w-3.5 h-3.5" />
-                        <span>📋 আমল রিমাইন্ডার</span>
+                        <div className="flex items-center gap-2">
+                          <Send className="w-4 h-4" />
+                          <span>📋 আমল ও প্রেসক্রিপশন রিমাইন্ডার</span>
+                        </div>
+                        <span className="text-[10px] bg-white/20 px-2 py-0.5 rounded-full">১-ক্লিক</span>
                       </a>
 
                       {/* Direct WhatsApp Chat */}
                       <a
-                        href={getDirectChatWhatsAppUrl(p)}
+                        href={getDirectChatWhatsAppUrl(selectedPatientForDrawer)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-3 py-2 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
-                        title="সরাসরি WhatsApp চ্যাট শুরু করুন"
+                        className="w-full p-2.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-2xs transition-colors cursor-pointer"
                       >
-                        <MessageCircle className="w-3.5 h-3.5" />
-                        <span>চ্যাট</span>
+                        <MessageCircle className="w-4 h-4" />
+                        <span>সরাসরি WhatsApp চ্যাট শুরু করুন</span>
                       </a>
                     </div>
+                  </div>
 
-                    {/* Edit & Delete Actions */}
-                    <div className="flex items-center gap-1.5">
-                      <button
-                        onClick={() => handleOpenEditPatient(p)}
-                        className="px-3 py-2 rounded-xl text-gray-600 hover:text-[#006B5B] hover:bg-emerald-50 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
-                        title="রোগীর তথ্য ও প্রেসক্রিপশন সম্পাদন করুন"
-                      >
-                        <Edit3 className="w-3.5 h-3.5" />
-                        <span>এডিট</span>
-                      </button>
+                  {/* Contact & Appointment Info Card */}
+                  <div className="p-4 rounded-2xl bg-white border border-gray-200 space-y-3 shadow-2xs">
+                    <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider block">
+                      যোগাযোগ ও অ্যাপয়েন্টমেন্ট
+                    </span>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between p-2 rounded-xl bg-gray-50">
+                        <div className="flex items-center gap-2">
+                          <Phone className="w-4 h-4 text-[#006B5B]" />
+                          <span className="font-semibold text-gray-700">মোবাইল নম্বর:</span>
+                        </div>
+                        <a href={`tel:${selectedPatientForDrawer.phone}`} className="font-mono font-bold text-gray-900 hover:text-[#006B5B]">
+                          {selectedPatientForDrawer.phone}
+                        </a>
+                      </div>
 
-                      <button
-                        onClick={() => handleDeletePatient(p.id)}
-                        className="p-2 rounded-xl text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
-                        title="এই রোগীর রেকর্ড মুছে ফেলুন"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      <div className="flex items-center justify-between p-2 rounded-xl bg-gray-50">
+                        <div className="flex items-center gap-2">
+                          <MapPin className="w-4 h-4 text-[#006B5B]" />
+                          <span className="font-semibold text-gray-700">ঠিকানা / এলাকা:</span>
+                        </div>
+                        <span className="font-medium text-gray-800 text-right max-w-[200px] truncate">
+                          {selectedPatientForDrawer.address || "উল্লেখ নেই"}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center justify-between p-2 rounded-xl bg-gray-50">
+                        <div className="flex items-center gap-2">
+                          <Clock className="w-4 h-4 text-[#006B5B]" />
+                          <span className="font-semibold text-gray-700">তারিখ ও সময়:</span>
+                        </div>
+                        <span className="font-medium text-gray-800">
+                          {selectedPatientForDrawer.date} {selectedPatientForDrawer.timeSlot ? `(${selectedPatientForDrawer.timeSlot})` : ""}
+                        </span>
+                      </div>
                     </div>
                   </div>
+
+                  {/* Clinical Symptoms & Case History */}
+                  <div className="p-4 rounded-2xl bg-white border border-gray-200 space-y-2 shadow-2xs">
+                    <span className="text-[11px] font-bold text-gray-700 flex items-center gap-1.5">
+                      <FileText className="w-4 h-4 text-gray-500" />
+                      <span>রোগের বিস্তারিত লক্ষণ ও কেস হিস্ট্রি:</span>
+                    </span>
+                    <p className="text-xs text-gray-600 leading-relaxed bg-gray-50 p-3 rounded-xl border border-gray-100 whitespace-pre-wrap">
+                      {selectedPatientForDrawer.notes || "কোনো বিশেষ লক্ষণ বা কেস হিস্ট্রি উল্লেখ করা হয়নি।"}
+                    </p>
+                  </div>
+
+                  {/* Prescription & Ruqyah Routine */}
+                  <div className="p-4 rounded-2xl bg-emerald-50/50 border border-emerald-200/80 space-y-2 shadow-2xs">
+                    <span className="text-[11px] font-bold text-[#004D40] flex items-center gap-1.5">
+                      <CheckCheck className="w-4 h-4 text-emerald-600" />
+                      <span>আমল ও প্রেসক্রিপশন:</span>
+                    </span>
+                    <p className="text-xs text-gray-800 leading-relaxed font-medium bg-white p-3 rounded-xl border border-emerald-200/60 whitespace-pre-wrap">
+                      {selectedPatientForDrawer.prescription || "দৈনিক ৩ কুল ও সকাল-সন্ধ্যার মাসনুন আজকার।"}
+                    </p>
+                  </div>
                 </div>
-              ))
-            )}
-          </div>
+
+                {/* Drawer Sticky Footer with Quick Actions */}
+                <div className="p-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between gap-3 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => handleDeletePatient(selectedPatientForDrawer.id)}
+                    className="px-3.5 py-2 rounded-xl text-red-600 hover:bg-red-50 border border-red-200 font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    <span>রেকর্ড মুছুন</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleClosePatientDrawer}
+                    className="px-5 py-2 rounded-xl bg-[#004D40] hover:bg-[#00382E] text-white font-bold text-xs cursor-pointer transition-colors shadow-xs"
+                  >
+                    বন্ধ করুন
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -1986,7 +2414,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
       )}
       {/* Add / Edit Patient Modal */}
       {showAddPatientModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-200">
           <div className="relative w-full max-w-xl bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
             <div className="px-6 py-4 bg-[#004D40] text-white flex items-center justify-between">
               <div className="flex items-center gap-2">
