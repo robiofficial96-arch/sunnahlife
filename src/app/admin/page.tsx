@@ -701,7 +701,10 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
           </form>
 
           <div className="pt-2 flex items-center justify-between text-[11px] text-gray-400 border-t border-gray-100">
-            <span>নিরাপত্তা কোড: <span className="font-mono font-semibold text-gray-600">7860</span></span>
+            <span className="flex items-center gap-1 text-gray-500">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#006B5B]" />
+              <span>সুরক্ষিত অ্যাডমিন পোর্টাল</span>
+            </span>
             <Link href="/" className="text-[#006B5B] hover:underline font-semibold flex items-center gap-1">
               <span>← মূল ওয়েবসাইট</span>
             </Link>
