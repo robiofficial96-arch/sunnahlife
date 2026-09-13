@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { 
   Users, 
@@ -28,7 +28,10 @@ import {
   Edit3,
   X,
   Globe,
-  ExternalLink
+  ExternalLink,
+  Upload,
+  ImageIcon,
+  Camera
 } from "lucide-react";
 import Image from "next/image";
 import { DEFAULT_POPUP_CONFIG, PopupNoticeConfig } from "@/data/popupNotice";
@@ -106,6 +109,62 @@ export default function AdminDashboardPage() {
     image: "/banners/special-offer-tuesday.jpg",
     badge: "নতুন পণ্য"
   });
+  const [imageUploading, setImageUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleProductImageUpload = (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      alert("অনুগ্রহ করে একটি ছবি ফাইল সিলেক্ট করুন (যেমন JPG, PNG, WEBP)");
+      return;
+    }
+
+    setImageUploading(true);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new window.Image();
+      img.onload = () => {
+        const MAX_WIDTH = 800;
+        const MAX_HEIGHT = 800;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height = Math.round((height * MAX_WIDTH) / width);
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width = Math.round((width * MAX_HEIGHT) / height);
+            height = MAX_HEIGHT;
+          }
+        }
+
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, width, height);
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressed = canvas.toDataURL("image/jpeg", 0.85);
+          setNewProduct((prev) => ({ ...prev, image: compressed }));
+        }
+        setImageUploading(false);
+      };
+      img.onerror = () => {
+        alert("ছবি প্রসেসিং করতে সমস্যা হয়েছে। অনুগ্রহ করে অন্য ছবি নির্বাচন করুন।");
+        setImageUploading(false);
+      };
+      img.src = e.target?.result as string;
+    };
+    reader.onerror = () => {
+      alert("ফাইল পড়তে ব্যর্থ হয়েছে");
+      setImageUploading(false);
+    };
+    reader.readAsDataURL(file);
+  };
 
   useEffect(() => {
     const auth = sessionStorage.getItem("sunnahlife_admin_auth");
@@ -225,6 +284,7 @@ export default function AdminDashboardPage() {
               : ["১০০% বিশুদ্ধ ও প্রাকৃতিক সুন্নাহ উপাদান"],
             usageInstructions: newProduct.usageInstructions || "সুন্নাহ নিয়মে সঠিক নিয়তে ব্যবহার করুন।",
             inStock: newProduct.inStock,
+            image: newProduct.image || p.image || "/banners/special-offer-tuesday.jpg",
             badge: newProduct.badge || undefined
           };
         }
@@ -999,30 +1059,47 @@ export default function AdminDashboardPage() {
                 key={product.id}
                 className="p-5 rounded-3xl bg-white border border-gray-200 hover:border-[#006B5B]/30 shadow-xs flex flex-col justify-between space-y-3"
               >
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-semibold text-[#006B5B] bg-emerald-50 px-2.5 py-0.5 rounded-md">
-                      {product.categoryLabel}
-                    </span>
-                    <button
-                      onClick={() => toggleProductStock(product.id)}
-                      className={`text-[11px] font-bold px-2 py-0.5 rounded-md transition-colors cursor-pointer ${
-                        product.inStock 
-                          ? "bg-emerald-100 text-emerald-800 hover:bg-emerald-200" 
-                          : "bg-red-100 text-red-700 hover:bg-red-200"
-                      }`}
-                      title="স্টক পরিবর্তন করতে ক্লিক করুন"
-                    >
-                      {product.inStock ? "● স্টকে আছে" : "○ স্টক শেষ"}
-                    </button>
+                <div className="space-y-3">
+                  {/* Product Image Preview */}
+                  <div className="relative w-full h-40 rounded-2xl overflow-hidden bg-gray-100 border border-gray-100">
+                    <img
+                      src={product.image || "/banners/special-offer-tuesday.jpg"}
+                      alt={product.banglaName}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute top-2.5 left-2.5 flex flex-col gap-1">
+                      {product.badge && (
+                        <span className="px-2 py-0.5 rounded-md bg-[#006B5B] text-white text-[10px] font-bold shadow-xs">
+                          {product.badge}
+                        </span>
+                      )}
+                      <span className="text-[10px] font-semibold text-gray-800 bg-white/95 backdrop-blur-xs px-2 py-0.5 rounded-md border border-gray-200">
+                        {product.categoryLabel}
+                      </span>
+                    </div>
+                    <div className="absolute top-2.5 right-2.5">
+                      <button
+                        onClick={() => toggleProductStock(product.id)}
+                        className={`text-[10px] font-bold px-2 py-1 rounded-md shadow-xs transition-colors cursor-pointer ${
+                          product.inStock 
+                            ? "bg-emerald-600 text-white hover:bg-emerald-700" 
+                            : "bg-red-600 text-white hover:bg-red-700"
+                        }`}
+                        title="স্টক পরিবর্তন করতে ক্লিক করুন"
+                      >
+                        {product.inStock ? "● স্টকে আছে" : "○ স্টক শেষ"}
+                      </button>
+                    </div>
                   </div>
 
-                  <h4 className="font-bold text-base text-gray-900 leading-snug">
-                    {product.banglaName}
-                  </h4>
-                  <p className="text-xs text-gray-500 line-clamp-2">
-                    {product.description}
-                  </p>
+                  <div>
+                    <h4 className="font-bold text-base text-gray-900 leading-snug">
+                      {product.banglaName}
+                    </h4>
+                    <p className="text-xs text-gray-500 line-clamp-2 mt-1">
+                      {product.description}
+                    </p>
+                  </div>
 
                   <div className="text-xs text-gray-400">
                     পরিমাণ: <span className="font-semibold text-gray-700">{product.weightOrQuantity}</span>
@@ -1044,10 +1121,11 @@ export default function AdminDashboardPage() {
                   <div className="flex items-center gap-1.5">
                     <button
                       onClick={() => handleOpenEditProduct(product)}
-                      className="p-2 rounded-xl text-gray-500 hover:text-[#006B5B] hover:bg-emerald-50 transition-colors cursor-pointer"
-                      title="পণ্য এডিট / মূল্য পরিবর্তন করুন"
+                      className="p-2 rounded-xl text-gray-500 hover:text-[#006B5B] hover:bg-emerald-50 transition-colors cursor-pointer flex items-center gap-1 text-xs font-semibold"
+                      title="পণ্য এডিট / মূল্য বা ছবি পরিবর্তন করুন"
                     >
                       <Edit3 className="w-4 h-4" />
+                      <span>এডিট</span>
                     </button>
                     <button
                       onClick={() => handleDeleteProduct(product.id)}
@@ -1121,6 +1199,103 @@ export default function AdminDashboardPage() {
                     </div>
                   </div>
 
+                  {/* Image Upload & Live Preview */}
+                  <div className="p-3.5 rounded-2xl bg-gray-50 border border-gray-200 space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <label className="font-bold text-gray-700 flex items-center gap-1.5">
+                        <Camera className="w-4 h-4 text-[#006B5B]" />
+                        <span>পণ্যের ছবি (Device Upload / Camera)</span>
+                      </label>
+                      {newProduct.image && (
+                        <span className="text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                          ✓ ছবি সংযুক্ত আছে
+                        </span>
+                      )}
+                    </div>
+
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      accept="image/*"
+                      onChange={(e) => {
+                        if (e.target.files?.[0]) {
+                          handleProductImageUpload(e.target.files[0]);
+                          e.target.value = "";
+                        }
+                      }}
+                      className="hidden"
+                    />
+
+                    <div className="flex flex-col sm:flex-row items-center gap-3">
+                      {/* Image Thumbnail Preview */}
+                      <div className="relative w-full sm:w-32 h-28 rounded-xl overflow-hidden border border-gray-300 bg-white shrink-0 shadow-xs flex items-center justify-center">
+                        {newProduct.image ? (
+                          <img
+                            src={newProduct.image}
+                            alt="Product preview"
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="text-gray-300 flex flex-col items-center">
+                            <ImageIcon className="w-8 h-8" />
+                            <span className="text-[9px] mt-1">ছবি নেই</span>
+                          </div>
+                        )}
+                        {imageUploading && (
+                          <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white text-[10px] font-bold">
+                            প্রসেসিং...
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Upload buttons & instructions */}
+                      <div className="flex-1 w-full space-y-2">
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            disabled={imageUploading}
+                            className="px-3.5 py-2 rounded-xl bg-[#004D40] hover:bg-[#00382e] text-white font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-xs cursor-pointer disabled:opacity-50"
+                          >
+                            <Upload className="w-3.5 h-3.5" />
+                            <span>{newProduct.image ? "ছবি পরিবর্তন করুন" : "মোবাইল/পিসি থেকে আপলোড"}</span>
+                          </button>
+
+                          {newProduct.image && (
+                            <button
+                              type="button"
+                              onClick={() => setNewProduct({ ...newProduct, image: "" })}
+                              className="px-2.5 py-2 rounded-xl border border-gray-200 hover:border-red-300 hover:text-red-600 text-gray-500 font-medium text-xs transition-colors cursor-pointer"
+                            >
+                              ছবি সরান
+                            </button>
+                          )}
+                        </div>
+                        <p className="text-[10px] text-gray-500 leading-relaxed">
+                          💡 যেকোনো সাইজের ছবি সিলেক্ট করলেই স্বয়ংক্রিয়ভাবে অপটিমাইজ ও কম্প্রেস হয়ে দ্রুত লোড হবে।
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Collapsible Image URL fallback */}
+                    <div className="pt-2 border-t border-gray-200/60">
+                      <details className="text-[11px] text-gray-500 cursor-pointer">
+                        <summary className="font-semibold hover:text-[#006B5B] select-none">
+                          🔗 অথবা অনলাইনের ছবির লিঙ্ক (URL) দিন
+                        </summary>
+                        <div className="mt-2">
+                          <input
+                            type="text"
+                            placeholder="https://example.com/product-image.jpg"
+                            value={newProduct.image}
+                            onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })}
+                            className="w-full p-2 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white text-xs"
+                          />
+                        </div>
+                      </details>
+                    </div>
+                  </div>
+
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className="block font-semibold text-gray-700 mb-1">বিক্রয় মূল্য (টাকা) *</label>
@@ -1143,6 +1318,31 @@ export default function AdminDashboardPage() {
                         onChange={(e) => setNewProduct({ ...newProduct, regularPrice: Number(e.target.value) })}
                         className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
                       />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block font-semibold text-gray-700 mb-1">ব্যাজ / হাইলাইট (ঐচ্ছিক)</label>
+                      <input
+                        type="text"
+                        placeholder="যেমন: নতুন পণ্য / বিশেষ ছাড়"
+                        value={newProduct.badge || ""}
+                        onChange={(e) => setNewProduct({ ...newProduct, badge: e.target.value })}
+                        className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block font-semibold text-gray-700 mb-1">স্টক স্ট্যাটাস</label>
+                      <select
+                        value={newProduct.inStock ? "true" : "false"}
+                        onChange={(e) => setNewProduct({ ...newProduct, inStock: e.target.value === "true" })}
+                        className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white"
+                      >
+                        <option value="true">● স্টকে আছে</option>
+                        <option value="false">○ স্টক শেষ</option>
+                      </select>
                     </div>
                   </div>
 
