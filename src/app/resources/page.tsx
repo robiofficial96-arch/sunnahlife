@@ -147,6 +147,32 @@ export default function ResourcesPage() {
           সুন্নাহলাইফ (Sunnah Life Care) | সুস্থতা হোক সুন্নাহর পথে • sunnahlife.bd
         </div>
       </div>
+
+      {/* Multimedia Ruqyah Banner */}
+      <div className="rounded-3xl bg-gradient-to-r from-[#004D40] to-[#006B5B] text-white p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
+        <div className="space-y-2 text-center md:text-left">
+          <span className="text-xs font-semibold text-[#F2C94C] uppercase tracking-wider">মাল্টিমিডিয়া রিসোর্স</span>
+          <h3 className="text-xl md:text-2xl font-bold">রুকইয়াহ অডিও ও অফিসিয়াল ভিডিও শুনুন</h3>
+          <p className="text-xs md:text-sm text-emerald-100 max-w-xl leading-relaxed">
+            বদনজর, হাসাদ, খাওয়ানো জাদু ও সিহর নবায়ন রোধে শাইখ মাহমুদ আল হুসাইনীর অফিসিয়াল ভিডিও এবং প্রখ্যাত ক্বারীদের কুরআন তিলাওয়াত।
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3 shrink-0">
+          <a
+            href="/audio#youtube-ruqyah"
+            className="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold text-xs transition-colors shadow-xs"
+          >
+            ইউটিউব রুকইয়াহ দেখুন
+          </a>
+          <a
+            href="/audio#web-player"
+            className="px-5 py-2.5 rounded-xl bg-white text-[#004D40] hover:bg-emerald-50 font-semibold text-xs transition-colors shadow-xs"
+          >
+            অডিও প্লেয়ার শুনুন
+          </a>
+        </div>
+      </div>
     </div>
   );
 }
