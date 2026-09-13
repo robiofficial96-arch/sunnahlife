@@ -498,12 +498,20 @@ export default function Home() {
             </p>
           </div>
 
-          <Link
-            href="/appointment"
-            className="shrink-0 px-7 py-3.5 rounded-2xl bg-[#D4A017] hover:bg-[#F2C94C] text-[#004D40] font-bold text-sm md:text-base shadow-lg transition-transform active:scale-95"
-          >
-            অ্যাপয়েন্টমেন্ট বুকিং করুন
-          </Link>
+          <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full md:w-auto">
+            <Link
+              href="/services"
+              className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm border border-white/20 transition-all text-center"
+            >
+              সেবাসমূহ ও ফি তালিকা
+            </Link>
+            <Link
+              href="/appointment"
+              className="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-[#D4A017] hover:bg-[#F2C94C] text-[#004D40] font-bold text-sm md:text-base shadow-lg transition-transform active:scale-95 text-center"
+            >
+              অ্যাপয়েন্টমেন্ট বুকিং করুন
+            </Link>
+          </div>
         </div>
       </section>
 
