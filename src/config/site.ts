@@ -2,7 +2,7 @@ export const SITE_CONFIG = {
   name: "সুন্নাহলাইফ (Sunnah Life Care)",
   tagline: "সুস্থতা হোক সুন্নাহর পথে",
   description: "কুরআন ও সহীহ সুন্নাহর আলোকে রুকইয়াহ শারইয়্যাহ, আত্মরক্ষা, সেলফ-রুকইয়াহ গাইড, মাসনুন দোয়া ও যিকির এবং নির্ভরযোগ্য শারঈ দিকনির্দেশনা প্ল্যাটফর্ম।",
-  url: "http://sunnahlife.bd",
+  url: "https://www.sunnahlife.bd",
   raqiWhatsAppNumber: process.env.NEXT_PUBLIC_RAQI_WHATSAPP_NUMBER || "8801676820060",
   helplinePhone: "01676820060",
   contactEmail: "contact@sunnahlife.bd",
