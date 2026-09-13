@@ -67,8 +67,14 @@ export const metadata: Metadata = {
     google: "googleaab5d2b10c0fdf19",
   },
   icons: {
-    icon: "/sunnahlife_logo.svg",
-    apple: "/sunnahlife_logo.svg",
+    icon: [
+      { url: "/sunnahlife_applogo.svg", type: "image/svg+xml" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: "/sunnahlife_applogo.svg",
   },
   openGraph: {
     type: "website",

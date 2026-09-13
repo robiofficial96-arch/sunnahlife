@@ -11,14 +11,27 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: "#006B5B",
     icons: [
       {
-        src: "/sunnahlife_logo.svg",
-        sizes: "any",
-        type: "image/svg+xml",
+        src: "/icon-192.png",
+        sizes: "192x192",
+        type: "image/png",
+        purpose: "any",
       },
       {
-        src: "/logo.png",
+        src: "/icon-512.png",
         sizes: "512x512",
         type: "image/png",
+        purpose: "any",
+      },
+      {
+        src: "/icon-maskable-512.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "maskable",
+      },
+      {
+        src: "/sunnahlife_applogo.svg",
+        sizes: "any",
+        type: "image/svg+xml",
       },
     ],
   };
