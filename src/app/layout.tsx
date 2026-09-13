@@ -62,6 +62,9 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   category: "health",
+  verification: {
+    google: "googleaab5d2b10c0fdf19",
+  },
   icons: {
     icon: "/sunnahlife_logo.svg",
     apple: "/sunnahlife_logo.svg",
