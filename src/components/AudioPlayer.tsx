@@ -255,14 +255,14 @@ export default function AudioPlayer() {
 
   const categories = [
     { id: "all", label: "সকল শক্তিশালী অডিও (৮টি)" },
-    { id: "baqarah", label: "সূরা আল-বাকারা" },
-    { id: "mulk", label: "সূরা আল-মুলক" },
-    { id: "qaf", label: "সূরা ক্বাফ" },
-    { id: "tawheed", label: "তাওহীদের আয়াত ও শয়তান ধ্বংস" },
-    { id: "sihr_eaten", label: "খাওয়ানো জাদু ও পেটের সিহর" },
     { id: "sihr_renewal", label: "জাদু নবায়ন রোধ ও শয়তান ধ্বংস" },
-    { id: "jinn_burn", label: "শয়তানকে জ্বালানো" },
     { id: "evil_eye", label: "বদনজর ও তীব্র হাসাদ" },
+    { id: "tawheed", label: "তাওহীদের আয়াত ও শয়তান ধ্বংস" },
+    { id: "jinn_burn", label: "শয়তানকে জ্বালানো" },
+    { id: "sihr_eaten", label: "খাওয়ানো জাদু ও পেটের সিহর" },
+    { id: "baqarah", label: "সূরা আল-বাকারা" },
+    { id: "qaf", label: "সূরা ক্বাফ" },
+    { id: "mulk", label: "সূরা আল-মুলক" },
   ];
 
   const filteredTracks = selectedCategory === "all"

@@ -1,5 +1,22 @@
+@import url('https://fonts.maateen.me/solaiman-lipi/font.css');
 @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap');
 @import "tailwindcss";
+
+@font-face {
+  font-family: 'SolaimanLipi';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/solaimanlipi-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'SolaimanLipi';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/solaimanlipi-bold.woff2') format('woff2');
+}
 
 @theme {
   --color-primary: #006B5B;
@@ -8,7 +25,7 @@
   --color-gold-light: #F2C94C;
   --color-ivory: #FAFAF7;
 
-  --font-sans: var(--font-hind-siliguri), "Hind Siliguri", system-ui, -apple-system, sans-serif;
+  --font-sans: 'SolaimanLipi', var(--font-hind-siliguri), 'Hind Siliguri', system-ui, -apple-system, sans-serif;
   --font-arabic: var(--font-amiri), "Amiri", serif;
 }
 
@@ -20,9 +37,9 @@
   --ivory: #FAFAF7;
 }
 
-/* Force Hind Siliguri as the primary font for all Bengali text */
+/* Force SolaimanLipi as the primary font for all Bengali text across full website */
 html, body, button, input, textarea, select {
-  font-family: var(--font-hind-siliguri), "Hind Siliguri", system-ui, -apple-system, sans-serif !important;
+  font-family: 'SolaimanLipi', var(--font-hind-siliguri), 'Hind Siliguri', system-ui, -apple-system, sans-serif !important;
 }
 
 html, body {
