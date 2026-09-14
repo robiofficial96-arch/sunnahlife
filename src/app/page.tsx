@@ -162,7 +162,7 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-6">
           <h2 className="text-xl md:text-2xl font-bold text-[#004D40]">আমাদের সকল সেবা</h2>
-          <p className="text-xs text-gray-500 mt-1">প্রয়োজন অনুযায়ী বেছে নিন</p>
+          <p className="text-xs sm:text-sm text-gray-500 mt-1">আপনার প্রয়োজনীয় সেবাটি বেছে নিন</p>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {([
