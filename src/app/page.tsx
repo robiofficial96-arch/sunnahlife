@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import Image from "next/image";
 import {
   Stethoscope,
@@ -9,11 +9,7 @@ import {
   ChevronRight,
   AlertTriangle,
   ArrowRight,
-  FileText,
   Calendar,
-  Eye,
-  MessageSquare,
-  Moon,
 } from "lucide-react";
 
 import { SITE_CONFIG } from "@/config/site";
@@ -192,66 +188,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. TOPICS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-end justify-between mb-5">
-          <div>
-            <h2 className="text-xl md:text-2xl font-bold text-[#004D40]">বিষয়ভিত্তিক আলোচনা</h2>
-            <p className="text-xs text-gray-500 mt-0.5">বদনজর, জাদু ও জিন সংক্রান্ত শারঈ জ্ঞান</p>
-          </div>
-          <Link href="/topics" className="inline-flex items-center gap-1 text-xs font-semibold text-[#006B5B] hover:text-[#004D40] shrink-0">
-            <span>সব দেখুন</span><ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {[
-            { slug: "evil-eye",  label: "বদনজর ও হিংসা",    icon: "eye" },
-            { slug: "sihr",      label: "সিহর ও জাদু",       icon: "moon" },
-            { slug: "jinn-fear", label: "জিন ও দুঃস্বপ্ন",  icon: "alert" },
-            { slug: "waswasah",  label: "ওয়াসওয়াসা",        icon: "msg" },
-          ].map((item) => (
-            <Link key={item.slug} href={`/topics/${item.slug}`} className="group flex items-center gap-3 p-4 rounded-2xl bg-white border border-[#006B5B]/15 hover:border-[#006B5B] shadow-xs hover:shadow-md transition-all">
-              <div className="w-9 h-9 rounded-xl bg-[#006B5B]/10 text-[#006B5B] flex items-center justify-center shrink-0 group-hover:bg-[#006B5B] group-hover:text-white transition-colors">
-                {item.icon === "eye"   && <Eye className="w-4 h-4" />}
-                {item.icon === "moon"  && <Moon className="w-4 h-4" />}
-                {item.icon === "alert" && <AlertTriangle className="w-4 h-4" />}
-                {item.icon === "msg"   && <MessageSquare className="w-4 h-4" />}
-              </div>
-              <span className="text-xs sm:text-sm font-semibold text-gray-900 group-hover:text-[#006B5B] transition-colors leading-snug">{item.label}</span>
-            </Link>
-          ))}
-        </div>
-      </section>
 
-      {/* 5. ARTICLES */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-end justify-between mb-5">
-          <div>
-            <h2 className="text-xl md:text-2xl font-bold text-[#004D40]">রুকইয়াহ আর্টিকেলস</h2>
-            <p className="text-xs text-gray-500 mt-0.5">কুরআন ও সুন্নাহর ভিত্তিতে গবেষণা প্রবন্ধ</p>
-          </div>
-          <Link href="/articles" className="inline-flex items-center gap-1 text-xs font-semibold text-[#006B5B] hover:text-[#004D40] shrink-0">
-            <span>সব পড়ুন</span><ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[
-            { slug: "evil-eye-ruqyah",   title: "বদনজর থেকে রক্ষার রুকইয়াহ",       cat: "বদনজর" },
-            { slug: "sihr-signs",        title: "জাদুর আলামত চেনার উপায়",            cat: "সিহর" },
-            { slug: "self-ruqyah-guide", title: "নিজে রুকইয়াহ করার সম্পূর্ণ গাইড",  cat: "গাইড" },
-            { slug: "morning-evening",   title: "সকাল-সন্ধ্যার সুরক্ষার আযকার",      cat: "আযকার" },
-          ].map((art) => (
-            <Link key={art.slug} href={`/articles/${art.slug}`} className="group p-5 rounded-2xl bg-white border border-[#006B5B]/15 hover:border-[#006B5B] shadow-xs hover:shadow-md transition-all flex flex-col gap-2">
-              <span className="text-[11px] font-bold text-[#006B5B] bg-[#006B5B]/10 px-2 py-0.5 rounded-full self-start">{art.cat}</span>
-              <h3 className="text-sm font-bold text-gray-900 group-hover:text-[#006B5B] transition-colors leading-snug flex-1">{art.title}</h3>
-              <div className="flex items-center text-xs font-semibold text-[#006B5B] pt-1 border-t border-gray-100">
-                <FileText className="w-3.5 h-3.5 mr-1" /><span>পড়ুন</span>
-                <ChevronRight className="w-3.5 h-3.5 ml-auto group-hover:translate-x-0.5 transition-transform" />
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
 
       {/* 6. APPOINTMENT BANNER */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
