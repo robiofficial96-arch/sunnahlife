@@ -163,16 +163,16 @@ export default function RoutinePage() {
   return (
     <div className="py-8 md:py-12 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
       {/* Header */}
-      <div className="text-center space-y-3 max-w-2xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#006B5B]/10 text-[#006B5B] text-xs font-semibold">
+      <div className="text-center space-y-2.5 max-w-xl mx-auto">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#006B5B]/10 text-[#006B5B] text-xs font-semibold">
           <Sparkles className="w-3.5 h-3.5 text-[#D4A017]" />
           <span>দৈনন্দিন সুন্নাহ হিফয ট্র্যাকার</span>
         </div>
-        <h1 className="text-3xl md:text-4xl font-extrabold text-[#004D40] tracking-tight">
-          দৈনন্দিন রুটিন ও আত্মরক্ষা ট্র্যাকার
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#004D40] tracking-tight">
+          দৈনন্দিন রুটিন ও আমল ট্র্যাকার
         </h1>
-        <p className="text-sm md:text-base text-gray-600 leading-relaxed">
-          প্রতিদিন সকাল, দুপুর, সন্ধ্যা ও রাতের মাসনুন আমলগুলো সম্পন্ন করার পর টিক দিন। আমলগুলো নিয়মিত বজায় রাখলে আল্লাহর রহমতে শয়তানী আক্রমণ ও বদনজর থেকে স্থায়ী নিরাপত্তা পাওয়া যায়।
+        <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+          প্রতিদিনের মাসনুন আমলগুলো সম্পন্ন করে টিক দিন এবং নিজের সার্বক্ষণিক সুরক্ষা বজায় রাখুন।
         </p>
       </div>
 
