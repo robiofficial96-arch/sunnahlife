@@ -2,7 +2,7 @@ export interface RuqyahAudioItem {
   id: string;
   youtubeId: string;
   title: string;
-  category: "sihr_eaten" | "sihr_renewal" | "jinn_burn" | "evil_eye" | "baqarah" | "tawheed";
+  category: "sihr_eaten" | "sihr_renewal" | "jinn_burn" | "evil_eye" | "baqarah" | "tawheed" | "mulk" | "qaf";
   categoryLabel: string;
   reciter: string;
   duration: string;
@@ -90,5 +90,31 @@ export const RUQYAH_AUDIO_LIST: RuqyahAudioItem[] = [
     youtubeUrl: "https://www.youtube.com/watch?v=pjjSZ_5WoHI",
     description: "আল্লাহর তাওহীদ, ইখলাস ও কুদরতের মহিমান্বিত আয়াতসমূহের বিশেষ তিলাওয়াত যার মাধ্যমে হিংসুক বদনজর, হাসাদ এবং জাদুকর শয়তানের সমস্ত বাঁধন সমূলে পুড়ে ধ্বংস হয়ে যায়।",
     instructions: "অযু অবস্থায় একা নিরিবিলি বসে হেডফোন দিয়ে শুনুন। অন্তরে একমাত্র আল্লাহর সার্বভৌম ক্ষমতা ও তাওহীদের একত্ববাদের ওপর দৃঢ় বিশ্বাস স্থাপন করুন।",
+  },
+  {
+    id: "surah-mulk-ruqyah",
+    youtubeId: "70DM-GZlvDI",
+    title: "সূরা আল-মুলক (কবরের আযাব ও সার্বিক অনিষ্ট থেকে মুক্তি)",
+    category: "mulk",
+    categoryLabel: "সূরা আল-মুলক",
+    reciter: "শায়খ আল-গারীব আল-মাওসিলী",
+    duration: "09:30",
+    durationSeconds: 570,
+    youtubeUrl: "https://www.youtube.com/watch?v=70DM-GZlvDI",
+    description: "রাসূলুল্লাহ (ﷺ) বলেছেন: কুরআনের ৩০ আয়াতের এই সূরা পাঠকারীর জন্য ক্ষমা না হওয়া পর্যন্ত সুপারিশ করে (তিরমিযী)। কবরের আযাব ও রাতের দুঃস্বপ্ন-অনিষ্ট থেকে সুরক্ষার বরকতময় তিলাওয়াত।",
+    instructions: "প্রতি রাতে ঘুমানোর পূর্বে একাগ্রতার সাথে শুনুন অথবা সাথে সাথে তিলাওয়াত করুন। নবীজী (ﷺ) সূরা মুলক না পড়ে রাতে ঘুমাতেন না।",
+  },
+  {
+    id: "surah-qaf-ruqyah",
+    youtubeId: "roNkq-wyEMc",
+    title: "সূরা ক্বাফ (অন্তরের ঈমানী শক্তি ও শয়তানি ওয়াসওয়াসা দমন)",
+    category: "qaf",
+    categoryLabel: "সূরা ক্বাফ",
+    reciter: "শায়খ আল-গারীব আল-মাওসিলী",
+    duration: "10:47",
+    durationSeconds: 647,
+    youtubeUrl: "https://www.youtube.com/watch?v=roNkq-wyEMc",
+    description: "কুরআনের অন্যতম তেজোদৃপ্ত ও প্রভাবক সূরা যা অন্তরের মোহ ও গাফলতি দূর করে, ঈমান তাজা করে এবং জিনের কুপ্রভাব ও শয়তানি ওয়াসওয়াসা দমনে অত্যন্ত প্রভাবশালী।",
+    instructions: "হেডফোন লাগিয়ে চোখ বন্ধ করে গভীর মনোযোগ দিয়ে শুনুন। আখেরাতের জবাবদিহিতা ও আল্লাহর কুদরত নিয়ে চিন্তা করুন।",
   },
 ];

@@ -263,8 +263,10 @@ export default function AudioPlayer() {
   };
 
   const categories = [
-    { id: "all", label: "সকল শক্তিশালী রুকইয়াহ (৬টি)" },
+    { id: "all", label: "সকল শক্তিশালী অডিও (৮টি)" },
     { id: "baqarah", label: "সূরা আল-বাকারা" },
+    { id: "mulk", label: "সূরা আল-মুলক" },
+    { id: "qaf", label: "সূরা ক্বাফ" },
     { id: "tawheed", label: "তাওহীদের আয়াত ও শয়তান ধ্বংস" },
     { id: "sihr_eaten", label: "খাওয়ানো জাদু ও পেটের সিহর" },
     { id: "sihr_renewal", label: "জাদু নবায়ন রোধ ও শয়তান ধ্বংস" },
@@ -536,7 +538,7 @@ export default function AudioPlayer() {
         <div className="space-y-3">
           {filteredTracks.map((track, idx) => {
             const isCurrent = currentTrack.id === track.id;
-            const bngIndex = ["০১", "০২", "০৩", "০৪", "০৫", "০৬"][idx] || `০${idx + 1}`;
+            const bngIndex = ["০১", "০২", "০৩", "০৪", "০৫", "০৬", "০৭", "০৮"][idx] || `০${idx + 1}`;
 
             return (
               <div
