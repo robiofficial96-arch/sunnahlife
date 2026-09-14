@@ -16,7 +16,9 @@ import {
   Repeat,
   SkipForward,
   SkipBack,
-  Share2
+  Share2,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react";
 
 declare global {
@@ -37,6 +39,7 @@ export default function AudioPlayer() {
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [copiedLink, setCopiedLink] = useState(false);
+  const [showInstructions, setShowInstructions] = useState(false);
 
   const playerRef = useRef<any>(null);
   const isLoopingRef = useRef(isLooping);
@@ -361,8 +364,8 @@ export default function AudioPlayer() {
               <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-white leading-snug">
                 {currentTrack.title}
               </h3>
-              <p className="text-xs sm:text-sm text-emerald-100/90 mt-1 leading-relaxed">
-                তিলাওয়াত: {currentTrack.reciter} • {currentTrack.description}
+              <p className="text-xs sm:text-sm text-emerald-200 mt-0.5 font-medium">
+                তিলাওয়াত: {currentTrack.reciter}
               </p>
             </div>
           </div>
@@ -485,12 +488,26 @@ export default function AudioPlayer() {
           <div id="youtube-audio-engine" />
         </div>
 
-        {/* Bottom Tip & Method Banner */}
-        <div className="mt-6 pt-4 border-t border-white/10 text-xs text-emerald-100 flex items-start gap-2">
-          <Headphones className="w-4 h-4 text-[#F2C94C] shrink-0 mt-0.5" />
-          <span>
-            <strong>আমল ও শোনার নিয়ম:</strong> {currentTrack.instructions}
-          </span>
+        {/* Bottom Tip & Method Banner: Expandable */}
+        <div className="mt-4 pt-3 border-t border-white/10 text-xs text-emerald-100">
+          <button
+            onClick={() => setShowInstructions(!showInstructions)}
+            className="flex items-center justify-between w-full text-left text-emerald-200 hover:text-white transition-colors"
+          >
+            <span className="flex items-center gap-1.5 font-semibold text-[11px] sm:text-xs">
+              <Headphones className="w-3.5 h-3.5 text-[#F2C94C]" />
+              আমল ও শোনার নিয়ম
+            </span>
+            <span className="text-[11px] text-[#F2C94C] font-semibold flex items-center gap-0.5">
+              {showInstructions ? "সংক্ষেপ" : "দেখুন"}
+              {showInstructions ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+            </span>
+          </button>
+          {showInstructions && (
+            <p className="pt-2 text-xs text-emerald-100/90 leading-relaxed animate-in fade-in-50 duration-150">
+              {currentTrack.instructions}
+            </p>
+          )}
         </div>
       </div>
 
@@ -568,8 +585,8 @@ export default function AudioPlayer() {
                         {track.categoryLabel}
                       </span>
                     </div>
-                    <p className="text-xs text-gray-500 mt-1 line-clamp-1">
-                      তিলাওয়াত: {track.reciter} • {track.description}
+                    <p className="text-xs text-gray-500 mt-0.5 font-medium">
+                      তিলাওয়াত: {track.reciter}
                     </p>
                   </div>
                 </div>
