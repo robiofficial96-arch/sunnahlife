@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { RUQYAH_STEPS, RuqyahStep } from "@/data/ruqyahSteps";
@@ -28,8 +28,8 @@ export default function SelfRuqyahSteps() {
 
   return (
     <div className="space-y-4">
-      {/* Expand/Collapse All Control */}
-      <div className="flex items-center justify-between px-1">
+      {/* Expand/Collapse All Control: Hidden on mobile/phone view */}
+      <div className="hidden sm:flex items-center justify-between px-1">
         <span className="text-xs font-semibold text-gray-500">
           মোট ৭টি ধারাবাহিক ধাপ (প্রয়োজনীয় ধাপে ক্লিক করে বিস্তারিত দেখুন)
         </span>
