@@ -364,9 +364,6 @@ export default function AudioPlayer() {
               <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-white leading-snug">
                 {currentTrack.title}
               </h3>
-              <p className="text-xs sm:text-sm text-emerald-200 mt-0.5 font-medium">
-                তিলাওয়াত: {currentTrack.reciter}
-              </p>
             </div>
           </div>
 
@@ -585,9 +582,6 @@ export default function AudioPlayer() {
                         {track.categoryLabel}
                       </span>
                     </div>
-                    <p className="text-xs text-gray-500 mt-0.5 font-medium">
-                      তিলাওয়াত: {track.reciter}
-                    </p>
                   </div>
                 </div>
 
