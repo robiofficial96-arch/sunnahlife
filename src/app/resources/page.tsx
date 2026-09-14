@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { FileText, Printer, Download, Sparkles, ShieldCheck, CheckCircle2 } from "lucide-react";
+import Link from "next/link";
+import { FileText, Printer, Download, Sparkles, ShieldCheck, CheckCircle2, Headphones } from "lucide-react";
 
 interface PrintableGuide {
   id: string;
@@ -159,18 +160,13 @@ export default function ResourcesPage() {
         </div>
 
         <div className="flex flex-wrap items-center gap-3 shrink-0">
-          <a
-            href="/audio#youtube-ruqyah"
-            className="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold text-xs transition-colors shadow-xs"
+          <Link
+            href="/audio"
+            className="px-5 py-2.5 rounded-xl bg-white text-[#004D40] hover:bg-emerald-50 font-bold text-xs transition-colors shadow-xs flex items-center gap-2"
           >
-            ইউটিউব রুকইয়াহ দেখুন
-          </a>
-          <a
-            href="/audio#web-player"
-            className="px-5 py-2.5 rounded-xl bg-white text-[#004D40] hover:bg-emerald-50 font-semibold text-xs transition-colors shadow-xs"
-          >
-            অডিও প্লেয়ার শুনুন
-          </a>
+            <Headphones className="w-4 h-4 text-[#006B5B]" />
+            <span>শক্তিশালী রুকইয়াহ অডিও শুনুন</span>
+          </Link>
         </div>
       </div>
     </div>
