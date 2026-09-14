@@ -32,7 +32,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: "daily" as const,
-    priority: route === "" ? 1.0 : route === "/quran" || route === "/assessment" ? 0.95 : route === "/shop" ? 0.9 : 0.8,
+    priority:
+      route === ""
+        ? 1.0
+        : route === "/quran" || route === "/assessment"
+        ? 0.95
+        : route === "/shop" || route === "/audio" || route === "/duas"
+        ? 0.9
+        : 0.8,
   }));
 
   const quranSurahRoutes = QURAN_SURAHS.map((surah) => ({
