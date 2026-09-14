@@ -62,8 +62,8 @@ export default function YouTubeRuqyahSection() {
             <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">
               শাইখ মাহমুদ হুসাইনীর বিশুদ্ধ রুকইয়াহ ভিডিও
             </h2>
-            <p className="text-sm md:text-base text-red-100 leading-relaxed">
-              আইন ও হাসাদ, খাওয়ানো জাদু (পেটের সিহর), জাদু নবায়ন রোধ (তাজদীদুল আসহার) এবং ঘর সুরক্ষার প্রামাণ্য ভিডিও ও নির্দেশনা দেখুন আমাদের অফিসিয়াল চ্যানেলে।
+            <p className="text-xs sm:text-sm text-red-100 leading-relaxed">
+              বদনজর, খাওয়ানো জাদু ও ঘর সুরক্ষার প্রামাণ্য ইসলামিক ভিডিও ও নির্দেশনা।
             </p>
           </div>
 
