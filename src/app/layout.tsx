@@ -68,6 +68,9 @@ export const metadata: Metadata = {
   verification: {
     google: "googleaab5d2b10c0fdf19",
   },
+  other: {
+    google: "notranslate",
+  },
   icons: {
     icon: [
       { url: "/sunnahlife_applogo.svg", type: "image/svg+xml" },
@@ -182,8 +185,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="bn" className={`${hindSiliguri.variable} ${amiri.variable} bg-[#FAFAF7]`}>
+    <html
+      lang="bn"
+      translate="no"
+      className={`${hindSiliguri.variable} ${amiri.variable} bg-[#FAFAF7] notranslate`}
+    >
       <head>
+        <meta name="google" content="notranslate" />
+        <meta name="googlebot" content="notranslate" />
         <link
           rel="preload"
           href="/fonts/solaimanlipi-normal.woff2"
@@ -212,7 +221,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalBusinessSchema) }}
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-[#FAFAF7] text-[#1f2937] antialiased pb-20 md:pb-0 selection:bg-[#006B5B] selection:text-white">
+      <body className="notranslate min-h-screen flex flex-col bg-[#FAFAF7] text-[#1f2937] antialiased pb-20 md:pb-0 selection:bg-[#006B5B] selection:text-white">
         <Header />
         <main className="flex-1 bg-[#FAFAF7]">{children}</main>
         <Footer />
