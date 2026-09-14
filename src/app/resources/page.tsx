@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { FileText, Printer, Download, Sparkles, ShieldCheck, CheckCircle2, Headphones } from "lucide-react";
+import { FileText, Printer, Download, Sparkles, ShieldCheck, CheckCircle2, Headphones, ExternalLink } from "lucide-react";
 
 interface PrintableGuide {
   id: string;
@@ -84,6 +84,57 @@ export default function ResourcesPage() {
         <p className="text-sm md:text-base text-gray-600 leading-relaxed">
           ঘরে ঝুলিয়ে রাখার জন্য বা সাথে নিয়ে পড়ার জন্য ১ পৃষ্ঠার প্রিন্টযোগ্য সুন্নাহ চেকলিস্ট ও দোয়ার শিট।
         </p>
+      </div>
+
+      {/* Featured 1-Click Official Azkar PDF */}
+      <div className="bg-gradient-to-br from-[#004D40] via-[#005B4D] to-[#00382E] text-white p-6 sm:p-8 rounded-3xl shadow-xl border border-white/10 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="absolute -right-16 -top-16 w-56 h-56 bg-emerald-400/10 rounded-full blur-2xl pointer-events-none" />
+        <div className="space-y-3 text-center md:text-left relative z-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D4A017]/20 text-[#F2C94C] text-xs font-bold border border-[#D4A017]/30">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>ফিচার্ড অফিসিয়াল বুকলেট</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+            সকাল ও সন্ধ্যার সম্পূর্ণ মাসনুন আযকার (PDF)
+          </h2>
+          <p className="text-xs sm:text-sm text-emerald-100/90 max-w-xl leading-relaxed">
+            দৈনন্দিন হিফয ও সুরক্ষার জন্য সম্পূর্ণ আযকার বুকলেট। মোবাইল ফোনে সেভ করে অফলাইনে যেকোনো সময় তিলাওয়াত করতে পারেন অথবা প্রিন্ট করে পড়ার উপযোগী।
+          </p>
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-xs text-emerald-200 pt-1 font-medium">
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-[#F2C94C]" />
+              সহীহ হাদিস ভিত্তিক
+            </span>
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-[#F2C94C]" />
+              সাইজ: মাত্র ২৪৫ KB
+            </span>
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-[#F2C94C]" />
+              ১০০% ফ্রি ডাউনলোড
+            </span>
+          </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 relative z-10 w-full md:w-auto">
+          <a
+            href="/downloads/azkar-masnun-hifz.pdf"
+            download="আযকার_ও_মাসনুন_আমল_সুন্নাহলাইফ.pdf"
+            className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-[#D4A017] hover:bg-[#F2C94C] text-[#00382E] font-bold text-sm flex items-center justify-center gap-2.5 shadow-xl transition-all transform active:scale-95 cursor-pointer"
+          >
+            <Download className="w-5 h-5 text-[#00382E]" />
+            <span>১-ক্লিকে PDF ডাউনলোড</span>
+          </a>
+          <a
+            href="/downloads/azkar-masnun-hifz.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full sm:w-auto px-5 py-3.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors border border-white/15"
+          >
+            <ExternalLink className="w-4 h-4 text-[#F2C94C]" />
+            <span>সরাসরি দেখুন</span>
+          </a>
+        </div>
       </div>
 
       {/* Guides Grid */}

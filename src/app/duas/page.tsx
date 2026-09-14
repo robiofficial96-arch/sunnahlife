@@ -2,7 +2,18 @@
 
 import { useState } from "react";
 import { DUA_LIST, DuaItem } from "@/data/duas";
-import { BookOpen, Copy, CheckCheck, Sparkles, HeartPulse, ShieldCheck, Sun } from "lucide-react";
+import { 
+  BookOpen, 
+  Copy, 
+  CheckCheck, 
+  Sparkles, 
+  HeartPulse, 
+  ShieldCheck, 
+  Sun,
+  Download,
+  FileText,
+  ExternalLink
+} from "lucide-react";
 
 export default function DuasPage() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
@@ -41,6 +52,43 @@ export default function DuasPage() {
         <p className="text-sm md:text-base text-gray-600 leading-relaxed">
           রাসূলুল্লাহ (ﷺ) বর্ণিত সহীহ দোয়াসমূহ যা মানুষের আত্মরক্ষা ও সকল বিপদাপদ থেকে হেফাজতে আল্লাহর সুরক্ষা বলয় হিসেবে কাজ করে।
         </p>
+      </div>
+
+      {/* 1-Click Azkar PDF Download Banner */}
+      <div className="bg-gradient-to-r from-[#004D40] via-[#005B4D] to-[#00382E] text-white p-5 sm:p-6 md:p-7 rounded-3xl shadow-md border border-white/10 flex flex-col md:flex-row items-center justify-between gap-5 relative overflow-hidden">
+        <div className="absolute -right-12 -top-12 w-48 h-48 bg-emerald-400/10 rounded-full blur-xl pointer-events-none" />
+        <div className="space-y-2 text-center md:text-left relative z-10">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#D4A017]/20 text-[#F2C94C] text-xs font-semibold border border-[#D4A017]/30">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>অফিশিয়াল প্রিন্ট ও ডিজিটাল বুকলেট</span>
+          </div>
+          <h2 className="text-xl sm:text-2xl font-bold">
+            সকাল ও সন্ধ্যার সম্পূর্ণ মাসনুন আযকার (PDF)
+          </h2>
+          <p className="text-xs sm:text-sm text-emerald-100/90 max-w-xl leading-relaxed">
+            মোবাইলে সংরক্ষণ করে অফলাইনে পড়তে কিংবা প্রিন্ট করে সাথে রাখতে সম্পূর্ণ আযকার বুকলেটটি এক ক্লিকে ডাউনলোড করুন।
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-center gap-3 shrink-0 relative z-10">
+          <a
+            href="/downloads/azkar-masnun-hifz.pdf"
+            download="আযকার_ও_মাসনুন_আমল_সুন্নাহলাইফ.pdf"
+            className="px-5 py-3 rounded-2xl bg-[#D4A017] hover:bg-[#F2C94C] text-[#00382E] font-bold text-xs sm:text-sm flex items-center gap-2 shadow-lg transition-all transform active:scale-95 cursor-pointer"
+          >
+            <Download className="w-4 h-4 text-[#00382E]" />
+            <span>১-ক্লিকে PDF ডাউনলোড</span>
+          </a>
+          <a
+            href="/downloads/azkar-masnun-hifz.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-medium text-xs sm:text-sm flex items-center gap-1.5 transition-colors border border-white/15"
+          >
+            <ExternalLink className="w-4 h-4 text-[#F2C94C]" />
+            <span>অনলাইনে পড়ুন</span>
+          </a>
+        </div>
       </div>
 
       {/* Filter Tabs */}
