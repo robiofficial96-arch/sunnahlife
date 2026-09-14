@@ -15,8 +15,30 @@ import {
   ArrowRight,
   UserCheck
 } from "lucide-react";
-import SymptomChecker from "@/components/SymptomChecker";
-import AudioPlayer from "@/components/AudioPlayer";
+import dynamic from "next/dynamic";
+
+const SymptomChecker = dynamic(() => import("@/components/SymptomChecker"), {
+  ssr: true,
+  loading: () => (
+    <div className="min-h-[300px] flex items-center justify-center bg-white rounded-3xl border border-[#006B5B]/15 p-8 text-center">
+      <div className="animate-pulse space-y-2">
+        <div className="w-10 h-10 rounded-full bg-[#006B5B]/10 mx-auto" />
+        <div className="text-xs text-gray-400">লক্ষণ পরীক্ষা প্রস্তুত হচ্ছে...</div>
+      </div>
+    </div>
+  ),
+});
+
+const AudioPlayer = dynamic(() => import("@/components/AudioPlayer"), {
+  loading: () => (
+    <div className="min-h-[260px] flex items-center justify-center bg-white rounded-3xl border border-[#006B5B]/15 p-8 text-center">
+      <div className="animate-pulse space-y-2">
+        <div className="w-10 h-10 rounded-full bg-[#006B5B]/10 mx-auto" />
+        <div className="text-xs text-gray-400">রুকইয়াহ অডিও প্লেয়ার লোড হচ্ছে...</div>
+      </div>
+    </div>
+  ),
+});
 import { RUQYAH_STEPS } from "@/data/ruqyahSteps";
 import { DUA_LIST } from "@/data/duas";
 import { ARTICLES_LIST } from "@/data/articles";

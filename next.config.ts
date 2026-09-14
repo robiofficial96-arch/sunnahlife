@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   // React Strict Mode for robust code quality
   reactStrictMode: true,
+  // Tree-shake lucide-react icons for minimal bundle size
+  experimental: {
+    optimizePackageImports: ["lucide-react"],
+  },
   // Aggressive caching and security headers
   async headers() {
     return [

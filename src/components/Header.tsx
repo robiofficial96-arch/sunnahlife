@@ -17,10 +17,14 @@ import {
   Users,
   Search,
   HeartPulse,
-  ShoppingBag
+  ShoppingBag,
 } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
-import SearchModal from "@/components/SearchModal";
+import dynamic from "next/dynamic";
+
+const SearchModal = dynamic(() => import("@/components/SearchModal"), {
+  ssr: false,
+});
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -211,7 +215,9 @@ export default function Header() {
         )}
 
         {/* Global Search Modal */}
-        <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+        {isSearchOpen && (
+          <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+        )}
       </header>
   );
 }

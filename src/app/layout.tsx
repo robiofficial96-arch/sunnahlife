@@ -4,8 +4,10 @@ import "./globals.css";
 import BottomNav from "@/components/BottomNav";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import FloatingWhatsApp from "@/components/FloatingWhatsApp";
-import OfferPopupModal from "@/components/OfferPopupModal";
+import dynamic from "next/dynamic";
+
+const FloatingWhatsApp = dynamic(() => import("@/components/FloatingWhatsApp"));
+const OfferPopupModal = dynamic(() => import("@/components/OfferPopupModal"));
 import { SITE_CONFIG } from "@/config/site";
 
 const hindSiliguri = Hind_Siliguri({
