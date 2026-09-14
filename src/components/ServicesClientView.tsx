@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -183,7 +183,7 @@ export default function ServicesPage() {
         </div>
       </div>
 
-      {/* 2. VIP RECOMMENDED CARD: DIAGNOSIS (THE ESSENTIAL FIRST STEP) */}
+      {/* 2. DIAGNOSIS CARD */}
       <div className="rounded-3xl bg-gradient-to-br from-white via-emerald-50/30 to-[#FAFAF7] border-2 border-[#006B5B] p-6 sm:p-8 shadow-sm relative overflow-hidden">
         <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#D4A017]/10 rounded-full blur-2xl pointer-events-none" />
 
@@ -195,14 +195,11 @@ export default function ServicesPage() {
                 <Stethoscope className="w-6 h-6 text-[#F2C94C]" />
               </div>
               <div>
-                <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-0.5 rounded-full bg-[#D4A017] text-white text-[10px] font-bold uppercase tracking-wider shadow-2xs">
-                    ★ ১ম পদক্ষেপ
-                  </span>
-                  <span className="text-xs text-gray-500 font-medium">প্রাথমিক স্ক্রিনিং</span>
-                </div>
-                <h2 className="text-xl sm:text-2xl font-black text-[#004D40] mt-0.5">
-                  ডায়াগনোসিস (লক্ষণ পরীক্ষা) ফি
+                <span className="text-xs text-[#D4A017] font-bold uppercase tracking-wider block">
+                  প্রাথমিক চেকআপ
+                </span>
+                <h2 className="text-xl sm:text-2xl font-bold text-[#004D40] mt-0.5">
+                  ডায়াগনোসিস ফি
                 </h2>
               </div>
             </div>
