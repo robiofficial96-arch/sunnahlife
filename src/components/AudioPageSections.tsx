@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -19,7 +19,7 @@ export function AudioInstructionsAccordion() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="rounded-2xl bg-white border border-[#006B5B]/20 shadow-2xs overflow-hidden transition-all">
+    <div className="hidden sm:block rounded-2xl bg-white border border-[#006B5B]/20 shadow-2xs overflow-hidden transition-all">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full p-4 flex items-center justify-between gap-3 text-left hover:bg-emerald-50/20 transition-colors"
