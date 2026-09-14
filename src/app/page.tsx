@@ -180,130 +180,95 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. START HERE / QUICK CARDS (RPD Section 03) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* 2. START HERE / QUICK CARDS */}
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
           <h2 className="text-2xl md:text-3xl font-bold text-[#004D40]">
-            আপনার প্রয়োজন অনুযায়ী কোথা থেকে শুরু করবেন?
+            ???? ??????
           </h2>
           <p className="text-xs md:text-sm text-gray-500 mt-1">
-            সহজ কয়েকটি বিভাগে আপনার কাঙ্ক্ষিত সমাধান বেছে নিন
+            ??? ???????? ?????? ????? ???????? ????????? ???? ???
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        {/* Mobile: full-width stacked | Desktop: 3 columns */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
           {/* Card 1: Assessment */}
           <Link
             href="/assessment"
-            className="group p-5 rounded-3xl bg-white border-2 border-[#006B5B]/30 hover:border-[#006B5B] shadow-xs hover:shadow-md transition-all flex flex-col justify-between relative overflow-hidden"
+            className="group flex flex-col bg-white border-2 border-[#006B5B]/20 hover:border-[#006B5B] rounded-3xl shadow-xs hover:shadow-md transition-all overflow-hidden relative"
           >
-            <div className="absolute -top-1 -right-1 bg-[#D4A017] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-bl-xl shadow-2xs">
-              জনপ্রিয়
+            <div className="absolute top-3 right-3 bg-[#D4A017] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-2xs">
+              ? ????????
             </div>
-            <div>
-              <div className="w-11 h-11 rounded-2xl bg-[#D4A017]/15 text-[#D4A017] flex items-center justify-center mb-3 group-hover:bg-[#D4A017] group-hover:text-white transition-colors">
-                <Stethoscope className="w-5 h-5" />
+            <div className="flex items-center gap-4 p-5 pb-3">
+              <div className="w-14 h-14 rounded-2xl bg-[#D4A017]/15 text-[#D4A017] flex items-center justify-center shrink-0 group-hover:bg-[#D4A017] group-hover:text-white transition-colors">
+                <Stethoscope className="w-7 h-7" />
               </div>
-              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#006B5B] transition-colors">
-                লক্ষণ পরীক্ষা ও ডায়াগনোসিস
-              </h3>
-              <p className="text-xs text-gray-600 mt-1.5 leading-relaxed">
-                ১৫টি বিশেষ প্রশ্নোত্তরে বদনজর, সিহর বা জিন স্পর্শের সম্ভাব্যতা যাচাই।
-              </p>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-[#006B5B] transition-colors leading-snug">
+                  ????? ??????? ? ???????????
+                </h3>
+                <p className="text-[11px] sm:text-xs text-gray-500 mt-1 leading-relaxed">
+                  ???? ????? ???????? ????? ??? ??? ????? ?????? ????????-?????? ???? ??????
+                </p>
+              </div>
             </div>
-            <div className="mt-3 pt-2.5 border-t border-gray-100 flex items-center text-xs font-semibold text-[#006B5B]">
-              <span>টেস্ট শুরু করুন</span>
+            <div className="px-5 pb-4 pt-1 border-t border-gray-100 flex items-center text-xs font-semibold text-[#006B5B]">
+              <span>?????? ???? ????</span>
               <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
             </div>
           </Link>
 
-          {/* Card 2: Al-Quran (114 Surahs) */}
+          {/* Card 2: Al-Quran */}
           <Link
             href="/quran"
-            className="group p-5 rounded-3xl bg-white border-2 border-[#006B5B]/20 hover:border-[#006B5B] shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+            className="group flex flex-col bg-white border-2 border-[#006B5B]/20 hover:border-[#006B5B] rounded-3xl shadow-xs hover:shadow-md transition-all overflow-hidden"
           >
-            <div>
-              <div className="w-11 h-11 rounded-2xl bg-[#006B5B]/10 text-[#006B5B] flex items-center justify-center mb-3 group-hover:bg-[#006B5B] group-hover:text-white transition-colors">
-                <BookOpen className="w-5 h-5" />
+            <div className="flex items-center gap-4 p-5 pb-3">
+              <div className="w-14 h-14 rounded-2xl bg-[#006B5B]/10 text-[#006B5B] flex items-center justify-center shrink-0 group-hover:bg-[#006B5B] group-hover:text-white transition-colors">
+                <BookOpen className="w-7 h-7" />
               </div>
-              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#006B5B] transition-colors">
-                আল-কুরআনুল কারীম
-              </h3>
-              <p className="text-xs text-gray-600 mt-1.5 leading-relaxed">
-                ১১৪টি পূর্ণাঙ্গ সূরা, বাংলা অর্থ, ফযীলত ও আন্তর্জাতিক ক্বারীদের অডিও।
-              </p>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-[#006B5B] transition-colors leading-snug">
+                  ??-??????? ?????
+                </h3>
+                <p className="text-[11px] sm:text-xs text-gray-500 mt-1 leading-relaxed">
+                  ????? ????????? ????, ????? ????, ?????? ? ?????? ???? ????? ???????
+                </p>
+              </div>
             </div>
-            <div className="mt-3 pt-2.5 border-t border-gray-100 flex items-center text-xs font-semibold text-[#006B5B]">
-              <span>কুরআন শুনুন ও পড়ুন</span>
+            <div className="px-5 pb-4 pt-1 border-t border-gray-100 flex items-center text-xs font-semibold text-[#006B5B]">
+              <span>????? ????? ? ?????</span>
               <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
             </div>
           </Link>
 
-          {/* Card 3: Ruqyah Audio */}
+          {/* Card 3: Ruqyah Video Library */}
           <Link
             href="/audio"
-            className="group p-5 rounded-3xl bg-white border border-[#006B5B]/15 hover:border-[#006B5B] shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+            className="group flex flex-col bg-white border-2 border-[#006B5B]/20 hover:border-[#006B5B] rounded-3xl shadow-xs hover:shadow-md transition-all overflow-hidden"
           >
-            <div>
-              <div className="w-11 h-11 rounded-2xl bg-[#006B5B]/10 text-[#006B5B] flex items-center justify-center mb-3 group-hover:bg-[#006B5B] group-hover:text-white transition-colors">
-                <Headphones className="w-5 h-5" />
+            <div className="flex items-center gap-4 p-5 pb-3">
+              <div className="w-14 h-14 rounded-2xl bg-[#006B5B]/10 text-[#006B5B] flex items-center justify-center shrink-0 group-hover:bg-[#006B5B] group-hover:text-white transition-colors">
+                <Headphones className="w-7 h-7" />
               </div>
-              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#006B5B] transition-colors">
-                রুকইয়াহ অডিও লাইব্রেরি
-              </h3>
-              <p className="text-xs text-gray-600 mt-1.5 leading-relaxed">
-                মিশারি রশিদ, আহমদ আল-আজমী ও সা'দ আল-গামিদির মূল রুকইয়াহ স্ট্রিম।
-              </p>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-[#006B5B] transition-colors leading-snug">
+                  ???????? ????? ?????????
+                </h3>
+                <p className="text-[11px] sm:text-xs text-gray-500 mt-1 leading-relaxed">
+                  ?????????? ????????, ?????, ??? ? ???????????? ??????? ????????? ????? ??????
+                </p>
+              </div>
             </div>
-            <div className="mt-3 pt-2.5 border-t border-gray-100 flex items-center text-xs font-semibold text-[#006B5B]">
-              <span>অডিও প্লেয়ার শুনুন</span>
+            <div className="px-5 pb-4 pt-1 border-t border-gray-100 flex items-center text-xs font-semibold text-[#006B5B]">
+              <span>????? ?????</span>
               <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
             </div>
           </Link>
 
-          {/* Card 4: Self-Ruqyah Guide */}
-          <Link
-            href="/self-ruqyah"
-            className="group p-5 rounded-3xl bg-white border border-[#006B5B]/15 hover:border-[#006B5B] shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
-          >
-            <div>
-              <div className="w-11 h-11 rounded-2xl bg-[#006B5B]/10 text-[#006B5B] flex items-center justify-center mb-3 group-hover:bg-[#006B5B] group-hover:text-white transition-colors">
-                <ShieldCheck className="w-5 h-5" />
-              </div>
-              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#006B5B] transition-colors">
-                সেলফ-রুকইয়াহ গাইড
-              </h3>
-              <p className="text-xs text-gray-600 mt-1.5 leading-relaxed">
-                ঘরে বসে নিজের ও পরিবারের ওপর সহীহ নিয়মে রুকইয়াহ করার ৭ ধাপের পদ্ধতি।
-              </p>
-            </div>
-            <div className="mt-3 pt-2.5 border-t border-gray-100 flex items-center text-xs font-semibold text-[#006B5B]">
-              <span>পদ্ধতি শিখুন</span>
-              <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </Link>
-
-          {/* Card 5: Masnun Duas */}
-          <Link
-            href="/duas"
-            className="group p-5 rounded-3xl bg-white border border-[#006B5B]/15 hover:border-[#006B5B] shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
-          >
-            <div>
-              <div className="w-11 h-11 rounded-2xl bg-[#006B5B]/10 text-[#006B5B] flex items-center justify-center mb-3 group-hover:bg-[#006B5B] group-hover:text-white transition-colors">
-                <Sparkles className="w-5 h-5" />
-              </div>
-              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#006B5B] transition-colors">
-                মাসনুন দোয়া ও আযকার
-              </h3>
-              <p className="text-xs text-gray-600 mt-1.5 leading-relaxed">
-                সকাল-সন্ধ্যার সুরক্ষা, ব্যথা নিরাময় ও শিশুদের সুরক্ষার সহীহ হাদিস বর্ণিত দোয়া।
-              </p>
-            </div>
-            <div className="mt-3 pt-2.5 border-t border-gray-100 flex items-center text-xs font-semibold text-[#006B5B]">
-              <span>দোয়াগুলো পড়ুন</span>
-              <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </Link>
         </div>
       </section>
 
