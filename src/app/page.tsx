@@ -53,16 +53,6 @@ function WhatsAppOfficialIcon({ className = "w-5 h-5" }: { className?: string })
   );
 }
 
-function LeafOrnament({ className = "w-4 h-4 text-[#006B5B]" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M12 2C9.5 5 8 8.5 8 12.5C8 16.5 10.5 20 12 21C13.5 20 16 16.5 16 12.5C16 8.5 14.5 5 12 2Z" opacity="0.85" />
-      <path d="M5.5 8C3.5 10 2.5 13 3 16C5 17 8 16 9.5 14C10.5 12.5 10.5 10 9 8C7.5 6.5 6 7 5.5 8Z" opacity="0.65" />
-      <path d="M18.5 8C20.5 10 21.5 13 21 16C19 17 16 16 14.5 14C13.5 12.5 13.5 10 15 8C16.5 6.5 18 7 18.5 8Z" opacity="0.65" />
-    </svg>
-  );
-}
-
 export default function Home() {
   return (
     <div className="space-y-16 md:space-y-24">
@@ -108,66 +98,65 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Primary Action Buttons (Pill Layout matching the design) */}
-            <div className="w-full max-w-md mx-auto space-y-3 pt-2">
-              {/* Button 1: Symptom Checker */}
-              <Link
-                href="/assessment"
-                className="w-full p-2.5 sm:p-3 rounded-full bg-[#004D40] hover:bg-[#00382E] text-white shadow-md shadow-[#004D40]/20 transition-all flex items-center justify-between gap-3 group active:scale-98"
-              >
-                <div className="flex items-center gap-3 text-left pl-1">
-                  <div className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center shrink-0 border border-white/20">
-                    <Stethoscope className="w-6 h-6 text-[#F2C94C]" />
-                  </div>
-                  <div>
-                    <div className="text-base sm:text-lg font-bold text-white leading-tight">
-                      লক্ষণ যাচাই করুন
+            {/* Primary Action Buttons: Stacked on mobile, side-by-side on desktop with WhatsApp below */}
+            <div className="w-full max-w-md md:max-w-3xl mx-auto space-y-3.5 pt-2">
+              {/* Top 2 Buttons: 1 col on mobile, 2 cols on desktop */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-3.5">
+                {/* Button 1: Symptom Checker */}
+                <Link
+                  href="/assessment"
+                  className="w-full p-2.5 sm:p-3 rounded-full bg-[#004D40] hover:bg-[#00382E] text-white shadow-md shadow-[#004D40]/20 transition-all flex items-center justify-between gap-2.5 group active:scale-98"
+                >
+                  <div className="flex items-center gap-2.5 text-left pl-1">
+                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/10 flex items-center justify-center shrink-0 border border-white/20">
+                      <Stethoscope className="w-5 h-5 sm:w-6 sm:h-6 text-[#F2C94C]" />
                     </div>
-                    <div className="text-[11px] sm:text-xs text-emerald-100/90 font-normal mt-0.5">
-                      আপনার সমস্যাটি রুকইয়াহ-উপযোগী কিনা জানুন
+                    <div className="min-w-0">
+                      <div className="text-sm sm:text-base font-bold text-white leading-tight">
+                        লক্ষণ যাচাই করুন
+                      </div>
+                      <div className="text-[11px] sm:text-xs text-emerald-100/90 font-normal mt-0.5 truncate">
+                        আপনার সমস্যাটি রুকইয়াহ-উপযোগী কিনা জানুন
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="w-8 h-8 rounded-full bg-white/15 group-hover:bg-white/25 flex items-center justify-center shrink-0 text-white transition-colors mr-1">
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                </div>
-              </Link>
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/15 group-hover:bg-white/25 flex items-center justify-center shrink-0 text-white transition-colors mr-0.5">
+                    <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-0.5 transition-transform" />
+                  </div>
+                </Link>
 
-              {/* Button 2: Self-Ruqyah Guide */}
-              <Link
-                href="/self-ruqyah"
-                className="w-full p-2.5 sm:p-3 rounded-full bg-white hover:bg-emerald-50/40 border-2 border-[#006B5B] text-gray-900 shadow-xs hover:shadow-md transition-all flex items-center justify-between gap-3 group active:scale-98"
-              >
-                <div className="flex items-center gap-3 text-left pl-1">
-                  <div className="w-11 h-11 rounded-full bg-[#006B5B] flex items-center justify-center shrink-0 text-white shadow-xs">
-                    <BookOpen className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <div className="text-base sm:text-lg font-bold text-[#004D40] leading-tight">
-                      সেলফ-রুকইয়াহ গাইড
+                {/* Button 2: Self-Ruqyah Guide */}
+                <Link
+                  href="/self-ruqyah"
+                  className="w-full p-2.5 sm:p-3 rounded-full bg-white hover:bg-emerald-50/40 border-2 border-[#006B5B] text-gray-900 shadow-xs hover:shadow-md transition-all flex items-center justify-between gap-2.5 group active:scale-98"
+                >
+                  <div className="flex items-center gap-2.5 text-left pl-1">
+                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#006B5B] flex items-center justify-center shrink-0 text-white shadow-xs">
+                      <BookOpen className="w-5 h-5 text-white" />
                     </div>
-                    <div className="text-[11px] sm:text-xs text-gray-600 font-normal mt-0.5">
-                      নিজে রুকইয়াহ করার সঠিক পদ্ধতি জানুন
+                    <div className="min-w-0">
+                      <div className="text-sm sm:text-base font-bold text-[#004D40] leading-tight">
+                        সেলফ-রুকইয়াহ গাইড
+                      </div>
+                      <div className="text-[11px] sm:text-xs text-gray-600 font-normal mt-0.5 truncate">
+                        নিজে রুকইয়াহ করার সঠিক পদ্ধতি জানুন
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="w-8 h-8 rounded-full bg-gray-100 group-hover:bg-[#006B5B]/10 flex items-center justify-center shrink-0 text-[#006B5B] transition-colors mr-1">
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                </div>
-              </Link>
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gray-100 group-hover:bg-[#006B5B]/10 flex items-center justify-center shrink-0 text-[#006B5B] transition-colors mr-0.5">
+                    <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-0.5 transition-transform" />
+                  </div>
+                </Link>
+              </div>
 
-              {/* Button 3: WhatsApp Consultation */}
+              {/* Button 3: WhatsApp Consultation (Centered Below) */}
               <a
                 href={`https://wa.me/${SITE_CONFIG.raqiWhatsAppNumber}?text=${encodeURIComponent("আসসালামু আলাইকুম। সুন্নাহলাইফের রাক্বীর সাথে পরামর্শ করতে চাই")}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full p-2 sm:p-2.5 rounded-full bg-[#EAF7EE] hover:bg-[#dcf4e3] border border-[#25D366]/40 text-gray-900 shadow-xs hover:shadow-md transition-all flex items-center justify-between gap-2 group active:scale-98"
+                className="w-full max-w-md md:max-w-lg mx-auto p-2 sm:p-2.5 rounded-full bg-[#EAF7EE] hover:bg-[#dcf4e3] border border-[#25D366]/40 text-gray-900 shadow-xs hover:shadow-md transition-all flex items-center justify-between gap-3 group active:scale-98"
               >
-                <div className="pl-1.5 shrink-0 text-[#006B5B]">
-                  <LeafOrnament className="w-4 h-4 rotate-[-45deg]" />
-                </div>
-
-                <div className="flex items-center gap-2.5 text-left flex-1 min-w-0">
+                <div className="flex items-center gap-3 text-left flex-1 min-w-0 pl-1.5 sm:pl-2">
                   <div className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center shrink-0 text-white shadow-xs">
                     <WhatsAppOfficialIcon className="w-6 h-6 text-white" />
                   </div>
@@ -182,13 +171,8 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1.5 pr-1">
-                  <div className="w-8 h-8 rounded-full bg-white group-hover:bg-[#25D366]/10 flex items-center justify-center shrink-0 text-gray-600 group-hover:text-[#25D366] transition-colors border border-gray-200/80">
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                  </div>
-                  <div className="text-[#006B5B] shrink-0">
-                    <LeafOrnament className="w-4 h-4 rotate-[45deg]" />
-                  </div>
+                <div className="w-8 h-8 rounded-full bg-white group-hover:bg-[#25D366]/10 flex items-center justify-center shrink-0 text-gray-600 group-hover:text-[#25D366] transition-colors border border-gray-200/80 mr-1 sm:mr-1.5">
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </a>
             </div>
