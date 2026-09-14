@@ -41,44 +41,46 @@ export default function Footer() {
   return (
     <footer className="bg-[#FAFAF7] border-t border-[#006B5B]/15 pt-12 pb-16 md:pb-12 text-gray-600">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Core Trust / Principle Badges */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-10 border-b border-gray-200/70">
-          <div className="flex items-start gap-3.5 p-4 rounded-xl bg-white border border-[#006B5B]/15 shadow-2xs">
-            <div className="p-2.5 rounded-lg bg-[#006B5B]/10 text-[#006B5B] shrink-0">
-              <ShieldCheck className="w-5 h-5" />
+        {/* Core Trust / Principle Badges: Only visible on Home page */}
+        {pathname === "/" && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-10 border-b border-gray-200/70">
+            <div className="flex items-start gap-3.5 p-4 rounded-xl bg-white border border-[#006B5B]/15 shadow-2xs">
+              <div className="p-2.5 rounded-lg bg-[#006B5B]/10 text-[#006B5B] shrink-0">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900 text-sm">১০০% কুরআন ও সহীহ সুন্নাহ</h4>
+                <p className="text-xs text-gray-600 mt-0.5">
+                  শিরকমুক্ত, কুসংস্কারমুক্ত এবং নির্ভরযোগ্য ইসলামিক আলেমদের স্বীকৃত রুকইয়াহ পদ্ধতি।
+                </p>
+              </div>
             </div>
-            <div>
-              <h4 className="font-semibold text-gray-900 text-sm">১০০% কুরআন ও সহীহ সুন্নাহ</h4>
-              <p className="text-xs text-gray-600 mt-0.5">
-                শিরকমুক্ত, কুসংস্কারমুক্ত এবং নির্ভরযোগ্য ইসলামিক আলেমদের স্বীকৃত রুকইয়াহ পদ্ধতি।
-              </p>
-            </div>
-          </div>
 
-          <div className="flex items-start gap-3.5 p-4 rounded-xl bg-white border border-[#006B5B]/15 shadow-2xs">
-            <div className="p-2.5 rounded-lg bg-[#D4A017]/15 text-[#D4A017] shrink-0">
-              <CheckCircle2 className="w-5 h-5" />
+            <div className="flex items-start gap-3.5 p-4 rounded-xl bg-white border border-[#006B5B]/15 shadow-2xs">
+              <div className="p-2.5 rounded-lg bg-[#D4A017]/15 text-[#D4A017] shrink-0">
+                <CheckCircle2 className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900 text-sm">ভণ্ডামিমুক্ত আত্মনির্ভরশীলতা</h4>
+                <p className="text-xs text-gray-600 mt-0.5">
+                  তাবীজ-কবচ ও অসাধু কবিরাজি পরিহার করে নিজেই নিজের রুকইয়াহ করার পূর্ণাঙ্গ গাইড।
+                </p>
+              </div>
             </div>
-            <div>
-              <h4 className="font-semibold text-gray-900 text-sm">ভণ্ডামিমুক্ত আত্মনির্ভরশীলতা</h4>
-              <p className="text-xs text-gray-600 mt-0.5">
-                তাবীজ-কবচ ও অসাধু কবিরাজি পরিহার করে নিজেই নিজের রুকইয়াহ করার পূর্ণাঙ্গ গাইড।
-              </p>
-            </div>
-          </div>
 
-          <div className="flex items-start gap-3.5 p-4 rounded-xl bg-white border border-[#006B5B]/15 shadow-2xs">
-            <div className="p-2.5 rounded-lg bg-emerald-100 text-emerald-800 shrink-0">
-              <HeartPulse className="w-5 h-5" />
-            </div>
-            <div>
-              <h4 className="font-semibold text-gray-900 text-sm">চিকিৎসা বিজ্ঞানের সমন্বয়</h4>
-              <p className="text-xs text-gray-600 mt-0.5">
-                রুকইয়াহ চিকিৎসা বিজ্ঞানের বিকল্প নয়; শারীরিক অসুস্থতায় চিকিৎসকের শরণাপন্ন হওয়াও সুন্নাহ।
-              </p>
+            <div className="flex items-start gap-3.5 p-4 rounded-xl bg-white border border-[#006B5B]/15 shadow-2xs">
+              <div className="p-2.5 rounded-lg bg-emerald-100 text-emerald-800 shrink-0">
+                <HeartPulse className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900 text-sm">চিকিৎসা বিজ্ঞানের সমন্বয়</h4>
+                <p className="text-xs text-gray-600 mt-0.5">
+                  রুকইয়াহ চিকিৎসা বিজ্ঞানের বিকল্প নয়; শারীরিক অসুস্থতায় চিকিৎসকের শরণাপন্ন হওয়াও সুন্নাহ।
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Main Footer Links */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 py-10">
