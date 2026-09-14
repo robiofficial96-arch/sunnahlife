@@ -103,7 +103,6 @@ export default function OfferPopupModal() {
               src={config.image}
               alt={config.title}
               fill
-              priority
               sizes="(max-width: 768px) 100vw, 380px"
               className="object-contain md:object-cover md:object-top transition-transform duration-300 group-hover:scale-102"
             />

@@ -42,14 +42,24 @@ export default function AudioPlayer() {
   const isLoopingRef = useRef(isLooping);
   isLoopingRef.current = isLooping;
 
-  // Initialize YouTube Iframe Player
-  useEffect(() => {
-    let checkInterval: any;
+  // Lazy YouTube Player Engine
+  const isInitializingRef = useRef(false);
 
-    const createPlayer = () => {
-      if (!window.YT || !window.YT.Player) return;
+  const initPlayerAndPlay = (targetTrack: RuqyahAudioItem) => {
+    setIsLoading(true);
+    if (isInitializingRef.current) return;
+    isInitializingRef.current = true;
+
+    const startPlayer = () => {
+      if (!window.YT || !window.YT.Player) {
+        isInitializingRef.current = false;
+        return;
+      }
       const targetDiv = document.getElementById("youtube-audio-engine");
-      if (!targetDiv) return;
+      if (!targetDiv) {
+        isInitializingRef.current = false;
+        return;
+      }
 
       if (playerRef.current) {
         try {
@@ -60,16 +70,21 @@ export default function AudioPlayer() {
       playerRef.current = new window.YT.Player("youtube-audio-engine", {
         height: "100%",
         width: "100%",
-        videoId: currentTrack.youtubeId,
+        videoId: targetTrack.youtubeId,
         playerVars: {
           playsinline: 1,
           controls: 1,
           modestbranding: 1,
           rel: 0,
+          autoplay: 1,
         },
         events: {
-          onReady: () => {
+          onReady: (event: any) => {
+            isInitializingRef.current = false;
             setIsLoading(false);
+            try {
+              event.target.playVideo();
+            } catch (e) {}
           },
           onStateChange: (event: any) => {
             // YT.PlayerState: 1 = PLAYING, 2 = PAUSED, 0 = ENDED, 3 = BUFFERING
@@ -96,25 +111,37 @@ export default function AudioPlayer() {
       });
     };
 
-    if (!window.YT) {
-      const tag = document.createElement("script");
-      tag.src = "https://www.youtube.com/iframe_api";
-      const firstScriptTag = document.getElementsByTagName("script")[0];
-      firstScriptTag?.parentNode?.insertBefore(tag, firstScriptTag);
-      window.onYouTubeIframeAPIReady = createPlayer;
-    } else if (window.YT && window.YT.Player) {
-      createPlayer();
+    if (window.YT && window.YT.Player) {
+      startPlayer();
     } else {
-      checkInterval = setInterval(() => {
+      if (!document.getElementById("youtube-iframe-api-tag")) {
+        const tag = document.createElement("script");
+        tag.id = "youtube-iframe-api-tag";
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName("script")[0];
+        firstScriptTag?.parentNode?.insertBefore(tag, firstScriptTag);
+      }
+      const checkInterval = setInterval(() => {
         if (window.YT && window.YT.Player) {
           clearInterval(checkInterval);
-          createPlayer();
+          startPlayer();
         }
-      }, 300);
+      }, 150);
+      setTimeout(() => {
+        clearInterval(checkInterval);
+        isInitializingRef.current = false;
+      }, 12000);
     }
+  };
 
+  // Cleanup player on unmount
+  useEffect(() => {
     return () => {
-      if (checkInterval) clearInterval(checkInterval);
+      if (playerRef.current) {
+        try {
+          playerRef.current.destroy();
+        } catch (e) {}
+      }
     };
   }, []);
 
@@ -147,6 +174,11 @@ export default function AudioPlayer() {
     setDuration(track.durationSeconds);
     setIsLoading(true);
 
+    if (!playerRef.current) {
+      initPlayerAndPlay(track);
+      return;
+    }
+
     if (playerRef.current && playerRef.current.loadVideoById) {
       try {
         playerRef.current.loadVideoById({
@@ -161,7 +193,10 @@ export default function AudioPlayer() {
   };
 
   const togglePlay = () => {
-    if (!playerRef.current) return;
+    if (!playerRef.current) {
+      initPlayerAndPlay(currentTrack);
+      return;
+    }
     try {
       if (isPlaying) {
         playerRef.current.pauseVideo();

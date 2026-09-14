@@ -25,7 +25,7 @@ export const DEFAULT_POPUP_CONFIG: PopupNoticeConfig = {
   dayText: "আগামী মঙ্গলবার",
   timeText: "সন্ধ্যা ৬টা – রাত ৯টা",
   seatsText: "সীমিত আসন: মাত্র ১০ জন",
-  image: "/banners/special-offer-tuesday.jpg",
+  image: "/banners/special-offer-tuesday.webp",
   whatsappNumber: "8801676820060",
   whatsappMessage: "আসসালামু আলাইকুম। পুরাতন সেবাগ্রহীতা হিসেবে আগামী মঙ্গলবারের ফ্রি সেশনের সিরিয়াল নিশ্চিত করতে চাচ্ছি।\n\nআমার নাম: \nমোবাইল নম্বর: \nসমস্যার সংক্ষিপ্ত বিবরণ: ",
   phone: "01676820060",
