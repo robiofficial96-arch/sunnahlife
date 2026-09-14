@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Link from "next/link";
-import Image from "next/image";
 import { RUQYAH_AUDIO_LIST, RuqyahAudioItem } from "@/data/ruqyahAudio";
 import { 
   Play, 
@@ -14,16 +12,10 @@ import {
   RotateCw,
   Clock, 
   Sparkles, 
-  BookOpen, 
   Loader2, 
-  CheckCircle2, 
   Repeat,
   SkipForward,
   SkipBack,
-  ExternalLink,
-  ShieldCheck,
-  Flame,
-  Radio,
   Share2
 } from "lucide-react";
 
@@ -45,7 +37,6 @@ export default function AudioPlayer() {
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [copiedLink, setCopiedLink] = useState(false);
-  const [showScreen, setShowScreen] = useState(true);
 
   const playerRef = useRef<any>(null);
   const isLoopingRef = useRef(isLooping);
@@ -295,7 +286,7 @@ export default function AudioPlayer() {
             </span>
 
             {isPlaying && (
-              <span className="hidden sm:inline-flex items-center gap-1 text-[11px] text-emerald-300 font-medium">
+              <span className="inline-flex items-center gap-1.5 text-xs text-emerald-300 font-medium bg-white/10 px-2.5 py-0.5 rounded-full">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
                 অডিও চলছে...
               </span>
@@ -304,205 +295,167 @@ export default function AudioPlayer() {
 
           <div className="flex items-center gap-2 text-xs">
             <button
-              onClick={() => setShowScreen(!showScreen)}
-              className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-emerald-100 transition-colors cursor-pointer text-[11px] font-medium"
+              onClick={handleCopyShare}
+              className="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-emerald-100 hover:text-white flex items-center gap-1.5 transition-colors text-xs font-medium cursor-pointer"
             >
-              {showScreen ? "স্ক্রিন সংক্ষেপ করুন" : "ভিডিও স্ক্রিন দেখুন"}
+              <Share2 className="w-3.5 h-3.5 text-[#F2C94C]" />
+              <span>{copiedLink ? "কপি হয়েছে!" : "শেয়ার"}</span>
             </button>
-
-            <a
-              href={currentTrack.youtubeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-emerald-100 hover:text-white flex items-center gap-1 transition-colors text-[11px]"
-              title="ইউটিউবে খুলুন"
-            >
-              <ExternalLink className="w-3 h-3" />
-              <span>YouTube</span>
-            </a>
           </div>
         </div>
 
-        {/* Console Middle: Album Art & Controls */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative z-10">
-          {/* Left Thumbnail/Cover */}
-          <div className="lg:col-span-4 flex flex-col items-center sm:items-start">
-            <div className="relative w-full max-w-[280px] sm:max-w-full aspect-video sm:aspect-[4/3] rounded-2xl overflow-hidden shadow-lg border border-white/15 group bg-black/40">
-              <img
-                src={`https://img.youtube.com/vi/${currentTrack.youtubeId}/hqdefault.jpg`}
-                alt={currentTrack.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-3.5">
-                <span className="text-[10px] font-semibold text-emerald-300 uppercase tracking-wide">
-                  শাইখের বিশুদ্ধ তিলাওয়াত
-                </span>
-                <span className="text-xs font-bold text-white leading-tight truncate">
-                  {currentTrack.reciter}
-                </span>
-              </div>
-
-              {/* Animated sound wave bars when playing */}
-              {isPlaying && (
-                <div className="absolute top-3 right-3 flex items-end gap-1 px-2 py-1 rounded-md bg-black/60 backdrop-blur-xs">
-                  <span className="w-1 h-3 bg-[#D4A017] rounded-full animate-bounce [animation-delay:-0.3s]" />
-                  <span className="w-1 h-5 bg-[#F2C94C] rounded-full animate-bounce [animation-delay:-0.15s]" />
-                  <span className="w-1 h-4 bg-[#D4A017] rounded-full animate-bounce [animation-delay:-0.45s]" />
-                  <span className="w-1 h-2 bg-emerald-400 rounded-full animate-bounce" />
+        {/* Pure Audio Console: No Image, Full Width */}
+        <div className="space-y-6 relative z-10">
+          {/* Header row with Audio Icon & Title */}
+          <div className="flex items-start sm:items-center gap-4">
+            {/* Equalizer Sound-Wave Icon Badge */}
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center text-[#F2C94C] shrink-0 shadow-inner">
+              {isPlaying ? (
+                <div className="flex items-end gap-1 px-1.5">
+                  <span className="w-1.5 h-5 bg-[#D4A017] rounded-full animate-bounce [animation-delay:-0.3s]" />
+                  <span className="w-1.5 h-8 bg-[#F2C94C] rounded-full animate-bounce [animation-delay:-0.15s]" />
+                  <span className="w-1.5 h-6 bg-[#D4A017] rounded-full animate-bounce [animation-delay:-0.45s]" />
+                  <span className="w-1.5 h-4 bg-emerald-300 rounded-full animate-bounce" />
                 </div>
+              ) : (
+                <Headphones className="w-7 h-7 sm:w-8 sm:h-8" />
               )}
             </div>
-          </div>
 
-          {/* Right: Title, Scrub Bar & Big Player Buttons */}
-          <div className="lg:col-span-8 space-y-5">
-            <div>
-              <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white leading-snug">
+            <div className="min-w-0 flex-1">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-white leading-snug">
                 {currentTrack.title}
               </h3>
               <p className="text-xs sm:text-sm text-emerald-100/90 mt-1 leading-relaxed">
-                {currentTrack.description}
+                তিলাওয়াত: {currentTrack.reciter} • {currentTrack.description}
               </p>
             </div>
+          </div>
 
-            {/* Scrubber Timeline */}
-            <div className="space-y-1.5 pt-2">
-              <input
-                type="range"
-                min={0}
-                max={duration || currentTrack.durationSeconds || 100}
-                value={currentTime}
-                onChange={handleSeek}
-                className="w-full h-2.5 bg-white/20 hover:bg-white/30 rounded-lg appearance-none cursor-pointer accent-[#D4A017] transition-all"
-              />
-              <div className="flex justify-between text-xs text-emerald-200 font-mono font-medium">
-                <span>{formatTime(currentTime)}</span>
-                <span className="text-emerald-300/80">
-                  {duration ? formatTime(duration) : currentTrack.duration}
-                </span>
-              </div>
+          {/* Scrubber Timeline */}
+          <div className="space-y-1.5 pt-2">
+            <input
+              type="range"
+              min={0}
+              max={duration || currentTrack.durationSeconds || 100}
+              value={currentTime}
+              onChange={handleSeek}
+              className="w-full h-2.5 bg-white/20 hover:bg-white/30 rounded-lg appearance-none cursor-pointer accent-[#D4A017] transition-all"
+            />
+            <div className="flex justify-between text-xs text-emerald-200 font-mono font-medium">
+              <span>{formatTime(currentTime)}</span>
+              <span className="text-emerald-300/80">
+                {duration ? formatTime(duration) : currentTrack.duration}
+              </span>
+            </div>
+          </div>
+
+          {/* Audio Control Buttons Bar */}
+          <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
+            <div className="flex items-center gap-2 sm:gap-4">
+              {/* Previous Track */}
+              <button
+                onClick={handlePrevTrack}
+                className="p-2.5 sm:p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                title="পূর্ববর্তী অডিও"
+              >
+                <SkipBack className="w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
+
+              {/* Rewind 10s */}
+              <button
+                onClick={() => skipTime(-10)}
+                className="p-2.5 sm:p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                title="১০ সেকেন্ড পেছনে"
+              >
+                <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
+
+              {/* Big Main Play/Pause Button */}
+              <button
+                onClick={togglePlay}
+                className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#D4A017] text-[#00382E] flex items-center justify-center hover:bg-[#F2C94C] transition-all transform active:scale-95 shadow-xl cursor-pointer shrink-0 font-bold"
+                title={isPlaying ? "বিরতি" : "প্লে করুন"}
+              >
+                {isLoading ? (
+                  <Loader2 className="w-7 h-7 animate-spin text-[#00382E]" />
+                ) : isPlaying ? (
+                  <Pause className="w-7 h-7 fill-current" />
+                ) : (
+                  <Play className="w-7 h-7 fill-current ml-1" />
+                )}
+              </button>
+
+              {/* Forward 10s */}
+              <button
+                onClick={() => skipTime(10)}
+                className="p-2.5 sm:p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                title="১০ সেকেন্ড সামনে"
+              >
+                <RotateCw className="w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
+
+              {/* Next Track */}
+              <button
+                onClick={handleNextTrack}
+                className="p-2.5 sm:p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                title="পরবর্তী অডিও"
+              >
+                <SkipForward className="w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
             </div>
 
-            {/* Audio Control Buttons */}
-            <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-              <div className="flex items-center gap-2 sm:gap-3">
-                {/* Previous Track */}
-                <button
-                  onClick={handlePrevTrack}
-                  className="p-2 sm:p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
-                  title="পূর্ববর্তী রুকইয়াহ"
-                >
-                  <SkipBack className="w-4 h-4 sm:w-5 sm:h-5" />
-                </button>
+            {/* Utility buttons: Speed, Loop, Mute */}
+            <div className="flex items-center gap-2 sm:gap-2.5">
+              {/* Loop / Repeat Button */}
+              <button
+                onClick={toggleLoop}
+                className={`p-2.5 sm:px-3 sm:py-2.5 rounded-xl border transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-semibold ${
+                  isLooping
+                    ? "bg-[#D4A017] text-[#00382E] border-[#D4A017] shadow-sm"
+                    : "bg-white/10 hover:bg-white/20 text-white border-white/15"
+                }`}
+                title={isLooping ? "রিপিট মোড চালু আছে" : "রিপিট / লুপ মোড চালু করুন (ঘুমের সময় কার্যকরী)"}
+              >
+                <Repeat className="w-4 h-4" />
+                <span className="text-[11px]">{isLooping ? "লুপ অন" : "লুপ"}</span>
+              </button>
 
-                {/* Rewind 10s */}
-                <button
-                  onClick={() => skipTime(-10)}
-                  className="p-2 sm:p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
-                  title="১০ সেকেন্ড পেছনে"
-                >
-                  <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5" />
-                </button>
+              {/* Speed Multiplier */}
+              <button
+                onClick={cycleSpeed}
+                className="px-3 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-mono font-bold transition-colors cursor-pointer border border-white/15"
+                title="প্লেব্যাক স্পিড পরিবর্তন"
+              >
+                {playbackSpeed}x
+              </button>
 
-                {/* Big Main Play/Pause Button */}
-                <button
-                  onClick={togglePlay}
-                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#D4A017] text-[#00382E] flex items-center justify-center hover:bg-[#F2C94C] transition-all transform active:scale-95 shadow-xl cursor-pointer shrink-0 font-bold"
-                  title={isPlaying ? "বিরতি" : "প্লে করুন"}
-                >
-                  {isLoading ? (
-                    <Loader2 className="w-7 h-7 animate-spin text-[#00382E]" />
-                  ) : isPlaying ? (
-                    <Pause className="w-7 h-7 fill-current" />
-                  ) : (
-                    <Play className="w-7 h-7 fill-current ml-1" />
-                  )}
-                </button>
-
-                {/* Forward 10s */}
-                <button
-                  onClick={() => skipTime(10)}
-                  className="p-2 sm:p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
-                  title="১০ সেকেন্ড সামনে"
-                >
-                  <RotateCw className="w-4 h-4 sm:w-5 sm:h-5" />
-                </button>
-
-                {/* Next Track */}
-                <button
-                  onClick={handleNextTrack}
-                  className="p-2 sm:p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
-                  title="পরবর্তী রুকইয়াহ"
-                >
-                  <SkipForward className="w-4 h-4 sm:w-5 sm:h-5" />
-                </button>
-              </div>
-
-              {/* Utility buttons: Speed, Loop, Mute */}
-              <div className="flex items-center gap-2">
-                {/* Loop / Repeat Button */}
-                <button
-                  onClick={toggleLoop}
-                  className={`p-2.5 rounded-xl border transition-colors cursor-pointer flex items-center gap-1 text-xs font-semibold ${
-                    isLooping
-                      ? "bg-[#D4A017] text-[#00382E] border-[#D4A017]"
-                      : "bg-white/10 hover:bg-white/20 text-white border-white/15"
-                  }`}
-                  title={isLooping ? "রিপিট মোড চালু আছে" : "রিপিট / লুপ মোড চালু করুন (ঘুমের সময় কার্যকরী)"}
-                >
-                  <Repeat className="w-4 h-4" />
-                  <span className="hidden sm:inline text-[11px]">{isLooping ? "লুপ অন" : "লুপ"}</span>
-                </button>
-
-                {/* Speed Multiplier */}
-                <button
-                  onClick={cycleSpeed}
-                  className="px-2.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-mono font-bold transition-colors cursor-pointer border border-white/15"
-                  title="প্লেব্যাক স্পিড পরিবর্তন"
-                >
-                  {playbackSpeed}x
-                </button>
-
-                {/* Mute Toggle */}
-                <button
-                  onClick={toggleMute}
-                  className="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition-colors cursor-pointer border border-white/15"
-                  title={isMuted ? "শব্দ চালু করুন" : "শব্দ বন্ধ করুন"}
-                >
-                  {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-                </button>
-              </div>
+              {/* Mute Toggle */}
+              <button
+                onClick={toggleMute}
+                className="p-2.5 sm:p-3 rounded-xl bg-white/10 hover:bg-white/20 transition-colors cursor-pointer border border-white/15"
+                title={isMuted ? "শব্দ চালু করুন" : "শব্দ বন্ধ করুন"}
+              >
+                {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Embedded Streaming Engine (Visible/Collapsible) */}
-        {showScreen && (
-          <div className="mt-6 pt-5 border-t border-white/10">
-            <div className="rounded-2xl overflow-hidden bg-black/60 border border-white/15 shadow-inner max-w-2xl mx-auto">
-              <div className="aspect-video w-full">
-                <div id="youtube-audio-engine" className="w-full h-full" />
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Hidden Background YouTube Audio Engine: No Video, No Video Suggestions */}
+        <div 
+          aria-hidden="true"
+          className="absolute -top-[9999px] -left-[9999px] w-48 h-48 overflow-hidden pointer-events-none opacity-0"
+        >
+          <div id="youtube-audio-engine" />
+        </div>
 
         {/* Bottom Tip & Method Banner */}
-        <div className="mt-6 pt-4 border-t border-white/10 text-xs text-emerald-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex items-start gap-2 max-w-2xl">
-            <Headphones className="w-4 h-4 text-[#F2C94C] shrink-0 mt-0.5" />
-            <span>
-              <strong>আমল ও শোনার নিয়ম:</strong> {currentTrack.instructions}
-            </span>
-          </div>
-
-          <button
-            onClick={handleCopyShare}
-            className="self-start sm:self-center px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium flex items-center gap-1.5 transition-colors shrink-0 text-xs cursor-pointer border border-white/15"
-          >
-            <Share2 className="w-3.5 h-3.5 text-[#F2C94C]" />
-            <span>{copiedLink ? "লিঙ্ক কপি হয়েছে!" : "শেয়ার করুন"}</span>
-          </button>
+        <div className="mt-6 pt-4 border-t border-white/10 text-xs text-emerald-100 flex items-start gap-2">
+          <Headphones className="w-4 h-4 text-[#F2C94C] shrink-0 mt-0.5" />
+          <span>
+            <strong>আমল ও শোনার নিয়ম:</strong> {currentTrack.instructions}
+          </span>
         </div>
       </div>
 
