@@ -51,7 +51,8 @@ import {
   Sparkles,
   Ticket,
   Info,
-  Check
+  Check,
+  CalendarDays
 } from "lucide-react";
 import Image from "next/image";
 import { DEFAULT_POPUP_CONFIG, PopupNoticeConfig } from "@/data/popupNotice";
@@ -75,7 +76,48 @@ export interface PatientRecord {
   timeSlot?: string;
   status: "new" | "running" | "followup" | "cured";
   lastFollowupDate?: string;
+  nextFollowupDate?: string; // YYYY-MM-DD format e.g. "2026-09-15"
+  nextFollowupNote?: string;
 }
+
+export const getLocalDateString = (d: Date = new Date()) => {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+export const addDaysToDate = (days: number, baseDateStr?: string) => {
+  let base = new Date();
+  if (baseDateStr) {
+    const parts = baseDateStr.split("-").map(Number);
+    if (parts.length === 3 && !isNaN(parts[0]) && !isNaN(parts[1]) && !isNaN(parts[2])) {
+      base = new Date(parts[0], parts[1] - 1, parts[2]);
+    }
+  }
+  const target = new Date(base.getTime() + days * 24 * 60 * 60 * 1000);
+  return getLocalDateString(target);
+};
+
+export const getDaysDifference = (targetDateStr?: string) => {
+  if (!targetDateStr) return null;
+  const parts = targetDateStr.split("-").map(Number);
+  if (parts.length < 3 || isNaN(parts[0]) || isNaN(parts[1]) || isNaN(parts[2])) return null;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const target = new Date(parts[0], parts[1] - 1, parts[2]);
+  target.setHours(0, 0, 0, 0);
+  const diffTime = target.getTime() - today.getTime();
+  return Math.round(diffTime / (1000 * 60 * 60 * 24));
+};
+
+export const formatBanglaFollowupDate = (dateStr?: string) => {
+  if (!dateStr) return "";
+  const parts = dateStr.split("-").map(Number);
+  if (parts.length < 3 || isNaN(parts[0]) || isNaN(parts[1]) || isNaN(parts[2])) return dateStr;
+  const dateObj = new Date(parts[0], parts[1] - 1, parts[2]);
+  return dateObj.toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" });
+};
 
 const INITIAL_PATIENTS: PatientRecord[] = [
   {
@@ -91,6 +133,8 @@ const INITIAL_PATIENTS: PatientRecord[] = [
     date: "১৪ সেপ্টেম্বর, ২০২৬",
     timeSlot: "রাত ৮:০০ - ৯:০০",
     status: "followup",
+    nextFollowupDate: getLocalDateString(),
+    nextFollowupNote: "আমল পর্যালোচনা ও মানসিক প্রশান্তির অগ্রগতি যাচাই",
   },
   {
     id: "P-102",
@@ -105,6 +149,8 @@ const INITIAL_PATIENTS: PatientRecord[] = [
     date: "১৫ সেপ্টেম্বর, ২০২৬",
     timeSlot: "দুপুর ১২:০০ - ১:০০",
     status: "running",
+    nextFollowupDate: addDaysToDate(3),
+    nextFollowupNote: "সানা মাক্কি ডিটক্স শেষ করে পেটের অবস্থা পর্যালোচনা",
   },
   {
     id: "P-103",
@@ -119,6 +165,8 @@ const INITIAL_PATIENTS: PatientRecord[] = [
     date: "১২ সেপ্টেম্বর, ২০২৬",
     timeSlot: "সন্ধ্যা ৬:৩০ - ৭:৩০",
     status: "followup",
+    nextFollowupDate: addDaysToDate(-2),
+    nextFollowupNote: "সূরা বাকারা তিলাওয়াত অডিও শোনার প্রতিক্রিয়া জানতে চাওয়া",
   },
   {
     id: "P-104",
@@ -147,6 +195,8 @@ const INITIAL_PATIENTS: PatientRecord[] = [
     date: "১৭ সেপ্টেম্বর, ২০২৬",
     timeSlot: "রাত ৯:০০ - ১০:০০",
     status: "new",
+    nextFollowupDate: addDaysToDate(7),
+    nextFollowupNote: "ঘুমানোর মাসনুন দোয়া ও দুঃস্বপ্ন কমেছে কিনা পরীক্ষা",
   },
 ];
 
@@ -156,9 +206,9 @@ export default function AdminDashboardPage() {
   const [error, setError] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<"overview" | "bookings" | "content" | "popup" | "store">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "bookings" | "popup" | "store">("overview");
   const [patientsList, setPatientsList] = useState<PatientRecord[]>(INITIAL_PATIENTS);
-  const [patientFilter, setPatientFilter] = useState<"all" | "online" | "offline" | "followup" | "cured">("all");
+  const [patientFilter, setPatientFilter] = useState<"all" | "today_followup" | "upcoming_followup" | "overdue_followup" | "online" | "offline" | "followup" | "cured">("all");
   const [patientSearch, setPatientSearch] = useState("");
   const [showAddPatientModal, setShowAddPatientModal] = useState(false);
   const [editingPatientId, setEditingPatientId] = useState<string | null>(null);
@@ -177,6 +227,8 @@ export default function AdminDashboardPage() {
     date: "১৪ সেপ্টেম্বর, ২০২৬",
     timeSlot: "রাত ৮:০০ - ৯:০০",
     status: "new",
+    nextFollowupDate: "",
+    nextFollowupNote: "",
   });
   const [searchFilter, setSearchFilter] = useState("");
   const [popupConfig, setPopupConfig] = useState<PopupNoticeConfig>(DEFAULT_POPUP_CONFIG);
@@ -497,6 +549,8 @@ export default function AdminDashboardPage() {
       date: new Date().toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" }),
       timeSlot: "রাত ৮:০০ - ৯:০০",
       status: "new",
+      nextFollowupDate: "",
+      nextFollowupNote: "",
     });
     setShowAddPatientModal(true);
   };
@@ -514,8 +568,59 @@ export default function AdminDashboardPage() {
       date: p.date,
       timeSlot: p.timeSlot || "",
       status: p.status,
+      nextFollowupDate: p.nextFollowupDate || "",
+      nextFollowupNote: p.nextFollowupNote || "",
     });
     setShowAddPatientModal(true);
+  };
+
+  const handleQuickScheduleFollowup = (id: string, daysToAdd: number, note?: string) => {
+    const newDate = addDaysToDate(daysToAdd);
+    const updated = patientsList.map((p) => {
+      if (p.id === id) {
+        return {
+          ...p,
+          status: "followup" as const,
+          nextFollowupDate: newDate,
+          nextFollowupNote: note !== undefined ? note : (p.nextFollowupNote || `${daysToAdd} দিন পর রুকইয়াহ ফলো-আপ`),
+        };
+      }
+      return p;
+    });
+    setPatientsList(updated);
+    localStorage.setItem("sunnahlife_patients_records", JSON.stringify(updated));
+    if (selectedPatientForDrawer && selectedPatientForDrawer.id === id) {
+      setSelectedPatientForDrawer({
+        ...selectedPatientForDrawer,
+        status: "followup",
+        nextFollowupDate: newDate,
+        nextFollowupNote: note !== undefined ? note : (selectedPatientForDrawer.nextFollowupNote || `${daysToAdd} দিন পর রুকইয়াহ ফলো-আপ`),
+      });
+    }
+    setPopupSaveMessage(`ফলো-আপ শিডিউল সফলভাবে নির্ধারণ করা হয়েছে (${formatBanglaFollowupDate(newDate)})!`);
+    setTimeout(() => setPopupSaveMessage(""), 3500);
+  };
+
+  const handleClearFollowup = (id: string) => {
+    const updated = patientsList.map((p) => {
+      if (p.id === id) {
+        const copy = { ...p };
+        delete copy.nextFollowupDate;
+        delete copy.nextFollowupNote;
+        return copy;
+      }
+      return p;
+    });
+    setPatientsList(updated);
+    localStorage.setItem("sunnahlife_patients_records", JSON.stringify(updated));
+    if (selectedPatientForDrawer && selectedPatientForDrawer.id === id) {
+      const copy = { ...selectedPatientForDrawer };
+      delete copy.nextFollowupDate;
+      delete copy.nextFollowupNote;
+      setSelectedPatientForDrawer(copy);
+    }
+    setPopupSaveMessage("ফলো-আপ শিডিউল মুছে ফেলা হয়েছে!");
+    setTimeout(() => setPopupSaveMessage(""), 3000);
   };
 
   const handleSavePatientSubmit = (e: React.FormEvent) => {
@@ -615,6 +720,8 @@ export default function AdminDashboardPage() {
       "স্ট্যাটাস",
       "তারিখ",
       "সময়",
+      "পরবর্তী ফলো-আপের তারিখ",
+      "ফলো-আপ নোট",
       "আমল ও প্রেসক্রিপশন",
       "বিস্তারিত নোট"
     ];
@@ -635,6 +742,8 @@ export default function AdminDashboardPage() {
       `"${statusLabels[p.status] || p.status}"`,
       `"${p.date}"`,
       `"${(p.timeSlot || '').replace(/"/g, '""')}"`,
+      `"${p.nextFollowupDate ? formatBanglaFollowupDate(p.nextFollowupDate) : ''}"`,
+      `"${(p.nextFollowupNote || '').replace(/"/g, '""')}"`,
       `"${(p.prescription || '').replace(/"/g, '""')}"`,
       `"${(p.notes || '').replace(/"/g, '""')}"`,
     ]);
@@ -654,14 +763,24 @@ export default function AdminDashboardPage() {
 
   const getFollowupWhatsAppUrl = (p: PatientRecord) => {
     const cleanPhone = p.phone.replace(/^0/, "880").replace(/\D/g, "");
+    const diff = getDaysDifference(p.nextFollowupDate);
+    let followupContext = "";
+    if (diff === 0) {
+      followupContext = `আজকে আপনার শারঈ রুকইয়াহ ফলো-আপের নির্ধারিত দিন।`;
+    } else if (diff !== null && diff < 0) {
+      followupContext = `আপনার শারঈ রুকইয়াহ ফলো-আপের নির্ধারিত তারিখ (${formatBanglaFollowupDate(p.nextFollowupDate)}) পার হয়েছে।`;
+    } else if (p.nextFollowupDate) {
+      followupContext = `আপনার পরবর্তী ফলো-আপের নির্ধারিত তারিখ: ${formatBanglaFollowupDate(p.nextFollowupDate)}।`;
+    }
+
     const text = `আসসালামু আলাইকুম ${p.name} ভাই/বোন।
 সুন্নাহলাইফ শারঈ রুকইয়াহ কেয়ার থেকে আপনার খোঁজ নেওয়ার জন্য যোগাযোগ করছি।
 
-আপনার "${p.problemType || p.service || 'সমস্যা'}"-এর সমস্যাটি এখন কেমন আছে? আলহামদুলিল্লাহ কোনো উন্নতি লক্ষ্য করছেন কি?
+${followupContext ? followupContext + "\n\n" : ""}আপনার "${p.problemType || p.service || 'সমস্যা'}"-এর সমস্যাটি এখন কেমন আছে? আলহামদুলিল্লাহ কোনো উন্নতি লক্ষ্য করছেন কি?
+${p.nextFollowupNote ? `\nপূর্ববর্তী নির্দেশনা নোট: "${p.nextFollowupNote}"\n` : ""}
+প্রেসক্রিপশন অনুযায়ী রুকইয়াহ আমল ও সুন্নাহ সামগ্রীগুলো নিয়মিত মেনে চলছেন তো? কোনো পরামর্শ বা সহায়তার প্রয়োজন হলে নির্দ্বিধায় আমাদের লিখে জানান। আল্লাহ আপনাকে পূর্ণ শিফা দান করুন।
 
-প্রেসক্রিপশন অনুযায়ী রুকইয়াহ আমল ও সুন্নাহ সামগ্রীগুলো নিয়মিত মেনে চলছেন তো? কোনো পরামর্শ বা সহায়তার প্রয়োজন হলে নির্দ্বিধায় আমাদের লিখে জানান। আল্লাহ আপনাকে পূর্ণ সুস্থতা দান করুন।
-
-— সুন্নাহলাইফ টিম
+— সুন্নাহলাইফ শারঈ রুকইয়াহ সেন্টার
 হটলাইন: ০১৬৭৬৮২০০৬০`;
     return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`;
   };
@@ -686,6 +805,21 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
     return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`;
   };
 
+  const todayFollowups = patientsList.filter((p) => {
+    const diff = getDaysDifference(p.nextFollowupDate);
+    return diff === 0;
+  });
+
+  const upcomingFollowups = patientsList.filter((p) => {
+    const diff = getDaysDifference(p.nextFollowupDate);
+    return diff !== null && diff > 0 && diff <= 7;
+  });
+
+  const overdueFollowups = patientsList.filter((p) => {
+    const diff = getDaysDifference(p.nextFollowupDate);
+    return diff !== null && diff < 0;
+  });
+
   const filteredPatients = patientsList.filter((p) => {
     const query = patientSearch.toLowerCase();
     const matchesSearch =
@@ -693,10 +827,22 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
       p.phone.includes(query) ||
       (p.address && p.address.toLowerCase().includes(query)) ||
       (p.problemType && p.problemType.toLowerCase().includes(query)) ||
-      (p.notes && p.notes.toLowerCase().includes(query));
+      (p.notes && p.notes.toLowerCase().includes(query)) ||
+      (p.nextFollowupNote && p.nextFollowupNote.toLowerCase().includes(query));
 
     if (!matchesSearch) return false;
 
+    if (patientFilter === "today_followup") {
+      return getDaysDifference(p.nextFollowupDate) === 0;
+    }
+    if (patientFilter === "upcoming_followup") {
+      const diff = getDaysDifference(p.nextFollowupDate);
+      return diff !== null && diff > 0 && diff <= 7;
+    }
+    if (patientFilter === "overdue_followup") {
+      const diff = getDaysDifference(p.nextFollowupDate);
+      return diff !== null && diff < 0;
+    }
     if (patientFilter === "online") return p.type === "online";
     if (patientFilter === "offline") return p.type === "offline";
     if (patientFilter === "followup") return p.status === "followup";
@@ -848,23 +994,15 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               >
                 <Users className="w-3.5 h-3.5" />
                 <span>রোগী ও ফলো-আপ ({patientsList.length})</span>
-                {patientsList.filter((p) => p.status === "followup").length > 0 && (
+                {todayFollowups.length > 0 ? (
+                  <span className="px-2 py-0.5 text-[10px] font-extrabold rounded-full bg-rose-600 text-white animate-pulse" title="আজকের ফলো-আপ বকেয়া">
+                    আজ {todayFollowups.length}
+                  </span>
+                ) : patientsList.filter((p) => p.status === "followup").length > 0 ? (
                   <span className="px-1.5 py-0.2 text-[9px] font-extrabold rounded-full bg-amber-500 text-white">
                     {patientsList.filter((p) => p.status === "followup").length}
                   </span>
-                )}
-              </button>
-
-              <button
-                onClick={() => setActiveTab("content")}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer ${
-                  activeTab === "content"
-                    ? "bg-[#006B5B] text-white shadow-xs"
-                    : "text-gray-600 hover:text-[#006B5B] hover:bg-white"
-                }`}
-              >
-                <BookOpen className="w-3.5 h-3.5" />
-                <span>কনটেন্ট তালিকা</span>
+                ) : null}
               </button>
 
               <button
@@ -918,18 +1056,24 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
             <div className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1">
               <span className="text-xs text-gray-500 font-medium">নিবন্ধিত রোগী</span>
-              <p className="text-2xl font-bold text-[#D4A017]">{patientsList.length} জন</p>
-              <span className="text-[11px] text-[#006B5B] font-semibold">
-                {patientsList.filter((p) => p.status === "followup").length} জনের ফলো-আপ প্রয়োজন
-              </span>
+              <p className="text-2xl font-bold text-[#004D40]">{patientsList.length} জন</p>
+              <div className="text-[11px] font-semibold">
+                {todayFollowups.length > 0 ? (
+                  <span className="text-rose-600 font-bold">🔴 আজ {todayFollowups.length} জনের ফলো-আপ</span>
+                ) : (
+                  <span className="text-[#006B5B]">
+                    {patientsList.filter((p) => p.status === "followup").length} জনের ফলো-আপ প্রয়োজন
+                  </span>
+                )}
+              </div>
             </div>
 
             <div className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1">
               <span className="text-xs text-gray-500 font-medium">প্রকাশিত কনটেন্ট</span>
               <p className="text-2xl font-bold text-[#006B5B]">
-                {ARTICLES_LIST.length + RUQYAH_AYAT_LIST.length + DUA_LIST.length} টি
+                {ARTICLES_LIST.length + RUQYAH_AYAT_LIST.length + DUA_LIST.length + RUQYAH_AUDIO_LIST.length} টি
               </p>
-              <span className="text-[11px] text-[#006B5B] font-semibold">আয়াত, দোয়া ও আর্টিকেল</span>
+              <span className="text-[11px] text-[#006B5B] font-semibold">আয়াত, দোয়া, অডিও ও আর্টিকেল</span>
             </div>
           </div>
 
@@ -998,30 +1142,156 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
             </div>
           </div>
 
-          {/* Content Workflow Status */}
+          {/* Patient Follow-up Scheduling Radar & Action Center */}
           <div className="p-6 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
-            <h3 className="font-bold text-base text-[#004D40] flex items-center gap-2 border-b border-gray-100 pb-3">
-              <ShieldCheck className="w-4 h-4 text-[#006B5B]" />
-              শারঈ কনটেন্ট রিভিউ ওয়ার্কফ্লো (RPD Section 27)
-            </h3>
+            <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+              <div>
+                <h3 className="font-bold text-base text-[#004D40] flex items-center gap-2">
+                  <CalendarDays className="w-4 h-4 text-[#006B5B]" />
+                  ফলো-আপ শিডিউল ও রাডার
+                </h3>
+                <p className="text-[11px] text-gray-500 mt-0.5">
+                  নির্ধারিত তারিখে রোগীদের সাথে যোগাযোগ ও অগ্রগতি পর্যালোচনা
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  setActiveTab("bookings");
+                  setPatientFilter("today_followup");
+                }}
+                className="text-xs text-[#006B5B] font-bold hover:underline cursor-pointer"
+              >
+                শিডিউল তালিকা →
+              </button>
+            </div>
 
-            <div className="space-y-2.5 text-xs text-gray-600">
-              <div className="flex items-center justify-between p-3 rounded-xl bg-emerald-50 text-emerald-900 font-medium">
-                <span>১. ড্রাফট তৈরি (Author Draft)</span>
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+            {/* Quick KPI Pills for Followups */}
+            <div className="grid grid-cols-3 gap-2">
+              <div 
+                onClick={() => { setActiveTab("bookings"); setPatientFilter("today_followup"); }}
+                className="p-3 rounded-2xl bg-rose-50 border border-rose-200/70 text-center cursor-pointer hover:bg-rose-100/70 transition-all shadow-2xs"
+              >
+                <span className="text-[10px] text-rose-700 font-bold block">আজকের ফলো-আপ</span>
+                <span className="text-xl font-black text-rose-800">{todayFollowups.length} জন</span>
               </div>
-              <div className="flex items-center justify-between p-3 rounded-xl bg-emerald-50 text-emerald-900 font-medium">
-                <span>২. হাদীস ও আলেম পর্যালোচনা (Scholarly Review)</span>
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <div 
+                onClick={() => { setActiveTab("bookings"); setPatientFilter("upcoming_followup"); }}
+                className="p-3 rounded-2xl bg-amber-50 border border-amber-200/70 text-center cursor-pointer hover:bg-amber-100/70 transition-all shadow-2xs"
+              >
+                <span className="text-[10px] text-amber-800 font-bold block">আসন্ন ৭ দিন</span>
+                <span className="text-xl font-black text-amber-900">{upcomingFollowups.length} জন</span>
               </div>
-              <div className="flex items-center justify-between p-3 rounded-xl bg-emerald-50 text-emerald-900 font-medium">
-                <span>৩. অ্যাডমিন অনুমোদন (Admin Approval)</span>
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <div 
+                onClick={() => { setActiveTab("bookings"); setPatientFilter("overdue_followup"); }}
+                className="p-3 rounded-2xl bg-gray-50 border border-gray-200 text-center cursor-pointer hover:bg-gray-100 transition-all shadow-2xs"
+              >
+                <span className="text-[10px] text-gray-600 font-bold block">অতিক্রান্ত</span>
+                <span className="text-xl font-black text-gray-800">{overdueFollowups.length} জন</span>
               </div>
-              <div className="flex items-center justify-between p-3 rounded-xl bg-emerald-100 text-emerald-950 font-bold">
-                <span>৪. সাইটে প্রকাশ (Published on Web)</span>
-                <CheckCircle2 className="w-4 h-4 text-[#006B5B]" />
-              </div>
+            </div>
+
+            {/* List of active follow-up patients */}
+            <div className="space-y-2.5 pt-1 max-h-[360px] overflow-y-auto pr-1">
+              {[...todayFollowups, ...overdueFollowups, ...upcomingFollowups].length === 0 ? (
+                <div className="p-8 text-center text-gray-400 text-xs rounded-2xl bg-[#FAFAF7] border border-dashed border-gray-200 space-y-1">
+                  <p className="font-semibold text-gray-500">বর্তমানে কোনো ফলো-আপ শিডিউল নেই</p>
+                  <p className="text-[11px]">রোগী ম্যানেজমেন্ট থেকে যে কারও পরবর্তী ফলো-আপের তারিখ যুক্ত করতে পারবেন।</p>
+                </div>
+              ) : (
+                [...todayFollowups, ...overdueFollowups, ...upcomingFollowups].map((p) => {
+                  const diff = getDaysDifference(p.nextFollowupDate);
+                  const isToday = diff === 0;
+                  const isOverdue = diff !== null && diff < 0;
+
+                  return (
+                    <div 
+                      key={p.id}
+                      className={`p-3 rounded-2xl border flex flex-col gap-2 transition-all ${
+                        isToday 
+                          ? "bg-rose-50/60 border-rose-200 shadow-2xs" 
+                          : isOverdue 
+                          ? "bg-amber-50/50 border-amber-200"
+                          : "bg-[#FAFAF7] border-gray-200"
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="space-y-0.5">
+                          <div className="flex items-center gap-1.5">
+                            <h5 className="text-xs font-bold text-gray-900">{p.name}</h5>
+                            <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full ${
+                              isToday 
+                                ? "bg-rose-600 text-white animate-pulse" 
+                                : isOverdue 
+                                ? "bg-red-100 text-red-800" 
+                                : "bg-emerald-100 text-[#004D40]"
+                            }`}>
+                              {isToday 
+                                ? "আজকের দিন" 
+                                : isOverdue 
+                                ? `${Math.abs(diff!)} দিন পার` 
+                                : `${diff} দিন বাকি`}
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-gray-500">
+                            {p.phone} • {p.problemType}
+                          </p>
+                          {p.nextFollowupNote && (
+                            <p className="text-[11px] text-[#004D40] font-semibold bg-white/90 px-2 py-0.5 rounded-md border border-[#006B5B]/20 inline-block mt-0.5">
+                              নোট: {p.nextFollowupNote}
+                            </p>
+                          )}
+                        </div>
+
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <a
+                            href={getFollowupWhatsAppUrl(p)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-2.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold flex items-center gap-1 transition-colors shadow-2xs cursor-pointer"
+                            title="রোগীর খোঁজ নেওয়ার জন্য বাংলা WhatsApp মেসেজ পাঠান"
+                          >
+                            <MessageCircle className="w-3.5 h-3.5" />
+                            <span>খোঁজ নিন</span>
+                          </a>
+                        </div>
+                      </div>
+
+                      {/* Quick Action bar: Extend date presets right here */}
+                      <div className="flex items-center justify-between pt-1 border-t border-gray-200/50 text-[10px]">
+                        <span className="text-gray-500 font-medium">
+                          নির্ধারিত: {formatBanglaFollowupDate(p.nextFollowupDate)}
+                        </span>
+                        <div className="flex items-center gap-1">
+                          <button
+                            type="button"
+                            onClick={() => handleQuickScheduleFollowup(p.id, 7)}
+                            className="px-1.5 py-0.5 rounded-md bg-white border border-gray-200 text-gray-600 hover:text-[#006B5B] hover:border-[#006B5B] font-semibold cursor-pointer"
+                            title="৭ দিন পর পুনঃনির্ধারণ করুন"
+                          >
+                            +৭ দিন
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleQuickScheduleFollowup(p.id, 14)}
+                            className="px-1.5 py-0.5 rounded-md bg-white border border-gray-200 text-gray-600 hover:text-[#006B5B] hover:border-[#006B5B] font-semibold cursor-pointer"
+                            title="১৪ দিন পর পুনঃনির্ধারণ করুন"
+                          >
+                            +১৪ দিন
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleUpdatePatientStatus(p.id, "cured")}
+                            className="px-1.5 py-0.5 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 font-semibold hover:bg-emerald-100 cursor-pointer"
+                            title="সুস্থ ও চিকিৎসা সমাপ্ত হিসেবে মার্ক করুন"
+                          >
+                            সুস্থ
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
             </div>
           </div>
         </div>
@@ -1140,26 +1410,28 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               </div>
 
               <div 
-                onClick={() => setPatientFilter("followup")}
+                onClick={() => setPatientFilter("today_followup")}
                 className={`p-4 rounded-2xl border transition-all cursor-pointer ${
-                  patientFilter === "followup" 
-                    ? "bg-[#006B5B]/10 border-[#006B5B] ring-1 ring-[#006B5B] shadow-2xs" 
+                  patientFilter === "today_followup" 
+                    ? "bg-rose-50 border-rose-400 ring-1 ring-rose-400 shadow-2xs" 
+                    : todayFollowups.length > 0
+                    ? "bg-rose-50/40 border-rose-200 text-gray-800 hover:border-rose-400 shadow-2xs"
                     : "bg-white border-gray-200/90 text-gray-800 hover:border-[#006B5B]/30 shadow-2xs"
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className={`text-xs font-semibold ${patientFilter === "followup" ? "text-[#004D40] font-bold" : "text-gray-500"}`}>
-                    ফলো-আপ প্রয়োজন
+                  <span className={`text-xs font-semibold ${patientFilter === "today_followup" ? "text-rose-900 font-bold" : todayFollowups.length > 0 ? "text-rose-700 font-bold" : "text-gray-500"}`}>
+                    আজকের ফলো-আপ
                   </span>
-                  <div className={`p-1.5 rounded-lg ${patientFilter === "followup" ? "bg-[#006B5B] text-white" : "bg-amber-50 text-amber-600"}`}>
-                    <Bell className="w-3.5 h-3.5" />
+                  <div className={`p-1.5 rounded-lg ${patientFilter === "today_followup" ? "bg-rose-600 text-white" : todayFollowups.length > 0 ? "bg-rose-100 text-rose-600 animate-pulse" : "bg-gray-100 text-gray-500"}`}>
+                    <CalendarDays className="w-3.5 h-3.5" />
                   </div>
                 </div>
-                <div className="text-2xl font-extrabold text-[#004D40] mt-1">
-                  {patientsList.filter((p) => p.status === "followup").length} জন
+                <div className={`text-2xl font-extrabold mt-1 ${todayFollowups.length > 0 ? "text-rose-800" : "text-[#004D40]"}`}>
+                  {todayFollowups.length} জন
                 </div>
                 <span className="text-[10px] text-gray-400">
-                  খোঁজ নেওয়ার অপেক্ষায়
+                  {todayFollowups.length > 0 ? "আজই খোঁজ নেওয়া প্রয়োজন" : "আজ কোনো ফলো-আপ নেই"}
                 </span>
               </div>
             </div>
@@ -1176,6 +1448,37 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 >
                   <Users className="w-3.5 h-3.5" />
                   <span>সকল ({patientsList.length})</span>
+                </button>
+                <button
+                  onClick={() => setPatientFilter("today_followup")}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                    patientFilter === "today_followup" 
+                      ? "bg-rose-600 text-white shadow-xs" 
+                      : todayFollowups.length > 0 
+                      ? "bg-rose-100/80 text-rose-800 hover:bg-rose-200" 
+                      : "text-gray-600 hover:text-[#006B5B]"
+                  }`}
+                >
+                  <CalendarDays className="w-3.5 h-3.5" />
+                  <span>আজকের ফলো-আপ ({todayFollowups.length})</span>
+                </button>
+                <button
+                  onClick={() => setPatientFilter("upcoming_followup")}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                    patientFilter === "upcoming_followup" ? "bg-[#006B5B] text-white shadow-xs" : "text-gray-600 hover:text-[#006B5B]"
+                  }`}
+                >
+                  <Clock className="w-3.5 h-3.5" />
+                  <span>আসন্ন ৭ দিন ({upcomingFollowups.length})</span>
+                </button>
+                <button
+                  onClick={() => setPatientFilter("overdue_followup")}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                    patientFilter === "overdue_followup" ? "bg-gray-800 text-white shadow-xs" : "text-gray-600 hover:text-[#006B5B]"
+                  }`}
+                >
+                  <AlertCircle className="w-3.5 h-3.5" />
+                  <span>অতিক্রান্ত ({overdueFollowups.length})</span>
                 </button>
                 <button
                   onClick={() => setPatientFilter("online")}
@@ -1391,6 +1694,26 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                             </>
                           )}
                         </span>
+
+                        {/* Next Followup Badge */}
+                        {p.nextFollowupDate && (
+                          <span className={`text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-md flex items-center gap-1.5 shrink-0 ${
+                            getDaysDifference(p.nextFollowupDate) === 0
+                              ? "bg-rose-600 text-white animate-pulse shadow-2xs"
+                              : (getDaysDifference(p.nextFollowupDate) ?? 0) < 0
+                              ? "bg-red-50 text-red-800 border border-red-200"
+                              : "bg-emerald-50 text-[#004D40] border border-emerald-200"
+                          }`}>
+                            <CalendarDays className="w-3 h-3 shrink-0" />
+                            <span>
+                              {getDaysDifference(p.nextFollowupDate) === 0
+                                ? "আজ ফলো-আপ"
+                                : (getDaysDifference(p.nextFollowupDate) ?? 0) < 0
+                                ? `${Math.abs(getDaysDifference(p.nextFollowupDate)!)} দিন ওভারডিউ`
+                                : `${getDaysDifference(p.nextFollowupDate)} দিন পর (${formatBanglaFollowupDate(p.nextFollowupDate)})`}
+                            </span>
+                          </span>
+                        )}
                       </div>
 
                       {/* Right: Phone, Date, Quick WhatsApp, Action Buttons */}
@@ -1413,8 +1736,8 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                             <MessageCircle className="w-4 h-4" />
                           </a>
 
-                          {/* Quick Follow-up button if status is followup */}
-                          {p.status === "followup" && (
+                          {/* Quick Follow-up button if status is followup or has next date */}
+                          {(p.status === "followup" || p.nextFollowupDate) && (
                             <a
                               href={getFollowupWhatsAppUrl(p)}
                               target="_blank"
@@ -1431,14 +1754,13 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           <button
                             type="button"
                             onClick={() => handleOpenPatientDrawer(p)}
-                            className="px-2.5 py-1 rounded-lg bg-gray-100 hover:bg-[#006B5B] hover:text-white text-gray-700 text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer"
-                            title="পাশে বিস্তারিত প্যানেল খুলুন"
+                            className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-[#006B5B] transition-colors cursor-pointer"
+                            title="সাইড প্যানেলে বিস্তারিত ও ফলো-আপ দেখুন"
                           >
-                            <span>বিস্তারিত</span>
-                            <PanelRight className="w-3.5 h-3.5" />
+                            <PanelRight className="w-4 h-4" />
                           </button>
 
-                          {/* Expand Inline Chevron Toggle */}
+                          {/* Accordion Toggle Trigger Button */}
                           <button
                             type="button"
                             onClick={(e) => togglePatientExpand(p.id, e)}
@@ -1477,6 +1799,95 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           <div className="text-xs text-gray-500 flex items-center gap-2">
                             <Clock className="w-3.5 h-3.5 text-[#006B5B]" />
                             <span>ভিজিট: {p.date} {p.timeSlot ? `(${p.timeSlot})` : ""}</span>
+                          </div>
+                        </div>
+
+                        {/* Follow-up Scheduling Card in Accordion */}
+                        <div className="p-3.5 rounded-xl bg-amber-50/70 border border-amber-200/80 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1.5">
+                              <CalendarDays className="w-4 h-4 text-amber-700" />
+                              <span className="text-xs font-bold text-amber-900">ফলো-আপ শিডিউল</span>
+                            </div>
+                            {p.nextFollowupDate ? (
+                              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                getDaysDifference(p.nextFollowupDate) === 0
+                                  ? "bg-rose-600 text-white animate-pulse"
+                                  : (getDaysDifference(p.nextFollowupDate) ?? 0) < 0
+                                  ? "bg-red-100 text-red-800"
+                                  : "bg-emerald-100 text-[#004D40]"
+                              }`}>
+                                {getDaysDifference(p.nextFollowupDate) === 0
+                                  ? "আজ ফলো-আপের দিন"
+                                  : (getDaysDifference(p.nextFollowupDate) ?? 0) < 0
+                                  ? `${Math.abs(getDaysDifference(p.nextFollowupDate)!)} দিন ওভারডিউ`
+                                  : `${getDaysDifference(p.nextFollowupDate)} দিন পর`}
+                              </span>
+                            ) : (
+                              <span className="text-[10px] text-gray-500 font-medium">নির্ধারিত নেই</span>
+                            )}
+                          </div>
+
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                            <div className="space-y-0.5">
+                              <p className="text-gray-700">
+                                <span className="font-semibold text-gray-500">পরবর্তী তারিখ: </span>
+                                <span className="font-bold text-[#004D40]">
+                                  {p.nextFollowupDate ? formatBanglaFollowupDate(p.nextFollowupDate) : "নির্ধারণ করুন"}
+                                </span>
+                              </p>
+                              {p.nextFollowupNote && (
+                                <p className="text-[11px] text-amber-900 font-medium">
+                                  <span className="text-gray-500">নোট: </span>{p.nextFollowupNote}
+                                </p>
+                              )}
+                            </div>
+
+                            {/* Quick Presets */}
+                            <div className="flex items-center gap-1 shrink-0">
+                              <button
+                                type="button"
+                                onClick={() => handleQuickScheduleFollowup(p.id, 7)}
+                                className="px-2 py-1 text-[11px] font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#006B5B] hover:text-[#006B5B] cursor-pointer"
+                                title="৭ দিন পর ফলো-আপ"
+                              >
+                                +৭ দিন
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleQuickScheduleFollowup(p.id, 10)}
+                                className="px-2 py-1 text-[11px] font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#006B5B] hover:text-[#006B5B] cursor-pointer"
+                                title="১০ দিন পর ফলো-আপ"
+                              >
+                                +১০ দিন
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleQuickScheduleFollowup(p.id, 14)}
+                                className="px-2 py-1 text-[11px] font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#006B5B] hover:text-[#006B5B] cursor-pointer"
+                                title="১৪ দিন পর ফলো-আপ"
+                              >
+                                +১৪ দিন
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleQuickScheduleFollowup(p.id, 30)}
+                                className="px-2 py-1 text-[11px] font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#006B5B] hover:text-[#006B5B] cursor-pointer"
+                                title="১ মাস পর ফলো-আপ"
+                              >
+                                +১ মাস
+                              </button>
+                              {p.nextFollowupDate && (
+                                <button
+                                  type="button"
+                                  onClick={() => handleClearFollowup(p.id)}
+                                  className="px-2 py-1 text-[11px] font-semibold bg-white border border-rose-200 text-rose-600 rounded-lg hover:bg-rose-50 cursor-pointer"
+                                  title="ফলো-আপ শিডিউল মুছে ফেলুন"
+                                >
+                                  মুছুন
+                                </button>
+                              )}
+                            </div>
                           </div>
                         </div>
 
@@ -1668,6 +2079,80 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     </div>
                   </div>
 
+                  {/* Follow-up Scheduling Section */}
+                  <div className="p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80 space-y-3 shadow-2xs">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5">
+                        <CalendarDays className="w-4 h-4 text-amber-700" />
+                        <span className="text-xs font-bold text-amber-900">ফলো-আপ শিডিউল ও পরবর্তী তারিখ</span>
+                      </div>
+                      {selectedPatientForDrawer.nextFollowupDate ? (
+                        <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full ${
+                          getDaysDifference(selectedPatientForDrawer.nextFollowupDate) === 0
+                            ? "bg-rose-600 text-white animate-pulse"
+                            : (getDaysDifference(selectedPatientForDrawer.nextFollowupDate) ?? 0) < 0
+                            ? "bg-red-100 text-red-800"
+                            : "bg-emerald-100 text-[#004D40]"
+                        }`}>
+                          {getDaysDifference(selectedPatientForDrawer.nextFollowupDate) === 0
+                            ? "আজকে ফলো-আপ"
+                            : (getDaysDifference(selectedPatientForDrawer.nextFollowupDate) ?? 0) < 0
+                            ? `${Math.abs(getDaysDifference(selectedPatientForDrawer.nextFollowupDate)!)} দিন ওভারডিউ`
+                            : `${getDaysDifference(selectedPatientForDrawer.nextFollowupDate)} দিন পর`}
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-gray-500 font-medium">নির্ধারিত নেই</span>
+                      )}
+                    </div>
+
+                    <div className="text-xs space-y-1.5 text-gray-700">
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-500">নির্ধারিত তারিখ:</span>
+                        <span className="font-bold text-[#004D40]">
+                          {selectedPatientForDrawer.nextFollowupDate 
+                            ? formatBanglaFollowupDate(selectedPatientForDrawer.nextFollowupDate) 
+                            : "এখনো নির্ধারণ করা হয়নি"}
+                        </span>
+                      </div>
+                      {selectedPatientForDrawer.nextFollowupNote && (
+                        <div className="flex flex-col gap-0.5 pt-1">
+                          <span className="text-gray-500 text-[11px]">ফলো-আপের উদ্দেশ্য / নির্দেশনা নোট:</span>
+                          <p className="p-2.5 rounded-xl bg-white border border-amber-200/60 text-[11px] text-gray-800 font-medium">
+                            {selectedPatientForDrawer.nextFollowupNote}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Quick Date Presets */}
+                    <div className="space-y-1.5 pt-1 border-t border-amber-200/60">
+                      <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">
+                        দ্রুত তারিখ নির্ধারণ বা পুনঃনির্ধারণ:
+                      </span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {[7, 10, 14, 21, 30].map((d) => (
+                          <button
+                            key={d}
+                            type="button"
+                            onClick={() => handleQuickScheduleFollowup(selectedPatientForDrawer.id, d)}
+                            className="px-2.5 py-1 rounded-lg bg-white border border-gray-200 hover:border-[#006B5B] hover:text-[#006B5B] text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
+                          >
+                            +{d === 30 ? "১ মাস" : `${d} দিন`}
+                          </button>
+                        ))}
+                        {selectedPatientForDrawer.nextFollowupDate && (
+                          <button
+                            type="button"
+                            onClick={() => handleClearFollowup(selectedPatientForDrawer.id)}
+                            className="px-2.5 py-1 rounded-lg bg-white border border-rose-200 text-rose-600 hover:bg-rose-50 text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
+                          >
+                            মুছুন
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
                   {/* 1-Click WhatsApp CRM Actions */}
                   <div className="space-y-2.5">
                     <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider block">
@@ -1801,42 +2286,6 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
         </div>
       )}
 
-      {activeTab === "content" && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-3">
-            <h3 className="font-bold text-[#004D40] text-base flex items-center justify-between">
-              <span>প্রকাশিত আর্টিকেল ({ARTICLES_LIST.length})</span>
-              <span className="text-xs text-[#006B5B] font-semibold">লাইভ</span>
-            </h3>
-            <ul className="space-y-2 text-xs text-gray-700">
-              {ARTICLES_LIST.map((art) => (
-                <li key={art.slug} className="p-2.5 rounded-xl bg-[#FAFAF7] border border-gray-100 flex items-center justify-between">
-                  <span className="font-medium line-clamp-1">{art.title}</span>
-                  <span className="text-gray-400 text-[10px] shrink-0 ml-2">{art.publishDate}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="p-6 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-3">
-            <h3 className="font-bold text-[#004D40] text-base flex items-center justify-between">
-              <span>রুকইয়াহ অডিও রেকর্ড ({RUQYAH_AUDIO_LIST.length})</span>
-              <span className="text-xs text-[#006B5B] font-semibold">স্ট্রিম সক্রিয়</span>
-            </h3>
-            <ul className="space-y-2 text-xs text-gray-700">
-              {RUQYAH_AUDIO_LIST.map((track) => (
-                <li key={track.id} className="p-2.5 rounded-xl bg-[#FAFAF7] border border-gray-100 flex items-center justify-between">
-                  <div>
-                    <div className="font-medium">{track.title}</div>
-                    <div className="text-[10px] text-gray-400">{track.reciter}</div>
-                  </div>
-                  <span className="font-mono text-xs text-gray-500">{track.duration}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
 
       {activeTab === "popup" && (
         <div className="space-y-6">
@@ -1855,16 +2304,24 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <span className="text-xs font-bold uppercase tracking-wider text-gray-500">বর্তমান অবস্থা</span>
-                <span
-                  className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 ${
-                    popupConfig.isActive
-                      ? "bg-emerald-100 text-emerald-800"
-                      : "bg-red-100 text-red-700"
-                  }`}
-                >
-                  <span className={`w-2 h-2 rounded-full ${popupConfig.isActive ? "bg-emerald-500 animate-pulse" : "bg-red-500"}`} />
-                  {popupConfig.isActive ? "সক্রিয় (ভিজিটরদের সামনে প্রদর্শিত হচ্ছে)" : "নিষ্ক্রিয় (পপআপ বন্ধ রয়েছে)"}
-                </span>
+                {popupConfig.expiryDate && new Date(popupConfig.expiryDate).getTime() < Date.now() ? (
+                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 flex items-center gap-1.5 border border-amber-300">
+                    <span className="w-2 h-2 rounded-full bg-amber-600" />
+                    মেয়াদোত্তীর্ণ (তারিখ অতিক্রম হওয়ায় সাইটে অটো-অফ রয়েছে)
+                  </span>
+                ) : popupConfig.isActive ? (
+                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 flex items-center gap-1.5 border border-emerald-300">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    {popupConfig.expiryDate 
+                      ? `সক্রিয় (মেয়াদ: ${new Date(popupConfig.expiryDate).toLocaleDateString("bn-BD")} পর্যন্ত)` 
+                      : "সক্রিয় (ভিজিটরদের সামনে প্রদর্শিত হচ্ছে)"}
+                  </span>
+                ) : (
+                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700 flex items-center gap-1.5 border border-red-300">
+                    <span className="w-2 h-2 rounded-full bg-red-500" />
+                    নিষ্ক্রিয় (পপআপ বন্ধ রয়েছে)
+                  </span>
+                )}
               </div>
               <h3 className="text-lg font-bold text-[#004D40]">
                 হোমপেজ ও সাইটওয়াইড অফার পপআপ
@@ -2054,6 +2511,107 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     onChange={(e) => setPopupConfig({ ...popupConfig, whatsappMessage: e.target.value })}
                     className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#006B5B] outline-none text-xs"
                   />
+                </div>
+
+                {/* Expiry Date & Auto-off Setting */}
+                <div className="p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80 space-y-2.5">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                    <div className="flex items-center gap-1.5">
+                      <Clock className="w-4 h-4 text-amber-700" />
+                      <label className="font-bold text-gray-800 text-xs">
+                        পপআপ মেয়াদ শেষ হওয়ার তারিখ ও সময় (Expiry Date & Auto-Off)
+                      </label>
+                    </div>
+                    {popupConfig.expiryDate ? (
+                      new Date(popupConfig.expiryDate).getTime() < Date.now() ? (
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-800 shrink-0">
+                          ⚠️ মেয়াদ উত্তীর্ণ (অটো-অফ)
+                        </span>
+                      ) : (
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 shrink-0">
+                          সক্রিয় (অটো-অফ সক্রিয়)
+                        </span>
+                      )
+                    ) : (
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 shrink-0">
+                        মেয়াদহীন (ম্যানুয়াল)
+                      </span>
+                    )}
+                  </div>
+
+                  <p className="text-[11px] text-gray-500">
+                    নির্ধারিত তারিখ ও সময় পার হয়ে গেলে মূল ওয়েবসাইটে পপআপ প্রদর্শন স্বয়ংক্রিয়ভাবে বন্ধ হয়ে যাবে।
+                  </p>
+
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 pt-1">
+                    <input
+                      type="datetime-local"
+                      value={popupConfig.expiryDate ? popupConfig.expiryDate.slice(0, 16) : ""}
+                      onChange={(e) => setPopupConfig({ ...popupConfig, expiryDate: e.target.value })}
+                      className="p-2.5 rounded-xl border border-gray-200 focus:border-[#006B5B] outline-none bg-white text-xs font-mono"
+                    />
+
+                    {/* Quick Presets for Expiry */}
+                    <div className="flex flex-wrap gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const d = new Date();
+                          d.setDate(d.getDate() + 3);
+                          d.setHours(23, 59, 0, 0);
+                          setPopupConfig({ ...popupConfig, expiryDate: d.toISOString().slice(0, 16) });
+                        }}
+                        className="px-2.5 py-1 text-xs font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#006B5B] hover:text-[#006B5B] cursor-pointer"
+                      >
+                        +৩ দিন
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const d = new Date();
+                          d.setDate(d.getDate() + 7);
+                          d.setHours(23, 59, 0, 0);
+                          setPopupConfig({ ...popupConfig, expiryDate: d.toISOString().slice(0, 16) });
+                        }}
+                        className="px-2.5 py-1 text-xs font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#006B5B] hover:text-[#006B5B] cursor-pointer"
+                      >
+                        +৭ দিন
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const d = new Date();
+                          d.setDate(d.getDate() + 15);
+                          d.setHours(23, 59, 0, 0);
+                          setPopupConfig({ ...popupConfig, expiryDate: d.toISOString().slice(0, 16) });
+                        }}
+                        className="px-2.5 py-1 text-xs font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#006B5B] hover:text-[#006B5B] cursor-pointer"
+                      >
+                        +১৫ দিন
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const d = new Date();
+                          d.setDate(d.getDate() + 30);
+                          d.setHours(23, 59, 0, 0);
+                          setPopupConfig({ ...popupConfig, expiryDate: d.toISOString().slice(0, 16) });
+                        }}
+                        className="px-2.5 py-1 text-xs font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#006B5B] hover:text-[#006B5B] cursor-pointer"
+                      >
+                        +৩০ দিন
+                      </button>
+                      {popupConfig.expiryDate && (
+                        <button
+                          type="button"
+                          onClick={() => setPopupConfig({ ...popupConfig, expiryDate: "" })}
+                          className="px-2.5 py-1 text-xs font-semibold bg-white border border-rose-200 text-rose-600 rounded-lg hover:bg-rose-50 cursor-pointer"
+                        >
+                          মেয়াদহীন করুন
+                        </button>
+                      )}
+                    </div>
+                  </div>
                 </div>
 
                 <div className="pt-2 flex items-center gap-3">
@@ -2605,6 +3163,68 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   onChange={(e) => setPatientForm({ ...patientForm, prescription: e.target.value })}
                   className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
                 />
+              </div>
+
+              {/* Next Followup Date & Note */}
+              <div className="p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80 space-y-3">
+                <div className="flex items-center gap-1.5">
+                  <CalendarDays className="w-4 h-4 text-amber-700" />
+                  <span className="font-bold text-xs text-amber-900">
+                    পরবর্তী ফলো-আপ শিডিউল (Next Follow-up Scheduling)
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-semibold text-gray-700 mb-1">
+                      পরবর্তী সাক্ষাতের তারিখ (YYYY-MM-DD)
+                    </label>
+                    <input
+                      type="date"
+                      value={patientForm.nextFollowupDate || ""}
+                      onChange={(e) => setPatientForm({ ...patientForm, nextFollowupDate: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white text-xs font-mono font-medium"
+                    />
+                    {/* Preset buttons */}
+                    <div className="flex flex-wrap gap-1 mt-1.5">
+                      {[7, 10, 14, 21, 30].map((days) => (
+                        <button
+                          key={days}
+                          type="button"
+                          onClick={() => setPatientForm((prev) => ({ ...prev, nextFollowupDate: addDaysToDate(days) }))}
+                          className="px-2 py-0.5 text-[10px] font-semibold bg-white border border-gray-200 rounded-md hover:bg-emerald-50 hover:border-[#006B5B] text-gray-700 cursor-pointer"
+                        >
+                          +{days === 30 ? "১ মাস" : `${days} দিন`}
+                        </button>
+                      ))}
+                      {patientForm.nextFollowupDate && (
+                        <button
+                          type="button"
+                          onClick={() => setPatientForm((prev) => ({ ...prev, nextFollowupDate: "" }))}
+                          className="px-2 py-0.5 text-[10px] font-semibold bg-white border border-rose-200 text-rose-600 rounded-md hover:bg-rose-50 cursor-pointer"
+                        >
+                          ক্লিয়ার
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block font-semibold text-gray-700 mb-1">
+                      ফলো-আপ নোট / উদ্দেশ্য (ঐচ্ছিক)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="যেমন: ৭ দিন পর আমল ও প্রতিক্রিয়া চেক"
+                      value={patientForm.nextFollowupNote || ""}
+                      onChange={(e) => setPatientForm({ ...patientForm, nextFollowupNote: e.target.value })}
+                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white text-xs"
+                    />
+                    <span className="text-[10px] text-gray-500 mt-1 block">
+                      এই নোটটি WhatsApp রিমাইন্ডার মেসেজে স্বয়ংক্রিয়ভাবে যুক্ত হবে।
+                    </span>
+                  </div>
+                </div>
               </div>
 
               {/* Modal Buttons */}

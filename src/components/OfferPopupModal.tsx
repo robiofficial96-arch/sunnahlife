@@ -32,17 +32,24 @@ export default function OfferPopupModal() {
 
   useEffect(() => {
     // Check if admin has set local override or use default
+    let activeConfig: PopupNoticeConfig = DEFAULT_POPUP_CONFIG;
     try {
       const stored = localStorage.getItem("sunnahlife_popup_config");
       if (stored) {
         const parsed = JSON.parse(stored);
+        activeConfig = parsed;
         setConfig(parsed);
-        if (!parsed.isActive) return;
-      } else if (!DEFAULT_POPUP_CONFIG.isActive) {
-        return;
       }
-    } catch {
-      if (!DEFAULT_POPUP_CONFIG.isActive) return;
+    } catch {}
+
+    if (!activeConfig.isActive) return;
+
+    // Check automatic expiry date
+    if (activeConfig.expiryDate) {
+      const expiryTime = new Date(activeConfig.expiryDate).getTime();
+      if (!isNaN(expiryTime) && Date.now() > expiryTime) {
+        return; // Offer expired! Auto-off
+      }
     }
 
     // Check if user already dismissed it during this session

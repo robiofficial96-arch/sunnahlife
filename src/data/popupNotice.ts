@@ -13,10 +13,12 @@ export interface PopupNoticeConfig {
   whatsappMessage: string;
   phone: string;
   footerNote: string;
+  expiryDate?: string; // অফার শেষ হওয়ার নির্দিষ্ট তারিখ ও সময় (যেমন: 2026-09-22T23:59)
 }
 
 export const DEFAULT_POPUP_CONFIG: PopupNoticeConfig = {
   isActive: true, // অফার চলাকালীন true থাকবে, শেষ হলে false করে দিলেই পপআপ বন্ধ হয়ে যাবে
+  expiryDate: "2026-09-22T23:59", // এই তারিখের পর পপআপ স্বয়ংক্রিয়ভাবে বন্ধ হয়ে যাবে
   badge: "🌿 বিশেষ কৃতজ্ঞতা অফার",
   title: "প্রিয় পুরাতন সেবাগ্রহীতাদের জন্য বিশেষ অফার! 🎁",
   subtitle: "আগামী মঙ্গলবার আপনার জন্য থাকছে বিশেষ সুযোগ—",
