@@ -24,10 +24,10 @@ function WhatsAppOfficialIcon({ className = "w-5 h-5" }: { className?: string })
 
 export default function Home() {
   return (
-    <div className="space-y-14 md:space-y-20">
+    <div className="space-y-8 md:space-y-12">
 
       {/* 1. HERO */}
-      <section className="relative overflow-hidden pt-8 pb-14 md:pt-14 md:pb-20 border-b border-[#006B5B]/10 bg-[#FAFAF7]">
+      <section className="relative overflow-hidden pt-6 pb-8 md:pt-10 md:pb-12 border-b border-[#006B5B]/10 bg-[#FAFAF7]">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-80 bg-gradient-to-b from-[#006B5B]/5 to-transparent rounded-full blur-3xl pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center max-w-3xl mx-auto space-y-6">
@@ -107,9 +107,9 @@ export default function Home() {
 
       {/* 2. QUICK CARDS */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-[#004D40]">শুরু করবেন?</h2>
-          <p className="text-xs md:text-sm text-gray-500 mt-1">সহজ পদ্ধতিতে নিজেকে আপনার রুকইয়াহ কার্যক্রম বেছে নিন</p>
+        <div className="text-center mb-6">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#004D40]">কোথা থেকে শুরু করবেন?</h2>
+          <p className="text-xs md:text-sm text-gray-500 mt-1">আপনার প্রয়োজন অনুযায়ী সঠিক সেবাটি বেছে নিন</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Link href="/assessment" className="group flex flex-col bg-white border-2 border-[#006B5B]/20 hover:border-[#006B5B] rounded-3xl shadow-xs hover:shadow-md transition-all overflow-hidden relative">

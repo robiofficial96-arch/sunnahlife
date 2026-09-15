@@ -1264,19 +1264,33 @@ export const HAFIZI_SURAHS: HafiziSurah[] = [
   }
 ];
 
+export type HafiziEdition = "emdadia" | "tajweed";
+
 /**
- * রিটার্ন করে নির্দিষ্ট পৃষ্ঠার জন্য CDN ইমেজ ইউআরএল (কালার কোডেড তাজবীদ ১৫ লাইনের হাফেজী কুরআন)
- * ইমেজ ইনডেক্স = পৃষ্ঠা নম্বর + ২৭ (যেমন: পৃষ্ঠা ২ = img-029.jpg, পৃষ্ঠা ৩ = img-030.jpg, পৃষ্ঠা ৬১১ = img-638.jpg)
+ * রিটার্ন করে নির্দিষ্ট পৃষ্ঠার জন্য ইমেজ ইউআরএল
+ * - "emdadia": ঐতিহ্যবাহী আসল বাংলাদেশী ১৫ লাইনের হাফেজী কুরআন (ইমদাদিয়া লাইব্রেরী চকবাজার, ঢাকা)
+ * - "tajweed": ১৫ লাইনের কালার কোডেড তাজবীদ ছাপা
  */
-export function getHafiziPageImageUrl(page: number): string {
+export function getHafiziPageImageUrl(page: number, edition: HafiziEdition = "emdadia"): string {
   const clamped = Math.max(MIN_HAFIZI_PAGE, Math.min(MAX_HAFIZI_PAGE, page));
+  if (edition === "emdadia") {
+    // পৃষ্ঠা ২ -> n1.jpg, পৃষ্ঠা ৩ -> n2.jpg, ..., পৃষ্ঠা ৬১১ -> n610.jpg
+    const n = clamped - 1;
+    return `https://archive.org/download/ImdadiaHafeziQuran/page/n${n}.jpg`;
+  }
   const imgIndex = clamped + 27;
   const padded = String(imgIndex).padStart(3, "0");
   return `https://cdn.jsdelivr.net/gh/chitholian/Al-Quran-Color-Coded@master/images/img-${padded}.jpg`;
 }
 
-export function getHafiziPageFallbackUrl(page: number): string {
+export function getHafiziPageFallbackUrl(page: number, edition: HafiziEdition = "emdadia"): string {
   const clamped = Math.max(MIN_HAFIZI_PAGE, Math.min(MAX_HAFIZI_PAGE, page));
+  if (edition === "emdadia") {
+    // Fallback: Tajweed color coded if archive network issue
+    const imgIndex = clamped + 27;
+    const padded = String(imgIndex).padStart(3, "0");
+    return `https://cdn.jsdelivr.net/gh/chitholian/Al-Quran-Color-Coded@master/images/img-${padded}.jpg`;
+  }
   const imgIndex = clamped + 27;
   const padded = String(imgIndex).padStart(3, "0");
   return `https://raw.githubusercontent.com/chitholian/Al-Quran-Color-Coded/master/images/img-${padded}.jpg`;
