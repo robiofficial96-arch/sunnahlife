@@ -32,12 +32,17 @@ import {
   Share2,
   Check,
   Smartphone,
+  DownloadCloud,
+  CheckCircle2,
+  WifiOff,
 } from "lucide-react";
 
 interface HafiziQuranReaderProps {
   initialPage?: number;
   onSwitchToDigital?: () => void;
 }
+
+const CACHE_NAME = "sunnahlife_quran_cache_v1";
 
 export default function HafiziQuranReader({
   initialPage = 2,
@@ -48,7 +53,7 @@ export default function HafiziQuranReader({
   const [zoomLevel, setZoomLevel] = useState<number>(100);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [edition, setEdition] = useState<HafiziEdition>("emdadia");
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
   const [imageError, setImageError] = useState<boolean>(false);
   const [useFallback, setUseFallback] = useState<boolean>(false);
   const [showTajweedLegend, setShowTajweedLegend] = useState<boolean>(false);
@@ -57,9 +62,29 @@ export default function HafiziQuranReader({
   const [bookmarkPage, setBookmarkPage] = useState<number | null>(null);
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
 
+  // Offline Para Download state
+  const [isDownloadingPara, setIsDownloadingPara] = useState<boolean>(false);
+  const [downloadProgress, setDownloadProgress] = useState<{ current: number; total: number } | null>(null);
+  const [isParaCached, setIsParaCached] = useState<boolean>(false);
+  const [isOffline, setIsOffline] = useState<boolean>(false);
+
   const containerRef = useRef<HTMLDivElement | null>(null);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
+  const preloadedUrls = useRef<Set<string>>(new Set());
+
+  // Online / offline detector
+  useEffect(() => {
+    setIsOffline(!navigator.onLine);
+    const handleOnline = () => setIsOffline(false);
+    const handleOffline = () => setIsOffline(true);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
 
   // Load bookmark and edition from localStorage
   useEffect(() => {
@@ -90,7 +115,29 @@ export default function HafiziQuranReader({
     }
   }, [initialPage]);
 
-  // Persist current page and reset error states
+  const currentPara: HafiziPara = getParaByPage(currentPage);
+  const currentSurah: HafiziSurah = getSurahByPage(currentPage);
+
+  // Cache verification for current Para
+  const checkParaCacheStatus = useCallback(async (para: HafiziPara, ed: HafiziEdition) => {
+    if (typeof window === "undefined" || !("caches" in window)) return;
+    try {
+      const cache = await caches.open(CACHE_NAME);
+      const startUrl = getHafiziPageImageUrl(para.startPage, ed);
+      const endUrl = getHafiziPageImageUrl(para.endPage, ed);
+      const hasStart = await cache.match(startUrl);
+      const hasEnd = await cache.match(endUrl);
+      setIsParaCached(!!hasStart && !!hasEnd);
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  useEffect(() => {
+    checkParaCacheStatus(currentPara, edition);
+  }, [currentPara, edition, checkParaCacheStatus]);
+
+  // Aggressive Background Multi-Page Preloader (Next 4 pages + Prev 2 pages)
   useEffect(() => {
     try {
       localStorage.setItem("sunnahlife_hafizi_last_page", String(currentPage));
@@ -98,13 +145,43 @@ export default function HafiziQuranReader({
       // ignore
     }
     setPageInput(String(currentPage));
-    setIsLoading(true);
     setImageError(false);
     setUseFallback(false);
-  }, [currentPage, edition]);
 
-  const currentPara: HafiziPara = getParaByPage(currentPage);
-  const currentSurah: HafiziSurah = getSurahByPage(currentPage);
+    // Eagerly prefetch and decode into RAM & CacheStorage
+    const pagesToPreload = [
+      currentPage + 1,
+      currentPage + 2,
+      currentPage + 3,
+      currentPage + 4,
+      currentPage - 1,
+      currentPage - 2,
+    ].filter((p) => p >= MIN_HAFIZI_PAGE && p <= MAX_HAFIZI_PAGE);
+
+    pagesToPreload.forEach((p) => {
+      const url = getHafiziPageImageUrl(p, edition);
+      if (!preloadedUrls.current.has(url)) {
+        preloadedUrls.current.add(url);
+        // Preload in memory
+        const img = new window.Image();
+        img.src = url;
+        // Also persist in Cache API for offline / instant reload
+        if (typeof window !== "undefined" && "caches" in window) {
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.match(url).then((matched) => {
+              if (!matched) {
+                fetch(url, { mode: "cors" })
+                  .then((res) => {
+                    if (res.ok) cache.put(url, res);
+                  })
+                  .catch(() => {});
+              }
+            });
+          }).catch(() => {});
+        }
+      }
+    });
+  }, [currentPage, edition]);
 
   const goToPage = useCallback((p: number) => {
     const clamped = Math.max(MIN_HAFIZI_PAGE, Math.min(MAX_HAFIZI_PAGE, p));
@@ -126,10 +203,49 @@ export default function HafiziQuranReader({
 
   const handleEditionChange = (newEd: HafiziEdition) => {
     setEdition(newEd);
+    setImageLoaded(false);
     try {
       localStorage.setItem("sunnahlife_hafizi_edition", newEd);
     } catch {
       // ignore
+    }
+  };
+
+  // Download entire current Para for 100% offline reading with 0 loading
+  const handleDownloadPara = async () => {
+    if (isDownloadingPara || typeof window === "undefined" || !("caches" in window)) return;
+    setIsDownloadingPara(true);
+    const start = currentPara.startPage;
+    const end = currentPara.endPage;
+    const total = end - start + 1;
+    setDownloadProgress({ current: 0, total });
+
+    try {
+      const cache = await caches.open(CACHE_NAME);
+      let count = 0;
+
+      for (let p = start; p <= end; p++) {
+        const url = getHafiziPageImageUrl(p, edition);
+        const existing = await cache.match(url);
+        if (!existing) {
+          try {
+            const resp = await fetch(url, { mode: "cors" });
+            if (resp.ok) {
+              await cache.put(url, resp);
+            }
+          } catch {
+            // fallback
+          }
+        }
+        count++;
+        setDownloadProgress({ current: count, total });
+      }
+      setIsParaCached(true);
+    } catch {
+      // ignore
+    } finally {
+      setIsDownloadingPara(false);
+      setTimeout(() => setDownloadProgress(null), 3000);
     }
   };
 
@@ -171,7 +287,7 @@ export default function HafiziQuranReader({
   const handleTouchEnd = () => {
     if (!touchStartX.current || !touchEndX.current) return;
     const diff = touchStartX.current - touchEndX.current;
-    if (Math.abs(diff) > 40) {
+    if (Math.abs(diff) > 35) {
       if (diff > 0) {
         handleNextPage();
       } else {
@@ -194,7 +310,7 @@ export default function HafiziQuranReader({
     }
   };
 
-  // Fullscreen toggle: works reliably across iOS Safari, Android and Desktop
+  // Fullscreen toggle: works on Mobile and Desktop
   const toggleFullscreen = () => {
     if (!isFullscreen) {
       setIsFullscreen(true);
@@ -244,31 +360,34 @@ export default function HafiziQuranReader({
     }
   };
 
-  const imageUrl = useFallback
+  const currentImageUrl = useFallback
     ? getHafiziPageFallbackUrl(currentPage, edition)
     : getHafiziPageImageUrl(currentPage, edition);
-
-  const nextPageUrl = currentPage < MAX_HAFIZI_PAGE ? getHafiziPageImageUrl(currentPage + 1, edition) : null;
-  const prevPageUrl = currentPage > MIN_HAFIZI_PAGE ? getHafiziPageImageUrl(currentPage - 1, edition) : null;
 
   return (
     <div
       ref={containerRef}
       className={`relative w-full transition-colors ${
         isFullscreen
-          ? "fixed inset-0 z-[100] bg-[#07130F] text-white flex flex-col justify-between w-screen h-screen overflow-hidden select-none"
+          ? "fixed inset-0 z-[100] bg-[#06120D] text-white flex flex-col justify-between w-screen h-screen overflow-hidden select-none"
           : "space-y-4 sm:space-y-6"
       }`}
     >
-      {/* Prefetch next and previous page images */}
-      {nextPageUrl && <link rel="prefetch" href={nextPageUrl} as="image" />}
-      {prevPageUrl && <link rel="prefetch" href={prevPageUrl} as="image" />}
+      {/* Offline Status Badge if disconnected */}
+      {isOffline && (
+        <div className="bg-amber-600 text-white text-xs font-semibold px-4 py-1.5 text-center flex items-center justify-center gap-2 shadow-xs">
+          <WifiOff className="w-3.5 h-3.5" />
+          <span>অফলাইন মোড সক্রিয় — সংরক্ষিত ক্যাশ থেকে কুরআন লোড হচ্ছে (কোনো ইন্টারনেট প্রয়োজন নেই)</span>
+        </div>
+      )}
 
-      {/* FULLSCREEN IMMERSION MODE */}
+      {/* =========================================================================
+          VIEW A: FULLSCREEN IMMERSION MODE (NO SPINNERS, ZERO BLANK SCREEN)
+         ========================================================================= */}
       {isFullscreen ? (
         <div className="flex flex-col h-full w-full justify-between">
           {/* Top Compact Floating Toolbar */}
-          <div className="bg-[#0B1E17]/95 backdrop-blur-md border-b border-[#006B5B]/30 px-3 py-2 sm:px-6 sm:py-3 flex items-center justify-between gap-2 z-20 shrink-0">
+          <div className="bg-[#0B1E17]/95 backdrop-blur-md border-b border-[#006B5B]/30 px-3 py-2 sm:px-6 sm:py-2.5 flex items-center justify-between gap-2 z-20 shrink-0">
             <div className="flex items-center gap-2 min-w-0">
               <button
                 onClick={toggleFullscreen}
@@ -289,7 +408,7 @@ export default function HafiziQuranReader({
               </div>
             </div>
 
-            {/* Middle: Edition selector in fullscreen */}
+            {/* Middle: Edition switch */}
             <div className="flex items-center bg-black/40 rounded-xl p-0.5 border border-emerald-900/50 text-[11px]">
               <button
                 onClick={() => handleEditionChange("emdadia")}
@@ -313,33 +432,59 @@ export default function HafiziQuranReader({
               </button>
             </div>
 
-            {/* Right: Quick Tools */}
+            {/* Right: Quick Tools & Offline download */}
             <div className="flex items-center gap-1.5">
+              <button
+                onClick={handleDownloadPara}
+                disabled={isDownloadingPara}
+                className={`px-2 py-1 rounded-lg text-xs flex items-center gap-1 cursor-pointer transition-all ${
+                  isParaCached
+                    ? "bg-emerald-800/60 text-emerald-200 border border-emerald-500/40"
+                    : "bg-white/10 hover:bg-white/20 text-emerald-100"
+                }`}
+                title="চলমান পারার সব পেজ অফলাইনে সেভ করুন"
+              >
+                {isDownloadingPara ? (
+                  <>
+                    <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <span className="hidden sm:inline">
+                      {downloadProgress ? `${downloadProgress.current}/${downloadProgress.total}` : "ডাউনলোড..."}
+                    </span>
+                  </>
+                ) : isParaCached ? (
+                  <>
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#25D366]" />
+                    <span className="hidden sm:inline">অফলাইন রেডি</span>
+                  </>
+                ) : (
+                  <>
+                    <DownloadCloud className="w-3.5 h-3.5 text-[#F2C94C]" />
+                    <span className="hidden sm:inline">পারা {currentPara.number} অফলাইন</span>
+                  </>
+                )}
+              </button>
+
               <button
                 onClick={() => setShowParaModal(true)}
                 className="px-2 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs text-emerald-200 cursor-pointer"
-                title="পারা সূচি"
               >
                 পারা
               </button>
               <button
                 onClick={() => setShowSurahModal(true)}
                 className="px-2 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs text-emerald-200 cursor-pointer"
-                title="সূরা সূচি"
               >
                 সূরা
               </button>
               <button
                 onClick={() => setZoomLevel((z) => Math.max(70, z - 15))}
                 className="p-1 rounded-lg bg-white/10 text-xs text-emerald-200 cursor-pointer"
-                title="জুম কমান"
               >
                 <ZoomOut className="w-3.5 h-3.5" />
               </button>
               <button
                 onClick={() => setZoomLevel((z) => Math.min(180, z + 15))}
                 className="p-1 rounded-lg bg-white/10 text-xs text-emerald-200 cursor-pointer"
-                title="জুম বাড়ান"
               >
                 <ZoomIn className="w-3.5 h-3.5" />
               </button>
@@ -350,26 +495,24 @@ export default function HafiziQuranReader({
                     ? "bg-[#D4A017] text-white"
                     : "bg-white/10 text-emerald-200 hover:bg-white/20"
                 }`}
-                title="বুকমার্ক"
               >
                 <Bookmark className="w-3.5 h-3.5 fill-current" />
               </button>
             </div>
           </div>
 
-          {/* Middle: Fullscreen Quran Page View */}
+          {/* Middle: Fullscreen Quran Page View with Zero-Flicker Double Buffering */}
           <div
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
-            className="flex-1 relative flex items-center justify-center overflow-auto p-1 sm:p-3"
+            className="flex-1 relative flex items-center justify-center overflow-auto p-1 sm:p-2"
           >
-            {isLoading && (
-              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/60 backdrop-blur-xs">
-                <div className="w-10 h-10 border-3 border-[#006B5B]/30 border-t-[#25D366] rounded-full animate-spin mb-3" />
-                <p className="text-xs font-semibold text-emerald-200">
-                  পৃষ্ঠা {currentPage} লোড হচ্ছে...
-                </p>
+            {/* Smooth corner indicator if loading first time */}
+            {!imageLoaded && !imageError && (
+              <div className="absolute top-3 right-3 z-30 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-md text-emerald-300 text-[11px] font-semibold border border-emerald-900/40">
+                <div className="w-3 h-3 border-2 border-emerald-400/30 border-t-emerald-400 rounded-full animate-spin" />
+                <span>পৃষ্ঠা {currentPage} ক্যাশ হচ্ছে...</span>
               </div>
             )}
 
@@ -382,7 +525,6 @@ export default function HafiziQuranReader({
                   onClick={() => {
                     setImageError(false);
                     setUseFallback(true);
-                    setIsLoading(true);
                   }}
                   className="px-4 py-2 rounded-xl bg-[#006B5B] text-white text-xs font-semibold cursor-pointer"
                 >
@@ -397,16 +539,16 @@ export default function HafiziQuranReader({
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={imageUrl}
+                key={`fs-${edition}-${currentPage}`}
+                src={currentImageUrl}
                 alt={`১৫ লাইনের হাফেজী কুরআন - পৃষ্ঠা ${currentPage}`}
-                className="max-h-[calc(100dvh-115px)] w-auto max-w-full object-contain mx-auto select-none rounded-md shadow-2xl bg-white"
-                onLoad={() => setIsLoading(false)}
+                className="max-h-[calc(100dvh-110px)] w-auto max-w-full object-contain mx-auto select-none rounded-md shadow-2xl bg-white transition-opacity duration-200"
+                onLoad={() => setImageLoaded(true)}
                 onError={() => {
                   if (!useFallback) {
                     setUseFallback(true);
                   } else {
                     setImageError(true);
-                    setIsLoading(false);
                   }
                 }}
                 draggable={false}
@@ -428,12 +570,12 @@ export default function HafiziQuranReader({
             />
           </div>
 
-          {/* Bottom Compact Controller in Fullscreen */}
+          {/* Bottom Compact Controller */}
           <div className="bg-[#0B1E17]/95 backdrop-blur-md border-t border-[#006B5B]/30 px-3 py-2 sm:px-6 sm:py-2.5 flex items-center justify-between gap-3 shrink-0 z-20">
             <button
               onClick={handlePrevPage}
               disabled={currentPage <= MIN_HAFIZI_PAGE}
-              className="px-3 sm:px-4 py-2 rounded-xl bg-[#006B5B] hover:bg-[#008975] disabled:opacity-30 text-white text-xs font-bold flex items-center gap-1 cursor-pointer transition-all shadow-md active:scale-95"
+              className="px-3.5 sm:px-4 py-2 rounded-xl bg-[#006B5B] hover:bg-[#008975] disabled:opacity-30 text-white text-xs font-bold flex items-center gap-1 cursor-pointer transition-all shadow-md active:scale-95"
             >
               <ChevronLeft className="w-4 h-4" />
               <span>পূর্ববর্তী</span>
@@ -459,7 +601,7 @@ export default function HafiziQuranReader({
             <button
               onClick={handleNextPage}
               disabled={currentPage >= MAX_HAFIZI_PAGE}
-              className="px-3 sm:px-4 py-2 rounded-xl bg-[#006B5B] hover:bg-[#008975] disabled:opacity-30 text-white text-xs font-bold flex items-center gap-1 cursor-pointer transition-all shadow-md active:scale-95"
+              className="px-3.5 sm:px-4 py-2 rounded-xl bg-[#006B5B] hover:bg-[#008975] disabled:opacity-30 text-white text-xs font-bold flex items-center gap-1 cursor-pointer transition-all shadow-md active:scale-95"
             >
               <span>পরবর্তী</span>
               <ChevronRight className="w-4 h-4" />
@@ -467,7 +609,9 @@ export default function HafiziQuranReader({
           </div>
         </div>
       ) : (
-        /* STANDARD WEB PAGE VIEW */
+        /* =========================================================================
+            VIEW B: STANDARD WEB EMBEDDED MODE
+           ========================================================================= */
         <>
           {/* Top Controls & Navigation Bar */}
           <div className="bg-white rounded-3xl border border-[#006B5B]/15 shadow-xs p-4 sm:p-5 space-y-4">
@@ -492,8 +636,37 @@ export default function HafiziQuranReader({
                 </div>
               </div>
 
-              {/* Quick Selectors Modal Triggers */}
+              {/* Quick Selectors & Offline Para Download */}
               <div className="flex items-center gap-2 flex-wrap">
+                {/* One-click Para Offline Download Button */}
+                <button
+                  onClick={handleDownloadPara}
+                  disabled={isDownloadingPara}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+                    isParaCached
+                      ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                      : "bg-[#006B5B]/5 hover:bg-[#006B5B]/10 text-[#006B5B] border border-[#006B5B]/20"
+                  }`}
+                  title="চলমান পারার সব পেজ অফলাইনে সেভ করুন"
+                >
+                  {isDownloadingPara ? (
+                    <>
+                      <div className="w-3.5 h-3.5 border-2 border-[#006B5B]/30 border-t-[#006B5B] rounded-full animate-spin" />
+                      <span>{downloadProgress ? `সংরক্ষণ হচ্ছে: ${downloadProgress.current}/${downloadProgress.total}` : "ডাউনলোড..."}</span>
+                    </>
+                  ) : isParaCached ? (
+                    <>
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>পারা {currentPara.number} অফলাইনে প্রস্তুত</span>
+                    </>
+                  ) : (
+                    <>
+                      <DownloadCloud className="w-3.5 h-3.5 text-[#D4A017]" />
+                      <span>পারা {currentPara.number} অফলাইনে সেভ করুন</span>
+                    </>
+                  )}
+                </button>
+
                 <button
                   onClick={() => setShowParaModal(true)}
                   className="px-3 py-1.5 rounded-xl border border-gray-200 text-xs font-semibold text-gray-700 hover:border-[#006B5B] hover:text-[#006B5B] hover:bg-[#006B5B]/5 transition-all flex items-center gap-1.5 cursor-pointer"
@@ -518,11 +691,6 @@ export default function HafiziQuranReader({
                       ? "bg-[#D4A017] text-white shadow-xs"
                       : "border border-gray-200 text-gray-700 hover:bg-gray-50"
                   }`}
-                  title={
-                    bookmarkPage === currentPage
-                      ? "বুকমার্ক মুছে ফেলুন"
-                      : "এই পৃষ্ঠায় বুকমার্ক রাখুন"
-                  }
                 >
                   {bookmarkPage === currentPage ? (
                     <>
@@ -639,7 +807,6 @@ export default function HafiziQuranReader({
                   <button
                     onClick={() => setZoomLevel((z) => Math.max(75, z - 15))}
                     className="p-1 rounded-lg hover:bg-white text-gray-600 transition-colors cursor-pointer"
-                    title="জুম কমান"
                   >
                     <ZoomOut className="w-3.5 h-3.5" />
                   </button>
@@ -649,7 +816,6 @@ export default function HafiziQuranReader({
                   <button
                     onClick={() => setZoomLevel((z) => Math.min(180, z + 15))}
                     className="p-1 rounded-lg hover:bg-white text-gray-600 transition-colors cursor-pointer"
-                    title="জুম বাড়ান"
                   >
                     <ZoomIn className="w-3.5 h-3.5" />
                   </button>
@@ -657,7 +823,6 @@ export default function HafiziQuranReader({
                     <button
                       onClick={() => setZoomLevel(100)}
                       className="p-1 rounded-lg hover:bg-white text-gray-500 transition-colors ml-0.5 cursor-pointer"
-                      title="রিসেট"
                     >
                       <RotateCcw className="w-3 h-3" />
                     </button>
@@ -673,7 +838,6 @@ export default function HafiziQuranReader({
                         ? "bg-amber-100/70 border-amber-300 text-amber-900"
                         : "border-gray-200 text-gray-600 hover:bg-gray-50"
                     }`}
-                    title="কালার কোডেড তাজবীদ নিয়মাবলী"
                   >
                     <Sparkles className="w-3.5 h-3.5 text-[#D4A017]" />
                     <span className="hidden md:inline">তাজবীদ</span>
@@ -684,7 +848,6 @@ export default function HafiziQuranReader({
                 <button
                   onClick={handleShare}
                   className="p-2 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-semibold transition-all cursor-pointer"
-                  title="পৃষ্ঠার লিংক কপি করুন"
                 >
                   {copiedLink ? (
                     <Check className="w-3.5 h-3.5 text-emerald-600" />
@@ -772,24 +935,21 @@ export default function HafiziQuranReader({
             )}
           </div>
 
-          {/* Main Quran Page Viewer Frame */}
+          {/* Main Quran Page Viewer Frame with Double-Buffering */}
           <div
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
             className="relative flex items-center justify-center min-h-[480px] md:min-h-[750px] overflow-hidden rounded-3xl transition-all bg-[#1B362E]/5 border border-[#006B5B]/15 shadow-md p-2 sm:p-6"
           >
-            {/* Loading Spinner */}
-            {isLoading && (
-              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/80 backdrop-blur-xs rounded-3xl">
-                <div className="w-10 h-10 border-3 border-[#006B5B]/20 border-t-[#006B5B] rounded-full animate-spin mb-3" />
-                <p className="text-xs font-semibold text-[#004D40]">
-                  পৃষ্ঠা {currentPage} লোড হচ্ছে...
-                </p>
+            {/* Non-intrusive corner loading badge if first time */}
+            {!imageLoaded && !imageError && (
+              <div className="absolute top-4 right-4 z-20 flex items-center gap-2 px-3 py-1 rounded-full bg-white/90 shadow-sm border border-emerald-200 text-xs font-semibold text-[#004D40]">
+                <div className="w-3 h-3 border-2 border-[#006B5B]/30 border-t-[#006B5B] rounded-full animate-spin" />
+                <span>পৃষ্ঠা {currentPage} ক্যাশ হচ্ছে...</span>
               </div>
             )}
 
-            {/* Error State */}
             {imageError && (
               <div className="text-center py-16 px-4 space-y-3">
                 <p className="text-sm text-red-600 font-semibold">
@@ -799,7 +959,6 @@ export default function HafiziQuranReader({
                   onClick={() => {
                     setImageError(false);
                     setUseFallback(true);
-                    setIsLoading(true);
                   }}
                   className="px-4 py-2 rounded-xl bg-[#006B5B] text-white text-xs font-semibold cursor-pointer"
                 >
@@ -816,16 +975,16 @@ export default function HafiziQuranReader({
               <div className="relative shadow-2xl rounded-2xl overflow-hidden border-2 sm:border-4 border-[#D4A017]/30 bg-white">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={imageUrl}
+                  key={`std-${edition}-${currentPage}`}
+                  src={currentImageUrl}
                   alt={`১৫ লাইনের হাফেজী কুরআন - পৃষ্ঠা ${currentPage}`}
-                  className="max-h-[72vh] sm:max-h-[85vh] w-auto object-contain mx-auto select-none"
-                  onLoad={() => setIsLoading(false)}
+                  className="max-h-[72vh] sm:max-h-[85vh] w-auto object-contain mx-auto select-none transition-opacity duration-150"
+                  onLoad={() => setImageLoaded(true)}
                   onError={() => {
                     if (!useFallback) {
                       setUseFallback(true);
                     } else {
                       setImageError(true);
-                      setIsLoading(false);
                     }
                   }}
                   draggable={false}
@@ -858,7 +1017,7 @@ export default function HafiziQuranReader({
             <div className="flex items-center gap-2">
               <Info className="w-4 h-4 text-[#006B5B] shrink-0" />
               <span>
-                টিপস: ফোনে সম্পূর্ণ পর্দায় পড়তে উপরে <strong>&quot;ফুলস্ক্রিন মোড&quot;</strong> চাপুন। পৃষ্ঠা বদলাতে স্ক্রীনে সোয়াইপ করুন।
+                টিপস: নিরবচ্ছিন্ন অফলাইন পড়ার জন্য উপরে <strong>&quot;পারা অফলাইনে সেভ করুন&quot;</strong> বাটনে চাপ দিন।
               </span>
             </div>
 
@@ -876,7 +1035,6 @@ export default function HafiziQuranReader({
       )}
 
       {/* MODALS: PARA & SURAH SELECTORS */}
-      {/* Para Selector Modal */}
       {showParaModal && (
         <div className="fixed inset-0 z-[110] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden border border-gray-100 text-gray-900">

@@ -1274,9 +1274,10 @@ export type HafiziEdition = "emdadia" | "tajweed";
 export function getHafiziPageImageUrl(page: number, edition: HafiziEdition = "emdadia"): string {
   const clamped = Math.max(MIN_HAFIZI_PAGE, Math.min(MAX_HAFIZI_PAGE, page));
   if (edition === "emdadia") {
-    // পৃষ্ঠা ২ -> n1.jpg, পৃষ্ঠা ৩ -> n2.jpg, ..., পৃষ্ঠা ৬১১ -> n610.jpg
+    // পৃষ্ঠা ২ -> n1.jpg, ..., পৃষ্ঠা ৬১১ -> n610.jpg
     const n = clamped - 1;
-    return `https://archive.org/download/ImdadiaHafeziQuran/page/n${n}.jpg`;
+    // Cloudflare Global Edge CDN (Dhaka/Chittagong peering) + WebP compression for instant 0ms/fast load
+    return `https://wsrv.nl/?url=https://archive.org/download/ImdadiaHafeziQuran/page/n${n}.jpg&w=1200&output=webp&q=82`;
   }
   const imgIndex = clamped + 27;
   const padded = String(imgIndex).padStart(3, "0");
@@ -1286,10 +1287,9 @@ export function getHafiziPageImageUrl(page: number, edition: HafiziEdition = "em
 export function getHafiziPageFallbackUrl(page: number, edition: HafiziEdition = "emdadia"): string {
   const clamped = Math.max(MIN_HAFIZI_PAGE, Math.min(MAX_HAFIZI_PAGE, page));
   if (edition === "emdadia") {
-    // Fallback: Tajweed color coded if archive network issue
-    const imgIndex = clamped + 27;
-    const padded = String(imgIndex).padStart(3, "0");
-    return `https://cdn.jsdelivr.net/gh/chitholian/Al-Quran-Color-Coded@master/images/img-${padded}.jpg`;
+    const n = clamped - 1;
+    // Direct archive.org fallback
+    return `https://archive.org/download/ImdadiaHafeziQuran/page/n${n}.jpg`;
   }
   const imgIndex = clamped + 27;
   const padded = String(imgIndex).padStart(3, "0");
