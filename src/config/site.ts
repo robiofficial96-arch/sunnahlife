@@ -6,7 +6,7 @@ export const SITE_CONFIG = {
   raqiWhatsAppNumber: process.env.NEXT_PUBLIC_RAQI_WHATSAPP_NUMBER || "8801676820060",
   helplinePhone: "01676820060",
   contactEmail: "contact@sunnahlife.bd",
-  officeAddress: "ঢাকা, বাংলাদেশ",
+  officeAddress: "কামরাঙ্গীরচর রনি মার্কেট কাঠপট্রি জমজম টাওয়ারের ২য় তলায় ঢাকা।",
   googleMapsUrl: "https://maps.app.goo.gl/qQHmNdEwtJU6apL48",
   socialLinks: {
     facebook: "https://www.facebook.com/sunnahlifecarebd",

@@ -111,16 +111,21 @@ export default function Footer() {
                 </a>
               </div>
 
-              <div className="flex items-center gap-2 text-gray-700">
-                <MapPin className="w-4 h-4 text-[#006B5B]" />
-                <a 
-                  href={SITE_CONFIG.googleMapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-[#006B5B] underline"
-                >
-                  গুগল ম্যাপে লোকেশন দেখুন
-                </a>
+              <div className="flex items-start gap-2 text-gray-700">
+                <MapPin className="w-4 h-4 text-[#006B5B] shrink-0 mt-0.5" />
+                <div className="leading-snug">
+                  <p className="text-gray-700 font-medium">
+                    কামরাঙ্গীরচর রনি মার্কেট কাঠপট্রি জমজম টাওয়ারের ২য় তলায় ঢাকা।
+                  </p>
+                  <a 
+                    href={SITE_CONFIG.googleMapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#006B5B] hover:underline text-[11px] inline-flex items-center gap-1 font-semibold mt-0.5"
+                  >
+                    গুগল ম্যাপে লোকেশন দেখুন ↗
+                  </a>
+                </div>
               </div>
 
               {/* Social Buttons */}
