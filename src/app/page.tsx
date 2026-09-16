@@ -24,13 +24,13 @@ function WhatsAppOfficialIcon({ className = "w-5 h-5" }: { className?: string })
 
 export default function Home() {
   return (
-    <div>
+    <div className="space-y-8 md:space-y-12">
 
       {/* 1. HERO */}
-      <section className="relative overflow-hidden pt-5 pb-2 md:pt-7 md:pb-3 bg-[#FAFAF7]">
+      <section className="relative overflow-hidden pt-6 pb-1 md:pt-8 md:pb-1 bg-[#FAFAF7]">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-80 bg-gradient-to-b from-[#006B5B]/5 to-transparent rounded-full blur-3xl pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="text-center max-w-3xl mx-auto space-y-4">
+          <div className="text-center max-w-3xl mx-auto space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#006B5B]/10 border border-[#006B5B]/20 text-[#006B5B] text-xs md:text-sm font-semibold shadow-2xs">
               <Sparkles className="w-3.5 h-3.5 text-[#D4A017]" />
               <span>কুরআন ও সহীহ সুন্নাহর আলোকে পরিচালিত</span>
@@ -50,7 +50,7 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="w-full max-w-md md:max-w-3xl mx-auto space-y-3 pt-1">
+            <div className="w-full max-w-md md:max-w-3xl mx-auto space-y-3.5 pt-2">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-3.5">
                 <Link href="/assessment" className="w-full p-2.5 sm:p-3 rounded-full bg-[#004D40] hover:bg-[#00382E] text-white shadow-md shadow-[#004D40]/20 transition-all flex items-center justify-between gap-2.5 group active:scale-98">
                   <div className="flex items-center gap-2.5 text-left pl-1">
@@ -106,7 +106,7 @@ export default function Home() {
       </section>
 
       {/* 2. QUICK CARDS */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-2 sm:mt-3">
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 !mt-0 md:!-mt-1">
         <div className="text-center mb-3 sm:mb-4">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#004D40]">কোথা থেকে শুরু করবেন?</h2>
           <p className="text-xs md:text-sm text-gray-500 mt-0.5">আপনার প্রয়োজন অনুযায়ী সঠিক সেবাটি বেছে নিন</p>
@@ -159,7 +159,7 @@ export default function Home() {
       </section>
 
       {/* 3. SERVICES GRID */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 md:mt-12">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-6">
           <h2 className="text-xl md:text-2xl font-bold text-[#004D40]">আমাদের সকল সেবা</h2>
           <p className="text-xs sm:text-sm text-gray-500 mt-1">আপনার প্রয়োজনীয় সেবাটি বেছে নিন</p>
@@ -188,8 +188,10 @@ export default function Home() {
         </div>
       </section>
 
+
+
       {/* 6. APPOINTMENT BANNER */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 md:mt-12">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="p-8 md:p-10 rounded-3xl bg-radial from-[#006B5B] to-[#004D40] text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
           <div className="space-y-2 text-center md:text-left">
             <span className="text-xs text-[#F2C94C] font-semibold tracking-wider uppercase">সরাসরি রাক্বীর সেবা</span>
@@ -204,7 +206,7 @@ export default function Home() {
       </section>
 
       {/* 7. FRAUD AWARENESS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 md:mt-12 pb-8">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
         <div className="rounded-3xl bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-300 p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="space-y-1.5">
             <div className="flex items-center gap-2 text-amber-800 font-bold text-sm">
