@@ -80,6 +80,17 @@ export interface PatientRecord {
   nextFollowupNote?: string;
 }
 
+export const PRESET_PROBLEM_CATEGORIES = [
+  "বদনজর (Evil Eye)",
+  "সিহর / জাদু (Black Magic)",
+  "জিনের সমস্যা ও আছর",
+  "ওয়াসওয়াসা ও মানসিক অস্থিরতা",
+  "হিজামা ও শারীরিক ব্যথা",
+  "দাম্পত্য ও পারিবারিক বিরোধ",
+  "সাধারণ শারঈ রুকইয়াহ",
+  "অন্যান্য সমস্যা",
+];
+
 export const getLocalDateString = (d: Date = new Date()) => {
   const year = d.getFullYear();
   const month = String(d.getMonth() + 1).padStart(2, "0");
@@ -230,6 +241,33 @@ export default function AdminDashboardPage() {
     nextFollowupDate: "",
     nextFollowupNote: "",
   });
+  const [customCategoryInput, setCustomCategoryInput] = useState("");
+
+  const currentCategories = (patientForm.problemType || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  const handleToggleCategory = (cat: string) => {
+    let updated: string[];
+    if (currentCategories.includes(cat)) {
+      updated = currentCategories.filter((c) => c !== cat);
+    } else {
+      updated = [...currentCategories, cat];
+    }
+    setPatientForm({ ...patientForm, problemType: updated.join(", ") });
+  };
+
+  const handleAddCustomCategory = () => {
+    const trimmed = customCategoryInput.trim();
+    if (!trimmed) return;
+    if (!currentCategories.includes(trimmed)) {
+      const updated = [...currentCategories, trimmed];
+      setPatientForm({ ...patientForm, problemType: updated.join(", ") });
+    }
+    setCustomCategoryInput("");
+  };
+
   const [searchFilter, setSearchFilter] = useState("");
   const [popupConfig, setPopupConfig] = useState<PopupNoticeConfig>(DEFAULT_POPUP_CONFIG);
   const [popupSaveMessage, setPopupSaveMessage] = useState("");
@@ -538,6 +576,7 @@ export default function AdminDashboardPage() {
 
   const handleOpenAddPatient = () => {
     setEditingPatientId(null);
+    setCustomCategoryInput("");
     setPatientForm({
       name: "",
       phone: "",
@@ -557,6 +596,7 @@ export default function AdminDashboardPage() {
 
   const handleOpenEditPatient = (p: PatientRecord) => {
     setEditingPatientId(p.id);
+    setCustomCategoryInput("");
     setPatientForm({
       name: p.name,
       phone: p.phone,
@@ -627,6 +667,10 @@ export default function AdminDashboardPage() {
     e.preventDefault();
     if (!patientForm.name.trim() || !patientForm.phone.trim()) {
       alert("রোগীর নাম ও মোবাইল নম্বর আবশ্যক!");
+      return;
+    }
+    if (!patientForm.problemType.trim()) {
+      alert("কমপক্ষে একটি সমস্যার ক্যাটাগরি নির্বাচন করুন!");
       return;
     }
 
@@ -1655,9 +1699,16 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           <span>{p.type === "online" ? "অনলাইন" : "চেম্বার"}</span>
                         </span>
 
-                        <span className="text-[10px] sm:text-[11px] font-medium text-gray-600 bg-gray-100/90 px-2 py-0.5 rounded-md border border-gray-200/80 shrink-0">
-                          {p.problemType}
-                        </span>
+                        <div className="flex flex-wrap items-center gap-1">
+                          {(p.problemType || "রুকইয়াহ").split(",").map((cat, idx) => (
+                            <span
+                              key={idx}
+                              className="text-[10px] sm:text-[11px] font-medium text-gray-700 bg-gray-100/90 px-2 py-0.5 rounded-md border border-gray-200/80 shrink-0"
+                            >
+                              {cat.trim()}
+                            </span>
+                          ))}
+                        </div>
 
                         {/* Status Badge without emojis */}
                         <span className={`text-[10px] sm:text-[11px] font-semibold px-2.5 py-0.5 rounded-md flex items-center gap-1.5 shrink-0 ${
@@ -2058,9 +2109,16 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           {selectedPatientForDrawer.type === "online" ? <Globe className="w-3 h-3" /> : <Building2 className="w-3 h-3" />}
                           <span>{selectedPatientForDrawer.type === "online" ? "অনলাইন কনসালটেশন" : "সরাসরি চেম্বার"}</span>
                         </span>
-                        <span className="text-[11px] font-medium text-gray-600 bg-gray-100 px-2.5 py-0.5 rounded-md border border-gray-200/80">
-                          {selectedPatientForDrawer.problemType}
-                        </span>
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          {(selectedPatientForDrawer.problemType || "রুকইয়াহ").split(",").map((cat, idx) => (
+                            <span
+                              key={idx}
+                              className="text-[11px] font-medium text-gray-700 bg-gray-100 px-2.5 py-0.5 rounded-md border border-gray-200/80"
+                            >
+                              {cat.trim()}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
 
@@ -3051,8 +3109,8 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 </div>
               </div>
 
-              {/* Address / Location & Patient Type */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Address / Location & Patient Type & Status */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
                   <label className="block font-semibold text-gray-700 mb-1">ঠিকানা / এলাকা / জেলা</label>
                   <input
@@ -3075,27 +3133,6 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     <option value="offline">সরাসরি চেম্বার (সেন্টারে উপস্থিত)</option>
                   </select>
                 </div>
-              </div>
-
-              {/* Problem Category & Status */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block font-semibold text-gray-700 mb-1">সমস্যার ক্যাটাগরি *</label>
-                  <select
-                    value={patientForm.problemType}
-                    onChange={(e) => setPatientForm({ ...patientForm, problemType: e.target.value })}
-                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white"
-                  >
-                    <option value="বদনজর (Evil Eye)">বদনজর (Evil Eye)</option>
-                    <option value="সিহর / জাদু (Black Magic)">সিহর / জাদু (Black Magic)</option>
-                    <option value="জিনের সমস্যা ও আছর">জিনের সমস্যা ও আছর</option>
-                    <option value="ওয়াসওয়াসা ও মানসিক অস্থিরতা">ওয়াসওয়াসা ও মানসিক অস্থিরতা</option>
-                    <option value="হিজামা ও শারীরিক ব্যথা">হিজামা ও শারীরিক ব্যথা</option>
-                    <option value="দাম্পত্য ও পারিবারিক বিরোধ">দাম্পত্য ও পারিবারিক বিরোধ</option>
-                    <option value="সাধারণ শারঈ রুকইয়াহ">সাধারণ শারঈ রুকইয়াহ</option>
-                    <option value="অন্যান্য সমস্যা">অন্যান্য সমস্যা</option>
-                  </select>
-                </div>
 
                 <div>
                   <label className="block font-semibold text-gray-700 mb-1">বর্তমান চিকিৎসা স্ট্যাটাস *</label>
@@ -3107,8 +3144,97 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     <option value="new">নতুন রোগী (New Patient)</option>
                     <option value="running">চিকিৎসা চলছে (Under Treatment)</option>
                     <option value="followup">ফলো-আপ প্রয়োজন (Follow-up Due)</option>
-                    <option value="cured">সুস্থ ও চিকিৎসা সমাপ্ত (Cured / Completed)</option>
+                    <option value="cured">সুস্থ ও চিকিৎসা সমাপ্ত (Cured)</option>
                   </select>
+                </div>
+              </div>
+
+              {/* Multi-Select Problem Categories Section */}
+              <div className="p-3.5 rounded-2xl bg-emerald-50/40 border border-emerald-200/70 space-y-2.5">
+                <div className="flex flex-wrap items-center justify-between gap-1">
+                  <label className="block font-bold text-gray-800 text-xs">
+                    সমস্যার ক্যাটাগরি * <span className="text-[10px] font-semibold text-emerald-800 bg-emerald-100/90 px-2 py-0.5 rounded-full border border-emerald-300/80 ml-1.5">একাধিক নির্বাচনযোগ্য</span>
+                  </label>
+                  <span className={`text-[11px] font-semibold ${currentCategories.length > 0 ? "text-[#006B5B]" : "text-amber-700"}`}>
+                    {currentCategories.length > 0 ? `✓ ${currentCategories.length}টি ক্যাটাগরি নির্বাচিত` : "⚠️ কমপক্ষে ১টি নির্বাচন করুন"}
+                  </span>
+                </div>
+
+                {/* Preset Chips */}
+                <div className="flex flex-wrap gap-1.5">
+                  {PRESET_PROBLEM_CATEGORIES.map((cat) => {
+                    const isSelected = currentCategories.includes(cat);
+                    return (
+                      <button
+                        type="button"
+                        key={cat}
+                        onClick={() => handleToggleCategory(cat)}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer border select-none ${
+                          isSelected
+                            ? "bg-[#006B5B] text-white border-[#006B5B] shadow-xs hover:bg-[#005749]"
+                            : "bg-white text-gray-700 border-gray-200 hover:border-[#006B5B]/50 hover:bg-emerald-50/60"
+                        }`}
+                      >
+                        <span className={`w-3.5 h-3.5 rounded-full flex items-center justify-center text-[9px] font-bold border transition-colors ${
+                          isSelected ? "bg-white text-[#006B5B] border-white" : "border-gray-300 text-transparent"
+                        }`}>
+                          ✓
+                        </span>
+                        <span>{cat}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Custom / typed categories tag display */}
+                {currentCategories.some((cat) => !PRESET_PROBLEM_CATEGORIES.includes(cat)) && (
+                  <div className="pt-1 flex flex-wrap gap-1.5 items-center">
+                    <span className="text-[11px] text-gray-600 font-medium">কাস্টম সমস্যা:</span>
+                    {currentCategories
+                      .filter((cat) => !PRESET_PROBLEM_CATEGORIES.includes(cat))
+                      .map((cat) => (
+                        <span
+                          key={cat}
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-teal-100/80 text-teal-900 border border-teal-300/80 text-xs font-semibold"
+                        >
+                          <span>{cat}</span>
+                          <button
+                            type="button"
+                            onClick={() => handleToggleCategory(cat)}
+                            className="hover:text-red-600 cursor-pointer p-0.5 rounded-full hover:bg-white/60 transition-colors"
+                            title="মুছে ফেলুন"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </span>
+                      ))}
+                  </div>
+                )}
+
+                {/* Custom Category Input */}
+                <div className="flex items-center gap-2 pt-1">
+                  <input
+                    type="text"
+                    placeholder="তালিকায় না থাকলে নতুন সমস্যা লিখে যোগ করুন (যেমন: অনিদ্রা, দুঃস্বপ্ন)..."
+                    value={customCategoryInput}
+                    onChange={(e) => setCustomCategoryInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleAddCustomCategory();
+                      }
+                    }}
+                    className="flex-1 p-2 text-xs rounded-xl border border-gray-200 bg-white outline-none focus:border-[#006B5B]"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddCustomCategory}
+                    disabled={!customCategoryInput.trim()}
+                    className="px-3.5 py-2 bg-[#006B5B] hover:bg-[#005749] disabled:opacity-40 text-white text-xs font-semibold rounded-xl transition-colors cursor-pointer shrink-0 flex items-center gap-1 shadow-2xs"
+                  >
+                    <PlusCircle className="w-3.5 h-3.5" />
+                    <span>যোগ করুন</span>
+                  </button>
                 </div>
               </div>
 
