@@ -96,7 +96,7 @@ export const metadata: Metadata = {
       "কুরআন ও সহীহ সুন্নাহ ভিত্তিক রুকইয়াহ শারইয়্যাহ ও সেলফ-রুকইয়াহ প্ল্যাটফর্ম। নির্ভরযোগ্য শারঈ দিকনির্দেশনা ও চিকিৎসা গাইড।",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-image.png?v=2",
         width: 1200,
         height: 630,
         alt: "সুন্নাহলাইফ - সুস্থতা হোক সুন্নাহর পথে",
@@ -107,7 +107,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "সুন্নাহলাইফ | সুস্থতা হোক সুন্নাহর পথে",
     description: "কুরআন ও সহীহ সুন্নাহ ভিত্তিক রুকইয়াহ শারইয়্যাহ ও সেলফ-রুকইয়াহ প্ল্যাটফর্ম",
-    images: ["/og-image.png"],
+    images: ["/og-image.png?v=2"],
   },
   robots: {
     index: true,
