@@ -64,6 +64,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "সুন্নাহলাইফ",
+  },
   category: "health",
   verification: {
     google: "googleaab5d2b10c0fdf19",
