@@ -55,7 +55,11 @@ import {
   CalendarDays,
   DollarSign,
   Coins,
-  Receipt
+  Receipt,
+  Printer,
+  Download,
+  TrendingUp,
+  CreditCard
 } from "lucide-react";
 import Image from "next/image";
 import { DEFAULT_POPUP_CONFIG, PopupNoticeConfig } from "@/data/popupNotice";
@@ -68,6 +72,7 @@ import { RUQYAH_AUDIO_LIST } from "@/data/ruqyahAudio";
 export interface PatientRecord {
   id: string;
   name: string;
+  age?: number | string; // রোগীর বয়স (বছর)
   phone: string;
   address: string;
   type: "online" | "offline";
@@ -84,6 +89,8 @@ export interface PatientRecord {
   lastFollowupDate?: string;
   nextFollowupDate?: string; // YYYY-MM-DD format e.g. "2026-09-15"
   nextFollowupNote?: string;
+  rawDate?: string;          // YYYY-MM-DD format e.g. "2026-09-20"
+  createdAt?: string;
 }
 
 export const PRESET_PROBLEM_CATEGORIES = [
@@ -136,6 +143,66 @@ export const formatBanglaFollowupDate = (dateStr?: string) => {
   return dateObj.toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" });
 };
 
+export const BANGLA_MONTH_NAMES = [
+  "জানুয়ারি",
+  "ফেব্রুয়ারি",
+  "মার্চ",
+  "এপ্রিল",
+  "মে",
+  "জুন",
+  "জুলাই",
+  "আগস্ট",
+  "সেপ্টেম্বর",
+  "অক্টোবর",
+  "নভেম্বর",
+  "ডিসেম্বর",
+];
+
+export const parsePatientYearMonth = (p: PatientRecord): { year: number; month: number } => {
+  const raw = p.rawDate || p.createdAt;
+  if (raw && /^\d{4}-\d{2}/.test(raw)) {
+    const [y, m] = raw.split("-").map(Number);
+    if (!isNaN(y) && !isNaN(m)) return { year: y, month: m };
+  }
+
+  const dateStr = (p.date || "").trim();
+  if (/^\d{4}-\d{2}/.test(dateStr)) {
+    const [y, m] = dateStr.split("-").map(Number);
+    if (!isNaN(y) && !isNaN(m)) return { year: y, month: m };
+  }
+
+  const banglaDigits: Record<string, string> = {
+    "০": "0", "১": "1", "২": "2", "৩": "3", "৪": "4",
+    "৫": "5", "৬": "6", "৭": "7", "৮": "8", "৯": "9",
+  };
+  const normalized = dateStr.replace(/[০-৯]/g, (d) => banglaDigits[d] || d);
+
+  let monthNum = 0;
+  for (let i = 0; i < BANGLA_MONTH_NAMES.length; i++) {
+    const m = BANGLA_MONTH_NAMES[i];
+    const stem = m.slice(0, 3);
+    if (dateStr.includes(m) || dateStr.includes(stem)) {
+      monthNum = i + 1;
+      break;
+    }
+  }
+
+  const yearMatch = normalized.match(/\b(20\d\d)\b/);
+  const yearNum = yearMatch ? parseInt(yearMatch[1], 10) : new Date().getFullYear();
+
+  if (monthNum > 0) {
+    return { year: yearNum, month: monthNum };
+  }
+
+  const parsed = new Date(normalized);
+  if (!isNaN(parsed.getTime())) {
+    return { year: parsed.getFullYear(), month: parsed.getMonth() + 1 };
+  }
+
+  const now = new Date();
+  return { year: now.getFullYear(), month: now.getMonth() + 1 };
+};
+
 const INITIAL_PATIENTS: PatientRecord[] = [];
 
 export default function AdminDashboardPage() {
@@ -144,7 +211,7 @@ export default function AdminDashboardPage() {
   const [error, setError] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<"overview" | "bookings" | "popup" | "store">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "bookings" | "accounting" | "popup" | "store">("overview");
   const [patientsList, setPatientsList] = useState<PatientRecord[]>(INITIAL_PATIENTS);
   const [patientFilter, setPatientFilter] = useState<"all" | "today_followup" | "upcoming_followup" | "overdue_followup" | "online" | "offline" | "followup" | "cured">("all");
   const [patientSearch, setPatientSearch] = useState("");
@@ -154,8 +221,15 @@ export default function AdminDashboardPage() {
   const [expandedPatientIds, setExpandedPatientIds] = useState<string[]>([]);
   const [patientViewPreference, setPatientViewPreference] = useState<"drawer" | "accordion">("drawer");
 
+  // Accounting and Financial filter states
+  const [accountingYear, setAccountingYear] = useState<string>("all");
+  const [accountingMonth, setAccountingMonth] = useState<string>("all");
+  const [accountingSearch, setAccountingSearch] = useState<string>("");
+  const [accountingDueOnly, setAccountingDueOnly] = useState<boolean>(false);
+
   const [patientForm, setPatientForm] = useState<Omit<PatientRecord, "id">>({
     name: "",
+    age: "",
     phone: "",
     address: "",
     type: "online",
@@ -514,6 +588,7 @@ export default function AdminDashboardPage() {
     setCustomCategoryInput("");
     setPatientForm({
       name: "",
+      age: "",
       phone: "",
       address: "",
       type: "online",
@@ -540,6 +615,7 @@ export default function AdminDashboardPage() {
     const d = p.due !== undefined ? Number(p.due) : Math.max(f - pd, 0);
     setPatientForm({
       name: p.name,
+      age: p.age !== undefined && p.age !== null ? String(p.age) : "",
       phone: p.phone,
       address: p.address || "",
       type: p.type || "online",
@@ -647,12 +723,18 @@ export default function AdminDashboardPage() {
     const feeNum = Number(patientForm.fee) || 0;
     const paidNum = Number(patientForm.paid) || 0;
     const dueNum = Math.max(feeNum - paidNum, 0);
+    const ageVal = patientForm.age !== undefined && patientForm.age !== null && String(patientForm.age).trim() !== "" 
+      ? String(patientForm.age).trim() 
+      : undefined;
 
     const formDataToSave = {
       ...patientForm,
+      age: ageVal,
       fee: feeNum,
       paid: paidNum,
       due: dueNum,
+      rawDate: patientForm.rawDate || getLocalDateString(new Date()),
+      createdAt: patientForm.createdAt || getLocalDateString(new Date()),
     };
 
     let updated: PatientRecord[];
@@ -743,6 +825,7 @@ export default function AdminDashboardPage() {
     const headers = [
       "আইডি",
       "রোগীর নাম",
+      "বয়স",
       "ফোন নম্বর",
       "ঠিকানা",
       "ধরন",
@@ -772,6 +855,7 @@ export default function AdminDashboardPage() {
       return [
         `"${p.id}"`,
         `"${p.name.replace(/"/g, '""')}"`,
+        `"${p.age ? p.age + ' বছর' : ''}"`,
         `"${p.phone}"`,
         `"${(p.address || '').replace(/"/g, '""')}"`,
         `"${p.type === 'online' ? 'অনলাইন' : 'সরাসরি চেম্বার'}"`,
@@ -802,6 +886,91 @@ export default function AdminDashboardPage() {
     setTimeout(() => setPopupSaveMessage(""), 3500);
   };
 
+  const handleExportAccountingCSV = () => {
+    const periodLabel = accountingMonth !== "all" 
+      ? `${BANGLA_MONTH_NAMES[Number(accountingMonth) - 1]} ${accountingYear !== "all" ? accountingYear : ""}`
+      : accountingYear !== "all" ? `${accountingYear} সাল` : "সর্বকালীন";
+
+    const headers = [
+      "আইডি",
+      "রোগীর নাম",
+      "বয়স",
+      "ফোন নম্বর",
+      "ধরন",
+      "সমস্যার ক্যাটাগরি",
+      "তারিখ",
+      "মোট ফি (৳)",
+      "পরিশোধিত (৳)",
+      "বকেয়া (৳)",
+      "স্ট্যাটাস",
+    ];
+
+    const rows = accountingFilteredPatients.map((p) => {
+      const f = Number(p.fee) || 0;
+      const pd = Number(p.paid) || 0;
+      const d = p.due !== undefined ? Number(p.due) : Math.max(f - pd, 0);
+      return [
+        `"${p.id}"`,
+        `"${p.name.replace(/"/g, '""')}"`,
+        `"${p.age ? p.age + ' বছর' : ''}"`,
+        `"${p.phone}"`,
+        `"${p.type === 'online' ? 'অনলাইন' : 'চেম্বার'}"`,
+        `"${(p.problemType || p.service || '').replace(/"/g, '""')}"`,
+        `"${p.date}"`,
+        `"${f}"`,
+        `"${pd}"`,
+        `"${d}"`,
+        `"${p.status === 'cured' ? 'সুস্থ' : p.status === 'followup' ? 'ফলো-আপ' : p.status === 'running' ? 'চলমান' : 'নতুন'}"`,
+      ];
+    });
+
+    // Summary totals row
+    rows.push([
+      `"সর্বমোট হিসাব"`,
+      `"${accountingFilteredPatients.length} জন রোগী"`,
+      `""`,
+      `""`,
+      `""`,
+      `""`,
+      `""`,
+      `"${periodTotalFee}"`,
+      `"${periodTotalPaid}"`,
+      `"${periodTotalDue}"`,
+      `"আদায় হার: ${periodCollectionRate}%"`,
+    ]);
+
+    const csvContent = "\uFEFF" + [headers.join(","), ...rows.map((r) => r.join(","))].join("\r\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `sunnahlife_accounting_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setPopupSaveMessage(`${periodLabel} আর্থিক রিপোর্ট সফলভাবে এক্সেল (CSV) ফাইলে ডাউনলোড হয়েছে!`);
+    setTimeout(() => setPopupSaveMessage(""), 3500);
+  };
+
+  const getDuePaymentWhatsAppUrl = (p: PatientRecord) => {
+    const cleanPhone = p.phone.replace(/^0/, "880").replace(/\D/g, "");
+    const fee = Number(p.fee) || 0;
+    const paid = Number(p.paid) || 0;
+    const due = p.due !== undefined ? Number(p.due) : Math.max(fee - paid, 0);
+    const text = `আসসালামু আলাইকুম ${p.name} ভাই/বোন${p.age ? ` (বয়স: ${p.age} বছর)` : ""}।
+সুন্নাহলাইফ শারঈ রুকইয়াহ সেন্টার থেকে অ্যাকাউন্টস শাখা।
+
+আপনার শারঈ রুকইয়াহ চিকিৎসা ফি সংক্রান্ত তথ্য:
+• মোট ধার্য ফি: ৳${fee.toLocaleString("bn-BD")}
+• জমা / পরিশোধিত: ৳${paid.toLocaleString("bn-BD")}
+• অবশিষ্ট বকেয়া: ৳${due.toLocaleString("bn-BD")}
+
+বকেয়া পরিশোধের জন্য বিকাশ / নগদ / ব্যাংক অ্যাকাউন্টের তথ্যের প্রয়োজনে আমাদের এখানে লিখে জানান। আল্লাহ আপনাকে পূর্ণ সুস্থতা ও বরকত দান করুন।
+— সুন্নাহলাইফ শারঈ রুকইয়াহ সেন্টার
+হটলাইন: ০১৬৭৬৮২০০৬০`;
+    return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`;
+  };
+
   const getFollowupWhatsAppUrl = (p: PatientRecord) => {
     const cleanPhone = p.phone.replace(/^0/, "880").replace(/\D/g, "");
     const diff = getDaysDifference(p.nextFollowupDate);
@@ -823,7 +992,7 @@ export default function AdminDashboardPage() {
       dueNotice = `\n📌 *বকেয়া সংক্রান্ত তথ্য:* আপনার চিকিৎসা ফির অবশিষ্ট বকেয়া ৳${due.toLocaleString("bn-BD")} টাকা রয়েছে। পরবর্তী সেশনের আগে বা সুবিধাজনক সময়ে পরিশোধের অনুরোধ রইল।\n`;
     }
 
-    const text = `আসসালামু আলাইকুম ${p.name} ভাই/বোন।
+    const text = `আসসালামু আলাইকুম ${p.name} ভাই/বোন${p.age ? ` (বয়স: ${p.age} বছর)` : ""}।
 সুন্নাহলাইফ শারঈ রুকইয়াহ কেয়ার থেকে আপনার খোঁজ নেওয়ার জন্য যোগাযোগ করছি।
 
 ${followupContext ? followupContext + "\n\n" : ""}আপনার "${p.problemType || p.service || 'সমস্যা'}"-এর সমস্যাটি এখন কেমন আছে? আলহামদুলিল্লাহ কোনো উন্নতি লক্ষ্য করছেন কি?
@@ -843,7 +1012,7 @@ ${p.nextFollowupNote ? `\nপূর্ববর্তী নির্দেশ�
 
   const getPrescriptionWhatsAppUrl = (p: PatientRecord) => {
     const cleanPhone = p.phone.replace(/^0/, "880").replace(/\D/g, "");
-    const text = `আসসালামু আলাইকুম ${p.name}।
+    const text = `আসসালামু আলাইকুম ${p.name}${p.age ? ` (বয়স: ${p.age} বছর)` : ""}।
 সুন্নাহলাইফ থেকে আপনার নির্ধারিত রুকইয়াহ আমল ও নির্দেশনাবলী:
 
 *রোগীর সমস্যা:* ${p.problemType || p.service || 'রুকইয়াহ চিকিৎসা'}
@@ -884,6 +1053,110 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
     const d = p.due !== undefined ? Number(p.due) : Math.max(f - pd, 0);
     return d > 0;
   }).length;
+
+  // Available Years in patients data
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth() + 1;
+
+  const detectedYears = Array.from(
+    new Set(
+      patientsList.map((p) => parsePatientYearMonth(p).year)
+    )
+  ).filter((y) => y > 2000);
+  if (!detectedYears.includes(currentYear)) {
+    detectedYears.push(currentYear);
+  }
+  detectedYears.sort((a, b) => b - a);
+
+  // Filtered patients for accounting tab
+  const accountingFilteredPatients = patientsList.filter((p) => {
+    const { year, month } = parsePatientYearMonth(p);
+    if (accountingYear !== "all" && year !== Number(accountingYear)) return false;
+    if (accountingMonth !== "all" && month !== Number(accountingMonth)) return false;
+
+    if (accountingDueOnly) {
+      const f = Number(p.fee) || 0;
+      const pd = Number(p.paid) || 0;
+      const d = p.due !== undefined ? Number(p.due) : Math.max(f - pd, 0);
+      if (d <= 0) return false;
+    }
+
+    if (accountingSearch.trim()) {
+      const q = accountingSearch.toLowerCase();
+      const match =
+        p.name.toLowerCase().includes(q) ||
+        p.phone.includes(q) ||
+        (p.problemType && p.problemType.toLowerCase().includes(q));
+      if (!match) return false;
+    }
+
+    return true;
+  });
+
+  // Selected period totals
+  const periodTotalFee = accountingFilteredPatients.reduce((sum, p) => sum + (Number(p.fee) || 0), 0);
+  const periodTotalPaid = accountingFilteredPatients.reduce((sum, p) => sum + (Number(p.paid) || 0), 0);
+  const periodTotalDue = accountingFilteredPatients.reduce((sum, p) => {
+    const f = Number(p.fee) || 0;
+    const pd = Number(p.paid) || 0;
+    const d = p.due !== undefined ? Number(p.due) : Math.max(f - pd, 0);
+    return sum + d;
+  }, 0);
+  const periodDueCount = accountingFilteredPatients.filter((p) => {
+    const f = Number(p.fee) || 0;
+    const pd = Number(p.paid) || 0;
+    const d = p.due !== undefined ? Number(p.due) : Math.max(f - pd, 0);
+    return d > 0;
+  }).length;
+  const periodCollectionRate = periodTotalFee > 0 ? Math.round((periodTotalPaid / periodTotalFee) * 100) : 0;
+
+  // Month-by-month breakdown for selected year (or current year)
+  const activeBreakdownYear = accountingYear !== "all" ? Number(accountingYear) : currentYear;
+  const monthlyBreakdown = BANGLA_MONTH_NAMES.map((mName, idx) => {
+    const monthIndex = idx + 1;
+    const pts = patientsList.filter((p) => {
+      const parsed = parsePatientYearMonth(p);
+      return parsed.year === activeBreakdownYear && parsed.month === monthIndex;
+    });
+    const fee = pts.reduce((sum, p) => sum + (Number(p.fee) || 0), 0);
+    const paid = pts.reduce((sum, p) => sum + (Number(p.paid) || 0), 0);
+    const due = pts.reduce((sum, p) => {
+      const f = Number(p.fee) || 0;
+      const pd = Number(p.paid) || 0;
+      return sum + (p.due !== undefined ? Number(p.due) : Math.max(f - pd, 0));
+    }, 0);
+    const rate = fee > 0 ? Math.round((paid / fee) * 100) : 0;
+    return {
+      monthNumber: monthIndex,
+      monthName: mName,
+      patientCount: pts.length,
+      totalFee: fee,
+      totalPaid: paid,
+      totalDue: due,
+      collectionRate: rate,
+    };
+  });
+
+  // Yearly summary comparison
+  const yearlyBreakdown = detectedYears.map((y) => {
+    const pts = patientsList.filter((p) => parsePatientYearMonth(p).year === y);
+    const fee = pts.reduce((sum, p) => sum + (Number(p.fee) || 0), 0);
+    const paid = pts.reduce((sum, p) => sum + (Number(p.paid) || 0), 0);
+    const due = pts.reduce((sum, p) => {
+      const f = Number(p.fee) || 0;
+      const pd = Number(p.paid) || 0;
+      return sum + (p.due !== undefined ? Number(p.due) : Math.max(f - pd, 0));
+    }, 0);
+    const rate = fee > 0 ? Math.round((paid / fee) * 100) : 0;
+    return {
+      year: y,
+      patientCount: pts.length,
+      totalFee: fee,
+      totalPaid: paid,
+      totalDue: due,
+      collectionRate: rate,
+    };
+  });
 
   const filteredPatients = patientsList.filter((p) => {
     const query = patientSearch.toLowerCase();
@@ -1071,6 +1344,27 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               </button>
 
               <button
+                onClick={() => setActiveTab("accounting")}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer ${
+                  activeTab === "accounting"
+                    ? "bg-[#006B5B] text-white shadow-xs"
+                    : "text-gray-600 hover:text-[#006B5B] hover:bg-white"
+                }`}
+              >
+                <Receipt className="w-3.5 h-3.5" />
+                <span>হিসাব ও আর্থিক রিপোর্ট</span>
+                {totalDueSum > 0 ? (
+                  <span className="px-1.5 py-0.2 text-[9px] font-bold rounded-full bg-amber-100 text-amber-900 border border-amber-300">
+                    বকেয়া ৳{totalDueSum.toLocaleString("bn-BD")}
+                  </span>
+                ) : totalPaidSum > 0 ? (
+                  <span className="px-1.5 py-0.2 text-[9px] font-bold rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
+                    আদায় ৳{totalPaidSum.toLocaleString("bn-BD")}
+                  </span>
+                ) : null}
+              </button>
+
+              <button
                 onClick={() => setActiveTab("popup")}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer ${
                   activeTab === "popup"
@@ -1107,31 +1401,46 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
         <div className="space-y-6">
           {/* KPI Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1">
+            <div 
+              onClick={() => setActiveTab("accounting")}
+              className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1 cursor-pointer hover:border-[#006B5B] hover:shadow-xs transition-all group"
+              title="ক্লিক করে মাসিক ও বাৎসরিক পূর্ণাঙ্গ হিসাব দেখুন"
+            >
               <span className="text-xs text-gray-500 font-medium flex items-center justify-between">
                 <span>ফি আদায় (পেইড)</span>
-                <Coins className="w-4 h-4 text-emerald-600" />
+                <Coins className="w-4 h-4 text-emerald-600 group-hover:scale-110 transition-transform" />
               </span>
               <p className="text-2xl font-bold text-emerald-700">৳{totalPaidSum.toLocaleString("bn-BD")}</p>
-              <span className="text-[11px] text-gray-500 font-medium">
-                মোট ধার্য ফি: ৳{totalFeeSum.toLocaleString("bn-BD")}
-              </span>
+              <div className="flex items-center justify-between text-[11px]">
+                <span className="text-gray-500 font-medium">
+                  মোট ধার্য ফি: ৳{totalFeeSum.toLocaleString("bn-BD")}
+                </span>
+                <span className="text-[#006B5B] font-bold group-hover:underline">রিপোর্ট →</span>
+              </div>
             </div>
 
-            <div className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1">
+            <div 
+              onClick={() => {
+                setActiveTab("accounting");
+                setAccountingDueOnly(true);
+              }}
+              className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1 cursor-pointer hover:border-amber-400 hover:shadow-xs transition-all group"
+              title="ক্লিক করে সকল বকেয়া রোগীর বিস্তারিত তালিকা দেখুন"
+            >
               <span className="text-xs text-gray-500 font-medium flex items-center justify-between">
                 <span>মোট বকেয়া (ডিউ)</span>
-                <Receipt className="w-4 h-4 text-amber-600" />
+                <Receipt className="w-4 h-4 text-amber-600 group-hover:scale-110 transition-transform" />
               </span>
               <p className={`text-2xl font-bold ${totalDueSum > 0 ? "text-amber-700" : "text-emerald-700"}`}>
                 ৳{totalDueSum.toLocaleString("bn-BD")}
               </p>
-              <div className="text-[11px] font-semibold">
+              <div className="text-[11px] font-semibold flex items-center justify-between">
                 {duePatientsCount > 0 ? (
-                  <span className="text-amber-700 font-bold">⚠️ {duePatientsCount} জনের বকেয়া আছে</span>
+                  <span className="text-amber-700 font-bold">⚠️ {duePatientsCount} জনের বকেয়া</span>
                 ) : (
                   <span className="text-emerald-600 font-bold">✓ কোনো বকেয়া নেই</span>
                 )}
+                <span className="text-amber-800 font-bold group-hover:underline">বকেয়া তালিকা →</span>
               </div>
             </div>
 
@@ -1741,6 +2050,12 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           {p.name}
                         </h4>
 
+                        {p.age && (
+                          <span className="text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-md bg-purple-50 text-purple-800 border border-purple-200 shrink-0">
+                            {p.age} বছর
+                          </span>
+                        )}
+
                         <span className={`text-[10px] sm:text-[11px] font-semibold px-2.5 py-0.5 rounded-md flex items-center gap-1 shrink-0 ${
                           p.type === "online" 
                             ? "bg-emerald-50 text-[#006B5B] border border-emerald-200/60" 
@@ -2015,8 +2330,8 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           </div>
                         </div>
 
-                        {/* Contact & Location */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-gray-600">
+                        {/* Contact & Location & Age */}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-gray-600">
                           <div className="flex items-center gap-2 bg-white p-2.5 rounded-xl border border-gray-100">
                             <Phone className="w-4 h-4 text-[#006B5B] shrink-0" />
                             <div>
@@ -2032,6 +2347,14 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                             <div>
                               <span className="text-gray-400 block text-[10px]">ঠিকানা / এলাকা:</span>
                               <span className="font-medium text-gray-800">{p.address || "ঠিকানা উল্লেখ নেই"}</span>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2 bg-white p-2.5 rounded-xl border border-gray-100">
+                            <Users className="w-4 h-4 text-[#006B5B] shrink-0" />
+                            <div>
+                              <span className="text-gray-400 block text-[10px]">রোগীর বয়স:</span>
+                              <span className="font-bold text-gray-800">{p.age ? `${p.age} বছর` : "উল্লেখ নেই"}</span>
                             </div>
                           </div>
                         </div>
@@ -2454,6 +2777,16 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
                       <div className="flex items-center justify-between p-2 rounded-xl bg-gray-50">
                         <div className="flex items-center gap-2">
+                          <Users className="w-4 h-4 text-[#006B5B]" />
+                          <span className="font-semibold text-gray-700">রোগীর বয়স:</span>
+                        </div>
+                        <span className="font-bold text-gray-900">
+                          {selectedPatientForDrawer.age ? `${selectedPatientForDrawer.age} বছর` : "উল্লেখ নেই"}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center justify-between p-2 rounded-xl bg-gray-50">
+                        <div className="flex items-center gap-2">
                           <MapPin className="w-4 h-4 text-[#006B5B]" />
                           <span className="font-semibold text-gray-700">ঠিকানা / এলাকা:</span>
                         </div>
@@ -2519,6 +2852,683 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Accounting & Financial Management Tab */}
+      {activeTab === "accounting" && (
+        <div className="space-y-6">
+          {/* Top Header Card */}
+          <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-5">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-100 pb-5">
+              <div>
+                <div className="flex items-center gap-2.5">
+                  <span className="p-2.5 rounded-2xl bg-emerald-50 text-[#006B5B] shadow-2xs">
+                    <Receipt className="w-5 h-5" />
+                  </span>
+                  <div>
+                    <h3 className="font-extrabold text-xl text-[#004D40]">
+                      আর্থিক হিসাব ও আয়-বকেয়া খতিয়ান (Accounting & Revenue)
+                    </h3>
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      মাসিক ও বাৎসরিক মোট রোগী, আদায়কৃত ফি, অবশিষ্ট বকেয়া এবং আর্থিক প্রবৃদ্ধির সার্বিক বিবরণী
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2.5">
+                <button
+                  type="button"
+                  onClick={handleExportAccountingCSV}
+                  className="px-4 py-2.5 rounded-xl border border-gray-200 hover:border-[#006B5B] text-gray-700 hover:text-[#006B5B] text-xs font-bold flex items-center gap-2 transition-colors cursor-pointer shadow-2xs bg-white"
+                  title="বাছাইকৃত সময়ের হিসাব এক্সেল (CSV) ফাইলে ডাউনলোড করুন"
+                >
+                  <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
+                  <span>এক্সেল (CSV) হিসাব ডাউনলোড</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  className="px-4 py-2.5 rounded-xl border border-gray-200 hover:border-gray-400 text-gray-700 text-xs font-bold flex items-center gap-2 transition-colors cursor-pointer shadow-2xs bg-white"
+                  title="এই আর্থিক বিবরণী প্রিন্ট বা পিডিএফ হিসেবে সেভ করুন"
+                >
+                  <Printer className="w-4 h-4 text-gray-600" />
+                  <span>প্রিন্ট / PDF</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Interactive Period Filter Toolbar */}
+            <div className="space-y-3 pt-1">
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                {/* Year & Month Dropdowns */}
+                <div className="flex flex-wrap items-center gap-2.5">
+                  {/* Year selector */}
+                  <div className="flex items-center gap-1.5 bg-[#FAFAF7] border border-gray-200 px-3 py-1.5 rounded-xl text-xs font-semibold">
+                    <Calendar className="w-3.5 h-3.5 text-[#006B5B]" />
+                    <span className="text-gray-500">বছর:</span>
+                    <select
+                      value={accountingYear}
+                      onChange={(e) => setAccountingYear(e.target.value)}
+                      className="bg-transparent font-bold text-gray-900 outline-none cursor-pointer"
+                    >
+                      <option value="all">সর্বকালীন (সব বছর)</option>
+                      {detectedYears.map((y) => (
+                        <option key={y} value={String(y)}>
+                          {y} সাল
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Month selector */}
+                  <div className="flex items-center gap-1.5 bg-[#FAFAF7] border border-gray-200 px-3 py-1.5 rounded-xl text-xs font-semibold">
+                    <Clock className="w-3.5 h-3.5 text-[#006B5B]" />
+                    <span className="text-gray-500">মাস:</span>
+                    <select
+                      value={accountingMonth}
+                      onChange={(e) => setAccountingMonth(e.target.value)}
+                      className="bg-transparent font-bold text-gray-900 outline-none cursor-pointer"
+                    >
+                      <option value="all">পুরো বছর (১২ মাস)</option>
+                      {BANGLA_MONTH_NAMES.map((m, idx) => (
+                        <option key={idx} value={String(idx + 1)}>
+                          {m}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Quick Preset Buttons */}
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAccountingYear(String(currentYear));
+                        setAccountingMonth(String(currentMonth));
+                        setAccountingDueOnly(false);
+                      }}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                        accountingYear === String(currentYear) && accountingMonth === String(currentMonth)
+                          ? "bg-[#006B5B] text-white shadow-2xs"
+                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                      }`}
+                    >
+                      চলতি মাস
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const lastMonthNum = currentMonth === 1 ? 12 : currentMonth - 1;
+                        const lastMonthYear = currentMonth === 1 ? currentYear - 1 : currentYear;
+                        setAccountingYear(String(lastMonthYear));
+                        setAccountingMonth(String(lastMonthNum));
+                        setAccountingDueOnly(false);
+                      }}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                        accountingMonth !== "all" && Number(accountingMonth) === (currentMonth === 1 ? 12 : currentMonth - 1)
+                          ? "bg-[#006B5B] text-white shadow-2xs"
+                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                      }`}
+                    >
+                      গত মাস
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAccountingYear(String(currentYear));
+                        setAccountingMonth("all");
+                        setAccountingDueOnly(false);
+                      }}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                        accountingYear === String(currentYear) && accountingMonth === "all"
+                          ? "bg-[#006B5B] text-white shadow-2xs"
+                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                      }`}
+                    >
+                      চলতি বছর ({currentYear})
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAccountingYear("all");
+                        setAccountingMonth("all");
+                        setAccountingDueOnly(false);
+                      }}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                        accountingYear === "all" && accountingMonth === "all" && !accountingDueOnly
+                          ? "bg-[#006B5B] text-white shadow-2xs"
+                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                      }`}
+                    >
+                      সর্বকালীন
+                    </button>
+
+                    {/* Due Only Toggle */}
+                    <button
+                      type="button"
+                      onClick={() => setAccountingDueOnly(!accountingDueOnly)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                        accountingDueOnly
+                          ? "bg-amber-500 text-white shadow-2xs"
+                          : "bg-amber-50 text-amber-900 border border-amber-300 hover:bg-amber-100"
+                      }`}
+                    >
+                      <Receipt className="w-3.5 h-3.5" />
+                      <span>শুধু বকেয়া রোগী ({duePatientsCount})</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Filter Search */}
+                <div className="relative w-full lg:w-72">
+                  <Search className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" />
+                  <input
+                    type="text"
+                    value={accountingSearch}
+                    onChange={(e) => setAccountingSearch(e.target.value)}
+                    placeholder="হিসাবে নাম, মোবাইল দিয়ে খুঁজুন..."
+                    className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200 text-xs outline-none focus:border-[#006B5B] bg-[#FAFAF7]"
+                  />
+                </div>
+              </div>
+
+              {/* Active Filter Indicator Badge */}
+              <div className="flex items-center gap-2 text-xs text-gray-500 pt-1">
+                <span className="font-semibold">বর্তমান ফিল্টার:</span>
+                <span className="font-bold text-[#004D40] bg-emerald-50 px-2.5 py-0.5 rounded-lg border border-emerald-200">
+                  {accountingMonth !== "all" ? BANGLA_MONTH_NAMES[Number(accountingMonth) - 1] : "সকল মাস"}{" "}
+                  {accountingYear !== "all" ? `${accountingYear} সাল` : "(সর্বকালীন)"}
+                  {accountingDueOnly ? " • শুধুমাত্র বকেয়া" : ""}
+                </span>
+                <span className="text-gray-400">• মোট {accountingFilteredPatients.length} টি রেকর্ড পাওয়া গেছে</span>
+              </div>
+            </div>
+
+            {/* KPI Summary 4 Cards for Selected Period */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 pt-2">
+              <div className="p-5 rounded-2xl bg-[#FAFAF7] border border-gray-200 shadow-2xs space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-gray-600">মোট আগত রোগী</span>
+                  <div className="p-1.5 rounded-lg bg-emerald-100/70 text-[#006B5B]">
+                    <Users className="w-4 h-4" />
+                  </div>
+                </div>
+                <p className="text-2xl sm:text-3xl font-black text-[#004D40]">
+                  {accountingFilteredPatients.length} জন
+                </p>
+                <div className="text-[11px] text-gray-500 font-medium">
+                  অনলাইন: {accountingFilteredPatients.filter((p) => p.type === "online").length} • চেম্বার: {accountingFilteredPatients.filter((p) => p.type === "offline").length}
+                </div>
+              </div>
+
+              <div className="p-5 rounded-2xl bg-[#FAFAF7] border border-gray-200 shadow-2xs space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-gray-600">ধার্যকৃত মোট ফি</span>
+                  <div className="p-1.5 rounded-lg bg-teal-100/70 text-teal-800">
+                    <DollarSign className="w-4 h-4" />
+                  </div>
+                </div>
+                <p className="text-2xl sm:text-3xl font-black text-gray-900">
+                  ৳{periodTotalFee.toLocaleString("bn-BD")}
+                </p>
+                <div className="text-[11px] text-gray-500 font-medium">
+                  গড় ফি: ৳{accountingFilteredPatients.length > 0 ? Math.round(periodTotalFee / accountingFilteredPatients.length).toLocaleString("bn-BD") : "০"} / জন
+                </div>
+              </div>
+
+              <div className="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 shadow-2xs space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-emerald-900">মোট আদায় / পেইড</span>
+                  <div className="p-1.5 rounded-lg bg-emerald-600 text-white">
+                    <Coins className="w-4 h-4" />
+                  </div>
+                </div>
+                <p className="text-2xl sm:text-3xl font-black text-emerald-800">
+                  ৳{periodTotalPaid.toLocaleString("bn-BD")}
+                </p>
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between text-[11px] font-bold text-emerald-800">
+                    <span>আদায়ের হার</span>
+                    <span>{periodCollectionRate}%</span>
+                  </div>
+                  <div className="w-full bg-emerald-200 rounded-full h-1.5 overflow-hidden">
+                    <div
+                      className="bg-emerald-600 h-full rounded-full transition-all duration-500"
+                      style={{ width: `${Math.min(periodCollectionRate, 100)}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className={`p-5 rounded-2xl border shadow-2xs space-y-1.5 ${
+                periodTotalDue > 0 ? "bg-amber-50/80 border-amber-300" : "bg-[#FAFAF7] border-gray-200"
+              }`}>
+                <div className="flex items-center justify-between">
+                  <span className={`text-xs font-semibold ${periodTotalDue > 0 ? "text-amber-900 font-bold" : "text-gray-600"}`}>
+                    অবশিষ্ট বকেয়া (ডিউ)
+                  </span>
+                  <div className={`p-1.5 rounded-lg ${periodTotalDue > 0 ? "bg-amber-500 text-white" : "bg-gray-100 text-gray-500"}`}>
+                    <Receipt className="w-4 h-4" />
+                  </div>
+                </div>
+                <p className={`text-2xl sm:text-3xl font-black ${periodTotalDue > 0 ? "text-amber-800" : "text-gray-700"}`}>
+                  ৳{periodTotalDue.toLocaleString("bn-BD")}
+                </p>
+                <div className="text-[11px] font-bold">
+                  {periodDueCount > 0 ? (
+                    <span className="text-amber-800">⚠️ {periodDueCount} জন রোগীর বকেয়া রয়েছে</span>
+                  ) : (
+                    <span className="text-emerald-700 font-semibold">✓ কোনো বকেয়া অবশিষ্ট নেই</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Monthly Breakdown Table for Selected Year */}
+          <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-3">
+              <div>
+                <h4 className="font-bold text-base text-[#004D40] flex items-center gap-2">
+                  <BarChart3 className="w-4 h-4 text-[#006B5B]" />
+                  <span>{activeBreakdownYear} সালের মাসভিত্তিক আয় ও বকেয়ার খতিয়ান</span>
+                </h4>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  প্রতি মাসের মোট রোগী, ধার্যকৃত ফি, আদায় এবং বকেয়ার পূর্ণ হিসাব
+                </p>
+              </div>
+
+              {accountingYear === "all" && (
+                <span className="text-xs text-[#006B5B] bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 font-semibold">
+                  চলতি বছর ({activeBreakdownYear}) প্রদর্শিত
+                </span>
+              )}
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs text-left">
+                <thead>
+                  <tr className="border-b border-gray-200 text-gray-600 bg-gray-50/80">
+                    <th className="p-3 font-bold rounded-l-xl">মাস</th>
+                    <th className="p-3 font-bold text-center">রোগী সংখ্যা</th>
+                    <th className="p-3 font-bold text-right">ধার্যকৃত ফি</th>
+                    <th className="p-3 font-bold text-right">আদায়কৃত (পেইড)</th>
+                    <th className="p-3 font-bold text-right">বকেয়া (ডিউ)</th>
+                    <th className="p-3 font-bold text-center">আদায় হার</th>
+                    <th className="p-3 font-bold text-center rounded-r-xl">অ্যাকশন</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100 font-medium">
+                  {monthlyBreakdown.map((m) => {
+                    const isSelectedMonth = accountingMonth === String(m.monthNumber);
+                    const isCurrentMonth = m.monthNumber === currentMonth && activeBreakdownYear === currentYear;
+
+                    return (
+                      <tr
+                        key={m.monthNumber}
+                        className={`hover:bg-gray-50/80 transition-colors ${
+                          isSelectedMonth ? "bg-emerald-50/60 font-semibold" : ""
+                        }`}
+                      >
+                        <td className="p-3">
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold text-gray-900">{m.monthName}</span>
+                            {isCurrentMonth && (
+                              <span className="text-[9px] font-extrabold bg-[#006B5B] text-white px-1.5 py-0.2 rounded-md">
+                                বর্তমান মাস
+                              </span>
+                            )}
+                          </div>
+                        </td>
+                        <td className="p-3 text-center">
+                          <span className={`px-2 py-0.5 rounded-full text-xs ${
+                            m.patientCount > 0 ? "bg-emerald-100 text-[#004D40] font-bold" : "text-gray-400"
+                          }`}>
+                            {m.patientCount} জন
+                          </span>
+                        </td>
+                        <td className="p-3 text-right font-bold text-gray-900">
+                          ৳{m.totalFee.toLocaleString("bn-BD")}
+                        </td>
+                        <td className="p-3 text-right font-bold text-emerald-700">
+                          ৳{m.totalPaid.toLocaleString("bn-BD")}
+                        </td>
+                        <td className="p-3 text-right">
+                          <span className={`font-bold ${m.totalDue > 0 ? "text-amber-800" : "text-gray-400"}`}>
+                            ৳{m.totalDue.toLocaleString("bn-BD")}
+                          </span>
+                        </td>
+                        <td className="p-3 text-center">
+                          {m.totalFee > 0 ? (
+                            <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full ${
+                              m.collectionRate >= 90
+                                ? "bg-emerald-100 text-emerald-800"
+                                : m.collectionRate >= 50
+                                ? "bg-teal-100 text-teal-800"
+                                : "bg-amber-100 text-amber-800"
+                            }`}>
+                              {m.collectionRate}%
+                            </span>
+                          ) : (
+                            <span className="text-gray-300">-</span>
+                          )}
+                        </td>
+                        <td className="p-3 text-center">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setAccountingYear(String(activeBreakdownYear));
+                              setAccountingMonth(String(m.monthNumber));
+                            }}
+                            className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+                              isSelectedMonth
+                                ? "bg-[#006B5B] text-white shadow-2xs"
+                                : "bg-gray-100 hover:bg-[#006B5B] hover:text-white text-gray-700"
+                            }`}
+                            title={`${m.monthName} মাসের রোগীদের তালিকা নিচে দেখুন`}
+                          >
+                            {isSelectedMonth ? "নির্বাচিত ✓" : "তালিকা দেখুন"}
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+                <tfoot>
+                  <tr className="border-t-2 border-gray-200 bg-gray-50 font-bold text-xs text-gray-900">
+                    <td className="p-3 font-extrabold">মোট বাৎসরিক হিসাব</td>
+                    <td className="p-3 text-center text-[#004D40]">
+                      {monthlyBreakdown.reduce((sum, m) => sum + m.patientCount, 0)} জন
+                    </td>
+                    <td className="p-3 text-right text-gray-900">
+                      ৳{monthlyBreakdown.reduce((sum, m) => sum + m.totalFee, 0).toLocaleString("bn-BD")}
+                    </td>
+                    <td className="p-3 text-right text-emerald-700">
+                      ৳{monthlyBreakdown.reduce((sum, m) => sum + m.totalPaid, 0).toLocaleString("bn-BD")}
+                    </td>
+                    <td className="p-3 text-right text-amber-800">
+                      ৳{monthlyBreakdown.reduce((sum, m) => sum + m.totalDue, 0).toLocaleString("bn-BD")}
+                    </td>
+                    <td className="p-3 text-center">
+                      {(() => {
+                        const yrFee = monthlyBreakdown.reduce((sum, m) => sum + m.totalFee, 0);
+                        const yrPaid = monthlyBreakdown.reduce((sum, m) => sum + m.totalPaid, 0);
+                        return yrFee > 0 ? `${Math.round((yrPaid / yrFee) * 100)}%` : "০%";
+                      })()}
+                    </td>
+                    <td className="p-3 text-center text-gray-400">-</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+
+          {/* Yearly Comparison Overview Table */}
+          {detectedYears.length > 1 && (
+            <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
+              <h4 className="font-bold text-base text-[#004D40] flex items-center gap-2 border-b border-gray-100 pb-3">
+                <TrendingUp className="w-4 h-4 text-[#006B5B]" />
+                <span>বাৎসরিক আর্থিক প্রবৃদ্ধি ও তুলনা (Yearly Comparison)</span>
+              </h4>
+
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs text-left">
+                  <thead>
+                    <tr className="border-b border-gray-200 text-gray-600 bg-gray-50/80 font-bold">
+                      <th className="p-3">বছর</th>
+                      <th className="p-3 text-center">রোগী</th>
+                      <th className="p-3 text-right">ধার্য ফি</th>
+                      <th className="p-3 text-right">আদায়কৃত (পেইড)</th>
+                      <th className="p-3 text-right">বকেয়া (ডিউ)</th>
+                      <th className="p-3 text-center">আদায় হার</th>
+                      <th className="p-3 text-center">অ্যাকশন</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100 font-medium">
+                    {yearlyBreakdown.map((y) => (
+                      <tr key={y.year} className="hover:bg-gray-50">
+                        <td className="p-3 font-bold text-gray-900">{y.year} সাল</td>
+                        <td className="p-3 text-center">{y.patientCount} জন</td>
+                        <td className="p-3 text-right font-bold">৳{y.totalFee.toLocaleString("bn-BD")}</td>
+                        <td className="p-3 text-right font-bold text-emerald-700">৳{y.totalPaid.toLocaleString("bn-BD")}</td>
+                        <td className="p-3 text-right font-bold text-amber-800">৳{y.totalDue.toLocaleString("bn-BD")}</td>
+                        <td className="p-3 text-center">
+                          <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">
+                            {y.collectionRate}%
+                          </span>
+                        </td>
+                        <td className="p-3 text-center">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setAccountingYear(String(y.year));
+                              setAccountingMonth("all");
+                            }}
+                            className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-gray-100 hover:bg-[#006B5B] hover:text-white transition-colors cursor-pointer"
+                          >
+                            বছর নির্বাচন করুন
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* Period Patients Financial Ledger & Actions Table */}
+          <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-3">
+              <div>
+                <h4 className="font-bold text-base text-[#004D40] flex items-center gap-2">
+                  <Users className="w-4 h-4 text-[#006B5B]" />
+                  <span>বাছাইকৃত সময়ের রোগী ও পেমেন্ট বিবরণী</span>
+                </h4>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  প্রতিটি রোগীর বিস্তারিত ফি, পরিশোধিত টাকা, অবশিষ্ট বকেয়া ও ১-ক্লিক অ্যাকশন
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 text-xs">
+                <span className="text-gray-500 font-medium">মোট পাওয়া গেছে:</span>
+                <span className="font-extrabold text-[#004D40] bg-emerald-50 px-2.5 py-0.5 rounded-lg border border-emerald-200">
+                  {accountingFilteredPatients.length} জন
+                </span>
+              </div>
+            </div>
+
+            {accountingFilteredPatients.length === 0 ? (
+              <div className="p-12 text-center rounded-2xl bg-[#FAFAF7] border border-dashed border-gray-200 space-y-2">
+                <AlertCircle className="w-8 h-8 text-gray-400 mx-auto" />
+                <p className="font-bold text-gray-600 text-sm">এই সময়ের কোনো রোগীর রেকর্ড পাওয়া যায়নি</p>
+                <p className="text-xs text-gray-400">
+                  ফিল্টার পরিবর্তন করে &apos;সর্বকালীন&apos; বা অন্য কোনো মাস/বছর নির্বাচন করে দেখতে পারেন।
+                </p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs text-left">
+                  <thead>
+                    <tr className="border-b border-gray-200 text-gray-600 bg-gray-50/80 font-bold">
+                      <th className="p-3">আইডি ও নাম</th>
+                      <th className="p-3">বয়স</th>
+                      <th className="p-3">যোগাযোগ</th>
+                      <th className="p-3">ধরন ও তারিখ</th>
+                      <th className="p-3 text-right">মোট ফি</th>
+                      <th className="p-3 text-right">পরিশোধিত</th>
+                      <th className="p-3 text-right">বকেয়া</th>
+                      <th className="p-3 text-center">স্ট্যাটাস</th>
+                      <th className="p-3 text-center">তাৎক্ষণিক অ্যাকশন</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100 font-medium">
+                    {accountingFilteredPatients.map((p) => {
+                      const f = Number(p.fee) || 0;
+                      const pd = Number(p.paid) || 0;
+                      const d = p.due !== undefined ? Number(p.due) : Math.max(f - pd, 0);
+
+                      return (
+                        <tr key={p.id} className="hover:bg-gray-50/80 transition-colors">
+                          <td className="p-3">
+                            <div>
+                              <div className="flex items-center gap-1.5">
+                                <span className="font-mono text-[10px] text-gray-400 font-bold">{p.id}</span>
+                                <span className="font-bold text-gray-900 text-xs">{p.name}</span>
+                              </div>
+                              <span className="text-[11px] text-gray-500 block truncate max-w-[180px]">
+                                {p.problemType}
+                              </span>
+                            </div>
+                          </td>
+
+                          <td className="p-3 whitespace-nowrap">
+                            {p.age ? (
+                              <span className="px-2 py-0.5 rounded-md bg-purple-50 text-purple-800 border border-purple-200 font-bold text-[11px]">
+                                {p.age} বছর
+                              </span>
+                            ) : (
+                              <span className="text-gray-400 text-[11px]">-</span>
+                            )}
+                          </td>
+
+                          <td className="p-3 whitespace-nowrap">
+                            <span className="font-mono text-gray-700 block">{p.phone}</span>
+                            <span className="text-[10px] text-gray-400 block truncate max-w-[140px]">
+                              {p.address || "ঠিকানা নেই"}
+                            </span>
+                          </td>
+
+                          <td className="p-3 whitespace-nowrap">
+                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md inline-block mb-0.5 ${
+                              p.type === "online" ? "bg-sky-100 text-sky-800" : "bg-teal-100 text-teal-800"
+                            }`}>
+                              {p.type === "online" ? "অনলাইন" : "চেম্বার"}
+                            </span>
+                            <span className="text-[11px] text-gray-400 block">{p.date}</span>
+                          </td>
+
+                          <td className="p-3 text-right font-bold text-gray-900 whitespace-nowrap">
+                            ৳{f.toLocaleString("bn-BD")}
+                          </td>
+
+                          <td className="p-3 text-right font-bold text-emerald-700 whitespace-nowrap">
+                            ৳{pd.toLocaleString("bn-BD")}
+                          </td>
+
+                          <td className="p-3 text-right whitespace-nowrap">
+                            {d > 0 ? (
+                              <span className="font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-300 inline-block">
+                                ৳{d.toLocaleString("bn-BD")}
+                              </span>
+                            ) : (
+                              <span className="text-emerald-600 font-semibold text-[11px]">
+                                পরিশোধিত ✓
+                              </span>
+                            )}
+                          </td>
+
+                          <td className="p-3 text-center whitespace-nowrap">
+                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                              p.status === "running"
+                                ? "bg-emerald-50 text-[#004D40] border-emerald-200"
+                                : p.status === "followup"
+                                ? "bg-teal-50 text-teal-900 border-teal-200"
+                                : p.status === "cured"
+                                ? "bg-gray-50 text-gray-700 border-gray-200"
+                                : "bg-amber-50 text-amber-800 border-amber-200"
+                            }`}>
+                              {p.status === "running"
+                                ? "চলমান"
+                                : p.status === "followup"
+                                ? "ফলো-আপ"
+                                : p.status === "cured"
+                                ? "সুস্থ"
+                                : "নতুন"}
+                            </span>
+                          </td>
+
+                          <td className="p-3 text-center whitespace-nowrap">
+                            <div className="flex items-center justify-center gap-1.5">
+                              {/* 1-Click Mark Paid if due */}
+                              {d > 0 && (
+                                <button
+                                  type="button"
+                                  onClick={() => handleMarkPatientPaid(p.id)}
+                                  className="p-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 transition-colors cursor-pointer"
+                                  title="সম্পূর্ণ বকেয়া পরিশোধ হিসেবে সেভ করুন"
+                                >
+                                  <Check className="w-3.5 h-3.5" />
+                                </button>
+                              )}
+
+                              {/* WhatsApp due notice if due, or followup */}
+                              {d > 0 ? (
+                                <a
+                                  href={getDuePaymentWhatsAppUrl(p)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="p-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 transition-colors cursor-pointer"
+                                  title="বকেয়া সংক্রান্ত WhatsApp মেসেজ পাঠান"
+                                >
+                                  <MessageCircle className="w-3.5 h-3.5" />
+                                </a>
+                              ) : (
+                                <a
+                                  href={getFollowupWhatsAppUrl(p)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="p-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 transition-colors cursor-pointer"
+                                  title="WhatsApp যোগাযোগ"
+                                >
+                                  <MessageCircle className="w-3.5 h-3.5" />
+                                </a>
+                              )}
+
+                              {/* View details in drawer */}
+                              <button
+                                type="button"
+                                onClick={() => handleOpenPatientDrawer(p)}
+                                className="p-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors cursor-pointer"
+                                title="রোগীর সম্পূর্ণ বিস্তারিত ও প্রেসক্রিপশন দেখুন"
+                              >
+                                <ChevronRight className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                  <tfoot>
+                    <tr className="border-t-2 border-gray-200 bg-gray-50 font-bold text-xs text-gray-900">
+                      <td colSpan={4} className="p-3 font-extrabold">
+                        বাছাইকৃত সময়ের সর্বমোট ({accountingFilteredPatients.length} জন রোগী)
+                      </td>
+                      <td className="p-3 text-right font-black">
+                        ৳{periodTotalFee.toLocaleString("bn-BD")}
+                      </td>
+                      <td className="p-3 text-right font-black text-emerald-700">
+                        ৳{periodTotalPaid.toLocaleString("bn-BD")}
+                      </td>
+                      <td className="p-3 text-right font-black text-amber-800">
+                        ৳{periodTotalDue.toLocaleString("bn-BD")}
+                      </td>
+                      <td colSpan={2} className="p-3 text-center text-xs text-[#004D40]">
+                        আদায়ের হার: {periodCollectionRate}%
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
@@ -3260,8 +4270,8 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
             </div>
 
             <form onSubmit={handleSavePatientSubmit} className="p-6 overflow-y-auto space-y-4 text-xs">
-              {/* Name & Phone */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Name, Phone & Age */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
                   <label className="block font-semibold text-gray-700 mb-1">রোগীর নাম *</label>
                   <input
@@ -3284,6 +4294,24 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     onChange={(e) => setPatientForm({ ...patientForm, phone: e.target.value })}
                     className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
                   />
+                </div>
+
+                <div>
+                  <label className="block font-semibold text-gray-700 mb-1">রোগীর বয়স (বছর)</label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      min="0"
+                      max="130"
+                      placeholder="যেমন: ২৫"
+                      value={patientForm.age || ""}
+                      onChange={(e) => setPatientForm({ ...patientForm, age: e.target.value })}
+                      className="w-full p-2.5 pr-12 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] font-semibold text-gray-800"
+                    />
+                    <span className="absolute right-3 top-2.5 text-xs text-gray-400 font-medium pointer-events-none">
+                      বছর
+                    </span>
+                  </div>
                 </div>
               </div>
 
