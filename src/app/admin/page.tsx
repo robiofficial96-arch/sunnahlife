@@ -52,7 +52,10 @@ import {
   Ticket,
   Info,
   Check,
-  CalendarDays
+  CalendarDays,
+  DollarSign,
+  Coins,
+  Receipt
 } from "lucide-react";
 import Image from "next/image";
 import { DEFAULT_POPUP_CONFIG, PopupNoticeConfig } from "@/data/popupNotice";
@@ -70,6 +73,9 @@ export interface PatientRecord {
   type: "online" | "offline";
   problemType: string;
   service?: string;
+  fee?: number;       // মোট চিকিৎসা ফি (৳)
+  paid?: number;      // পরিশোধিত টাকা (৳)
+  due?: number;       // বকেয়া টাকা (৳)
   notes: string;
   prescription: string;
   date: string;
@@ -130,86 +136,7 @@ export const formatBanglaFollowupDate = (dateStr?: string) => {
   return dateObj.toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" });
 };
 
-const INITIAL_PATIENTS: PatientRecord[] = [
-  {
-    id: "P-101",
-    name: "মুহাম্মদ তারিকুল ইসলাম",
-    phone: "01711223344",
-    address: "মিরপুর-১০, ঢাকা",
-    type: "online",
-    problemType: "ওয়াসওয়াসা ও মানসিক অস্থিরতা",
-    service: "অনলাইন শারঈ রুকইয়াহ কনসালটেশন",
-    notes: "দীর্ঘদিন ধরে সালাতে মনোযোগ বিঘ্নিত হওয়া ও অতিরিক্ত মৃত্যুভয়। রুকইয়াহ আয়াত ও আজকার আমল দেওয়া হয়েছে।",
-    prescription: "সকাল-সন্ধ্যা আজকার, ঘুমানোর আগে ৩ কুল আমল ও রুকইয়াহ পানি পান।",
-    date: "১৪ সেপ্টেম্বর, ২০২৬",
-    timeSlot: "রাত ৮:০০ - ৯:০০",
-    status: "followup",
-    nextFollowupDate: getLocalDateString(),
-    nextFollowupNote: "আমল পর্যালোচনা ও মানসিক প্রশান্তির অগ্রগতি যাচাই",
-  },
-  {
-    id: "P-102",
-    name: "ফাতিমা আক্তার (স্বামীর মাধ্যমে)",
-    phone: "01822334455",
-    address: "উত্তরা, ঢাকা",
-    type: "offline",
-    problemType: "সিহর / জাদু (পেটের জাদু)",
-    service: "সরাসরি চেম্বারে রুকইয়াহ সেশন",
-    notes: "খাওয়ানো জাদুর লক্ষণ—দীর্ঘ পেটের ব্যথা, বমির ভাব। সানা মাক্কি ডিটক্স ও সিদর পাতা গোসল প্রেসক্রাইব করা হয়েছে। চেম্বারে ১ম সেশন সম্পন্ন।",
-    prescription: "সানা মাক্কি ডিটক্স চা সপ্তাহে ২ দিন, প্রতিদিন রুকইয়াহ তেল পেটে মালিশ।",
-    date: "১৫ সেপ্টেম্বর, ২০২৬",
-    timeSlot: "দুপুর ১২:০০ - ১:০০",
-    status: "running",
-    nextFollowupDate: addDaysToDate(3),
-    nextFollowupNote: "সানা মাক্কি ডিটক্স শেষ করে পেটের অবস্থা পর্যালোচনা",
-  },
-  {
-    id: "P-103",
-    name: "আব্দুর রহমান",
-    phone: "01933445566",
-    address: "জিইসি মোড়, চট্টগ্রাম",
-    type: "online",
-    problemType: "দাম্পত্য বিরোধ ও বদনজর",
-    service: "দাম্পত্য ও পারিবারিক কাউন্সেলিং",
-    notes: "পারিবারিক অশান্তি ও হঠাৎ সম্পর্কের অবনতি। ঘরে সূরা বাকারা তিলাওয়াত ও অডিও শোনার নির্দেশ দেওয়া হয়েছে।",
-    prescription: "প্রতিদিন ঘরে সূরা বাকারা বাজানো, নিয়মিত বদনজরের দোয়া পাঠ।",
-    date: "১২ সেপ্টেম্বর, ২০২৬",
-    timeSlot: "সন্ধ্যা ৬:৩০ - ৭:৩০",
-    status: "followup",
-    nextFollowupDate: addDaysToDate(-2),
-    nextFollowupNote: "সূরা বাকারা তিলাওয়াত অডিও শোনার প্রতিক্রিয়া জানতে চাওয়া",
-  },
-  {
-    id: "P-104",
-    name: "হাফেজ তানভীর আহমেদ",
-    phone: "01688997711",
-    address: "ধানমন্ডি, ঢাকা",
-    type: "offline",
-    problemType: "হিজামা ও শারীরিক অবসাদ",
-    service: "সুন্নাহ পয়েন্টে হিজামা থেরাপি",
-    notes: "পিঠের তীব্র ব্যথা ও মাইগ্রেন। সুন্নাহ পয়েন্টে হিজামা ও কালোজিরা তেল সেবন সম্পন্ন। আলহামদুলিল্লাহ সম্পূর্ণ সুস্থ।",
-    prescription: "পর্যাপ্ত পানি ও মধু সেবন, হালকা শরীরচর্চা।",
-    date: "১০ সেপ্টেম্বর, ২০২৬",
-    timeSlot: "সকাল ১১:০০ - ১২:০০",
-    status: "cured",
-  },
-  {
-    id: "P-105",
-    name: "মোসাম্মৎ রুকসানা পারভীন",
-    phone: "01521443322",
-    address: "শিবগঞ্জ, সিলেট",
-    type: "online",
-    problemType: "জিনের আছর ও দুঃস্বপ্ন",
-    service: "অনলাইন শারঈ রুকইয়াহ কনসালটেশন",
-    notes: "ঘুমের মধ্যে ভীতি, ভারী অনুভব ও দুঃস্বপ্ন দেখা। নতুন রোগী, প্রাথমিক কাউন্সেলিং সম্পন্ন।",
-    prescription: "ঘুমানোর পূর্বে আযানের অডিও ও শয়নকালীন মাসনুন দোয়া।",
-    date: "১৭ সেপ্টেম্বর, ২০২৬",
-    timeSlot: "রাত ৯:০০ - ১০:০০",
-    status: "new",
-    nextFollowupDate: addDaysToDate(7),
-    nextFollowupNote: "ঘুমানোর মাসনুন দোয়া ও দুঃস্বপ্ন কমেছে কিনা পরীক্ষা",
-  },
-];
+const INITIAL_PATIENTS: PatientRecord[] = [];
 
 export default function AdminDashboardPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -233,9 +160,12 @@ export default function AdminDashboardPage() {
     address: "",
     type: "online",
     problemType: "বদনজর (Evil Eye)",
+    fee: 0,
+    paid: 0,
+    due: 0,
     notes: "",
     prescription: "",
-    date: "১৪ সেপ্টেম্বর, ২০২৬",
+    date: new Date().toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" }),
     timeSlot: "রাত ৮:০০ - ৯:০০",
     status: "new",
     nextFollowupDate: "",
@@ -371,8 +301,13 @@ export default function AdminDashboardPage() {
       const savedPatients = localStorage.getItem("sunnahlife_patients_records");
       if (savedPatients) {
         const parsed = JSON.parse(savedPatients);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setPatientsList(parsed);
+        if (Array.isArray(parsed)) {
+          // Remove any legacy demo records (e.g. P-101 to P-105)
+          const cleaned = parsed.filter(
+            (p: any) => !["P-101", "P-102", "P-103", "P-104", "P-105"].includes(p?.id)
+          );
+          setPatientsList(cleaned);
+          localStorage.setItem("sunnahlife_patients_records", JSON.stringify(cleaned));
         }
       }
     } catch {}
@@ -583,6 +518,9 @@ export default function AdminDashboardPage() {
       address: "",
       type: "online",
       problemType: "বদনজর (Evil Eye)",
+      fee: 0,
+      paid: 0,
+      due: 0,
       notes: "",
       prescription: "",
       date: new Date().toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" }),
@@ -597,12 +535,18 @@ export default function AdminDashboardPage() {
   const handleOpenEditPatient = (p: PatientRecord) => {
     setEditingPatientId(p.id);
     setCustomCategoryInput("");
+    const f = Number(p.fee) || 0;
+    const pd = Number(p.paid) || 0;
+    const d = p.due !== undefined ? Number(p.due) : Math.max(f - pd, 0);
     setPatientForm({
       name: p.name,
       phone: p.phone,
       address: p.address || "",
       type: p.type || "online",
       problemType: p.problemType || "বদনজর (Evil Eye)",
+      fee: f,
+      paid: pd,
+      due: d,
       notes: p.notes || "",
       prescription: p.prescription || "",
       date: p.date,
@@ -663,6 +607,32 @@ export default function AdminDashboardPage() {
     setTimeout(() => setPopupSaveMessage(""), 3000);
   };
 
+  const handleMarkPatientPaid = (id: string) => {
+    const updated = patientsList.map((p) => {
+      if (p.id === id) {
+        const fee = Number(p.fee) || 0;
+        return {
+          ...p,
+          paid: fee,
+          due: 0,
+        };
+      }
+      return p;
+    });
+    setPatientsList(updated);
+    localStorage.setItem("sunnahlife_patients_records", JSON.stringify(updated));
+    if (selectedPatientForDrawer && selectedPatientForDrawer.id === id) {
+      const fee = Number(selectedPatientForDrawer.fee) || 0;
+      setSelectedPatientForDrawer({
+        ...selectedPatientForDrawer,
+        paid: fee,
+        due: 0,
+      });
+    }
+    setPopupSaveMessage("রোগীর সকল বকেয়া পরিশোধ হিসেবে সেভ করা হয়েছে!");
+    setTimeout(() => setPopupSaveMessage(""), 3500);
+  };
+
   const handleSavePatientSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!patientForm.name.trim() || !patientForm.phone.trim()) {
@@ -674,10 +644,21 @@ export default function AdminDashboardPage() {
       return;
     }
 
+    const feeNum = Number(patientForm.fee) || 0;
+    const paidNum = Number(patientForm.paid) || 0;
+    const dueNum = Math.max(feeNum - paidNum, 0);
+
+    const formDataToSave = {
+      ...patientForm,
+      fee: feeNum,
+      paid: paidNum,
+      due: dueNum,
+    };
+
     let updated: PatientRecord[];
     if (editingPatientId) {
       const updatedRecord: PatientRecord = {
-        ...patientForm,
+        ...formDataToSave,
         id: editingPatientId,
       };
       updated = patientsList.map((p) =>
@@ -686,14 +667,19 @@ export default function AdminDashboardPage() {
       if (selectedPatientForDrawer && selectedPatientForDrawer.id === editingPatientId) {
         setSelectedPatientForDrawer(updatedRecord);
       }
-      setPopupSaveMessage("রোগীর তথ্য ও প্রেসক্রিপশন সফলভাবে আপডেট করা হয়েছে!");
+      setPopupSaveMessage("রোগীর তথ্য, প্রেসক্রিপশন ও পেমেন্ট সফলভাবে আপডেট করা হয়েছে!");
     } else {
+      const maxNumericId = patientsList.reduce((max, p) => {
+        const num = parseInt(p.id.replace(/\D/g, ""), 10);
+        return !isNaN(num) && num > max ? num : max;
+      }, 100);
+
       const newEntry: PatientRecord = {
-        id: "P-" + (patientsList.length + 101),
-        ...patientForm,
+        id: `P-${maxNumericId + 1}`,
+        ...formDataToSave,
       };
       updated = [newEntry, ...patientsList];
-      setPopupSaveMessage("নতুন রোগীর তথ্য সফলভাবে যুক্ত করা হয়েছে!");
+      setPopupSaveMessage("নতুন রোগীর তথ্য ও হিসাব সফলভাবে যুক্ত করা হয়েছে!");
     }
 
     setPatientsList(updated);
@@ -762,6 +748,9 @@ export default function AdminDashboardPage() {
       "ধরন",
       "সমস্যার ক্যাটাগরি",
       "স্ট্যাটাস",
+      "মোট ফি (৳)",
+      "পরিশোধিত (৳)",
+      "বকেয়া (৳)",
       "তারিখ",
       "সময়",
       "পরবর্তী ফলো-আপের তারিখ",
@@ -776,21 +765,29 @@ export default function AdminDashboardPage() {
       cured: "সুস্থ ও সমাপ্ত"
     };
 
-    const rows = patientsList.map((p) => [
-      `"${p.id}"`,
-      `"${p.name.replace(/"/g, '""')}"`,
-      `"${p.phone}"`,
-      `"${(p.address || '').replace(/"/g, '""')}"`,
-      `"${p.type === 'online' ? 'অনলাইন' : 'সরাসরি চেম্বার'}"`,
-      `"${(p.problemType || p.service || '').replace(/"/g, '""')}"`,
-      `"${statusLabels[p.status] || p.status}"`,
-      `"${p.date}"`,
-      `"${(p.timeSlot || '').replace(/"/g, '""')}"`,
-      `"${p.nextFollowupDate ? formatBanglaFollowupDate(p.nextFollowupDate) : ''}"`,
-      `"${(p.nextFollowupNote || '').replace(/"/g, '""')}"`,
-      `"${(p.prescription || '').replace(/"/g, '""')}"`,
-      `"${(p.notes || '').replace(/"/g, '""')}"`,
-    ]);
+    const rows = patientsList.map((p) => {
+      const f = Number(p.fee) || 0;
+      const pd = Number(p.paid) || 0;
+      const d = p.due !== undefined ? Number(p.due) : Math.max(f - pd, 0);
+      return [
+        `"${p.id}"`,
+        `"${p.name.replace(/"/g, '""')}"`,
+        `"${p.phone}"`,
+        `"${(p.address || '').replace(/"/g, '""')}"`,
+        `"${p.type === 'online' ? 'অনলাইন' : 'সরাসরি চেম্বার'}"`,
+        `"${(p.problemType || p.service || '').replace(/"/g, '""')}"`,
+        `"${statusLabels[p.status] || p.status}"`,
+        `"${f}"`,
+        `"${pd}"`,
+        `"${d}"`,
+        `"${p.date}"`,
+        `"${(p.timeSlot || '').replace(/"/g, '""')}"`,
+        `"${p.nextFollowupDate ? formatBanglaFollowupDate(p.nextFollowupDate) : ''}"`,
+        `"${(p.nextFollowupNote || '').replace(/"/g, '""')}"`,
+        `"${(p.prescription || '').replace(/"/g, '""')}"`,
+        `"${(p.notes || '').replace(/"/g, '""')}"`,
+      ];
+    });
 
     const csvContent = "\uFEFF" + [headers.join(","), ...rows.map((r) => r.join(","))].join("\r\n");
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -801,7 +798,7 @@ export default function AdminDashboardPage() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    setPopupSaveMessage("রোগীদের সকল ডাটা সফলভাবে এক্সেল (CSV) ফাইলে ডাউনলোড হয়েছে!");
+    setPopupSaveMessage("রোগীদের সকল ডাটা ও হিসাব সফলভাবে এক্সেল (CSV) ফাইলে ডাউনলোড হয়েছে!");
     setTimeout(() => setPopupSaveMessage(""), 3500);
   };
 
@@ -817,11 +814,20 @@ export default function AdminDashboardPage() {
       followupContext = `আপনার পরবর্তী ফলো-আপের নির্ধারিত তারিখ: ${formatBanglaFollowupDate(p.nextFollowupDate)}।`;
     }
 
+    const fee = Number(p.fee) || 0;
+    const paid = Number(p.paid) || 0;
+    const due = p.due !== undefined ? Number(p.due) : Math.max(fee - paid, 0);
+
+    let dueNotice = "";
+    if (due > 0) {
+      dueNotice = `\n📌 *বকেয়া সংক্রান্ত তথ্য:* আপনার চিকিৎসা ফির অবশিষ্ট বকেয়া ৳${due.toLocaleString("bn-BD")} টাকা রয়েছে। পরবর্তী সেশনের আগে বা সুবিধাজনক সময়ে পরিশোধের অনুরোধ রইল।\n`;
+    }
+
     const text = `আসসালামু আলাইকুম ${p.name} ভাই/বোন।
 সুন্নাহলাইফ শারঈ রুকইয়াহ কেয়ার থেকে আপনার খোঁজ নেওয়ার জন্য যোগাযোগ করছি।
 
 ${followupContext ? followupContext + "\n\n" : ""}আপনার "${p.problemType || p.service || 'সমস্যা'}"-এর সমস্যাটি এখন কেমন আছে? আলহামদুলিল্লাহ কোনো উন্নতি লক্ষ্য করছেন কি?
-${p.nextFollowupNote ? `\nপূর্ববর্তী নির্দেশনা নোট: "${p.nextFollowupNote}"\n` : ""}
+${p.nextFollowupNote ? `\nপূর্ববর্তী নির্দেশনা নোট: "${p.nextFollowupNote}"\n` : ""}${dueNotice}
 প্রেসক্রিপশন অনুযায়ী রুকইয়াহ আমল ও সুন্নাহ সামগ্রীগুলো নিয়মিত মেনে চলছেন তো? কোনো পরামর্শ বা সহায়তার প্রয়োজন হলে নির্দ্বিধায় আমাদের লিখে জানান। আল্লাহ আপনাকে পূর্ণ শিফা দান করুন।
 
 — সুন্নাহলাইফ শারঈ রুকইয়াহ সেন্টার
@@ -863,6 +869,21 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
     const diff = getDaysDifference(p.nextFollowupDate);
     return diff !== null && diff < 0;
   });
+
+  const totalFeeSum = patientsList.reduce((acc, p) => acc + (Number(p.fee) || 0), 0);
+  const totalPaidSum = patientsList.reduce((acc, p) => acc + (Number(p.paid) || 0), 0);
+  const totalDueSum = patientsList.reduce((acc, p) => {
+    const f = Number(p.fee) || 0;
+    const pd = Number(p.paid) || 0;
+    const d = p.due !== undefined ? Number(p.due) : Math.max(f - pd, 0);
+    return acc + d;
+  }, 0);
+  const duePatientsCount = patientsList.filter((p) => {
+    const f = Number(p.fee) || 0;
+    const pd = Number(p.paid) || 0;
+    const d = p.due !== undefined ? Number(p.due) : Math.max(f - pd, 0);
+    return d > 0;
+  }).length;
 
   const filteredPatients = patientsList.filter((p) => {
     const query = patientSearch.toLowerCase();
@@ -1087,15 +1108,31 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
           {/* KPI Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1">
-              <span className="text-xs text-gray-500 font-medium">মোট ভিজিটর (মাসে)</span>
-              <p className="text-2xl font-bold text-[#004D40]">১২,৪৫০+</p>
-              <span className="text-[11px] text-emerald-600 font-semibold">↑ ১৮% বৃদ্ধি</span>
+              <span className="text-xs text-gray-500 font-medium flex items-center justify-between">
+                <span>ফি আদায় (পেইড)</span>
+                <Coins className="w-4 h-4 text-emerald-600" />
+              </span>
+              <p className="text-2xl font-bold text-emerald-700">৳{totalPaidSum.toLocaleString("bn-BD")}</p>
+              <span className="text-[11px] text-gray-500 font-medium">
+                মোট ধার্য ফি: ৳{totalFeeSum.toLocaleString("bn-BD")}
+              </span>
             </div>
 
             <div className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1">
-              <span className="text-xs text-gray-500 font-medium">লক্ষণ পরীক্ষা সম্পন্ন</span>
-              <p className="text-2xl font-bold text-[#004D40]">১,৮২০+</p>
-              <span className="text-[11px] text-emerald-600 font-semibold">ডায়াগনোসিস টুল</span>
+              <span className="text-xs text-gray-500 font-medium flex items-center justify-between">
+                <span>মোট বকেয়া (ডিউ)</span>
+                <Receipt className="w-4 h-4 text-amber-600" />
+              </span>
+              <p className={`text-2xl font-bold ${totalDueSum > 0 ? "text-amber-700" : "text-emerald-700"}`}>
+                ৳{totalDueSum.toLocaleString("bn-BD")}
+              </p>
+              <div className="text-[11px] font-semibold">
+                {duePatientsCount > 0 ? (
+                  <span className="text-amber-700 font-bold">⚠️ {duePatientsCount} জনের বকেয়া আছে</span>
+                ) : (
+                  <span className="text-emerald-600 font-bold">✓ কোনো বকেয়া নেই</span>
+                )}
+              </div>
             </div>
 
             <div className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1">
@@ -1149,7 +1186,21 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                         {p.type === "online" ? "অনলাইন" : "চেম্বার"}
                       </span>
                     </div>
-                    <p className="text-[11px] text-gray-500">{p.problemType} • {p.address || "ঠিকানা নেই"}</p>
+                    <p className="text-[11px] text-gray-500">
+                      {p.problemType} • {p.address || "ঠিকানা নেই"}
+                      {(() => {
+                        const fee = Number(p.fee) || 0;
+                        const paid = Number(p.paid) || 0;
+                        const due = p.due !== undefined ? Number(p.due) : Math.max(fee - paid, 0);
+                        if (due > 0) {
+                          return <span className="text-amber-800 font-bold ml-1.5">• বকেয়া: ৳{due.toLocaleString("bn-BD")}</span>;
+                        }
+                        if (fee > 0) {
+                          return <span className="text-emerald-700 font-semibold ml-1.5">• পরিশোধিত ✓</span>;
+                        }
+                        return null;
+                      })()}
+                    </p>
                   </div>
 
                   <div className="flex items-center gap-2">
@@ -1765,6 +1816,28 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                             </span>
                           </span>
                         )}
+
+                        {/* Payment Status Badge */}
+                        {(() => {
+                          const fee = Number(p.fee) || 0;
+                          const paid = Number(p.paid) || 0;
+                          const due = p.due !== undefined ? Number(p.due) : Math.max(fee - paid, 0);
+                          if (fee === 0 && paid === 0) return null;
+                          if (due > 0) {
+                            return (
+                              <span className="text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-md bg-amber-50 text-amber-900 border border-amber-300 flex items-center gap-1 shrink-0" title={`মোট ফি: ৳${fee}, পরিশোধ: ৳${paid}, বকেয়া: ৳${due}`}>
+                                <Receipt className="w-3 h-3 text-amber-700" />
+                                <span>বকেয়া: ৳{due.toLocaleString("bn-BD")}</span>
+                              </span>
+                            );
+                          }
+                          return (
+                            <span className="text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-300 flex items-center gap-1 shrink-0" title={`মোট ফি: ৳${fee}, সম্পূর্ণ পরিশোধিত`}>
+                              <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                              <span>পরিশোধিত ✓ (৳{paid.toLocaleString("bn-BD")})</span>
+                            </span>
+                          );
+                        })()}
                       </div>
 
                       {/* Right: Phone, Date, Quick WhatsApp, Action Buttons */}
@@ -1985,6 +2058,52 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                             </p>
                           </div>
                         </div>
+
+                        {/* Fee & Payment Accounting Box in Accordion */}
+                        {(() => {
+                          const fee = Number(p.fee) || 0;
+                          const paid = Number(p.paid) || 0;
+                          const due = p.due !== undefined ? Number(p.due) : Math.max(fee - paid, 0);
+
+                          return (
+                            <div className="p-3.5 rounded-xl bg-white border border-gray-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+                              <div className="flex items-center gap-4 text-xs">
+                                <div className="flex items-center gap-1.5 text-gray-500 font-semibold">
+                                  <Coins className="w-4 h-4 text-[#006B5B]" />
+                                  <span>ফি হিসাব:</span>
+                                </div>
+                                <div>
+                                  <span className="text-gray-400 text-[10px] block">মোট ফি</span>
+                                  <span className="font-bold text-gray-800">৳{fee.toLocaleString("bn-BD")}</span>
+                                </div>
+                                <div>
+                                  <span className="text-emerald-600 text-[10px] block">আদায় / পেইড</span>
+                                  <span className="font-bold text-emerald-700">৳{paid.toLocaleString("bn-BD")}</span>
+                                </div>
+                                <div>
+                                  <span className={`${due > 0 ? "text-amber-700" : "text-gray-400"} text-[10px] block font-semibold`}>বকেয়া</span>
+                                  <span className={`font-bold ${due > 0 ? "text-amber-800" : "text-gray-700"}`}>৳{due.toLocaleString("bn-BD")}</span>
+                                </div>
+                              </div>
+
+                              {due > 0 ? (
+                                <button
+                                  type="button"
+                                  onClick={() => handleMarkPatientPaid(p.id)}
+                                  className="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold transition-colors cursor-pointer self-start sm:self-auto flex items-center gap-1"
+                                  title="বকেয়া সম্পূর্ণ পরিশোধ হিসেবে চিহ্নিত করুন"
+                                >
+                                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                                  <span>বকেয়া পরিশোধ রেকর্ড করুন</span>
+                                </button>
+                              ) : (
+                                <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 self-start sm:self-auto">
+                                  ✓ সম্পূর্ণ পরিশোধিত
+                                </span>
+                              )}
+                            </div>
+                          );
+                        })()}
 
                         {/* Action Buttons */}
                         <div className="pt-2 flex flex-wrap items-center justify-between gap-2.5 border-t border-gray-200/60">
@@ -2257,6 +2376,65 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       </a>
                     </div>
                   </div>
+
+                  {/* Fee & Payment Accounting Card in Drawer */}
+                  {(() => {
+                    const fee = Number(selectedPatientForDrawer.fee) || 0;
+                    const paid = Number(selectedPatientForDrawer.paid) || 0;
+                    const due = selectedPatientForDrawer.due !== undefined ? Number(selectedPatientForDrawer.due) : Math.max(fee - paid, 0);
+
+                    return (
+                      <div className="p-4 rounded-2xl bg-[#FAFAF7] border border-gray-200 space-y-3 shadow-2xs">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[11px] font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1.5">
+                            <Coins className="w-3.5 h-3.5 text-[#006B5B]" />
+                            <span>চিকিৎসা ফি ও পেমেন্ট হিসাব</span>
+                          </span>
+                          {due > 0 ? (
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1">
+                              <Receipt className="w-3 h-3 text-amber-700" />
+                              <span>বকেয়া রয়েছে</span>
+                            </span>
+                          ) : fee > 0 ? (
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1">
+                              <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                              <span>পরিশোধিত ✓</span>
+                            </span>
+                          ) : (
+                            <span className="text-[10px] font-medium text-gray-400">ফি নির্ধারিত নেই</span>
+                          )}
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-2 text-center">
+                          <div className="p-2.5 rounded-xl bg-white border border-gray-200">
+                            <span className="text-[10px] text-gray-500 font-medium block">মোট ফি</span>
+                            <span className="text-sm font-bold text-gray-900">৳{fee.toLocaleString("bn-BD")}</span>
+                          </div>
+                          <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200">
+                            <span className="text-[10px] text-emerald-700 font-medium block">জমা / পেইড</span>
+                            <span className="text-sm font-bold text-emerald-800">৳{paid.toLocaleString("bn-BD")}</span>
+                          </div>
+                          <div className={`p-2.5 rounded-xl border ${due > 0 ? "bg-amber-50 border-amber-200" : "bg-white border-gray-200"}`}>
+                            <span className={`text-[10px] font-medium block ${due > 0 ? "text-amber-800 font-bold" : "text-gray-500"}`}>বকেয়া / ডিউ</span>
+                            <span className={`text-sm font-bold ${due > 0 ? "text-amber-800" : "text-gray-700"}`}>৳{due.toLocaleString("bn-BD")}</span>
+                          </div>
+                        </div>
+
+                        {due > 0 && (
+                          <div className="pt-1">
+                            <button
+                              type="button"
+                              onClick={() => handleMarkPatientPaid(selectedPatientForDrawer.id)}
+                              className="w-full py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-2xs cursor-pointer"
+                            >
+                              <CheckCircle2 className="w-3.5 h-3.5" />
+                              <span>১-ক্লিকে বকেয়া পরিশোধ সম্পন্ন করুন</span>
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
 
                   {/* Contact & Appointment Info Card */}
                   <div className="p-4 rounded-2xl bg-white border border-gray-200 space-y-3 shadow-2xs">
@@ -3289,6 +3467,110 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   onChange={(e) => setPatientForm({ ...patientForm, prescription: e.target.value })}
                   className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
                 />
+              </div>
+
+              {/* Fee & Payment Accounting Form Section */}
+              <div className="p-4 rounded-2xl bg-[#FAFAF7] border border-gray-200/90 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <Coins className="w-4 h-4 text-[#006B5B]" />
+                    <span className="font-bold text-xs text-[#004D40]">
+                      চিকিৎসা ফি ও পেমেন্ট হিসাব (৳)
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-gray-500 font-medium">
+                    রোগী পূর্ণ বা আংশিক টাকা দিলে এখানে হিসাব রাখুন
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label className="block font-semibold text-gray-700 mb-1">
+                      মোট চিকিৎসা ফি (৳)
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      placeholder="যেমন: ৫০০"
+                      value={patientForm.fee === 0 ? "" : patientForm.fee}
+                      onChange={(e) => {
+                        const feeVal = Math.max(Number(e.target.value) || 0, 0);
+                        const paidVal = Number(patientForm.paid) || 0;
+                        setPatientForm({
+                          ...patientForm,
+                          fee: feeVal,
+                          due: Math.max(feeVal - paidVal, 0),
+                        });
+                      }}
+                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white text-xs font-semibold"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-semibold text-gray-700 mb-1">
+                      পরিশোধিত টাকা / জমা (৳)
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      placeholder="যেমন: ৩০০"
+                      value={patientForm.paid === 0 ? "" : patientForm.paid}
+                      onChange={(e) => {
+                        const paidVal = Math.max(Number(e.target.value) || 0, 0);
+                        const feeVal = Number(patientForm.fee) || 0;
+                        setPatientForm({
+                          ...patientForm,
+                          paid: paidVal,
+                          due: Math.max(feeVal - paidVal, 0),
+                        });
+                      }}
+                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white text-xs font-semibold text-emerald-700"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-semibold text-gray-700 mb-1">
+                      অবশিষ্ট বকেয়া (৳)
+                    </label>
+                    <div className="p-2.5 rounded-xl bg-white border border-gray-200 text-xs font-bold flex items-center justify-between min-h-[38px]">
+                      <span className={Math.max((Number(patientForm.fee) || 0) - (Number(patientForm.paid) || 0), 0) > 0 ? "text-amber-800" : "text-emerald-700"}>
+                        ৳{Math.max((Number(patientForm.fee) || 0) - (Number(patientForm.paid) || 0), 0).toLocaleString("bn-BD")}
+                      </span>
+                      {Math.max((Number(patientForm.fee) || 0) - (Number(patientForm.paid) || 0), 0) === 0 && (Number(patientForm.fee) || 0) > 0 ? (
+                        <span className="text-[10px] text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md font-semibold">
+                          পরিশোধিত ✓
+                        </span>
+                      ) : Math.max((Number(patientForm.fee) || 0) - (Number(patientForm.paid) || 0), 0) > 0 ? (
+                        <span className="text-[10px] text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md font-semibold">
+                          বকেয়া রয়েছে
+                        </span>
+                      ) : null}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  <span className="text-[10px] text-gray-400 self-center mr-1">দ্রুত সেট:</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const f = Number(patientForm.fee) || 0;
+                      setPatientForm({ ...patientForm, paid: f, due: 0 });
+                    }}
+                    className="px-2 py-0.5 text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-md hover:bg-emerald-100 cursor-pointer"
+                  >
+                    ফুল পেইড (সম্পূর্ণ পরিশোধ)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPatientForm({ ...patientForm, paid: 0, due: Number(patientForm.fee) || 0 });
+                    }}
+                    className="px-2 py-0.5 text-[10px] font-semibold bg-amber-50 text-amber-800 border border-amber-200 rounded-md hover:bg-amber-100 cursor-pointer"
+                  >
+                    সম্পূর্ণ বকেয়া
+                  </button>
+                </div>
               </div>
 
               {/* Next Followup Date & Note */}
