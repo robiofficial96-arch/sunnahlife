@@ -13,20 +13,15 @@ import {
   Clock, 
   Sparkles, 
   Loader2, 
-  Repeat,
-  SkipForward,
-  SkipBack,
-  Share2,
-  ChevronDown,
-  ChevronUp
+  Repeat, 
+  SkipForward, 
+  SkipBack, 
+  Share2, 
+  ChevronDown, 
+  ChevronUp,
+  Download,
+  ExternalLink
 } from "lucide-react";
-
-declare global {
-  interface Window {
-    YT: any;
-    onYouTubeIframeAPIReady: () => void;
-  }
-}
 
 export default function AudioPlayer() {
   const [currentTrack, setCurrentTrack] = useState<RuqyahAudioItem>(RUQYAH_AUDIO_LIST[0]);
@@ -41,174 +36,186 @@ export default function AudioPlayer() {
   const [copiedLink, setCopiedLink] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
 
-  const playerRef = useRef<any>(null);
-  const isLoopingRef = useRef(isLooping);
-  isLoopingRef.current = isLooping;
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Lazy YouTube Player Engine
-  const isInitializingRef = useRef(false);
+  // Sync isLooping with native audio element
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.loop = isLooping;
+    }
+  }, [isLooping]);
 
-  const initPlayerAndPlay = (targetTrack: RuqyahAudioItem) => {
-    setIsLoading(true);
-    if (isInitializingRef.current) return;
-    isInitializingRef.current = true;
+  // Sync playback speed with native audio element
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.playbackRate = playbackSpeed;
+    }
+  }, [playbackSpeed]);
 
-    const startPlayer = () => {
-      if (!window.YT || !window.YT.Player) {
-        isInitializingRef.current = false;
-        return;
-      }
-      const targetDiv = document.getElementById("youtube-audio-engine");
-      if (!targetDiv) {
-        isInitializingRef.current = false;
-        return;
-      }
+  // Sync muted state
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.muted = isMuted;
+    }
+  }, [isMuted]);
 
-      if (playerRef.current) {
-        try {
-          playerRef.current.destroy();
-        } catch (e) {}
-      }
+  // Configure MediaSession API for lock-screen & background controls
+  useEffect(() => {
+    if (typeof window === "undefined" || !("mediaSession" in navigator)) return;
 
-      playerRef.current = new window.YT.Player("youtube-audio-engine", {
-        height: "100%",
-        width: "100%",
-        videoId: targetTrack.youtubeId,
-        playerVars: {
-          playsinline: 1,
-          controls: 1,
-          modestbranding: 1,
-          rel: 0,
-          autoplay: 1,
-        },
-        events: {
-          onReady: (event: any) => {
-            isInitializingRef.current = false;
-            setIsLoading(false);
-            try {
-              event.target.playVideo();
-            } catch (e) {}
-          },
-          onStateChange: (event: any) => {
-            // YT.PlayerState: 1 = PLAYING, 2 = PAUSED, 0 = ENDED, 3 = BUFFERING
-            if (event.data === 1) {
-              setIsPlaying(true);
-              setIsLoading(false);
-            } else if (event.data === 2) {
-              setIsPlaying(false);
-              setIsLoading(false);
-            } else if (event.data === 0) {
-              setIsPlaying(false);
-              setIsLoading(false);
-              if (isLoopingRef.current) {
-                event.target.seekTo(0);
-                event.target.playVideo();
-              } else {
-                handleNextTrack();
-              }
-            } else if (event.data === 3) {
-              setIsLoading(true);
-            }
-          },
-        },
+    try {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: currentTrack.title,
+        artist: currentTrack.reciter,
+        album: "সুন্নাহলাইফ শারঈ রুকইয়াহ",
+        artwork: [
+          { src: "/icon-192.png", sizes: "192x192", type: "image/png" },
+          { src: "/icon-512.png", sizes: "512x512", type: "image/png" },
+          { src: "/og-image.png", sizes: "1200x630", type: "image/png" },
+        ],
       });
-    };
 
-    if (window.YT && window.YT.Player) {
-      startPlayer();
-    } else {
-      if (!document.getElementById("youtube-iframe-api-tag")) {
-        const tag = document.createElement("script");
-        tag.id = "youtube-iframe-api-tag";
-        tag.src = "https://www.youtube.com/iframe_api";
-        const firstScriptTag = document.getElementsByTagName("script")[0];
-        firstScriptTag?.parentNode?.insertBefore(tag, firstScriptTag);
-      }
-      const checkInterval = setInterval(() => {
-        if (window.YT && window.YT.Player) {
-          clearInterval(checkInterval);
-          startPlayer();
+      navigator.mediaSession.setActionHandler("play", () => {
+        audioRef.current?.play().catch(() => {});
+      });
+      navigator.mediaSession.setActionHandler("pause", () => {
+        audioRef.current?.pause();
+      });
+      navigator.mediaSession.setActionHandler("previoustrack", () => {
+        handlePrevTrack();
+      });
+      navigator.mediaSession.setActionHandler("nexttrack", () => {
+        handleNextTrack();
+      });
+      navigator.mediaSession.setActionHandler("seekbackward", (details) => {
+        if (audioRef.current) {
+          const skip = details.seekOffset || 10;
+          audioRef.current.currentTime = Math.max(audioRef.current.currentTime - skip, 0);
         }
-      }, 150);
-      setTimeout(() => {
-        clearInterval(checkInterval);
-        isInitializingRef.current = false;
-      }, 12000);
+      });
+      navigator.mediaSession.setActionHandler("seekforward", (details) => {
+        if (audioRef.current) {
+          const skip = details.seekOffset || 10;
+          audioRef.current.currentTime = Math.min(
+            audioRef.current.currentTime + skip,
+            audioRef.current.duration || 99999
+          );
+        }
+      });
+      navigator.mediaSession.setActionHandler("seekto", (details) => {
+        if (details.seekTime !== undefined && audioRef.current) {
+          audioRef.current.currentTime = details.seekTime;
+        }
+      });
+    } catch (e) {
+      console.warn("MediaSession API setup error:", e);
+    }
+  }, [currentTrack]);
+
+  // Update MediaSession playback state
+  useEffect(() => {
+    if (typeof window === "undefined" || !("mediaSession" in navigator)) return;
+    try {
+      navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused";
+    } catch (e) {}
+  }, [isPlaying]);
+
+  // Update MediaSession position state for seekbars on Android / iOS lock screen
+  const updatePositionState = (cur: number, dur: number) => {
+    if (
+      typeof window !== "undefined" &&
+      "mediaSession" in navigator &&
+      "setPositionState" in navigator.mediaSession &&
+      dur > 0 &&
+      !isNaN(cur)
+    ) {
+      try {
+        navigator.mediaSession.setPositionState({
+          duration: dur,
+          playbackRate: playbackSpeed,
+          position: Math.min(cur, dur),
+        });
+      } catch (e) {}
     }
   };
 
-  // Cleanup player on unmount
-  useEffect(() => {
-    return () => {
-      if (playerRef.current) {
-        try {
-          playerRef.current.destroy();
-        } catch (e) {}
+  const handleTimeUpdate = () => {
+    if (audioRef.current) {
+      const cur = audioRef.current.currentTime;
+      const dur = audioRef.current.duration || currentTrack.durationSeconds;
+      setCurrentTime(cur);
+      if (dur > 0 && !isNaN(dur)) {
+        setDuration(dur);
       }
-    };
-  }, []);
-
-  // Poll current time when playing
-  useEffect(() => {
-    let timer: any;
-    if (isPlaying) {
-      timer = setInterval(() => {
-        if (playerRef.current && playerRef.current.getCurrentTime) {
-          try {
-            const cur = playerRef.current.getCurrentTime() || 0;
-            const dur = playerRef.current.getDuration() || currentTrack.durationSeconds;
-            setCurrentTime(cur);
-            if (dur > 0) setDuration(dur);
-          } catch (e) {}
-        }
-      }, 500);
+      updatePositionState(cur, dur);
     }
-    return () => clearInterval(timer);
-  }, [isPlaying, currentTrack]);
+  };
 
-  // Load new track when track changes
+  const handleLoadedMetadata = () => {
+    if (audioRef.current) {
+      const dur = audioRef.current.duration;
+      if (dur && !isNaN(dur)) {
+        setDuration(dur);
+      }
+    }
+    setIsLoading(false);
+  };
+
+  const handleEnded = () => {
+    if (isLooping) {
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play().catch(() => {});
+      }
+    } else {
+      handleNextTrack();
+    }
+  };
+
   const handleSelectTrack = (track: RuqyahAudioItem) => {
     if (currentTrack.id === track.id) {
       togglePlay();
       return;
     }
+
     setCurrentTrack(track);
     setCurrentTime(0);
     setDuration(track.durationSeconds);
     setIsLoading(true);
 
-    if (!playerRef.current) {
-      initPlayerAndPlay(track);
-      return;
-    }
-
-    if (playerRef.current && playerRef.current.loadVideoById) {
-      try {
-        playerRef.current.loadVideoById({
-          videoId: track.youtubeId,
-          startSeconds: 0,
+    if (audioRef.current) {
+      audioRef.current.src = track.audioUrl;
+      audioRef.current.load();
+      audioRef.current
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setIsPlaying(false);
+          setIsLoading(false);
         });
-        setIsPlaying(true);
-      } catch (e) {
-        setIsLoading(false);
-      }
     }
   };
 
   const togglePlay = () => {
-    if (!playerRef.current) {
-      initPlayerAndPlay(currentTrack);
-      return;
-    }
-    try {
-      if (isPlaying) {
-        playerRef.current.pauseVideo();
-      } else {
-        setIsLoading(true);
-        playerRef.current.playVideo();
-      }
-    } catch (e) {
-      setIsLoading(false);
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      setIsLoading(true);
+      audioRef.current
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setIsPlaying(false);
+          setIsLoading(false);
+        });
     }
   };
 
@@ -227,21 +234,18 @@ export default function AudioPlayer() {
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     const time = Number(e.target.value);
     setCurrentTime(time);
-    if (playerRef.current && playerRef.current.seekTo) {
-      try {
-        playerRef.current.seekTo(time, true);
-      } catch (e) {}
+    if (audioRef.current) {
+      audioRef.current.currentTime = time;
     }
   };
 
   const skipTime = (seconds: number) => {
-    if (playerRef.current && playerRef.current.getCurrentTime) {
-      try {
-        const cur = playerRef.current.getCurrentTime() || currentTime;
-        const newTime = Math.min(Math.max(cur + seconds, 0), duration || currentTrack.durationSeconds);
-        setCurrentTime(newTime);
-        playerRef.current.seekTo(newTime, true);
-      } catch (e) {}
+    if (audioRef.current) {
+      const cur = audioRef.current.currentTime;
+      const maxDur = duration || currentTrack.durationSeconds;
+      const newTime = Math.min(Math.max(cur + seconds, 0), maxDur);
+      audioRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
     }
   };
 
@@ -250,24 +254,10 @@ export default function AudioPlayer() {
     const nextIdx = (speeds.indexOf(playbackSpeed) + 1) % speeds.length;
     const nextSpeed = speeds[nextIdx];
     setPlaybackSpeed(nextSpeed);
-    if (playerRef.current && playerRef.current.setPlaybackRate) {
-      try {
-        playerRef.current.setPlaybackRate(nextSpeed);
-      } catch (e) {}
-    }
   };
 
   const toggleMute = () => {
-    if (!playerRef.current) return;
-    try {
-      if (isMuted) {
-        playerRef.current.unMute();
-        setIsMuted(false);
-      } else {
-        playerRef.current.mute();
-        setIsMuted(true);
-      }
-    } catch (e) {}
+    setIsMuted(!isMuted);
   };
 
   const toggleLoop = () => {
@@ -275,9 +265,11 @@ export default function AudioPlayer() {
   };
 
   const handleCopyShare = () => {
-    navigator.clipboard?.writeText(window.location.href);
-    setCopiedLink(true);
-    setTimeout(() => setCopiedLink(false), 2500);
+    if (typeof window !== "undefined") {
+      navigator.clipboard?.writeText(window.location.href);
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2500);
+    }
   };
 
   const formatTime = (time: number) => {
@@ -309,6 +301,20 @@ export default function AudioPlayer() {
 
   return (
     <div className="w-full bg-white rounded-3xl border border-[#006B5B]/15 shadow-sm p-4 sm:p-6 md:p-8 space-y-6">
+      {/* Hidden Native HTML5 Audio Element with Native Background Playback */}
+      <audio
+        ref={audioRef}
+        src={currentTrack.audioUrl}
+        preload="metadata"
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={handleLoadedMetadata}
+        onWaiting={() => setIsLoading(true)}
+        onPlaying={() => setIsLoading(false)}
+        onEnded={handleEnded}
+      />
+
       {/* Main Islamic Audio Console */}
       <div className="bg-gradient-to-br from-[#004D40] via-[#005B4D] to-[#00382E] text-white rounded-3xl p-5 sm:p-7 md:p-8 shadow-xl relative overflow-hidden border border-white/10">
         {/* Glow ambient background circles */}
@@ -323,15 +329,31 @@ export default function AudioPlayer() {
               <span>{currentTrack.categoryLabel}</span>
             </span>
 
-            {isPlaying && (
+            {isPlaying ? (
               <span className="inline-flex items-center gap-1.5 text-xs text-emerald-300 font-medium bg-white/10 px-2.5 py-0.5 rounded-full">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                অডিও চলছে...
+                অডিও চলছে (স্ক্রিন অফেও চালু থাকবে)
+              </span>
+            ) : (
+              <span className="text-[11px] text-emerald-200/80 font-medium">
+                ব্যাকগ্রাউন্ড প্লেব্যাক সাপোর্টেড ✓
               </span>
             )}
           </div>
 
           <div className="flex items-center gap-2 text-xs">
+            {/* Download MP3 */}
+            <a
+              href={currentTrack.audioUrl}
+              download={`${currentTrack.id}.mp3`}
+              className="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-emerald-100 hover:text-white flex items-center gap-1.5 transition-colors text-xs font-medium"
+              title="অফলাইন শোনার জন্য MP3 ডাউনলোড করুন"
+            >
+              <Download className="w-3.5 h-3.5 text-emerald-300" />
+              <span className="hidden sm:inline">MP3</span> ডাউনলোড
+            </a>
+
+            {/* Share */}
             <button
               onClick={handleCopyShare}
               className="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-emerald-100 hover:text-white flex items-center gap-1.5 transition-colors text-xs font-medium cursor-pointer"
@@ -342,9 +364,8 @@ export default function AudioPlayer() {
           </div>
         </div>
 
-        {/* Pure Audio Console: No Image, Full Width */}
+        {/* Pure Audio Console: Equalizer & Title */}
         <div className="space-y-6 relative z-10">
-          {/* Header row with Audio Icon & Title */}
           <div className="flex items-start sm:items-center gap-4">
             {/* Equalizer Sound-Wave Icon Badge */}
             <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center text-[#F2C94C] shrink-0 shadow-inner">
@@ -364,6 +385,9 @@ export default function AudioPlayer() {
               <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-white leading-snug">
                 {currentTrack.title}
               </h3>
+              <p className="text-xs text-emerald-200 mt-1 font-medium">
+                তেলাওয়াত: {currentTrack.reciter}
+              </p>
             </div>
           </div>
 
@@ -477,14 +501,6 @@ export default function AudioPlayer() {
           </div>
         </div>
 
-        {/* Hidden Background YouTube Audio Engine: No Video, No Video Suggestions */}
-        <div 
-          aria-hidden="true"
-          className="absolute -top-[9999px] -left-[9999px] w-48 h-48 overflow-hidden pointer-events-none opacity-0"
-        >
-          <div id="youtube-audio-engine" />
-        </div>
-
         {/* Bottom Tip & Method Banner: Expandable */}
         <div className="mt-4 pt-3 border-t border-white/10 text-xs text-emerald-100">
           <button
@@ -525,7 +541,7 @@ export default function AudioPlayer() {
         ))}
       </div>
 
-      {/* 4 Powerful Ruqyah Playlist Section */}
+      {/* Ruqyah Playlist Section */}
       <div className="space-y-3">
         <div className="flex items-center justify-between pb-1">
           <h4 className="text-base sm:text-lg font-bold text-[#004D40] flex items-center gap-2">
@@ -533,7 +549,7 @@ export default function AudioPlayer() {
             <span>নির্বাচিত শক্তিশালী রুকইয়াহ অডিও তালিকা ({filteredTracks.length}টি)</span>
           </h4>
           <span className="text-xs text-gray-500 font-medium hidden sm:inline">
-            কুরআনুল কারীমের বিশেষ শেফা ও দাহ্যকারী আয়াতসমূহ
+            সরাসরি অডিও স্ট্রিমিং • স্ক্রিন অফেও চলবে
           </span>
         </div>
 
@@ -585,11 +601,22 @@ export default function AudioPlayer() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between sm:justify-end gap-4 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-gray-100">
+                <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-gray-100">
                   <div className="flex items-center gap-1.5 text-xs text-gray-500 font-mono font-semibold">
                     <Clock className="w-3.5 h-3.5 text-gray-400" />
                     <span>{track.duration}</span>
                   </div>
+
+                  <a
+                    href={track.youtubeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                    title="ইউটিউবে ভিডিও দেখুন"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
 
                   <button
                     type="button"
@@ -612,4 +639,3 @@ export default function AudioPlayer() {
     </div>
   );
 }
-
