@@ -286,6 +286,7 @@ export default function AdminDashboardPage() {
     nextFollowupNote: "",
   });
   const [customCategoryInput, setCustomCategoryInput] = useState("");
+  const timePickerInputRef = useRef<HTMLInputElement>(null);
 
   const currentCategories = (patientForm.problemType || "")
     .split(",")
@@ -4535,22 +4536,33 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       বর্তমান সময়
                     </button>
                   </div>
-                  <div className="relative flex items-center">
+                  <div className="flex items-center gap-2">
                     <input
                       type="text"
                       placeholder="যেমন: সকাল ১০:৩০ / রাত ৮:০০ - ৯:০০"
                       value={patientForm.timeSlot || ""}
                       onChange={(e) => setPatientForm({ ...patientForm, timeSlot: e.target.value })}
-                      className="w-full p-2.5 pr-10 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                      onClick={() => {
+                        try {
+                          timePickerInputRef.current?.showPicker();
+                        } catch {}
+                      }}
+                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
                     />
-                    <label
-                      className="absolute right-2 text-gray-400 hover:text-[#006B5B] cursor-pointer p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
-                      title="ঘড়ির টাইম পিকার থেকে সময় নির্বাচন করুন"
-                    >
-                      <Clock className="w-4 h-4" />
+                    <div className="relative shrink-0">
+                      <button
+                        type="button"
+                        className="flex items-center gap-1.5 px-3 py-2.5 bg-emerald-50 hover:bg-emerald-100 text-[#006B5B] border border-emerald-200 rounded-xl font-medium text-xs sm:text-sm transition-colors cursor-pointer"
+                        title="ঘড়ির ডায়ালগ খুলে সময় নির্বাচন করুন"
+                      >
+                        <Clock className="w-4 h-4 text-[#006B5B]" />
+                        <span>ঘড়ি নির্বাচন</span>
+                      </button>
                       <input
+                        ref={timePickerInputRef}
                         type="time"
-                        className="sr-only"
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        title="ঘড়ির ডায়ালগ খুলে সময় নির্বাচন করুন"
                         onChange={(e) => {
                           if (e.target.value) {
                             setPatientForm({
@@ -4560,33 +4572,11 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           }
                         }}
                       />
-                    </label>
+                    </div>
                   </div>
-                  {/* Quick preset buttons */}
-                  <div className="flex flex-wrap items-center gap-1.5 mt-2">
-                    <span className="text-[11px] text-gray-400">কুইক সিলেক্ট:</span>
-                    {[
-                      "সকাল ১০:০০",
-                      "সকাল ১১:৩০",
-                      "দুপুর ১২:৩০",
-                      "বিকাল ৪:৩০",
-                      "মাগরিব পর (সন্ধ্যা ৬:৩০)",
-                      "এশার পর (রাত ৮:৩০)",
-                    ].map((preset) => (
-                      <button
-                        key={preset}
-                        type="button"
-                        onClick={() => setPatientForm({ ...patientForm, timeSlot: preset })}
-                        className={`text-[11px] px-2 py-0.5 rounded-md border transition-colors ${
-                          patientForm.timeSlot === preset
-                            ? "bg-[#006B5B] text-white border-[#006B5B]"
-                            : "bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100 hover:border-gray-300"
-                        }`}
-                      >
-                        {preset}
-                      </button>
-                    ))}
-                  </div>
+                  <p className="text-[11px] text-gray-400 mt-1">
+                    ঘড়ির বোতামে চাপ দিলে সরাসরি ঘড়ি আসবে, সেখান থেকে সময় নির্বাচন করতে পারবেন।
+                  </p>
                 </div>
               </div>
 
