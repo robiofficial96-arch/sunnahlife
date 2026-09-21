@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Hind_Siliguri, Amiri } from "next/font/google";
 import "./globals.css";
 import BottomNav from "@/components/BottomNav";
@@ -227,6 +228,20 @@ export default function RootLayout({
         />
       </head>
       <body className="notranslate min-h-screen flex flex-col bg-[#FAFAF7] text-[#1f2937] antialiased pb-20 md:pb-0 selection:bg-[#006B5B] selection:text-white">
+        {/* Google Analytics (gtag.js) */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-F6KVLCT911"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-F6KVLCT911');
+          `}
+        </Script>
         <Header />
         <main className="flex-1 bg-[#FAFAF7]">{children}</main>
         <Footer />
