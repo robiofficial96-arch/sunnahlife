@@ -74,7 +74,32 @@ export default function OfferPopupModal() {
       setIsOpen(true);
     }, 6000);
 
-    return () => clearTimeout(timer);
+    const handleCheckStatus = () => {
+      try {
+        const stored = localStorage.getItem("sunnahlife_popup_config");
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          setConfig(parsed);
+          if (!parsed.isActive) {
+            setIsOpen(false);
+          }
+        } else {
+          setConfig(DEFAULT_POPUP_CONFIG);
+          if (!DEFAULT_POPUP_CONFIG.isActive) {
+            setIsOpen(false);
+          }
+        }
+      } catch {}
+    };
+
+    window.addEventListener("storage", handleCheckStatus);
+    window.addEventListener("sunnahlife_popup_update", handleCheckStatus);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("storage", handleCheckStatus);
+      window.removeEventListener("sunnahlife_popup_update", handleCheckStatus);
+    };
   }, []);
 
   const handleDismiss = () => {

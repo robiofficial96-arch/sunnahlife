@@ -143,6 +143,46 @@ export const formatBanglaFollowupDate = (dateStr?: string) => {
   return dateObj.toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" });
 };
 
+export const formatBanglaHourMinute = (hours: number, minutes: number) => {
+  const banglaDigits: Record<string, string> = {
+    "0": "০", "1": "১", "2": "২", "3": "৩", "4": "৪",
+    "5": "৫", "6": "৬", "7": "৭", "8": "৮", "9": "৯",
+  };
+  const toBangla = (num: number) => String(num).padStart(2, "0").replace(/\d/g, (x) => banglaDigits[x] || x);
+  
+  let period = "সকাল";
+  let displayHour = hours;
+  if (hours >= 0 && hours < 5) {
+    period = "রাত";
+  } else if (hours >= 5 && hours < 12) {
+    period = "সকাল";
+  } else if (hours >= 12 && hours < 15) {
+    period = "দুপুর";
+  } else if (hours >= 15 && hours < 18) {
+    period = "বিকাল";
+  } else if (hours >= 18 && hours < 20) {
+    period = "সন্ধ্যা";
+  } else {
+    period = "রাত";
+  }
+
+  if (displayHour > 12) displayHour -= 12;
+  if (displayHour === 0) displayHour = 12;
+
+  return `${period} ${toBangla(displayHour)}:${toBangla(minutes)}`;
+};
+
+export const getCurrentBanglaTime = (d: Date = new Date()) => {
+  return formatBanglaHourMinute(d.getHours(), d.getMinutes());
+};
+
+export const convert24hToBanglaTime = (timeStr: string) => {
+  if (!timeStr) return "";
+  const [h, m] = timeStr.split(":").map(Number);
+  if (isNaN(h) || isNaN(m)) return timeStr;
+  return formatBanglaHourMinute(h, m);
+};
+
 export const BANGLA_MONTH_NAMES = [
   "জানুয়ারি",
   "ফেব্রুয়ারি",
@@ -240,7 +280,7 @@ export default function AdminDashboardPage() {
     notes: "",
     prescription: "",
     date: new Date().toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" }),
-    timeSlot: "রাত ৮:০০ - ৯:০০",
+    timeSlot: getCurrentBanglaTime(),
     status: "new",
     nextFollowupDate: "",
     nextFollowupNote: "",
@@ -548,6 +588,9 @@ export default function AdminDashboardPage() {
     const updated = { ...popupConfig, isActive: !popupConfig.isActive };
     setPopupConfig(updated);
     localStorage.setItem("sunnahlife_popup_config", JSON.stringify(updated));
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new Event("sunnahlife_popup_update"));
+    }
     setPopupSaveMessage(updated.isActive ? "পপআপ চালু করা হয়েছে!" : "পপআপ বন্ধ করা হয়েছে!");
     setTimeout(() => setPopupSaveMessage(""), 3500);
   };
@@ -555,6 +598,9 @@ export default function AdminDashboardPage() {
   const handleSavePopup = (e: React.FormEvent) => {
     e.preventDefault();
     localStorage.setItem("sunnahlife_popup_config", JSON.stringify(popupConfig));
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new Event("sunnahlife_popup_update"));
+    }
     setPopupSaveMessage("পপআপ কনফিগারেশন সফলভাবে সেভ করা হয়েছে!");
     setTimeout(() => setPopupSaveMessage(""), 3500);
   };
@@ -562,6 +608,9 @@ export default function AdminDashboardPage() {
   const handleResetPopup = () => {
     setPopupConfig(DEFAULT_POPUP_CONFIG);
     localStorage.removeItem("sunnahlife_popup_config");
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new Event("sunnahlife_popup_update"));
+    }
     setPopupSaveMessage("ডিফল্ট কনফিগারেশনে রিসেট করা হয়েছে!");
     setTimeout(() => setPopupSaveMessage(""), 3500);
   };
@@ -599,7 +648,7 @@ export default function AdminDashboardPage() {
       notes: "",
       prescription: "",
       date: new Date().toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" }),
-      timeSlot: "রাত ৮:০০ - ৯:০০",
+      timeSlot: getCurrentBanglaTime(),
       status: "new",
       nextFollowupDate: "",
       nextFollowupNote: "",
@@ -4447,7 +4496,23 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               {/* Visit Date & Time Slot */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">সাক্ষাৎ বা কনসালটেশনের তারিখ</label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block font-semibold text-gray-700">সাক্ষাৎ বা কনসালটেশনের তারিখ</label>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setPatientForm({
+                          ...patientForm,
+                          date: new Date().toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" }),
+                        })
+                      }
+                      className="text-xs text-[#006B5B] hover:underline flex items-center gap-1 font-medium"
+                      title="আজকের তারিখ বসান"
+                    >
+                      <CalendarDays className="w-3 h-3" />
+                      আজকের তারিখ
+                    </button>
+                  </div>
                   <input
                     type="text"
                     placeholder="যেমন: ১৫ সেপ্টেম্বর, ২০২৬"
@@ -4458,14 +4523,70 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">সময় বা স্লট (ঐচ্ছিক)</label>
-                  <input
-                    type="text"
-                    placeholder="যেমন: রাত ৮:০০ - ৯:০০ / দুপুর ১২:০০"
-                    value={patientForm.timeSlot || ""}
-                    onChange={(e) => setPatientForm({ ...patientForm, timeSlot: e.target.value })}
-                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
-                  />
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block font-semibold text-gray-700">সময় বা স্লট</label>
+                    <button
+                      type="button"
+                      onClick={() => setPatientForm({ ...patientForm, timeSlot: getCurrentBanglaTime() })}
+                      className="text-xs text-[#006B5B] hover:underline flex items-center gap-1 font-medium"
+                      title="বর্তমান সময় স্বয়ংক্রিয়ভাবে বসান"
+                    >
+                      <Clock className="w-3 h-3" />
+                      বর্তমান সময়
+                    </button>
+                  </div>
+                  <div className="relative flex items-center">
+                    <input
+                      type="text"
+                      placeholder="যেমন: সকাল ১০:৩০ / রাত ৮:০০ - ৯:০০"
+                      value={patientForm.timeSlot || ""}
+                      onChange={(e) => setPatientForm({ ...patientForm, timeSlot: e.target.value })}
+                      className="w-full p-2.5 pr-10 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                    />
+                    <label
+                      className="absolute right-2 text-gray-400 hover:text-[#006B5B] cursor-pointer p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+                      title="ঘড়ির টাইম পিকার থেকে সময় নির্বাচন করুন"
+                    >
+                      <Clock className="w-4 h-4" />
+                      <input
+                        type="time"
+                        className="sr-only"
+                        onChange={(e) => {
+                          if (e.target.value) {
+                            setPatientForm({
+                              ...patientForm,
+                              timeSlot: convert24hToBanglaTime(e.target.value),
+                            });
+                          }
+                        }}
+                      />
+                    </label>
+                  </div>
+                  {/* Quick preset buttons */}
+                  <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                    <span className="text-[11px] text-gray-400">কুইক সিলেক্ট:</span>
+                    {[
+                      "সকাল ১০:০০",
+                      "সকাল ১১:৩০",
+                      "দুপুর ১২:৩০",
+                      "বিকাল ৪:৩০",
+                      "মাগরিব পর (সন্ধ্যা ৬:৩০)",
+                      "এশার পর (রাত ৮:৩০)",
+                    ].map((preset) => (
+                      <button
+                        key={preset}
+                        type="button"
+                        onClick={() => setPatientForm({ ...patientForm, timeSlot: preset })}
+                        className={`text-[11px] px-2 py-0.5 rounded-md border transition-colors ${
+                          patientForm.timeSlot === preset
+                            ? "bg-[#006B5B] text-white border-[#006B5B]"
+                            : "bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100 hover:border-gray-300"
+                        }`}
+                      >
+                        {preset}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 
