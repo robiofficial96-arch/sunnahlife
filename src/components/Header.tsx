@@ -18,6 +18,7 @@ import {
   Search,
   HeartPulse,
   ShoppingBag,
+  Lock,
 } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 import dynamic from "next/dynamic";
@@ -65,6 +66,7 @@ export default function Header() {
     { href: "/faq", label: "জিজ্ঞাসা (FAQ)", icon: HelpCircle },
     { href: "/fraud-awareness", label: "ভণ্ড কবিরাজ সতর্কতা", icon: AlertTriangle },
     { href: "/contact", label: "যোগাযোগ" },
+    { href: "/admin", label: "লগইন (অ্যাডমিন)", icon: Lock },
   ];
 
   return (
@@ -114,13 +116,21 @@ export default function Header() {
             </nav>
 
             {/* Desktop Action CTAs (No search in web view, appointment button) */}
-            <div className="hidden xl:flex items-center gap-3">
+            <div className="hidden xl:flex items-center gap-2.5">
               <Link
                 href="/appointment"
                 className="px-4 py-2 text-xs md:text-sm font-semibold rounded-xl bg-[#006B5B] text-white hover:bg-[#004D40] shadow-2xs transition-all flex items-center gap-1.5"
               >
                 <Calendar className="w-4 h-4 text-[#F2C94C]" />
                 <span>অ্যাপয়েন্টমেন্ট</span>
+              </Link>
+              <Link
+                href="/admin"
+                className="px-3 py-2 text-xs md:text-sm font-medium rounded-xl text-gray-700 hover:text-[#006B5B] hover:bg-[#006B5B]/10 border border-gray-200/80 transition-all flex items-center gap-1.5"
+                title="অ্যাডমিন ড্যাশবোর্ড লগইন"
+              >
+                <Lock className="w-3.5 h-3.5 text-[#006B5B]" />
+                <span>লগইন</span>
               </Link>
             </div>
 
@@ -210,6 +220,14 @@ export default function Header() {
                 <Users className="w-4 h-4 text-[#1877F2]" />
                 <span>ফেসবুক গ্রুপে যুক্ত হোন</span>
               </a>
+              <Link
+                href="/admin"
+                onClick={() => setIsOpen(false)}
+                className="w-full py-2.5 px-3 text-center text-xs font-semibold rounded-xl bg-emerald-50/80 hover:bg-emerald-100 text-[#006B5B] border border-emerald-200/80 flex items-center justify-center gap-2 transition-colors mt-1"
+              >
+                <Lock className="w-4 h-4 text-[#006B5B]" />
+                <span>অ্যাডমিন ড্যাশবোর্ড / লগইন</span>
+              </Link>
             </div>
           </div>
         )}
