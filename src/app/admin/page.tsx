@@ -82,6 +82,7 @@ export interface PatientRecord {
   phone: string;
   address: string;
   type: "online" | "offline";
+  treatmentType?: "ruqyah" | "hijama" | "both"; // রোগীর ধরন: রুকইয়াহ বা হিজামা
   problemType: string;
   service?: string;
   fee?: number;       // মোট চিকিৎসা ফি (৳)
@@ -263,7 +264,7 @@ export default function AdminDashboardPage() {
   const [appointmentFilter, setAppointmentFilter] = useState<"all" | "pending" | "confirmed" | "completed" | "cancelled">("all");
   const [appointmentSearch, setAppointmentSearch] = useState("");
   const [patientsList, setPatientsList] = useState<PatientRecord[]>(INITIAL_PATIENTS);
-  const [patientFilter, setPatientFilter] = useState<"all" | "today_followup" | "upcoming_followup" | "overdue_followup" | "online" | "offline" | "followup" | "cured">("all");
+  const [patientFilter, setPatientFilter] = useState<"all" | "ruqyah" | "hijama" | "today_followup" | "upcoming_followup" | "overdue_followup" | "online" | "offline" | "followup" | "cured">("all");
   const [patientSearch, setPatientSearch] = useState("");
   const [showAddPatientModal, setShowAddPatientModal] = useState(false);
   const [editingPatientId, setEditingPatientId] = useState<string | null>(null);
@@ -283,6 +284,7 @@ export default function AdminDashboardPage() {
     phone: "",
     address: "",
     type: "online",
+    treatmentType: "ruqyah",
     problemType: "বদনজর (Evil Eye)",
     fee: 0,
     paid: 0,
@@ -718,6 +720,7 @@ export default function AdminDashboardPage() {
       phone: "",
       address: "",
       type: "online",
+      treatmentType: "ruqyah",
       problemType: "বদনজর (Evil Eye)",
       fee: 0,
       paid: 0,
@@ -745,6 +748,7 @@ export default function AdminDashboardPage() {
       phone: p.phone,
       address: p.address || "",
       type: p.type || "online",
+      treatmentType: p.treatmentType || (p.problemType?.includes("হিজামা") || p.service?.includes("হিজামা") ? "hijama" : "ruqyah"),
       problemType: p.problemType || "বদনজর (Evil Eye)",
       fee: f,
       paid: pd,
@@ -933,6 +937,7 @@ export default function AdminDashboardPage() {
       return !isNaN(num) && num > max ? num : max;
     }, 100);
 
+    const isHijama = apt.serviceName?.includes("হিজামা") || apt.serviceId?.includes("hijama");
     const newPatient: PatientRecord = {
       id: `P-${maxNumericId + 1}`,
       name: apt.name,
@@ -940,7 +945,8 @@ export default function AdminDashboardPage() {
       phone: apt.phone,
       address: apt.district || "",
       type: "online",
-      problemType: apt.serviceName || "রুকইয়াহ চিকিৎসা",
+      treatmentType: isHijama ? "hijama" : "ruqyah",
+      problemType: apt.serviceName || (isHijama ? "হিজামা থেরাপি" : "রুকইয়াহ চিকিৎসা"),
       service: apt.serviceName,
       fee: feeNum,
       paid: 0,
@@ -1379,6 +1385,21 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
     };
   });
 
+  const ruqyahPatientsCount = patientsList.filter(
+    (p) =>
+      p.treatmentType === "ruqyah" ||
+      p.treatmentType === "both" ||
+      (!p.treatmentType && !p.problemType?.includes("হিজামা") && !p.service?.includes("হিজামা"))
+  ).length;
+
+  const hijamaPatientsCount = patientsList.filter(
+    (p) =>
+      p.treatmentType === "hijama" ||
+      p.treatmentType === "both" ||
+      p.problemType?.includes("হিজামা") ||
+      p.service?.includes("হিজামা")
+  ).length;
+
   const filteredPatients = patientsList.filter((p) => {
     const query = patientSearch.toLowerCase();
     const matchesSearch =
@@ -1391,6 +1412,21 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
     if (!matchesSearch) return false;
 
+    if (patientFilter === "ruqyah") {
+      return (
+        p.treatmentType === "ruqyah" ||
+        p.treatmentType === "both" ||
+        (!p.treatmentType && !p.problemType?.includes("হিজামা") && !p.service?.includes("হিজামা"))
+      );
+    }
+    if (patientFilter === "hijama") {
+      return (
+        p.treatmentType === "hijama" ||
+        p.treatmentType === "both" ||
+        p.problemType?.includes("হিজামা") ||
+        p.service?.includes("হিজামা")
+      );
+    }
     if (patientFilter === "today_followup") {
       return getDaysDifference(p.nextFollowupDate) === 0;
     }
@@ -2165,11 +2201,22 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
                       {/* Service Info Box */}
                       <div className="p-3 rounded-2xl bg-[#FAFAF7] border border-gray-200/70 space-y-1.5 text-xs">
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-[#006B5B] flex items-center gap-1">
-                            <Sparkles className="w-3.5 h-3.5 text-[#D4A017]" />
-                            {apt.serviceName}
-                          </span>
+                        <div className="flex items-center justify-between gap-2 flex-wrap">
+                          <div className="flex items-center gap-2">
+                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md shrink-0 ${
+                              apt.serviceName?.includes("হিজামা") || apt.serviceId?.includes("hijama")
+                                ? "bg-rose-100 text-rose-800 border border-rose-200"
+                                : "bg-emerald-100 text-emerald-800 border border-emerald-200"
+                            }`}>
+                              {apt.serviceName?.includes("হিজামা") || apt.serviceId?.includes("hijama")
+                                ? "🩸 হিজামা"
+                                : "🌿 রুকইয়াহ"}
+                            </span>
+                            <span className="font-bold text-[#006B5B] flex items-center gap-1">
+                              <Sparkles className="w-3.5 h-3.5 text-[#D4A017]" />
+                              {apt.serviceName}
+                            </span>
+                          </div>
                           <span className="font-bold text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-md">
                             ফি: {apt.fee || "আলোচনা সাপেক্ষে"}
                           </span>
@@ -2291,80 +2338,114 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
             </div>
 
             {/* KPI Stats Mini Cards */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 pt-1">
               <div 
                 onClick={() => setPatientFilter("all")}
-                className={`p-4 rounded-2xl border transition-all cursor-pointer ${
+                className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
                   patientFilter === "all" 
                     ? "bg-[#006B5B]/10 border-[#006B5B] ring-1 ring-[#006B5B] shadow-2xs" 
                     : "bg-white border-gray-200/90 text-gray-800 hover:border-[#006B5B]/30 shadow-2xs"
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className={`text-xs font-semibold ${patientFilter === "all" ? "text-[#004D40] font-bold" : "text-gray-500"}`}>
+                  <span className={`text-[11px] font-semibold ${patientFilter === "all" ? "text-[#004D40] font-bold" : "text-gray-500"}`}>
                     মোট রোগী
                   </span>
                   <div className={`p-1.5 rounded-lg ${patientFilter === "all" ? "bg-[#006B5B] text-white" : "bg-gray-100 text-gray-500"}`}>
                     <Users className="w-3.5 h-3.5" />
                   </div>
                 </div>
-                <div className="text-2xl font-extrabold text-[#004D40] mt-1">{patientsList.length} জন</div>
-                <span className="text-[10px] text-gray-400">
-                  সকল নিবন্ধিত রেকর্ড
-                </span>
+                <div className="text-xl font-extrabold text-[#004D40] mt-1">{patientsList.length} জন</div>
+                <span className="text-[10px] text-gray-400">সকল নিবন্ধিত রেকর্ড</span>
+              </div>
+
+              <div 
+                onClick={() => setPatientFilter("ruqyah")}
+                className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
+                  patientFilter === "ruqyah" 
+                    ? "bg-emerald-50 border-emerald-600 ring-1 ring-emerald-600 shadow-2xs" 
+                    : "bg-white border-gray-200/90 text-gray-800 hover:border-emerald-500/40 shadow-2xs"
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className={`text-[11px] font-semibold ${patientFilter === "ruqyah" ? "text-emerald-900 font-bold" : "text-gray-500"}`}>
+                    রুকইয়াহ রোগী
+                  </span>
+                  <div className={`p-1.5 rounded-lg ${patientFilter === "ruqyah" ? "bg-emerald-600 text-white" : "bg-emerald-50 text-emerald-700"}`}>
+                    <span className="text-xs font-bold leading-none">🌿</span>
+                  </div>
+                </div>
+                <div className="text-xl font-extrabold text-emerald-800 mt-1">{ruqyahPatientsCount} জন</div>
+                <span className="text-[10px] text-gray-400">রুকইয়াহ চিকিৎসা</span>
+              </div>
+
+              <div 
+                onClick={() => setPatientFilter("hijama")}
+                className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
+                  patientFilter === "hijama" 
+                    ? "bg-rose-50 border-rose-600 ring-1 ring-rose-600 shadow-2xs" 
+                    : "bg-white border-gray-200/90 text-gray-800 hover:border-rose-500/40 shadow-2xs"
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className={`text-[11px] font-semibold ${patientFilter === "hijama" ? "text-rose-900 font-bold" : "text-gray-500"}`}>
+                    হিজামা রোগী
+                  </span>
+                  <div className={`p-1.5 rounded-lg ${patientFilter === "hijama" ? "bg-rose-600 text-white" : "bg-rose-50 text-rose-700"}`}>
+                    <span className="text-xs font-bold leading-none">🩸</span>
+                  </div>
+                </div>
+                <div className="text-xl font-extrabold text-rose-800 mt-1">{hijamaPatientsCount} জন</div>
+                <span className="text-[10px] text-gray-400">কাপিং থেরাপি</span>
               </div>
 
               <div 
                 onClick={() => setPatientFilter("online")}
-                className={`p-4 rounded-2xl border transition-all cursor-pointer ${
+                className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
                   patientFilter === "online" 
                     ? "bg-[#006B5B]/10 border-[#006B5B] ring-1 ring-[#006B5B] shadow-2xs" 
                     : "bg-white border-gray-200/90 text-gray-800 hover:border-[#006B5B]/30 shadow-2xs"
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className={`text-xs font-semibold ${patientFilter === "online" ? "text-[#004D40] font-bold" : "text-gray-500"}`}>
-                    অনলাইন কনসালটেশন
+                  <span className={`text-[11px] font-semibold ${patientFilter === "online" ? "text-[#004D40] font-bold" : "text-gray-500"}`}>
+                    অনলাইন
                   </span>
                   <div className={`p-1.5 rounded-lg ${patientFilter === "online" ? "bg-[#006B5B] text-white" : "bg-gray-100 text-gray-500"}`}>
                     <Globe className="w-3.5 h-3.5" />
                   </div>
                 </div>
-                <div className="text-2xl font-extrabold text-[#004D40] mt-1">
+                <div className="text-xl font-extrabold text-[#004D40] mt-1">
                   {patientsList.filter((p) => p.type === "online").length} জন
                 </div>
-                <span className="text-[10px] text-gray-400">
-                  ফোন বা ভিডিও কলে
-                </span>
+                <span className="text-[10px] text-gray-400">ফোন বা ভিডিও কল</span>
               </div>
 
               <div 
                 onClick={() => setPatientFilter("offline")}
-                className={`p-4 rounded-2xl border transition-all cursor-pointer ${
+                className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
                   patientFilter === "offline" 
                     ? "bg-[#006B5B]/10 border-[#006B5B] ring-1 ring-[#006B5B] shadow-2xs" 
                     : "bg-white border-gray-200/90 text-gray-800 hover:border-[#006B5B]/30 shadow-2xs"
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className={`text-xs font-semibold ${patientFilter === "offline" ? "text-[#004D40] font-bold" : "text-gray-500"}`}>
+                  <span className={`text-[11px] font-semibold ${patientFilter === "offline" ? "text-[#004D40] font-bold" : "text-gray-500"}`}>
                     সরাসরি চেম্বার
                   </span>
                   <div className={`p-1.5 rounded-lg ${patientFilter === "offline" ? "bg-[#006B5B] text-white" : "bg-gray-100 text-gray-500"}`}>
                     <Building2 className="w-3.5 h-3.5" />
                   </div>
                 </div>
-                <div className="text-2xl font-extrabold text-[#004D40] mt-1">
+                <div className="text-xl font-extrabold text-[#004D40] mt-1">
                   {patientsList.filter((p) => p.type === "offline").length} জন
                 </div>
-                <span className="text-[10px] text-gray-400">
-                  সেন্টারে উপস্থিত হয়ে
-                </span>
+                <span className="text-[10px] text-gray-400">সেন্টারে উপস্থিত</span>
               </div>
 
               <div 
                 onClick={() => setPatientFilter("today_followup")}
-                className={`p-4 rounded-2xl border transition-all cursor-pointer ${
+                className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
                   patientFilter === "today_followup" 
                     ? "bg-rose-50 border-rose-400 ring-1 ring-rose-400 shadow-2xs" 
                     : todayFollowups.length > 0
@@ -2373,18 +2454,18 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className={`text-xs font-semibold ${patientFilter === "today_followup" ? "text-rose-900 font-bold" : todayFollowups.length > 0 ? "text-rose-700 font-bold" : "text-gray-500"}`}>
+                  <span className={`text-[11px] font-semibold ${patientFilter === "today_followup" ? "text-rose-900 font-bold" : todayFollowups.length > 0 ? "text-rose-700 font-bold" : "text-gray-500"}`}>
                     আজকের ফলো-আপ
                   </span>
                   <div className={`p-1.5 rounded-lg ${patientFilter === "today_followup" ? "bg-rose-600 text-white" : todayFollowups.length > 0 ? "bg-rose-100 text-rose-600 animate-pulse" : "bg-gray-100 text-gray-500"}`}>
                     <CalendarDays className="w-3.5 h-3.5" />
                   </div>
                 </div>
-                <div className={`text-2xl font-extrabold mt-1 ${todayFollowups.length > 0 ? "text-rose-800" : "text-[#004D40]"}`}>
+                <div className={`text-xl font-extrabold mt-1 ${todayFollowups.length > 0 ? "text-rose-800" : "text-[#004D40]"}`}>
                   {todayFollowups.length} জন
                 </div>
                 <span className="text-[10px] text-gray-400">
-                  {todayFollowups.length > 0 ? "আজই খোঁজ নেওয়া প্রয়োজন" : "আজ কোনো ফলো-আপ নেই"}
+                  {todayFollowups.length > 0 ? "খোঁজ নেওয়া প্রয়োজন" : "আজ নেই"}
                 </span>
               </div>
             </div>
@@ -2401,6 +2482,24 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 >
                   <Users className="w-3.5 h-3.5" />
                   <span>সকল ({patientsList.length})</span>
+                </button>
+                <button
+                  onClick={() => setPatientFilter("ruqyah")}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                    patientFilter === "ruqyah" ? "bg-emerald-700 text-white shadow-xs" : "text-emerald-800 hover:bg-emerald-50"
+                  }`}
+                >
+                  <span>🌿</span>
+                  <span>রুকইয়াহ ({ruqyahPatientsCount})</span>
+                </button>
+                <button
+                  onClick={() => setPatientFilter("hijama")}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                    patientFilter === "hijama" ? "bg-rose-700 text-white shadow-xs" : "text-rose-800 hover:bg-rose-50"
+                  }`}
+                >
+                  <span>🩸</span>
+                  <span>হিজামা ({hijamaPatientsCount})</span>
                 </button>
                 <button
                   onClick={() => setPatientFilter("today_followup")}
@@ -2604,6 +2703,23 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                             {p.age} বছর
                           </span>
                         )}
+
+                        {/* Treatment Type Badge (রুকইয়াহ / হিজামা) */}
+                        <span className={`text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-md flex items-center gap-1 shrink-0 ${
+                          p.treatmentType === "hijama" || (!p.treatmentType && (p.problemType?.includes("হিজামা") || p.service?.includes("হিজামা")))
+                            ? "bg-rose-50 text-rose-800 border border-rose-200"
+                            : p.treatmentType === "both"
+                            ? "bg-teal-50 text-teal-800 border border-teal-200"
+                            : "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                        }`}>
+                          <span>
+                            {p.treatmentType === "hijama" || (!p.treatmentType && (p.problemType?.includes("হিজামা") || p.service?.includes("হিজামা")))
+                              ? "🩸 হিজামা"
+                              : p.treatmentType === "both"
+                              ? "🌿🩸 রুকইয়াহ ও হিজামা"
+                              : "🌿 রুকইয়াহ"}
+                          </span>
+                        </span>
 
                         <span className={`text-[10px] sm:text-[11px] font-semibold px-2.5 py-0.5 rounded-md flex items-center gap-1 shrink-0 ${
                           p.type === "online" 
@@ -3092,6 +3208,23 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   <div className="p-4 rounded-2xl bg-[#FAFAF7] border border-gray-200/80 space-y-3">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div className="flex flex-wrap items-center gap-2">
+                        {/* Treatment Type Badge in Drawer */}
+                        <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-md flex items-center gap-1 ${
+                          selectedPatientForDrawer.treatmentType === "hijama" || (!selectedPatientForDrawer.treatmentType && (selectedPatientForDrawer.problemType?.includes("হিজামা") || selectedPatientForDrawer.service?.includes("হিজামা")))
+                            ? "bg-rose-50 text-rose-800 border border-rose-200"
+                            : selectedPatientForDrawer.treatmentType === "both"
+                            ? "bg-teal-50 text-teal-800 border border-teal-200"
+                            : "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                        }`}>
+                          <span>
+                            {selectedPatientForDrawer.treatmentType === "hijama" || (!selectedPatientForDrawer.treatmentType && (selectedPatientForDrawer.problemType?.includes("হিজামা") || selectedPatientForDrawer.service?.includes("হিজামা")))
+                              ? "🩸 হিজামা রোগী"
+                              : selectedPatientForDrawer.treatmentType === "both"
+                              ? "🌿🩸 রুকইয়াহ ও হিজামা"
+                              : "🌿 রুকইয়াহ রোগী"}
+                          </span>
+                        </span>
+
                         <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-md flex items-center gap-1 ${
                           selectedPatientForDrawer.type === "online" 
                             ? "bg-emerald-50 text-[#006B5B] border border-emerald-200/60" 
@@ -4864,13 +4997,65 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 </div>
               </div>
 
-              {/* Address / Location & Patient Type & Status */}
+              {/* Patient Treatment Type (রুকইয়াহ vs হিজামা) */}
+              <div className="p-3.5 rounded-2xl bg-gradient-to-r from-emerald-50/70 via-teal-50/40 to-rose-50/70 border border-gray-200 space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="block font-bold text-gray-800 text-xs">
+                    রোগীর মূল ধরন / চিকিৎসা ক্ষেত্র *
+                  </label>
+                  <span className="text-[11px] font-semibold text-gray-500">
+                    রোগী রুকইয়াহ নাকি হিজামার নির্বাচন করুন
+                  </span>
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setPatientForm({ ...patientForm, treatmentType: "ruqyah" })}
+                    className={`py-2 px-3 rounded-xl text-xs font-bold transition-all border flex items-center justify-center gap-1.5 cursor-pointer ${
+                      patientForm.treatmentType === "ruqyah" || !patientForm.treatmentType
+                        ? "bg-[#006B5B] text-white border-[#006B5B] shadow-xs"
+                        : "bg-white text-gray-700 border-gray-200 hover:border-[#006B5B]/50 hover:bg-emerald-50/50"
+                    }`}
+                  >
+                    <span>🌿</span>
+                    <span>রুকইয়াহ রোগী</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setPatientForm({ ...patientForm, treatmentType: "hijama" })}
+                    className={`py-2 px-3 rounded-xl text-xs font-bold transition-all border flex items-center justify-center gap-1.5 cursor-pointer ${
+                      patientForm.treatmentType === "hijama"
+                        ? "bg-rose-600 text-white border-rose-600 shadow-xs"
+                        : "bg-white text-gray-700 border-gray-200 hover:border-rose-400 hover:bg-rose-50/50"
+                    }`}
+                  >
+                    <span>🩸</span>
+                    <span>হিজামা রোগী</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setPatientForm({ ...patientForm, treatmentType: "both" })}
+                    className={`py-2 px-3 rounded-xl text-xs font-bold transition-all border flex items-center justify-center gap-1.5 cursor-pointer ${
+                      patientForm.treatmentType === "both"
+                        ? "bg-teal-700 text-white border-teal-700 shadow-xs"
+                        : "bg-white text-gray-700 border-gray-200 hover:border-teal-400 hover:bg-teal-50/50"
+                    }`}
+                  >
+                    <span>🌿🩸</span>
+                    <span>উভয় (রুকইয়াহ+হিজামা)</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Address / Location & Visit Mode & Status */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
                   <label className="block font-semibold text-gray-700 mb-1">ঠিকানা / এলাকা / জেলা</label>
                   <input
                     type="text"
-                    placeholder="যেমন: মিরপুর ১০, ঢাকা / চট্টগ্রাম"
+                    placeholder="যেমন: কামরাঙ্গীরচর / মিরপুর, ঢাকা"
                     value={patientForm.address}
                     onChange={(e) => setPatientForm({ ...patientForm, address: e.target.value })}
                     className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
@@ -4878,13 +5063,13 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">রোগীর ধরন *</label>
+                  <label className="block font-semibold text-gray-700 mb-1">ভিজিটের মাধ্যম *</label>
                   <select
                     value={patientForm.type}
                     onChange={(e) => setPatientForm({ ...patientForm, type: e.target.value as any })}
                     className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white font-semibold"
                   >
-                    <option value="online">অনলাইন কনসালটেশন (ফোন / ভিডিও)</option>
+                    <option value="online">অনলাইন (ফোন / ভিডিও)</option>
                     <option value="offline">সরাসরি চেম্বার (সেন্টারে উপস্থিত)</option>
                   </select>
                 </div>

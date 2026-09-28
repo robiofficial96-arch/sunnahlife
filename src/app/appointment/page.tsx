@@ -33,6 +33,8 @@ export default function AppointmentPage() {
   const [submittedData, setSubmittedData] = useState<Omit<OnlineAppointment, "id" | "createdAt" | "status"> | null>(null);
   const [submittedId, setSubmittedId] = useState<string>("");
 
+  const [serviceCategory, setServiceCategory] = useState<"all" | "ruqyah" | "hijama">("all");
+
   const services = [
     {
       id: "diagnosis_single",
@@ -41,6 +43,7 @@ export default function AppointmentPage() {
       fee: "১,০০০ টাকা",
       duration: "৩০ - ৪৫ মিনিট",
       tag: "চেকআপ",
+      category: "ruqyah" as const,
       isDiagnosis: true,
     },
     {
@@ -50,6 +53,7 @@ export default function AppointmentPage() {
       fee: "২,০০০ টাকা",
       duration: "৩০ - ৪৫ মিনিট",
       tag: "চেকআপ",
+      category: "ruqyah" as const,
       isDiagnosis: true,
     },
     {
@@ -59,6 +63,7 @@ export default function AppointmentPage() {
       fee: "৫,০০০ - ৮,০০০/=",
       duration: "১ - ২ - ৩ ঘণ্টা+",
       tag: "ট্রিটমেন্ট",
+      category: "ruqyah" as const,
     },
     {
       id: "evil_eye",
@@ -67,6 +72,7 @@ export default function AppointmentPage() {
       fee: "৩,৫০০/=",
       duration: "১ - ২ ঘণ্টা",
       tag: "ট্রিটমেন্ট",
+      category: "ruqyah" as const,
     },
     {
       id: "sihr",
@@ -75,6 +81,7 @@ export default function AppointmentPage() {
       fee: "৪,৫০০/=",
       duration: "১ - ২ ঘণ্টা",
       tag: "ট্রিটমেন্ট",
+      category: "ruqyah" as const,
     },
     {
       id: "family_counseling",
@@ -83,6 +90,43 @@ export default function AppointmentPage() {
       fee: "আলোচনা সাপেক্ষে",
       duration: "১ - ১.৫ ঘণ্টা",
       tag: "পরামর্শ",
+      category: "ruqyah" as const,
+    },
+    {
+      id: "hijama_sunnah",
+      title: "সুন্নাহ হিজামা (জেনারেল কাপিং)",
+      subtitle: "রক্ত সঞ্চালন ও বডি ডিটক্সিফিকেশনে সুন্নাহ পয়েন্টে হিজামা",
+      fee: "১,০০০ - ১,৫০০/=",
+      duration: "৩০ - ৪৫ মিনিট",
+      tag: "সুন্নাহ চিকিৎসা",
+      category: "hijama" as const,
+    },
+    {
+      id: "hijama_pain",
+      title: "ব্যথামুক্তির হিজামা (পেইন রিলিফ)",
+      subtitle: "মাথা, ঘাড়, পিঠ, কোমর ও হাঁটুর দীর্ঘস্থায়ী ব্যথার হিজামা",
+      fee: "১,২০০ - ২,০০০/=",
+      duration: "৪০ - ৫০ মিনিট",
+      tag: "ব্যথা নিরাময়",
+      category: "hijama" as const,
+    },
+    {
+      id: "hijama_ruqyah",
+      title: "রুকইয়াহ সমন্বিত হিজামা",
+      subtitle: "সিহর (জাদু) ও বদনজর বিনষ্টকরণে বিশেষ পয়েন্টে কাপিং",
+      fee: "১,৫০০ - ২,৫০০/=",
+      duration: "৪৫ - ৬০ মিনিট",
+      tag: "বিশেষ থেরাপি",
+      category: "hijama" as const,
+    },
+    {
+      id: "hijama_full",
+      title: "ফুল বডি ওয়েট হিজামা (ডিটক্স)",
+      subtitle: "শরীর থেকে দূষিত রক্ত ও টক্সিন নিষ্কাশনে সম্পূর্ণ থেরাপি",
+      fee: "২,৫০০ - ৩,৫০০/=",
+      duration: "১ - ১.৫ ঘণ্টা",
+      tag: "সম্পূর্ণ ডিটক্স",
+      category: "hijama" as const,
     },
   ];
 
@@ -90,8 +134,17 @@ export default function AppointmentPage() {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const svcParam = params.get("service");
+      const catParam = params.get("category");
+      if (catParam === "hijama" || catParam === "ruqyah") {
+        setServiceCategory(catParam);
+      }
       if (svcParam && services.some((s) => s.id === svcParam)) {
         setService(svcParam);
+        if (svcParam.startsWith("hijama")) {
+          setServiceCategory("hijama");
+        } else {
+          setServiceCategory("ruqyah");
+        }
       }
     }
   }, []);
@@ -277,18 +330,59 @@ export default function AppointmentPage() {
       ) : (
         <form onSubmit={handleSubmit} className="p-6 md:p-10 rounded-3xl bg-white border border-[#006B5B]/15 shadow-sm space-y-8">
           {/* 1. Service Selection */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
+          <div className="space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <label className="block text-sm font-bold text-[#004D40]">
                 ১. কাঙ্ক্ষিত সেবার ধরন বেছে নিন:
               </label>
-              <span className="text-[11px] text-gray-500 hidden sm:inline">
-                ক্লিক করে যেকোনো একটি নির্বাচন করুন
+              <span className="text-[11px] text-gray-500">
+                রুকইয়াহ অথবা হিজামা ক্যাটাগরি বেছে নিতে পারেন
               </span>
             </div>
 
+            {/* Service Category Switcher Tabs */}
+            <div className="flex flex-wrap items-center gap-1.5 p-1.5 rounded-2xl bg-[#FAFAF7] border border-gray-200">
+              <button
+                type="button"
+                onClick={() => setServiceCategory("all")}
+                className={`flex-1 min-w-[100px] py-2 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                  serviceCategory === "all"
+                    ? "bg-[#006B5B] text-white shadow-xs"
+                    : "text-gray-600 hover:text-[#006B5B] hover:bg-gray-100"
+                }`}
+              >
+                সব সেবা ({services.length})
+              </button>
+              <button
+                type="button"
+                onClick={() => setServiceCategory("ruqyah")}
+                className={`flex-1 min-w-[130px] py-2 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                  serviceCategory === "ruqyah"
+                    ? "bg-emerald-700 text-white shadow-xs"
+                    : "text-emerald-800 hover:bg-emerald-50"
+                }`}
+              >
+                <span>🌿</span>
+                <span>রুকইয়াহ শারইয়্যাহ ({services.filter((s) => s.category === "ruqyah").length})</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setServiceCategory("hijama")}
+                className={`flex-1 min-w-[130px] py-2 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                  serviceCategory === "hijama"
+                    ? "bg-rose-700 text-white shadow-xs"
+                    : "text-rose-800 hover:bg-rose-50"
+                }`}
+              >
+                <span>🩸</span>
+                <span>হিজামা থেরাপি ({services.filter((s) => s.category === "hijama").length})</span>
+              </button>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
-              {services.map((srv) => {
+              {services
+                .filter((srv) => serviceCategory === "all" || srv.category === serviceCategory)
+                .map((srv) => {
                 const isChosen = service === srv.id;
                 return (
                   <div
@@ -296,24 +390,28 @@ export default function AppointmentPage() {
                     onClick={() => setService(srv.id)}
                     className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between relative ${
                       isChosen
-                        ? "bg-[#006B5B]/5 border-[#006B5B] shadow-xs ring-1 ring-[#006B5B]"
+                        ? srv.category === "hijama"
+                          ? "bg-rose-50/40 border-rose-600 shadow-xs ring-1 ring-rose-600"
+                          : "bg-[#006B5B]/5 border-[#006B5B] shadow-xs ring-1 ring-[#006B5B]"
                         : "bg-[#FAFAF7] border-gray-200 hover:border-[#006B5B]/40"
                     }`}
                   >
                     <div>
                       <div className="flex items-start justify-between gap-2 mb-1.5">
-                        <h4 className={`text-sm font-bold leading-snug ${isChosen ? "text-[#006B5B]" : "text-gray-900"}`}>
+                        <h4 className={`text-sm font-bold leading-snug ${isChosen ? (srv.category === "hijama" ? "text-rose-800" : "text-[#006B5B]") : "text-gray-900"}`}>
                           {srv.title}
                         </h4>
                         {isChosen ? (
-                          <CheckCircle2 className="w-4 h-4 text-[#006B5B] shrink-0 mt-0.5" />
+                          <CheckCircle2 className={`w-4 h-4 shrink-0 mt-0.5 ${srv.category === "hijama" ? "text-rose-600" : "text-[#006B5B]"}`} />
                         ) : (
                           <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md shrink-0 ${
-                            srv.isDiagnosis 
+                            srv.category === "hijama"
+                              ? "bg-rose-100 text-rose-800"
+                              : srv.isDiagnosis 
                               ? "bg-amber-100 text-amber-800" 
-                              : "bg-gray-100 text-gray-600"
+                              : "bg-emerald-100 text-emerald-800"
                           }`}>
-                            {srv.tag}
+                            {srv.category === "hijama" ? "🩸 হিজামা" : srv.tag}
                           </span>
                         )}
                       </div>
@@ -323,7 +421,7 @@ export default function AppointmentPage() {
                     </div>
 
                     <div className="mt-3 pt-2.5 border-t border-gray-200/70 flex items-center justify-between text-[11px]">
-                      <span className="font-bold text-[#006B5B]">
+                      <span className={`font-bold ${srv.category === "hijama" ? "text-rose-700" : "text-[#006B5B]"}`}>
                         ফি: {srv.fee}
                       </span>
                       <span className="text-gray-500 font-medium">
