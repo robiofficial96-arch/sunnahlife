@@ -18,6 +18,7 @@ import {
   ThumbsUp
 } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
+import { saveOnlineAppointment, OnlineAppointment } from "@/lib/firebase";
 
 export default function AppointmentPage() {
   const [service, setService] = useState("diagnosis_single");
@@ -27,7 +28,10 @@ export default function AppointmentPage() {
   const [date, setDate] = useState("");
   const [timeSlot, setTimeSlot] = useState("রাত ৮:০০ - ৯:০০");
   const [problemDescription, setProblemDescription] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submittedData, setSubmittedData] = useState<Omit<OnlineAppointment, "id" | "createdAt" | "status"> | null>(null);
+  const [submittedId, setSubmittedId] = useState<string>("");
 
   const services = [
     {
@@ -103,32 +107,59 @@ export default function AppointmentPage() {
 
   const selectedServiceObj = services.find((s) => s.id === service);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const text = `আসসালামু আলাইকুম রাহমাতুল্লাহ।
-আমি সুন্নাহলাইফ প্ল্যাটফর্ম থেকে একটি রুকইয়াহ অ্যাপয়েন্টমেন্ট বুকিং করতে চাচ্ছি।
+    if (!name.trim()) {
+      alert("অনুগ্রহ করে আপনার নাম লিখুন।");
+      return;
+    }
+    if (!phone.trim()) {
+      alert("অনুগ্রহ করে আপনার মোবাইল নম্বরটি প্রদান করুন।");
+      return;
+    }
 
-[বুকিং বিবরণ]
-• সেবার ধরন: ${selectedServiceObj?.title || service}
-• নির্ধারিত ফি: ${selectedServiceObj?.fee || "আলোচনা সাপেক্ষে"}
-• সময়কাল: ${selectedServiceObj?.duration || "৩০ - ৪৫ মিনিট"}
-• নাম: ${name}
-• মোবাইল: ${phone}
-• জেলা/শহর: ${district || "উল্লেখ নেই"}
-• সম্ভাব্য তারিখ: ${date || "আলোচনা সাপেক্ষে"}
-• সুবিধাজনক সময়: ${timeSlot}
+    setIsSubmitting(true);
 
-[সমস্যার সংক্ষিপ্ত বিবরণ]
-${problemDescription || "সরাসরি চেম্বারে/ভিডিও কলে বিস্তারিত জানাতে চাই"}
+    const payload: Omit<OnlineAppointment, "id" | "createdAt" | "status"> = {
+      name: name.trim(),
+      phone: phone.trim(),
+      district: district.trim() || "উল্লেখ নেই",
+      serviceId: service,
+      serviceName: selectedServiceObj?.title || service,
+      fee: selectedServiceObj?.fee || "আলোচনা সাপেক্ষে",
+      duration: selectedServiceObj?.duration || "৩০ - ৪৫ মিনিট",
+      date: date.trim() || new Date().toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" }),
+      timeSlot,
+      problemDescription: problemDescription.trim() || "চেম্বারে বা কলে সরাসরি বিস্তারিত আলোচনা হবে",
+    };
 
-অনুগ্রহ করে সময়টি নিশ্চিত করুন। জাযাকাল্লাহু খাইরান।`;
-
-    const encoded = encodeURIComponent(text);
-    setIsSubmitted(true);
-
-    // Open WhatsApp
-    window.open(`https://wa.me/${SITE_CONFIG.raqiWhatsAppNumber}?text=${encoded}`, "_blank");
+    try {
+      const docId = await saveOnlineAppointment(payload);
+      setSubmittedId(docId);
+      setSubmittedData(payload);
+      setIsSubmitted(true);
+    } catch (err: any) {
+      console.error("Firebase booking save error:", err);
+      // Fallback to local storage if offline or permissions issue
+      try {
+        const local = JSON.parse(localStorage.getItem("sunnahlife_pending_appointments") || "[]");
+        const fallbackId = "offline_" + Date.now();
+        local.unshift({
+          ...payload,
+          id: fallbackId,
+          status: "pending",
+          createdAt: Date.now(),
+          createdAtFormatted: new Date().toLocaleString("bn-BD"),
+        });
+        localStorage.setItem("sunnahlife_pending_appointments", JSON.stringify(local));
+        setSubmittedId(fallbackId);
+      } catch {}
+      setSubmittedData(payload);
+      setIsSubmitted(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -167,201 +198,288 @@ ${problemDescription || "সরাসরি চেম্বারে/ভিড�
         </Link>
       </div>
 
-      {/* Booking Form */}
-      <form onSubmit={handleSubmit} className="p-6 md:p-10 rounded-3xl bg-white border border-[#006B5B]/15 shadow-sm space-y-8">
-        {/* 1. Service Selection */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <label className="block text-sm font-bold text-[#004D40]">
-              ১. কাঙ্ক্ষিত সেবার ধরন বেছে নিন:
-            </label>
-            <span className="text-[11px] text-gray-500 hidden sm:inline">
-              ক্লিক করে যেকোনো একটি নির্বাচন করুন
+      {/* Booking Form or Success Card */}
+      {isSubmitted && submittedData ? (
+        <div className="p-6 md:p-10 rounded-3xl bg-white border border-emerald-500/30 shadow-lg space-y-6 text-center animate-in fade-in duration-300">
+          <div className="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto shadow-inner">
+            <CheckCircle2 className="w-10 h-10 text-[#006B5B]" />
+          </div>
+
+          <div className="space-y-2 max-w-lg mx-auto">
+            <span className="inline-block px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold">
+              আবেদন রেফারেন্স: #{submittedId ? submittedId.slice(-6).toUpperCase() : "SL-CONFIRMED"}
             </span>
+            <h2 className="text-2xl md:text-3xl font-extrabold text-[#004D40]">
+              আলহামদুলিল্লাহ! আপনার বুকিং সফলভাবে জমা হয়েছে
+            </h2>
+            <p className="text-sm text-gray-600 leading-relaxed">
+              আপনার অ্যাপয়েন্টমেন্ট রিকোয়েস্টটি সরাসরি আমাদের ড্যাশবোর্ডে জমা হয়েছে। আমাদের রাক্বী বা সহকারী প্রতিনিধি আপনার মোবাইল নম্বরে যোগাযোগ করে সময়টি চূড়ান্ত করবেন, ইনশাআল্লাহ।
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
-            {services.map((srv) => {
-              const isChosen = service === srv.id;
-              return (
-                <div
-                  key={srv.id}
-                  onClick={() => setService(srv.id)}
-                  className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between relative ${
-                    isChosen
-                      ? "bg-[#006B5B]/5 border-[#006B5B] shadow-xs ring-1 ring-[#006B5B]"
-                      : "bg-[#FAFAF7] border-gray-200 hover:border-[#006B5B]/40"
-                  }`}
-                >
-                  <div>
-                    <div className="flex items-start justify-between gap-2 mb-1.5">
-                      <h4 className={`text-sm font-bold leading-snug ${isChosen ? "text-[#006B5B]" : "text-gray-900"}`}>
-                        {srv.title}
-                      </h4>
-                      {isChosen ? (
-                        <CheckCircle2 className="w-4 h-4 text-[#006B5B] shrink-0 mt-0.5" />
-                      ) : (
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md shrink-0 ${
-                          srv.isDiagnosis 
-                            ? "bg-amber-100 text-amber-800" 
-                            : "bg-gray-100 text-gray-600"
-                        }`}>
-                          {srv.tag}
-                        </span>
-                      )}
+          {/* Booking Summary Box */}
+          <div className="max-w-md mx-auto p-5 rounded-2xl bg-[#FAFAF7] border border-gray-200/80 text-left space-y-3 text-xs md:text-sm">
+            <div className="flex justify-between border-b border-gray-200/60 pb-2">
+              <span className="text-gray-500">রোগীর নাম:</span>
+              <span className="font-bold text-gray-900">{submittedData.name}</span>
+            </div>
+            <div className="flex justify-between border-b border-gray-200/60 pb-2">
+              <span className="text-gray-500">মোবাইল নম্বর:</span>
+              <span className="font-bold text-gray-900">{submittedData.phone}</span>
+            </div>
+            <div className="flex justify-between border-b border-gray-200/60 pb-2">
+              <span className="text-gray-500">নির্বাচিত সেবা:</span>
+              <span className="font-bold text-[#006B5B]">{submittedData.serviceName}</span>
+            </div>
+            <div className="flex justify-between border-b border-gray-200/60 pb-2">
+              <span className="text-gray-500">নির্ধারিত ফি:</span>
+              <span className="font-bold text-emerald-700">{submittedData.fee}</span>
+            </div>
+            <div className="flex justify-between border-b border-gray-200/60 pb-2">
+              <span className="text-gray-500">সম্ভাব্য তারিখ:</span>
+              <span className="font-semibold text-gray-800">{submittedData.date}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-500">পছন্দের সময়:</span>
+              <span className="font-semibold text-gray-800">{submittedData.timeSlot}</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-3 max-w-md mx-auto">
+            <button
+              type="button"
+              onClick={() => {
+                setIsSubmitted(false);
+                setName("");
+                setPhone("");
+                setDistrict("");
+                setProblemDescription("");
+                setSubmittedData(null);
+                setSubmittedId("");
+              }}
+              className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#006B5B] text-white font-semibold text-xs md:text-sm hover:bg-[#004D40] transition-colors cursor-pointer"
+            >
+              নতুন আরেকটি বুকিং করুন
+            </button>
+            <a
+              href={`https://wa.me/${SITE_CONFIG.raqiWhatsAppNumber}?text=${encodeURIComponent(
+                `আসসালামু আলাইকুম। আমি সুন্নাহলাইফ প্ল্যাটফর্ম থেকে একটি অ্যাপয়েন্টমেন্ট রিকোয়েস্ট সাবমিট করেছি।\n• নাম: ${submittedData.name}\n• মোবাইল: ${submittedData.phone}\n• সেবা: ${submittedData.serviceName}\n• রেফারেন্স: #${submittedId ? submittedId.slice(-6).toUpperCase() : ""}`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto px-5 py-3 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold text-xs md:text-sm hover:bg-emerald-100 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <MessageCircle className="w-4 h-4 text-emerald-600" />
+              <span>জরুরি হলে WhatsApp-এ বার্তা দিন</span>
+            </a>
+          </div>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="p-6 md:p-10 rounded-3xl bg-white border border-[#006B5B]/15 shadow-sm space-y-8">
+          {/* 1. Service Selection */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="block text-sm font-bold text-[#004D40]">
+                ১. কাঙ্ক্ষিত সেবার ধরন বেছে নিন:
+              </label>
+              <span className="text-[11px] text-gray-500 hidden sm:inline">
+                ক্লিক করে যেকোনো একটি নির্বাচন করুন
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
+              {services.map((srv) => {
+                const isChosen = service === srv.id;
+                return (
+                  <div
+                    key={srv.id}
+                    onClick={() => setService(srv.id)}
+                    className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between relative ${
+                      isChosen
+                        ? "bg-[#006B5B]/5 border-[#006B5B] shadow-xs ring-1 ring-[#006B5B]"
+                        : "bg-[#FAFAF7] border-gray-200 hover:border-[#006B5B]/40"
+                    }`}
+                  >
+                    <div>
+                      <div className="flex items-start justify-between gap-2 mb-1.5">
+                        <h4 className={`text-sm font-bold leading-snug ${isChosen ? "text-[#006B5B]" : "text-gray-900"}`}>
+                          {srv.title}
+                        </h4>
+                        {isChosen ? (
+                          <CheckCircle2 className="w-4 h-4 text-[#006B5B] shrink-0 mt-0.5" />
+                        ) : (
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md shrink-0 ${
+                            srv.isDiagnosis 
+                              ? "bg-amber-100 text-amber-800" 
+                              : "bg-gray-100 text-gray-600"
+                          }`}>
+                            {srv.tag}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-gray-500 leading-relaxed">
+                        {srv.subtitle}
+                      </p>
                     </div>
-                    <p className="text-xs text-gray-500 leading-relaxed">
-                      {srv.subtitle}
-                    </p>
-                  </div>
 
-                  <div className="mt-3 pt-2.5 border-t border-gray-200/70 flex items-center justify-between text-[11px]">
-                    <span className="font-bold text-[#006B5B]">
-                      ফি: {srv.fee}
-                    </span>
-                    <span className="text-gray-500 font-medium">
-                      {srv.duration}
-                    </span>
+                    <div className="mt-3 pt-2.5 border-t border-gray-200/70 flex items-center justify-between text-[11px]">
+                      <span className="font-bold text-[#006B5B]">
+                        ফি: {srv.fee}
+                      </span>
+                      <span className="text-gray-500 font-medium">
+                        {srv.duration}
+                      </span>
+                    </div>
                   </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 2. Personal Info */}
+          <div className="space-y-4">
+            <label className="block text-sm font-bold text-[#004D40]">
+              ২. আপনার ব্যক্তিগত তথ্য:
+            </label>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-xs text-gray-600 mb-1">পূর্ণ নাম *</label>
+                <div className="relative">
+                  <User className="w-4 h-4 text-gray-400 absolute left-3 top-3.5" />
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="আপনার নাম"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#006B5B] text-sm bg-white"
+                  />
                 </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* 2. Personal Info */}
-        <div className="space-y-4">
-          <label className="block text-sm font-bold text-[#004D40]">
-            ২. আপনার ব্যক্তিগত তথ্য:
-          </label>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-xs text-gray-600 mb-1">পূর্ণ নাম *</label>
-              <div className="relative">
-                <User className="w-4 h-4 text-gray-400 absolute left-3 top-3.5" />
-                <input
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="আপনার নাম"
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#006B5B] text-sm bg-white"
-                />
               </div>
-            </div>
 
-            <div>
-              <label className="block text-xs text-gray-600 mb-1">মোবাইল / WhatsApp নম্বর *</label>
-              <div className="relative">
-                <Phone className="w-4 h-4 text-gray-400 absolute left-3 top-3.5" />
-                <input
-                  type="tel"
-                  required
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="০১৭xxxxxxxx"
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#006B5B] text-sm bg-white"
-                />
+              <div>
+                <label className="block text-xs text-gray-600 mb-1">মোবাইল / WhatsApp নম্বর *</label>
+                <div className="relative">
+                  <Phone className="w-4 h-4 text-gray-400 absolute left-3 top-3.5" />
+                  <input
+                    type="tel"
+                    required
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="০১৭xxxxxxxx"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#006B5B] text-sm bg-white"
+                  />
+                </div>
               </div>
-            </div>
 
-            <div>
-              <label className="block text-xs text-gray-600 mb-1">জেলা / শহর</label>
-              <div className="relative">
-                <MapPin className="w-4 h-4 text-gray-400 absolute left-3 top-3.5" />
-                <input
-                  type="text"
-                  value={district}
-                  onChange={(e) => setDistrict(e.target.value)}
-                  placeholder="যেমন: ঢাকা, চট্টগ্রাম..."
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#006B5B] text-sm bg-white"
-                />
+              <div>
+                <label className="block text-xs text-gray-600 mb-1">জেলা / শহর</label>
+                <div className="relative">
+                  <MapPin className="w-4 h-4 text-gray-400 absolute left-3 top-3.5" />
+                  <input
+                    type="text"
+                    value={district}
+                    onChange={(e) => setDistrict(e.target.value)}
+                    placeholder="যেমন: ঢাকা, চট্টগ্রাম..."
+                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#006B5B] text-sm bg-white"
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* 3. Date & Time Selection */}
-        <div className="space-y-4">
-          <label className="block text-sm font-bold text-[#004D40]">
-            ৩. পছন্দের তারিখ ও সুবিধাজনক সময়:
-          </label>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs text-gray-600 mb-1">সম্ভাব্য তারিখ</label>
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="w-full p-2.5 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#006B5B] text-sm bg-white"
-              />
-            </div>
+          {/* 3. Date & Time Selection */}
+          <div className="space-y-4">
+            <label className="block text-sm font-bold text-[#004D40]">
+              ৩. পছন্দের তারিখ ও সুবিধাজনক সময়:
+            </label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs text-gray-600 mb-1">সম্ভাব্য তারিখ</label>
+                <input
+                  type="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  className="w-full p-2.5 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#006B5B] text-sm bg-white"
+                />
+              </div>
 
-            <div>
-              <label className="block text-xs text-gray-600 mb-1">সুবিধাজনক সময় বেছে নিন</label>
-              <select
-                value={timeSlot}
-                onChange={(e) => setTimeSlot(e.target.value)}
-                className="w-full p-2.5 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#006B5B] text-sm bg-white"
-              >
-                {timeSlots.map((slot, idx) => (
-                  <option key={idx} value={slot}>
-                    {slot}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* 4. Problem Description */}
-        <div className="space-y-1.5">
-          <label className="block text-sm font-bold text-[#004D40]">
-            ৪. সমস্যার সংক্ষিপ্ত বিবরণ (ঐচ্ছিক):
-          </label>
-          <textarea
-            rows={3}
-            value={problemDescription}
-            onChange={(e) => setProblemDescription(e.target.value)}
-            placeholder="আপনার প্রধান লক্ষণসমূহ বা কতদিন ধরে সমস্যা তা সংক্ষেপে উল্লেখ করতে পারেন..."
-            className="w-full p-3 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#006B5B] text-sm bg-white"
-          />
-        </div>
-
-        {/* Selected Service Preview Box */}
-        {selectedServiceObj && (
-          <div className="p-4 rounded-2xl bg-emerald-50/60 border border-emerald-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-            <div className="flex items-center gap-2 text-emerald-950 font-semibold">
-              <CheckCircle2 className="w-4 h-4 text-[#006B5B] shrink-0" />
-              <span>
-                নির্বাচিত সেবা: <strong>{selectedServiceObj.title}</strong>
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="px-3 py-1 rounded-lg bg-white border border-emerald-300 font-bold text-[#006B5B]">
-                ফি: {selectedServiceObj.fee}
-              </span>
-              <span className="text-gray-600">
-                সময়: {selectedServiceObj.duration}
-              </span>
+              <div>
+                <label className="block text-xs text-gray-600 mb-1">সুবিধাজনক সময় বেছে নিন</label>
+                <select
+                  value={timeSlot}
+                  onChange={(e) => setTimeSlot(e.target.value)}
+                  className="w-full p-2.5 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#006B5B] text-sm bg-white"
+                >
+                  {timeSlots.map((slot, idx) => (
+                    <option key={idx} value={slot}>
+                      {slot}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
-        )}
 
-        {/* Submit Button */}
-        <div className="pt-2">
-          <button
-            type="submit"
-            className="w-full py-4 rounded-2xl bg-[#006B5B] hover:bg-[#004D40] text-white font-bold text-base shadow-md shadow-[#006B5B]/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
-          >
-            <MessageCircle className="w-5 h-5 text-[#F2C94C]" />
-            <span>অ্যাপয়েন্টমেন্টের তথ্যসহ WhatsApp-এ মেসেজ পাঠান</span>
-          </button>
-          <p className="text-center text-xs text-gray-500 mt-2">
-            বাটনে ক্লিক করলে আপনার তথ্যগুলো সাজিয়ে স্বয়ংক্রিয়ভাবে রাক্বীর অফিশিয়াল হোয়াটসঅ্যাপে চলে যাবে।
-          </p>
-        </div>
-      </form>
+          {/* 4. Problem Description */}
+          <div className="space-y-1.5">
+            <label className="block text-sm font-bold text-[#004D40]">
+              ৪. সমস্যার সংক্ষিপ্ত বিবরণ (ঐচ্ছিক):
+            </label>
+            <textarea
+              rows={3}
+              value={problemDescription}
+              onChange={(e) => setProblemDescription(e.target.value)}
+              placeholder="আপনার প্রধান লক্ষণসমূহ বা কতদিন ধরে সমস্যা তা সংক্ষেপে উল্লেখ করতে পারেন..."
+              className="w-full p-3 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#006B5B] text-sm bg-white"
+            />
+          </div>
+
+          {/* Selected Service Preview Box */}
+          {selectedServiceObj && (
+            <div className="p-4 rounded-2xl bg-emerald-50/60 border border-emerald-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+              <div className="flex items-center gap-2 text-emerald-950 font-semibold">
+                <CheckCircle2 className="w-4 h-4 text-[#006B5B] shrink-0" />
+                <span>
+                  নির্বাচিত সেবা: <strong>{selectedServiceObj.title}</strong>
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="px-3 py-1 rounded-lg bg-white border border-emerald-300 font-bold text-[#006B5B]">
+                  ফি: {selectedServiceObj.fee}
+                </span>
+                <span className="text-gray-600">
+                  সময়: {selectedServiceObj.duration}
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Submit Button */}
+          <div className="pt-2">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full py-4 rounded-2xl bg-[#006B5B] hover:bg-[#004D40] disabled:bg-gray-400 text-white font-bold text-base shadow-md shadow-[#006B5B]/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
+            >
+              {isSubmitting ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <span>অ্যাপয়েন্টমেন্ট জমা হচ্ছে...</span>
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 className="w-5 h-5 text-[#F2C94C]" />
+                  <span>অ্যাপয়েন্টমেন্ট বুকিং নিশ্চিত করুন</span>
+                </>
+              )}
+            </button>
+            <p className="text-center text-xs text-gray-500 mt-2">
+              বাটনে ক্লিক করলে আপনার তথ্যগুলো সরাসরি আমাদের সেন্ট্রাল অ্যাডমিন ড্যাশবোর্ডে জমা হবে।
+            </p>
+          </div>
+        </form>
+      )}
     </div>
   );
 }

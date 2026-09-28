@@ -68,6 +68,12 @@ import { ARTICLES_LIST } from "@/data/articles";
 import { RUQYAH_AYAT_LIST } from "@/data/ayat";
 import { DUA_LIST } from "@/data/duas";
 import { RUQYAH_AUDIO_LIST } from "@/data/ruqyahAudio";
+import { 
+  subscribeToAppointments, 
+  updateAppointmentStatus, 
+  deleteAppointmentRecord, 
+  OnlineAppointment 
+} from "@/lib/firebase";
 
 export interface PatientRecord {
   id: string;
@@ -251,7 +257,10 @@ export default function AdminDashboardPage() {
   const [error, setError] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<"overview" | "bookings" | "accounting" | "popup" | "store">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "bookings" | "appointments" | "accounting" | "popup" | "store">("overview");
+  const [onlineAppointments, setOnlineAppointments] = useState<OnlineAppointment[]>([]);
+  const [appointmentFilter, setAppointmentFilter] = useState<"all" | "pending" | "confirmed" | "completed" | "cancelled">("all");
+  const [appointmentSearch, setAppointmentSearch] = useState("");
   const [patientsList, setPatientsList] = useState<PatientRecord[]>(INITIAL_PATIENTS);
   const [patientFilter, setPatientFilter] = useState<"all" | "today_followup" | "upcoming_followup" | "overdue_followup" | "online" | "offline" | "followup" | "cured">("all");
   const [patientSearch, setPatientSearch] = useState("");
@@ -427,7 +436,39 @@ export default function AdminDashboardPage() {
       }
     } catch {}
 
+    // Load offline pending appointments if any
+    try {
+      const localApts = localStorage.getItem("sunnahlife_pending_appointments");
+      if (localApts) {
+        const parsed = JSON.parse(localApts);
+        if (Array.isArray(parsed)) {
+          setOnlineAppointments(parsed);
+        }
+      }
+    } catch {}
+
+    // Real-time Firestore subscription for online appointments
+    let unsubscribeApts: (() => void) | undefined;
+    try {
+      unsubscribeApts = subscribeToAppointments((list) => {
+        try {
+          const localApts = JSON.parse(localStorage.getItem("sunnahlife_pending_appointments") || "[]");
+          const firestoreIds = new Set(list.map((a) => a.id));
+          const onlyLocal = localApts.filter((a: any) => !firestoreIds.has(a.id));
+          setOnlineAppointments([...list, ...onlyLocal]);
+        } catch {
+          setOnlineAppointments(list);
+        }
+      });
+    } catch (err) {
+      console.error("Firestore subscribe error:", err);
+    }
+
     setIsLoaded(true);
+
+    return () => {
+      if (unsubscribeApts) unsubscribeApts();
+    };
   }, []);
 
   useEffect(() => {
@@ -848,6 +889,101 @@ export default function AdminDashboardPage() {
     setTimeout(() => setPopupSaveMessage(""), 3000);
   };
 
+  const handleConvertAppointmentToPatient = async (apt: OnlineAppointment) => {
+    const rawFee = apt.fee ? apt.fee.replace(/[^\d]/g, "") : "";
+    const feeNum = rawFee && !isNaN(parseInt(rawFee)) ? parseInt(rawFee) : 0;
+    
+    const maxNumericId = patientsList.reduce((max, p) => {
+      const num = parseInt(p.id.replace(/\D/g, ""), 10);
+      return !isNaN(num) && num > max ? num : max;
+    }, 100);
+
+    const newPatient: PatientRecord = {
+      id: `P-${maxNumericId + 1}`,
+      name: apt.name,
+      age: "",
+      phone: apt.phone,
+      address: apt.district || "",
+      type: "online",
+      problemType: apt.serviceName || "রুকইয়াহ চিকিৎসা",
+      service: apt.serviceName,
+      fee: feeNum,
+      paid: 0,
+      due: feeNum,
+      notes: `[অনলাইন অ্যাপয়েন্টমেন্ট রিকোয়েস্ট থেকে যুক্ত]\nসমস্যা: ${apt.problemDescription || "উল্লেখ নেই"}\nনির্ধারিত সময়: ${apt.date} (${apt.timeSlot})`,
+      prescription: "",
+      date: apt.date,
+      timeSlot: apt.timeSlot,
+      status: "new",
+      rawDate: getLocalDateString(new Date()),
+      createdAt: getLocalDateString(new Date()),
+    };
+
+    const updated = [newPatient, ...patientsList];
+    setPatientsList(updated);
+    localStorage.setItem("sunnahlife_patients_records", JSON.stringify(updated));
+
+    if (apt.id && !apt.id.startsWith("offline_") && !apt.id.startsWith("local_")) {
+      try {
+        await updateAppointmentStatus(apt.id, "confirmed");
+      } catch (err) {
+        console.error("Status update error:", err);
+      }
+    }
+    setOnlineAppointments((prev) =>
+      prev.map((a) => (a.id === apt.id ? { ...a, status: "confirmed" } : a))
+    );
+    setPopupSaveMessage(`"${apt.name}"-কে রোগী ও ফলো-আপ তালিকায় সফলভাবে যুক্ত করা হয়েছে!`);
+    setTimeout(() => setPopupSaveMessage(""), 3500);
+  };
+
+  const handleUpdateAppointmentStatus = async (id: string, status: OnlineAppointment["status"]) => {
+    setOnlineAppointments((prev) =>
+      prev.map((a) => (a.id === id ? { ...a, status } : a))
+    );
+    if (id && !id.startsWith("offline_") && !id.startsWith("local_")) {
+      try {
+        await updateAppointmentStatus(id, status);
+      } catch (err) {
+        console.error("Status update error:", err);
+      }
+    }
+    setPopupSaveMessage("অ্যাপয়েন্টমেন্ট স্ট্যাটাস আপডেট করা হয়েছে!");
+    setTimeout(() => setPopupSaveMessage(""), 3000);
+  };
+
+  const handleDeleteAppointment = async (id: string) => {
+    if (!window.confirm("আপনি কি নিশ্চিতভাবে এই অ্যাপয়েন্টমেন্ট রেকর্ডটি মুছে ফেলতে চান?")) return;
+    setOnlineAppointments((prev) => prev.filter((a) => a.id !== id));
+    if (id && !id.startsWith("offline_") && !id.startsWith("local_")) {
+      try {
+        await deleteAppointmentRecord(id);
+      } catch (err) {
+        console.error("Delete error:", err);
+      }
+    }
+    setPopupSaveMessage("অ্যাপয়েন্টমেন্ট রেকর্ড সফলভাবে মুছে ফেলা হয়েছে!");
+    setTimeout(() => setPopupSaveMessage(""), 3000);
+  };
+
+  const generateAppointmentWhatsAppLink = (apt: OnlineAppointment) => {
+    let cleanPhone = apt.phone.replace(/[^0-9]/g, "");
+    if (cleanPhone.startsWith("0")) {
+      cleanPhone = "88" + cleanPhone;
+    }
+    const text = `আসসালামু আলাইকুম ওয়া রাহমাতুল্লাহ, ${apt.name}।
+সুন্নাহলাইফ প্ল্যাটফর্ম থেকে আপনার "${apt.serviceName}" অ্যাপয়েন্টমেন্ট রিকোয়েস্টটি পেয়েছি।
+
+[বুকিং বিবরণ]
+• নির্ধারিত সেবা: ${apt.serviceName}
+• সম্ভাব্য তারিখ: ${apt.date}
+• পছন্দের সময়: ${apt.timeSlot}
+
+আপনার সিরিয়ালটি নিশ্চিত করার বিষয়ে কথা বলতে যোগাযোগ করছি।
+— সুন্নাহলাইফ (Sunnah Life Care)`;
+    return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`;
+  };
+
   const togglePatientExpand = (id: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     setExpandedPatientIds((prev) =>
@@ -1238,6 +1374,23 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
     return true;
   });
 
+  const filteredAppointments = onlineAppointments.filter((apt) => {
+    if (appointmentFilter !== "all" && apt.status !== appointmentFilter) {
+      return false;
+    }
+    if (appointmentSearch.trim()) {
+      const q = appointmentSearch.toLowerCase();
+      const matches =
+        apt.name.toLowerCase().includes(q) ||
+        apt.phone.includes(q) ||
+        (apt.district && apt.district.toLowerCase().includes(q)) ||
+        (apt.serviceName && apt.serviceName.toLowerCase().includes(q)) ||
+        (apt.problemDescription && apt.problemDescription.toLowerCase().includes(q));
+      if (!matches) return false;
+    }
+    return true;
+  });
+
   if (!isLoaded) {
     return null;
   }
@@ -1394,6 +1547,26 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               </button>
 
               <button
+                onClick={() => setActiveTab("appointments")}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer ${
+                  activeTab === "appointments"
+                    ? "bg-[#006B5B] text-white shadow-xs"
+                    : "text-gray-600 hover:text-[#006B5B] hover:bg-white"
+                }`}
+              >
+                <Calendar className="w-3.5 h-3.5 text-[#D4A017]" />
+                <span>অনলাইন অ্যাপয়েন্টমেন্ট ({onlineAppointments.length})</span>
+                {onlineAppointments.filter((a) => a.status === "pending").length > 0 && (
+                  <span
+                    className="px-2 py-0.5 text-[10px] font-extrabold rounded-full bg-rose-600 text-white animate-pulse"
+                    title="নতুন অপেক্ষমান অ্যাপয়েন্টমেন্ট"
+                  >
+                    নতুন {onlineAppointments.filter((a) => a.status === "pending").length}
+                  </span>
+                )}
+              </button>
+
+              <button
                 onClick={() => setActiveTab("accounting")}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer ${
                   activeTab === "accounting"
@@ -1508,12 +1681,26 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               </div>
             </div>
 
-            <div className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1">
-              <span className="text-xs text-gray-500 font-medium">প্রকাশিত কনটেন্ট</span>
-              <p className="text-2xl font-bold text-[#006B5B]">
-                {ARTICLES_LIST.length + RUQYAH_AYAT_LIST.length + DUA_LIST.length + RUQYAH_AUDIO_LIST.length} টি
-              </p>
-              <span className="text-[11px] text-[#006B5B] font-semibold">আয়াত, দোয়া, অডিও ও আর্টিকেল</span>
+            <div 
+              onClick={() => setActiveTab("appointments")}
+              className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1 cursor-pointer hover:border-[#006B5B] hover:shadow-xs transition-all group"
+              title="ক্লিক করে সকল অনলাইন অ্যাপয়েন্টমেন্ট রিকোয়েস্ট দেখুন"
+            >
+              <span className="text-xs text-gray-500 font-medium flex items-center justify-between">
+                <span>অনলাইন বুকিং</span>
+                <Calendar className="w-4 h-4 text-[#006B5B] group-hover:scale-110 transition-transform" />
+              </span>
+              <p className="text-2xl font-bold text-[#004D40]">{onlineAppointments.length} টি</p>
+              <div className="text-[11px] font-semibold flex items-center justify-between">
+                {onlineAppointments.filter((a) => a.status === "pending").length > 0 ? (
+                  <span className="text-rose-600 font-bold animate-pulse">
+                    🔴 {onlineAppointments.filter((a) => a.status === "pending").length} টি নতুন আবেদন
+                  </span>
+                ) : (
+                  <span className="text-emerald-600 font-semibold">✓ সব আপডেট করা</span>
+                )}
+                <span className="text-[#006B5B] font-bold group-hover:underline">তালিকা →</span>
+              </div>
             </div>
           </div>
 
@@ -1749,6 +1936,274 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
             </div>
           </div>
         </div>
+        </div>
+      )}
+
+      {activeTab === "appointments" && (
+        <div className="space-y-6">
+          {/* Top Header Card */}
+          <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-100 pb-5">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="p-2 rounded-xl bg-emerald-50 text-[#006B5B]">
+                    <Calendar className="w-5 h-5 text-[#006B5B]" />
+                  </span>
+                  <h3 className="font-extrabold text-xl text-[#004D40]">
+                    অনলাইন রুকইয়াহ ও ডায়াগনোসিস অ্যাপয়েন্টমেন্ট
+                  </h3>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  ওয়েবসাইটে রোগীদের সাবমিট করা লাইভ অ্যাপয়েন্টমেন্ট আবেদন, ১-ক্লিক রোগী ম্যানেজমেন্টে স্থানান্তর ও WhatsApp কনফার্মেশন
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-[#006B5B] text-xs font-bold">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+                  রিয়েল-টাইম ক্লাউড সিঙ্ক চালু
+                </span>
+              </div>
+            </div>
+
+            {/* Quick Metrics */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div 
+                onClick={() => setAppointmentFilter("all")}
+                className={`p-3.5 rounded-2xl border text-center cursor-pointer transition-all ${
+                  appointmentFilter === "all" ? "bg-[#006B5B]/10 border-[#006B5B] font-bold" : "bg-gray-50 border-gray-200"
+                }`}
+              >
+                <span className="text-xs text-gray-500 block">মোট আবেদন</span>
+                <span className="text-xl font-bold text-gray-900">{onlineAppointments.length} টি</span>
+              </div>
+
+              <div 
+                onClick={() => setAppointmentFilter("pending")}
+                className={`p-3.5 rounded-2xl border text-center cursor-pointer transition-all ${
+                  appointmentFilter === "pending" ? "bg-rose-50 border-rose-400 font-bold" : "bg-gray-50 border-gray-200"
+                }`}
+              >
+                <span className="text-xs text-rose-600 block">অপেক্ষমান (নতুন)</span>
+                <span className="text-xl font-bold text-rose-700">
+                  {onlineAppointments.filter(a => a.status === "pending").length} টি
+                </span>
+              </div>
+
+              <div 
+                onClick={() => setAppointmentFilter("confirmed")}
+                className={`p-3.5 rounded-2xl border text-center cursor-pointer transition-all ${
+                  appointmentFilter === "confirmed" ? "bg-emerald-50 border-emerald-400 font-bold" : "bg-gray-50 border-gray-200"
+                }`}
+              >
+                <span className="text-xs text-emerald-700 block">নিশ্চিতকৃত</span>
+                <span className="text-xl font-bold text-emerald-800">
+                  {onlineAppointments.filter(a => a.status === "confirmed").length} টি
+                </span>
+              </div>
+
+              <div 
+                onClick={() => setAppointmentFilter("completed")}
+                className={`p-3.5 rounded-2xl border text-center cursor-pointer transition-all ${
+                  appointmentFilter === "completed" ? "bg-blue-50 border-blue-400 font-bold" : "bg-gray-50 border-gray-200"
+                }`}
+              >
+                <span className="text-xs text-blue-700 block">সম্পন্ন</span>
+                <span className="text-xl font-bold text-blue-800">
+                  {onlineAppointments.filter(a => a.status === "completed").length} টি
+                </span>
+              </div>
+            </div>
+
+            {/* Filter and Search */}
+            <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+              <div className="relative flex-1 w-full">
+                <Search className="w-4 h-4 text-gray-400 absolute left-3 top-3" />
+                <input
+                  type="text"
+                  placeholder="রোগীর নাম, ফোন নম্বর বা জেলা দিয়ে খুঁজুন..."
+                  value={appointmentSearch}
+                  onChange={(e) => setAppointmentSearch(e.target.value)}
+                  className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200 text-xs md:text-sm focus:outline-hidden focus:border-[#006B5B] bg-white"
+                />
+              </div>
+
+              <div className="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0">
+                {(["all", "pending", "confirmed", "completed", "cancelled"] as const).map((st) => {
+                  const labels: Record<string, string> = {
+                    all: "সকল",
+                    pending: "অপেক্ষমান",
+                    confirmed: "নিশ্চিতকৃত",
+                    completed: "সম্পন্ন",
+                    cancelled: "বাতিল",
+                  };
+                  return (
+                    <button
+                      key={st}
+                      onClick={() => setAppointmentFilter(st)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
+                        appointmentFilter === st
+                          ? "bg-[#006B5B] text-white"
+                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                      }`}
+                    >
+                      {labels[st]}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Appointments Grid */}
+          {filteredAppointments.length === 0 ? (
+            <div className="p-12 text-center rounded-3xl bg-white border border-gray-200 space-y-3">
+              <div className="w-12 h-12 rounded-full bg-emerald-50 text-[#006B5B] flex items-center justify-center mx-auto">
+                <Calendar className="w-6 h-6" />
+              </div>
+              <h4 className="font-bold text-gray-700 text-sm">কোনো অনলাইন অ্যাপয়েন্টমেন্ট রেকর্ড পাওয়া যায়নি</h4>
+              <p className="text-xs text-gray-500 max-w-sm mx-auto">
+                ওয়েবসাইট থেকে রোগী বা গ্রাহকরা অ্যাপয়েন্টমেন্ট সাবমিট করলে তা সরাসরি এখানে প্রদর্শিত হবে।
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {filteredAppointments.map((apt) => {
+                const statusColors: Record<string, string> = {
+                  pending: "bg-rose-50 text-rose-700 border-rose-200",
+                  confirmed: "bg-emerald-50 text-emerald-800 border-emerald-200",
+                  completed: "bg-blue-50 text-blue-700 border-blue-200",
+                  cancelled: "bg-gray-100 text-gray-600 border-gray-200",
+                };
+
+                return (
+                  <div
+                    key={apt.id || apt.createdAt}
+                    className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 hover:border-[#006B5B]/40 shadow-2xs hover:shadow-xs transition-all space-y-4 flex flex-col justify-between"
+                  >
+                    <div className="space-y-3">
+                      {/* Header row */}
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-bold text-base text-gray-900">{apt.name}</h4>
+                            {apt.district && (
+                              <span className="px-2 py-0.5 rounded-md bg-gray-100 text-gray-600 text-[11px] font-medium flex items-center gap-1">
+                                <MapPin className="w-3 h-3 text-gray-400" />
+                                {apt.district}
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-[11px] text-gray-400 block mt-0.5">
+                            আবেদনের সময়: {apt.createdAtFormatted || new Date(apt.createdAt).toLocaleString("bn-BD")}
+                          </span>
+                        </div>
+
+                        {/* Status badge with change dropdown */}
+                        <div className="relative">
+                          <select
+                            value={apt.status}
+                            onChange={(e) =>
+                              apt.id && handleUpdateAppointmentStatus(apt.id, e.target.value as any)
+                            }
+                            className={`text-xs font-bold px-2.5 py-1 rounded-xl border appearance-none pr-6 cursor-pointer outline-none ${
+                              statusColors[apt.status] || "bg-gray-50 text-gray-700 border-gray-200"
+                            }`}
+                          >
+                            <option value="pending">অপেক্ষমান</option>
+                            <option value="confirmed">নিশ্চিতকৃত</option>
+                            <option value="completed">সম্পন্ন</option>
+                            <option value="cancelled">বাতিল</option>
+                          </select>
+                          <ChevronDown className="w-3 h-3 absolute right-1.5 top-2.5 pointer-events-none text-current" />
+                        </div>
+                      </div>
+
+                      {/* Service Info Box */}
+                      <div className="p-3 rounded-2xl bg-[#FAFAF7] border border-gray-200/70 space-y-1.5 text-xs">
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-[#006B5B] flex items-center gap-1">
+                            <Sparkles className="w-3.5 h-3.5 text-[#D4A017]" />
+                            {apt.serviceName}
+                          </span>
+                          <span className="font-bold text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-md">
+                            ফি: {apt.fee || "আলোচনা সাপেক্ষে"}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-4 text-gray-600 text-[11px]">
+                          <span className="flex items-center gap-1">
+                            <Calendar className="w-3 h-3 text-gray-400" />
+                            তারিখ: {apt.date}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Clock className="w-3 h-3 text-gray-400" />
+                            সময়: {apt.timeSlot}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Problem notes */}
+                      {apt.problemDescription && (
+                        <div className="text-xs text-gray-600 bg-amber-50/50 p-2.5 rounded-xl border border-amber-200/50">
+                          <span className="font-semibold text-amber-900 block text-[11px] mb-0.5">
+                            রোগীর সমস্যার বিবরণ:
+                          </span>
+                          <p className="line-clamp-3">{apt.problemDescription}</p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Bottom Actions Row */}
+                    <div className="pt-3 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2 text-xs">
+                      {/* Contact Actions: Call & WhatsApp */}
+                      <div className="flex items-center gap-2">
+                        <a
+                          href={`tel:${apt.phone}`}
+                          className="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold border border-blue-200 flex items-center gap-1 transition-colors"
+                          title="সরাসরি কল দিন"
+                        >
+                          <Phone className="w-3.5 h-3.5" />
+                          <span>{apt.phone}</span>
+                        </a>
+
+                        <a
+                          href={generateAppointmentWhatsAppLink(apt)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 transition-colors"
+                          title="WhatsApp-এ কনফার্মেশন বার্তা পাঠান"
+                        >
+                          <MessageCircle className="w-4 h-4 text-emerald-600" />
+                        </a>
+                      </div>
+
+                      {/* Management Actions */}
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handleConvertAppointmentToPatient(apt)}
+                          className="px-3.5 py-1.5 rounded-xl bg-[#006B5B] hover:bg-[#004D40] text-white font-bold transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer"
+                          title="এই আবেদনটি সরাসরি রোগী ও ফলো-আপ তালিকায় ট্রান্সফার করুন"
+                        >
+                          <UserPlus className="w-3.5 h-3.5" />
+                          <span>রোগী তালিকায় নিন</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => apt.id && handleDeleteAppointment(apt.id)}
+                          className="p-1.5 rounded-xl text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                          title="মুছে ফেলুন"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
 
