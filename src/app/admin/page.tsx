@@ -256,6 +256,7 @@ export default function AdminDashboardPage() {
   const [passcode, setPasscode] = useState("");
   const [error, setError] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const [activeTab, setActiveTab] = useState<"overview" | "bookings" | "appointments" | "accounting" | "popup" | "store">("overview");
   const [onlineAppointments, setOnlineAppointments] = useState<OnlineAppointment[]>([]);
@@ -400,10 +401,23 @@ export default function AdminDashboardPage() {
   };
 
   useEffect(() => {
-    const auth = sessionStorage.getItem("sunnahlife_admin_auth");
-    if (auth === "true") {
-      setIsAuthenticated(true);
-    }
+    const checkAuth = async () => {
+      try {
+        const res = await fetch("/api/admin/verify");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.authenticated) {
+            setIsAuthenticated(true);
+          }
+        }
+      } catch (err) {
+        console.error("Session verification error:", err);
+      } finally {
+        setIsLoaded(true);
+      }
+    };
+    checkAuth();
+
     try {
       const savedPopup = localStorage.getItem("sunnahlife_popup_config");
       if (savedPopup) {
@@ -463,8 +477,6 @@ export default function AdminDashboardPage() {
     } catch (err) {
       console.error("Firestore subscribe error:", err);
     }
-
-    setIsLoaded(true);
 
     return () => {
       if (unsubscribeApts) unsubscribeApts();
@@ -657,19 +669,42 @@ export default function AdminDashboardPage() {
     setTimeout(() => setPopupSaveMessage(""), 3500);
   };
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (passcode === "7860" || passcode === "admin123") {
-      setIsAuthenticated(true);
-      sessionStorage.setItem("sunnahlife_admin_auth", "true");
-      setError("");
-    } else {
-      setError("ভুল পিন কোড! অনুগ্রহ করে সঠিক অ্যাডমিন পিন দিন।");
+    if (!passcode.trim()) {
+      setError("অনুগ্রহ করে পিন কোড দিন।");
+      return;
+    }
+    setIsLoggingIn(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ passcode }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setIsAuthenticated(true);
+        setPasscode("");
+        setError("");
+      } else {
+        setError(data.error || "ভুল পিন কোড! অনুগ্রহ করে সঠিক অ্যাডমিন পিন দিন।");
+      }
+    } catch {
+      setError("সার্ভারের সাথে সংযোগ স্থাপন করা যায়নি। পুনরায় চেষ্টা করুন।");
+    } finally {
+      setIsLoggingIn(false);
     }
   };
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("sunnahlife_admin_auth");
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/admin/logout", { method: "POST" });
+    } catch (err) {
+      console.error("Logout error:", err);
+    }
     setIsAuthenticated(false);
     setPasscode("");
   };
@@ -1425,12 +1460,13 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               <input
                 type="password"
                 value={passcode}
+                disabled={isLoggingIn}
                 onChange={(e) => {
                   setPasscode(e.target.value);
                   setError("");
                 }}
                 placeholder="পিন কোড লিখুন"
-                className="w-full text-center tracking-widest text-lg font-mono p-3 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#006B5B]"
+                className="w-full text-center tracking-widest text-lg font-mono p-3 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#006B5B] disabled:bg-gray-100 disabled:cursor-not-allowed"
                 autoFocus
               />
               {error && <p className="text-xs text-red-600 font-medium mt-1.5">{error}</p>}
@@ -1438,9 +1474,17 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
             <button
               type="submit"
-              className="w-full py-3 rounded-xl bg-[#006B5B] hover:bg-[#004D40] text-white font-bold text-sm shadow-xs transition-colors cursor-pointer"
+              disabled={isLoggingIn}
+              className="w-full py-3 rounded-xl bg-[#006B5B] hover:bg-[#004D40] disabled:opacity-60 text-white font-bold text-sm shadow-xs transition-colors cursor-pointer flex items-center justify-center gap-2"
             >
-              ড্যাশবোর্ডে প্রবেশ করুন
+              {isLoggingIn ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <span>যাচাই করা হচ্ছে...</span>
+                </>
+              ) : (
+                "ড্যাশবোর্ডে প্রবেশ করুন"
+              )}
             </button>
           </form>
 
