@@ -1,5 +1,4 @@
 import crypto from "crypto";
-import { cookies } from "next/headers";
 
 const SESSION_COOKIE_NAME = "sunnahlife_admin_session";
 const SESSION_SECRET = process.env.ADMIN_SESSION_SECRET || "sunnahlife_secure_salt_key_987654321";
