@@ -8,6 +8,7 @@ import dynamic from "next/dynamic";
 
 const FloatingWhatsApp = dynamic(() => import("@/components/FloatingWhatsApp"));
 const OfferPopupModal = dynamic(() => import("@/components/OfferPopupModal"));
+const AutoCloudSyncManager = dynamic(() => import("@/components/AutoCloudSyncManager"));
 import { SITE_CONFIG } from "@/config/site";
 
 const hindSiliguri = Hind_Siliguri({
@@ -248,6 +249,7 @@ export default function RootLayout({
         <BottomNav />
         <FloatingWhatsApp />
         <OfferPopupModal />
+        <AutoCloudSyncManager />
       </body>
     </html>
   );

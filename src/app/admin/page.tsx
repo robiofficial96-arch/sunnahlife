@@ -262,6 +262,7 @@ export default function AdminDashboardPage() {
   const [error, setError] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [isOnline, setIsOnline] = useState(true);
 
   const [activeTab, setActiveTab] = useState<"overview" | "bookings" | "appointments" | "accounting" | "popup" | "store">("overview");
   const [onlineAppointments, setOnlineAppointments] = useState<OnlineAppointment[]>([]);
@@ -408,6 +409,20 @@ export default function AdminDashboardPage() {
   };
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsOnline(navigator.onLine);
+      const handleOnline = () => setIsOnline(true);
+      const handleOffline = () => setIsOnline(false);
+      window.addEventListener("online", handleOnline);
+      window.addEventListener("offline", handleOffline);
+      return () => {
+        window.removeEventListener("online", handleOnline);
+        window.removeEventListener("offline", handleOffline);
+      };
+    }
+  }, []);
+
+  useEffect(() => {
     const checkAuth = async () => {
       try {
         const res = await fetch("/api/admin/verify");
@@ -415,10 +430,19 @@ export default function AdminDashboardPage() {
           const data = await res.json();
           if (data.authenticated) {
             setIsAuthenticated(true);
+            localStorage.setItem("sunnahlife_admin_cached_auth", "true");
+          }
+        } else {
+          // If offline or fetch failed, fallback to cached auth
+          if (typeof window !== "undefined" && !navigator.onLine && localStorage.getItem("sunnahlife_admin_cached_auth") === "true") {
+            setIsAuthenticated(true);
           }
         }
       } catch (err) {
-        console.error("Session verification error:", err);
+        console.warn("Session verification network error (checking offline cached session):", err);
+        if (typeof window !== "undefined" && localStorage.getItem("sunnahlife_admin_cached_auth") === "true") {
+          setIsAuthenticated(true);
+        }
       } finally {
         setIsLoaded(true);
       }
@@ -729,6 +753,9 @@ export default function AdminDashboardPage() {
       const data = await res.json();
       if (res.ok && data.success) {
         setIsAuthenticated(true);
+        if (typeof window !== "undefined") {
+          localStorage.setItem("sunnahlife_admin_cached_auth", "true");
+        }
         setPasscode("");
         setError("");
       } else {
@@ -746,6 +773,9 @@ export default function AdminDashboardPage() {
       await fetch("/api/admin/logout", { method: "POST" });
     } catch (err) {
       console.error("Logout error:", err);
+    }
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("sunnahlife_admin_cached_auth");
     }
     setIsAuthenticated(false);
     setPasscode("");
@@ -1647,6 +1677,12 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 <ShieldCheck className="w-3.5 h-3.5" />
                 <span>অ্যাডমিন পোর্টাল</span>
               </span>
+              {!isOnline && (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold border border-amber-300 animate-pulse" title="বর্তমানে ইন্টারনেট সংযোগ নেই। ইন্টারনেট সংযোগ পেলে সকল ডাটা ক্লাউডে স্বয়ংক্রিয়ভাবে সিঙ্ক হবে।">
+                  <span className="w-2 h-2 rounded-full bg-amber-600"></span>
+                  <span>অফলাইন মোড</span>
+                </span>
+              )}
             </div>
 
             {/* Right: View Site & Logout */}
