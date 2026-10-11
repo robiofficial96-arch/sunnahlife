@@ -74,6 +74,7 @@ import {
   deleteAppointmentRecord, 
   OnlineAppointment,
   PaymentInstallment,
+  TreatmentSession,
   savePatientToFirestore,
   updatePatientInFirestore,
   deletePatientFromFirestore,
@@ -94,6 +95,7 @@ export interface PatientRecord {
   paid?: number;      // পরিশোধিত টাকা (৳)
   due?: number;       // বকেয়া টাকা (৳)
   payments?: PaymentInstallment[]; // কিস্তি ও লেনদেন হিস্ট্রি
+  sessions?: TreatmentSession[];   // একাধিক সেশন / ভিজিটের খতিয়ান
   notes: string;
   prescription: string;
   date: string;
@@ -154,6 +156,14 @@ export const formatBanglaFollowupDate = (dateStr?: string) => {
   if (parts.length < 3 || isNaN(parts[0]) || isNaN(parts[1]) || isNaN(parts[2])) return dateStr;
   const dateObj = new Date(parts[0], parts[1] - 1, parts[2]);
   return dateObj.toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" });
+};
+
+export const toBanglaNumber = (num: number | string) => {
+  const banglaDigits: Record<string, string> = {
+    "0": "০", "1": "১", "2": "২", "3": "৩", "4": "৪",
+    "5": "৫", "6": "৬", "7": "৭", "8": "৮", "9": "৯",
+  };
+  return String(num).replace(/\d/g, (x) => banglaDigits[x] || x);
 };
 
 export const formatBanglaHourMinute = (hours: number, minutes: number) => {
@@ -286,6 +296,10 @@ export default function AdminDashboardPage() {
   const [paymentMethodInput, setPaymentMethodInput] = useState<"cash" | "bkash" | "nagad" | "bank" | "other">("cash");
   const [paymentNoteInput, setPaymentNoteInput] = useState<string>("");
   const [isNewSessionFee, setIsNewSessionFee] = useState<boolean>(false);
+  const [sessionTreatmentTitle, setSessionTreatmentTitle] = useState<string>("২য় সেশন রুকইয়াহ");
+  const [sessionCostInput, setSessionCostInput] = useState<string>("");
+  const [sessionDateInput, setSessionDateInput] = useState<string>(getLocalDateString());
+  const [sessionPrescriptionInput, setSessionPrescriptionInput] = useState<string>("");
 
   // Accounting and Financial filter states
   const [accountingYear, setAccountingYear] = useState<string>("all");
@@ -914,7 +928,12 @@ export default function AdminDashboardPage() {
     setPaymentAmountInput(due > 0 ? String(due) : "");
     setPaymentMethodInput("cash");
     setPaymentNoteInput("");
-    setIsNewSessionFee(due <= 0); // If previous dues are already cleared, default to new session fee
+    setIsNewSessionFee(due <= 0); // If previous dues are already cleared, default to new session
+    const existingSessionsCount = (patient.sessions?.length || 0) + 1;
+    setSessionTreatmentTitle(`${toBanglaNumber(existingSessionsCount + 1)} সেশন রুকইয়াহ ও চিকিৎসা`);
+    setSessionCostInput(due <= 0 ? "500" : "");
+    setSessionDateInput(getLocalDateString());
+    setSessionPrescriptionInput("");
   };
 
   const handleSavePaymentInstallment = (e: React.FormEvent) => {
@@ -922,27 +941,26 @@ export default function AdminDashboardPage() {
     if (!paymentModalPatient) return;
 
     const amountNum = Number(paymentAmountInput) || 0;
-    if (amountNum <= 0) {
-      alert("অনুগ্রহ করে জমার সঠিক টাকার পরিমাণ লিখুন!");
-      return;
-    }
+    const sessionCostNum = isNewSessionFee ? (Number(sessionCostInput) || amountNum) : 0;
 
     const currentFee = Number(paymentModalPatient.fee) || 0;
     const currentPaid = Number(paymentModalPatient.paid) || 0;
     
-    // If it's a new session/visit fee, add this amount to total fee as well!
-    const updatedFee = isNewSessionFee ? currentFee + amountNum : currentFee;
+    // If it's a new session, total fee increases by the session cost (or amount if no separate cost given)
+    const updatedFee = isNewSessionFee ? currentFee + sessionCostNum : currentFee;
     const newPaid = currentPaid + amountNum;
     const newDue = Math.max(updatedFee - newPaid, 0);
 
-    const defaultSessionNote = isNewSessionFee ? "পরবর্তী সেশন / পুনর্বিজীট ফি" : undefined;
+    const defaultSessionNote = isNewSessionFee ? sessionTreatmentTitle : undefined;
     const finalNote = paymentNoteInput.trim() || defaultSessionNote;
+
+    const formattedDate = new Date().toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" });
 
     const newPayment: PaymentInstallment = {
       id: "pay_" + Date.now(),
       amount: amountNum,
-      date: new Date().toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" }),
-      rawDate: getLocalDateString(new Date()),
+      date: formattedDate,
+      rawDate: sessionDateInput || getLocalDateString(new Date()),
       method: paymentMethodInput,
       notes: finalNote,
       createdAt: Date.now(),
@@ -950,6 +968,25 @@ export default function AdminDashboardPage() {
 
     const existingPayments = paymentModalPatient.payments || [];
     const updatedPayments = [newPayment, ...existingPayments];
+
+    // If new session, record into sessions history
+    let updatedSessions = paymentModalPatient.sessions || [];
+    if (isNewSessionFee) {
+      const newSessionRecord: TreatmentSession = {
+        id: "sess_" + Date.now(),
+        date: formattedDate,
+        rawDate: sessionDateInput || getLocalDateString(),
+        treatmentTitle: sessionTreatmentTitle.trim() || "পরবর্তী সেশন চিকিৎসা",
+        cost: sessionCostNum,
+        paid: amountNum,
+        due: Math.max(sessionCostNum - amountNum, 0),
+        paymentMethod: paymentMethodInput,
+        prescription: sessionPrescriptionInput.trim() || undefined,
+        notes: paymentNoteInput.trim() || undefined,
+        createdAt: Date.now(),
+      };
+      updatedSessions = [newSessionRecord, ...updatedSessions];
+    }
 
     const updated = patientsList.map((p) => {
       if (p.id === paymentModalPatient.id) {
@@ -959,6 +996,8 @@ export default function AdminDashboardPage() {
           paid: newPaid,
           due: newDue,
           payments: updatedPayments,
+          sessions: updatedSessions,
+          prescription: sessionPrescriptionInput.trim() ? sessionPrescriptionInput.trim() : p.prescription,
         };
       }
       return p;
@@ -971,6 +1010,8 @@ export default function AdminDashboardPage() {
       paid: newPaid,
       due: newDue,
       payments: updatedPayments,
+      sessions: updatedSessions,
+      ...(sessionPrescriptionInput.trim() ? { prescription: sessionPrescriptionInput.trim() } : {}),
     }).catch(console.error);
 
     if (selectedPatientForDrawer && selectedPatientForDrawer.id === paymentModalPatient.id) {
@@ -980,13 +1021,19 @@ export default function AdminDashboardPage() {
         paid: newPaid,
         due: newDue,
         payments: updatedPayments,
+        sessions: updatedSessions,
+        ...(sessionPrescriptionInput.trim() ? { prescription: sessionPrescriptionInput.trim() } : {}),
       });
     }
 
     const patientName = paymentModalPatient.name;
     setPaymentModalPatient(null);
     setPaymentAmountInput("");
-    setPopupSaveMessage(`"${patientName}"-এর ৳${amountNum.toLocaleString("bn-BD")} টাকা জমা সফলভাবে রেকর্ড করা হয়েছে!`);
+    setPopupSaveMessage(
+      isNewSessionFee
+        ? `"${patientName}"-এর নতুন ট্রিটমেন্ট সেশন ও ৳${amountNum.toLocaleString("bn-BD")} পেমেন্ট সফলভাবে রেকর্ড হয়েছে!`
+        : `"${patientName}"-এর ৳${amountNum.toLocaleString("bn-BD")} টাকা জমা সফলভাবে রেকর্ড করা হয়েছে!`
+    );
     setTimeout(() => setPopupSaveMessage(""), 3500);
   };
 
@@ -3625,26 +3672,53 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                         </div>
 
                         <div className="pt-1 flex flex-col gap-2">
-                          {due > 0 ? (
-                            <button
-                              type="button"
-                              onClick={() => handleOpenPaymentModal(selectedPatientForDrawer)}
-                              className="w-full py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-2xs cursor-pointer"
-                            >
-                              <Coins className="w-3.5 h-3.5" />
-                              <span>টাকা জমা নিন (আংশিক বা সম্পূর্ণ)</span>
-                            </button>
-                          ) : (
-                            <button
-                              type="button"
-                              onClick={() => handleOpenPaymentModal(selectedPatientForDrawer)}
-                              className="w-full py-2 px-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-                            >
-                              <Coins className="w-3.5 h-3.5" />
-                              <span>অতিরিক্ত পেমেন্ট / কিস্তি যোগ করুন</span>
-                            </button>
-                          )}
+                          <button
+                            type="button"
+                            onClick={() => handleOpenPaymentModal(selectedPatientForDrawer)}
+                            className="w-full py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-2xs cursor-pointer"
+                          >
+                            <Coins className="w-3.5 h-3.5" />
+                            <span>{due > 0 ? "পেমেন্ট গ্রহণ করুন (বকেয়া / নতুন সেশন)" : "পেমেন্ট গ্রহণ করুন (+নতুন ট্রিটমেন্ট)"}</span>
+                          </button>
                         </div>
+
+                        {/* Treatment Sessions History (একাধিক সেশন ও নতুন ট্রিটমেন্ট খতিয়ান) */}
+                        {selectedPatientForDrawer.sessions && selectedPatientForDrawer.sessions.length > 0 && (
+                          <div className="pt-2 border-t border-gray-200/80 space-y-1.5">
+                            <span className="text-[10px] font-bold text-[#004D40] uppercase tracking-wider block">
+                              সেশন ও ট্রিটমেন্ট ইতিহাস ({selectedPatientForDrawer.sessions.length}টি)
+                            </span>
+                            <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
+                              {selectedPatientForDrawer.sessions.map((sess, idx) => (
+                                <div
+                                  key={sess.id || idx}
+                                  className="p-2.5 rounded-xl bg-white border border-emerald-100 text-[11px] space-y-1 shadow-2xs"
+                                >
+                                  <div className="flex items-center justify-between">
+                                    <span className="font-bold text-gray-900">{sess.treatmentTitle}</span>
+                                    <span className="text-[10px] text-gray-400 font-medium">{sess.date}</span>
+                                  </div>
+                                  <div className="flex items-center gap-2 text-[10px]">
+                                    <span className="text-gray-500">খরচ: <b>৳{sess.cost}</b></span>
+                                    <span>•</span>
+                                    <span className="text-emerald-700 font-bold">পরিশোধ: ৳{sess.paid}</span>
+                                    {sess.due > 0 && (
+                                      <>
+                                        <span>•</span>
+                                        <span className="text-amber-800 font-bold">বকেয়া: ৳{sess.due}</span>
+                                      </>
+                                    )}
+                                  </div>
+                                  {sess.prescription && (
+                                    <p className="text-[10px] text-emerald-800 bg-emerald-50/70 p-1 rounded-md">
+                                      আমল: {sess.prescription}
+                                    </p>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
 
                         {/* Payment Installments History Log */}
                         {selectedPatientForDrawer.payments && selectedPatientForDrawer.payments.length > 0 && (
@@ -5876,15 +5950,72 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   </button>
                 </div>
                 {isNewSessionFee && (
+                  <div className="p-3 bg-white rounded-xl border border-emerald-200/80 space-y-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      <div>
+                        <label className="block text-[11px] font-bold text-gray-700 mb-1">
+                          ট্রিটমেন্টের নাম / উদ্দেশ্য:
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="যেমন: ২য় সেশন রুকইয়াহ / হিজামা"
+                          value={sessionTreatmentTitle}
+                          onChange={(e) => setSessionTreatmentTitle(e.target.value)}
+                          className="w-full px-2.5 py-2 rounded-xl border border-gray-200 text-xs font-semibold outline-none focus:border-[#006B5B]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-bold text-gray-700 mb-1">
+                          ট্রিটমেন্টের তারিখ:
+                        </label>
+                        <input
+                          type="date"
+                          value={sessionDateInput}
+                          onChange={(e) => setSessionDateInput(e.target.value)}
+                          className="w-full px-2.5 py-2 rounded-xl border border-gray-200 text-xs font-semibold outline-none focus:border-[#006B5B]"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      <div>
+                        <label className="block text-[11px] font-bold text-gray-700 mb-1">
+                          এই সেশনের মোট ধার্য ফি / খরচ (৳):
+                        </label>
+                        <input
+                          type="number"
+                          placeholder="যেমন: ১০০০"
+                          value={sessionCostInput}
+                          onChange={(e) => setSessionCostInput(e.target.value)}
+                          className="w-full px-2.5 py-2 rounded-xl border border-gray-200 text-xs font-bold text-gray-900 outline-none focus:border-[#006B5B]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-bold text-gray-700 mb-1">
+                          নতুন প্রেসক্রিপশন / আমল (ঐচ্ছিক):
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="যেমন: নতুন আমল বা সুন্নাহ নির্দেশনা"
+                          value={sessionPrescriptionInput}
+                          onChange={(e) => setSessionPrescriptionInput(e.target.value)}
+                          className="w-full px-2.5 py-2 rounded-xl border border-gray-200 text-xs outline-none focus:border-[#006B5B]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {isNewSessionFee && (
                   <p className="text-[11px] text-emerald-800 font-medium">
-                    💡 এই টাকাটি রোগীর মোট চিকিৎসা ফি-এর সাথে স্বয়ংক্রিয়ভাবে যোগ হবে এবং জমা হিসেবে রেকর্ড হবে।
+                    💡 এই ট্রিটমেন্টের খরচ রোগীর মোট ফি-এর সাথে যোগ হবে এবং আজকের জমা বাদ দিয়ে বাকি টাকা বকেয়া হিসেবে সংরক্ষিত থাকবে।
                   </p>
                 )}
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-gray-700 mb-1">
-                  এখন কত টাকা জমা দিচ্ছেন? (৳) <span className="text-red-500">*</span>
+                  {isNewSessionFee ? "আজকে এই সেশনে কত টাকা পরিশোধ নিচ্ছেন? (৳)" : "এখন কত টাকা জমা দিচ্ছেন? (৳)"} <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <span className="absolute left-3 top-2.5 font-bold text-gray-500 text-sm">৳</span>

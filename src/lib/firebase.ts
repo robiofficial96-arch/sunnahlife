@@ -93,6 +93,21 @@ export interface PaymentInstallment {
   createdAt?: number; // timestamp
 }
 
+export interface TreatmentSession {
+  id: string;
+  date: string;          // e.g. "১১ অক্টোবর ২০২৬"
+  rawDate?: string;      // YYYY-MM-DD
+  treatmentTitle: string;// e.g. "২য় সেশন রুকইয়াহ" / "হিজামা থেরাপি"
+  treatmentType?: "ruqyah" | "hijama" | "both";
+  cost: number;          // এই সেশনের মোট খরচ / ধার্য ফি (৳)
+  paid: number;          // পরিশোধিত (৳)
+  due: number;           // বকেয়া (৳)
+  paymentMethod?: "cash" | "bkash" | "nagad" | "bank" | "other";
+  prescription?: string; // প্রেসক্রিপশন / আমল
+  notes?: string;        // কেস নোট
+  createdAt?: number;
+}
+
 export interface PatientFirestoreRecord {
   id: string;
   name: string;
@@ -107,6 +122,7 @@ export interface PatientFirestoreRecord {
   paid?: number;
   due?: number;
   payments?: PaymentInstallment[];
+  sessions?: TreatmentSession[]; // একাধিক সেশন / ভিজিটের খতিয়ান
   notes: string;
   prescription: string;
   date: string;
