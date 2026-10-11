@@ -83,6 +83,16 @@ export async function deleteAppointmentRecord(id: string) {
   await deleteDoc(ref);
 }
 
+export interface PaymentInstallment {
+  id: string;
+  amount: number;
+  date: string;       // e.g. "১১ অক্টোবর ২০২৬" or formatted
+  rawDate?: string;   // YYYY-MM-DD
+  method?: "cash" | "bkash" | "nagad" | "bank" | "other";
+  notes?: string;
+  createdAt?: number; // timestamp
+}
+
 export interface PatientFirestoreRecord {
   id: string;
   name: string;
@@ -96,6 +106,7 @@ export interface PatientFirestoreRecord {
   fee?: number;
   paid?: number;
   due?: number;
+  payments?: PaymentInstallment[];
   notes: string;
   prescription: string;
   date: string;

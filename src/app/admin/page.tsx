@@ -73,6 +73,7 @@ import {
   updateAppointmentStatus, 
   deleteAppointmentRecord, 
   OnlineAppointment,
+  PaymentInstallment,
   savePatientToFirestore,
   updatePatientInFirestore,
   deletePatientFromFirestore,
@@ -92,6 +93,7 @@ export interface PatientRecord {
   fee?: number;       // মোট চিকিৎসা ফি (৳)
   paid?: number;      // পরিশোধিত টাকা (৳)
   due?: number;       // বকেয়া টাকা (৳)
+  payments?: PaymentInstallment[]; // কিস্তি ও লেনদেন হিস্ট্রি
   notes: string;
   prescription: string;
   date: string;
@@ -277,6 +279,12 @@ export default function AdminDashboardPage() {
   const [expandedPatientIds, setExpandedPatientIds] = useState<string[]>([]);
   const [patientViewPreference, setPatientViewPreference] = useState<"drawer" | "accordion">("drawer");
   const [isSyncingCloud, setIsSyncingCloud] = useState(false);
+
+  // Payment Recording Modal State
+  const [paymentModalPatient, setPaymentModalPatient] = useState<PatientRecord | null>(null);
+  const [paymentAmountInput, setPaymentAmountInput] = useState<string>("");
+  const [paymentMethodInput, setPaymentMethodInput] = useState<"cash" | "bkash" | "nagad" | "bank" | "other">("cash");
+  const [paymentNoteInput, setPaymentNoteInput] = useState<string>("");
 
   // Accounting and Financial filter states
   const [accountingYear, setAccountingYear] = useState<string>("all");
@@ -895,37 +903,85 @@ export default function AdminDashboardPage() {
     setTimeout(() => setPopupSaveMessage(""), 3000);
   };
 
-  const handleMarkPatientPaid = (id: string) => {
-    let feeAmount = 0;
+  const handleOpenPaymentModal = (patient: PatientRecord) => {
+    const fee = Number(patient.fee) || 0;
+    const paid = Number(patient.paid) || 0;
+    const due = patient.due !== undefined ? Number(patient.due) : Math.max(fee - paid, 0);
+
+    setPaymentModalPatient(patient);
+    setPaymentAmountInput(due > 0 ? String(due) : "");
+    setPaymentMethodInput("cash");
+    setPaymentNoteInput("");
+  };
+
+  const handleSavePaymentInstallment = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!paymentModalPatient) return;
+
+    const amountNum = Number(paymentAmountInput) || 0;
+    if (amountNum <= 0) {
+      alert("অনুগ্রহ করে জমার সঠিক টাকার পরিমাণ লিখুন!");
+      return;
+    }
+
+    const currentFee = Number(paymentModalPatient.fee) || 0;
+    const currentPaid = Number(paymentModalPatient.paid) || 0;
+    const newPaid = currentPaid + amountNum;
+    const newDue = Math.max(currentFee - newPaid, 0);
+
+    const newPayment: PaymentInstallment = {
+      id: "pay_" + Date.now(),
+      amount: amountNum,
+      date: new Date().toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" }),
+      rawDate: getLocalDateString(new Date()),
+      method: paymentMethodInput,
+      notes: paymentNoteInput.trim() || undefined,
+      createdAt: Date.now(),
+    };
+
+    const existingPayments = paymentModalPatient.payments || [];
+    const updatedPayments = [newPayment, ...existingPayments];
+
     const updated = patientsList.map((p) => {
-      if (p.id === id) {
-        const fee = Number(p.fee) || 0;
-        feeAmount = fee;
+      if (p.id === paymentModalPatient.id) {
         return {
           ...p,
-          paid: fee,
-          due: 0,
+          paid: newPaid,
+          due: newDue,
+          payments: updatedPayments,
         };
       }
       return p;
     });
+
     setPatientsList(updated);
     localStorage.setItem("sunnahlife_patients_records", JSON.stringify(updated));
-    updatePatientInFirestore(id, {
-      paid: feeAmount,
-      due: 0,
+    updatePatientInFirestore(paymentModalPatient.id, {
+      paid: newPaid,
+      due: newDue,
+      payments: updatedPayments,
     }).catch(console.error);
 
-    if (selectedPatientForDrawer && selectedPatientForDrawer.id === id) {
-      const fee = Number(selectedPatientForDrawer.fee) || 0;
+    if (selectedPatientForDrawer && selectedPatientForDrawer.id === paymentModalPatient.id) {
       setSelectedPatientForDrawer({
         ...selectedPatientForDrawer,
-        paid: fee,
-        due: 0,
+        paid: newPaid,
+        due: newDue,
+        payments: updatedPayments,
       });
     }
-    setPopupSaveMessage("রোগীর সকল বকেয়া পরিশোধ হিসেবে সেভ করা হয়েছে!");
+
+    const patientName = paymentModalPatient.name;
+    setPaymentModalPatient(null);
+    setPaymentAmountInput("");
+    setPopupSaveMessage(`"${patientName}"-এর ৳${amountNum.toLocaleString("bn-BD")} টাকা জমা সফলভাবে রেকর্ড করা হয়েছে!`);
     setTimeout(() => setPopupSaveMessage(""), 3500);
+  };
+
+  const handleMarkPatientPaid = (id: string) => {
+    const target = patientsList.find((p) => p.id === id);
+    if (!target) return;
+    handleOpenPaymentModal(target);
   };
 
   const handleSavePatientSubmit = (e: React.FormEvent) => {
@@ -1742,7 +1798,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     আজ {todayFollowups.length}
                   </span>
                 ) : patientsList.filter((p) => p.status === "followup").length > 0 ? (
-                  <span className="px-1.5 py-0.2 text-[9px] font-extrabold rounded-full bg-amber-500 text-white">
+                  <span className="px-1.5 py-0.2 text-[9px] font-extrabold rounded-full bg-rose-600 text-white">
                     {patientsList.filter((p) => p.status === "followup").length}
                   </span>
                 ) : null}
@@ -3209,17 +3265,22 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                               {due > 0 ? (
                                 <button
                                   type="button"
-                                  onClick={() => handleMarkPatientPaid(p.id)}
-                                  className="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold transition-colors cursor-pointer self-start sm:self-auto flex items-center gap-1"
-                                  title="বকেয়া সম্পূর্ণ পরিশোধ হিসেবে চিহ্নিত করুন"
+                                  onClick={() => handleOpenPaymentModal(p)}
+                                  className="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold transition-colors cursor-pointer self-start sm:self-auto flex items-center gap-1.5"
+                                  title="টাকা জমা নিন (আংশিক বা সম্পূর্ণ কিস্তি)"
                                 >
-                                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                                  <span>বকেয়া পরিশোধ রেকর্ড করুন</span>
+                                  <Coins className="w-3.5 h-3.5 text-emerald-700" />
+                                  <span>টাকা জমা দিন</span>
                                 </button>
                               ) : (
-                                <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 self-start sm:self-auto">
-                                  ✓ সম্পূর্ণ পরিশোধিত
-                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => handleOpenPaymentModal(p)}
+                                  className="text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-lg border border-emerald-200 self-start sm:self-auto cursor-pointer flex items-center gap-1"
+                                >
+                                  <span>✓ সম্পূর্ণ পরিশোধিত</span>
+                                  <span className="text-[10px] text-gray-500 hover:text-emerald-800">(+কিস্তি)</span>
+                                </button>
                               )}
                             </div>
                           );
@@ -3557,16 +3618,57 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           </div>
                         </div>
 
-                        {due > 0 && (
-                          <div className="pt-1">
+                        <div className="pt-1 flex flex-col gap-2">
+                          {due > 0 ? (
                             <button
                               type="button"
-                              onClick={() => handleMarkPatientPaid(selectedPatientForDrawer.id)}
-                              className="w-full py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-2xs cursor-pointer"
+                              onClick={() => handleOpenPaymentModal(selectedPatientForDrawer)}
+                              className="w-full py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-2xs cursor-pointer"
                             >
-                              <CheckCircle2 className="w-3.5 h-3.5" />
-                              <span>১-ক্লিকে বকেয়া পরিশোধ সম্পন্ন করুন</span>
+                              <Coins className="w-3.5 h-3.5" />
+                              <span>টাকা জমা নিন (আংশিক বা সম্পূর্ণ)</span>
                             </button>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => handleOpenPaymentModal(selectedPatientForDrawer)}
+                              className="w-full py-2 px-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                            >
+                              <Coins className="w-3.5 h-3.5" />
+                              <span>অতিরিক্ত পেমেন্ট / কিস্তি যোগ করুন</span>
+                            </button>
+                          )}
+                        </div>
+
+                        {/* Payment Installments History Log */}
+                        {selectedPatientForDrawer.payments && selectedPatientForDrawer.payments.length > 0 && (
+                          <div className="pt-2 border-t border-gray-200/80 space-y-1.5">
+                            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">
+                              জমার ইতিহাস ও কিস্তির খতিয়ান ({selectedPatientForDrawer.payments.length}টি)
+                            </span>
+                            <div className="space-y-1 max-h-36 overflow-y-auto pr-1">
+                              {selectedPatientForDrawer.payments.map((pRecord, idx) => (
+                                <div
+                                  key={pRecord.id || idx}
+                                  className="flex items-center justify-between p-2 rounded-lg bg-white border border-gray-100 text-[11px]"
+                                >
+                                  <div>
+                                    <span className="font-bold text-emerald-700">
+                                      +৳{Number(pRecord.amount).toLocaleString("bn-BD")}
+                                    </span>
+                                    <span className="text-[10px] text-gray-500 ml-1.5">
+                                      ({pRecord.method === "bkash" ? "বিকাশ" : pRecord.method === "nagad" ? "নগদ (Nagad)" : pRecord.method === "bank" ? "ব্যাংক" : "ক্যাশ"})
+                                    </span>
+                                    {pRecord.notes && (
+                                      <p className="text-[10px] text-gray-400 mt-0.5">{pRecord.notes}</p>
+                                    )}
+                                  </div>
+                                  <span className="text-[10px] text-gray-400 font-medium">
+                                    {pRecord.date}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
                           </div>
                         )}
                       </div>
@@ -4270,15 +4372,15 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
                           <td className="p-3 text-center whitespace-nowrap">
                             <div className="flex items-center justify-center gap-1.5">
-                              {/* 1-Click Mark Paid if due */}
+                              {/* Open payment modal to record partial or full installment */}
                               {d > 0 && (
                                 <button
                                   type="button"
-                                  onClick={() => handleMarkPatientPaid(p.id)}
+                                  onClick={() => handleOpenPaymentModal(p)}
                                   className="p-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 transition-colors cursor-pointer"
-                                  title="সম্পূর্ণ বকেয়া পরিশোধ হিসেবে সেভ করুন"
+                                  title="টাকা জমা নিন (আংশিক বা সম্পূর্ণ)"
                                 >
-                                  <Check className="w-3.5 h-3.5" />
+                                  <Coins className="w-3.5 h-3.5" />
                                 </button>
                               )}
 
@@ -5610,6 +5712,186 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
           </div>
         </div>
       )}
+
+      {/* Payment Installment Collection Modal (টাকা জমা নিন - ফুল বা আংশিক কিস্তি) */}
+      {paymentModalPatient && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#006B5B]/20 space-y-5 animate-in fade-in zoom-in-95 duration-200">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 rounded-xl bg-emerald-50 text-[#006B5B]">
+                  <Coins className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-base text-[#004D40]">টাকা জমা নিন / কিস্তি রেকর্ড</h3>
+                  <p className="text-[11px] text-gray-500">
+                    রোগী: <span className="font-bold text-gray-800">{paymentModalPatient.name}</span> ({paymentModalPatient.id})
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setPaymentModalPatient(null)}
+                className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Current Financial Summary Card */}
+            {(() => {
+              const fee = Number(paymentModalPatient.fee) || 0;
+              const paid = Number(paymentModalPatient.paid) || 0;
+              const due = paymentModalPatient.due !== undefined ? Number(paymentModalPatient.due) : Math.max(fee - paid, 0);
+
+              return (
+                <div className="p-3.5 rounded-2xl bg-[#FAFAF7] border border-gray-200 grid grid-cols-3 gap-2 text-center text-xs">
+                  <div className="bg-white p-2 rounded-xl border border-gray-200">
+                    <span className="text-[10px] text-gray-500 block">মোট ধার্য ফি</span>
+                    <span className="font-bold text-gray-900">৳{fee.toLocaleString("bn-BD")}</span>
+                  </div>
+                  <div className="bg-emerald-50 p-2 rounded-xl border border-emerald-200">
+                    <span className="text-[10px] text-emerald-700 block">পূর্বে জমা</span>
+                    <span className="font-bold text-emerald-800">৳{paid.toLocaleString("bn-BD")}</span>
+                  </div>
+                  <div className={`p-2 rounded-xl border ${due > 0 ? "bg-amber-50 border-amber-200" : "bg-white border-gray-200"}`}>
+                    <span className={`text-[10px] block ${due > 0 ? "text-amber-800 font-bold" : "text-gray-500"}`}>অবশিষ্ট বকেয়া</span>
+                    <span className={`font-bold ${due > 0 ? "text-amber-800" : "text-gray-700"}`}>৳{due.toLocaleString("bn-BD")}</span>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Quick Amount Suggestion Buttons */}
+            {(() => {
+              const fee = Number(paymentModalPatient.fee) || 0;
+              const paid = Number(paymentModalPatient.paid) || 0;
+              const due = paymentModalPatient.due !== undefined ? Number(paymentModalPatient.due) : Math.max(fee - paid, 0);
+
+              return (
+                <div className="space-y-1.5">
+                  <span className="text-[11px] font-semibold text-gray-600 block">দ্রুত টাকা নির্বাচন:</span>
+                  <div className="flex flex-wrap items-center gap-2">
+                    {due > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => setPaymentAmountInput(String(due))}
+                        className="px-3 py-1.5 rounded-xl bg-emerald-100 hover:bg-emerald-200 text-emerald-800 text-xs font-bold border border-emerald-300 transition-colors cursor-pointer"
+                      >
+                        সম্পূর্ণ বকেয়া (৳{due.toLocaleString("bn-BD")})
+                      </button>
+                    )}
+                    {due > 500 && (
+                      <button
+                        type="button"
+                        onClick={() => setPaymentAmountInput(String(Math.round(due / 2)))}
+                        className="px-2.5 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold transition-colors cursor-pointer"
+                      >
+                        অর্ধেক (৳{Math.round(due / 2).toLocaleString("bn-BD")})
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => setPaymentAmountInput("500")}
+                      className="px-2.5 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold transition-colors cursor-pointer"
+                    >
+                      ৫০০ ৳
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPaymentAmountInput("1000")}
+                      className="px-2.5 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold transition-colors cursor-pointer"
+                    >
+                      ১,০০০ ৳
+                    </button>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Form */}
+            <form onSubmit={handleSavePaymentInstallment} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">
+                  এখন কত টাকা জমা দিচ্ছেন? (৳) <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <span className="absolute left-3 top-2.5 font-bold text-gray-500 text-sm">৳</span>
+                  <input
+                    type="number"
+                    min="1"
+                    required
+                    placeholder="টাকার পরিমাণ লিখুন..."
+                    value={paymentAmountInput}
+                    onChange={(e) => setPaymentAmountInput(e.target.value)}
+                    className="w-full pl-8 pr-3 py-2.5 rounded-xl border border-gray-300 outline-none focus:border-[#006B5B] text-base font-bold text-emerald-700"
+                    autoFocus
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">
+                  পেমেন্ট মাধ্যম (Payment Method)
+                </label>
+                <div className="grid grid-cols-4 gap-2 text-xs">
+                  {[
+                    { id: "cash", label: "ক্যাশ / নগদ" },
+                    { id: "bkash", label: "বিকাশ" },
+                    { id: "nagad", label: "নগদ (App)" },
+                    { id: "bank", label: "ব্যাংক" },
+                  ].map((m) => (
+                    <button
+                      key={m.id}
+                      type="button"
+                      onClick={() => setPaymentMethodInput(m.id as any)}
+                      className={`py-2 rounded-xl border font-bold text-center transition-all cursor-pointer ${
+                        paymentMethodInput === m.id
+                          ? "bg-[#006B5B] text-white border-[#006B5B] shadow-2xs"
+                          : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
+                      }`}
+                    >
+                      {m.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">
+                  মন্তব্য / নোট (ঐচ্ছিক)
+                </label>
+                <input
+                  type="text"
+                  placeholder="যেমন: ২য় কিস্তি পরিশোধ / ওষুধ সামগ্রীর ফি"
+                  value={paymentNoteInput}
+                  onChange={(e) => setPaymentNoteInput(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] text-xs"
+                />
+              </div>
+
+              {/* Action buttons */}
+              <div className="pt-2 flex items-center justify-end gap-2.5 border-t border-gray-100">
+                <button
+                  type="button"
+                  onClick={() => setPaymentModalPatient(null)}
+                  className="px-4 py-2 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-semibold cursor-pointer"
+                >
+                  বাতিল
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 rounded-xl bg-[#006B5B] hover:bg-[#004D40] text-white text-xs font-bold transition-all shadow-xs cursor-pointer flex items-center gap-1.5"
+                >
+                  <Coins className="w-4 h-4" />
+                  <span>জমা নিশ্চিত করুন</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
       </main>
 
       {/* Mobile Admin Bottom Navigation Bar (App Bar) */}
@@ -5659,7 +5941,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   {todayFollowups.length}
                 </span>
               ) : patientsList.filter((p) => p.status === "followup").length > 0 ? (
-                <span className="absolute -top-1 -right-2 px-1 py-0.2 text-[8px] font-extrabold rounded-full bg-amber-500 text-white">
+                <span className="absolute -top-1 -right-2 px-1 py-0.2 text-[8px] font-extrabold rounded-full bg-rose-600 text-white">
                   {patientsList.filter((p) => p.status === "followup").length}
                 </span>
               ) : null}
