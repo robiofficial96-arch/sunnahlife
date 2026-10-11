@@ -2089,10 +2089,10 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               </div>
             </div>
 
-            {/* List of active follow-up patients */}
-            <div className="space-y-2.5 pt-1 max-h-[360px] overflow-y-auto pr-1">
+            {/* List of active follow-up patients (Clean, borderless list format) */}
+            <div className="divide-y divide-gray-100 max-h-[380px] overflow-y-auto pr-1">
               {[...todayFollowups, ...overdueFollowups, ...upcomingFollowups].length === 0 ? (
-                <div className="p-8 text-center text-gray-400 text-xs rounded-2xl bg-[#FAFAF7] border border-dashed border-gray-200 space-y-1">
+                <div className="py-8 text-center text-gray-400 text-xs space-y-1">
                   <p className="font-semibold text-gray-500">বর্তমানে কোনো ফলো-আপ শিডিউল নেই</p>
                   <p className="text-[11px]">রোগী ম্যানেজমেন্ট থেকে যে কারও পরবর্তী ফলো-আপের তারিখ যুক্ত করতে পারবেন।</p>
                 </div>
@@ -2105,23 +2105,17 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   return (
                     <div 
                       key={p.id}
-                      className={`p-3 rounded-2xl border flex flex-col gap-2 transition-all ${
-                        isToday 
-                          ? "bg-rose-50/60 border-rose-200 shadow-2xs" 
-                          : isOverdue 
-                          ? "bg-amber-50/50 border-amber-200"
-                          : "bg-[#FAFAF7] border-gray-200"
-                      }`}
+                      className="py-3 first:pt-1 last:pb-1 flex flex-col gap-1.5 transition-colors hover:bg-gray-50/60 rounded-xl px-1.5"
                     >
                       <div className="flex items-start justify-between gap-2">
-                        <div className="space-y-0.5">
-                          <div className="flex items-center gap-1.5">
+                        <div className="space-y-0.5 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
                             <h5 className="text-xs font-bold text-gray-900">{p.name}</h5>
                             <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full ${
                               isToday 
                                 ? "bg-rose-600 text-white animate-pulse" 
                                 : isOverdue 
-                                ? "bg-red-100 text-red-800" 
+                                ? "bg-rose-100 text-rose-800" 
                                 : "bg-emerald-100 text-[#004D40]"
                             }`}>
                               {isToday 
@@ -2131,11 +2125,11 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                                 : `${diff} দিন বাকি`}
                             </span>
                           </div>
-                          <p className="text-[11px] text-gray-500">
+                          <p className="text-[11px] text-gray-500 truncate">
                             {p.phone} • {p.problemType}
                           </p>
                           {p.nextFollowupNote && (
-                            <p className="text-[11px] text-[#004D40] font-semibold bg-white/90 px-2 py-0.5 rounded-md border border-[#006B5B]/20 inline-block mt-0.5">
+                            <p className="text-[11px] text-[#004D40] font-semibold bg-emerald-50/70 px-2 py-0.5 rounded-md inline-block mt-0.5">
                               নোট: {p.nextFollowupNote}
                             </p>
                           )}
@@ -2155,16 +2149,16 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                         </div>
                       </div>
 
-                      {/* Quick Action bar: Extend date presets right here */}
-                      <div className="flex items-center justify-between pt-1 border-t border-gray-200/50 text-[10px]">
-                        <span className="text-gray-500 font-medium">
-                          নির্ধারিত: {formatBanglaFollowupDate(p.nextFollowupDate)}
+                      {/* Schedule date & Quick action presets */}
+                      <div className="flex items-center justify-between pt-1 text-[10px]">
+                        <span className="text-gray-400 font-medium">
+                          নির্ধারিত: <span className="text-gray-700 font-semibold">{formatBanglaFollowupDate(p.nextFollowupDate)}</span>
                         </span>
                         <div className="flex items-center gap-1">
                           <button
                             type="button"
                             onClick={() => handleQuickScheduleFollowup(p.id, 7)}
-                            className="px-1.5 py-0.5 rounded-md bg-white border border-gray-200 text-gray-600 hover:text-[#006B5B] hover:border-[#006B5B] font-semibold cursor-pointer"
+                            className="px-2 py-0.5 rounded-md bg-gray-100 hover:bg-[#006B5B] hover:text-white text-gray-700 font-semibold transition-colors cursor-pointer"
                             title="৭ দিন পর পুনঃনির্ধারণ করুন"
                           >
                             +৭ দিন
@@ -2172,7 +2166,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           <button
                             type="button"
                             onClick={() => handleQuickScheduleFollowup(p.id, 14)}
-                            className="px-1.5 py-0.5 rounded-md bg-white border border-gray-200 text-gray-600 hover:text-[#006B5B] hover:border-[#006B5B] font-semibold cursor-pointer"
+                            className="px-2 py-0.5 rounded-md bg-gray-100 hover:bg-[#006B5B] hover:text-white text-gray-700 font-semibold transition-colors cursor-pointer"
                             title="১৪ দিন পর পুনঃনির্ধারণ করুন"
                           >
                             +১৪ দিন
@@ -2180,7 +2174,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           <button
                             type="button"
                             onClick={() => handleUpdatePatientStatus(p.id, "cured")}
-                            className="px-1.5 py-0.5 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 font-semibold hover:bg-emerald-100 cursor-pointer"
+                            className="px-2 py-0.5 rounded-md bg-emerald-50 hover:bg-emerald-600 hover:text-white text-emerald-800 font-semibold transition-colors cursor-pointer"
                             title="সুস্থ ও চিকিৎসা সমাপ্ত হিসেবে মার্ক করুন"
                           >
                             সুস্থ
