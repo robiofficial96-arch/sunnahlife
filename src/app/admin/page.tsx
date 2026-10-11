@@ -1711,8 +1711,8 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
           </div>
         </div>
 
-        {/* Admin Navigation Tabs Sub-bar */}
-        <div className="border-t border-gray-100 bg-[#FAFAF7]">
+        {/* Admin Navigation Tabs Sub-bar (Desktop & Tablet) */}
+        <div className="hidden md:block border-t border-gray-100 bg-[#FAFAF7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-1.5 overflow-x-auto py-2.5 scrollbar-none">
               <button
@@ -1819,7 +1819,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
       </header>
 
       {/* Main Admin Canvas */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 space-y-6">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 space-y-6 pb-24 md:pb-8">
 
       {/* Content based on Tab */}
       {activeTab === "overview" && (
@@ -5610,7 +5610,155 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
           </div>
         </div>
       )}
-    </main>
-  </div>
-);
+      </main>
+
+      {/* Mobile Admin Bottom Navigation Bar (App Bar) */}
+      <nav
+        aria-label="অ্যাডমিন মোবাইল নেভিগেশন বার"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-[#006B5B]/15 shadow-[0_-4px_20px_rgba(0,107,91,0.08)] px-2 py-1.5 safe-area-pb"
+      >
+        <div className="flex items-center justify-around max-w-md mx-auto">
+          {/* 1. Overview */}
+          <button
+            type="button"
+            onClick={() => setActiveTab("overview")}
+            className={`flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition-all cursor-pointer ${
+              activeTab === "overview"
+                ? "text-[#006B5B] font-bold"
+                : "text-gray-500 hover:text-gray-800"
+            }`}
+          >
+            <div
+              className={`p-1 rounded-xl transition-all ${
+                activeTab === "overview" ? "bg-[#006B5B]/15 text-[#006B5B] scale-110" : ""
+              }`}
+            >
+              <BarChart3 className="w-5 h-5" />
+            </div>
+            <span className="text-[10px] mt-0.5 font-medium leading-none">ওভারভিউ</span>
+          </button>
+
+          {/* 2. Patients & Followups */}
+          <button
+            type="button"
+            onClick={() => setActiveTab("bookings")}
+            className={`relative flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition-all cursor-pointer ${
+              activeTab === "bookings"
+                ? "text-[#006B5B] font-bold"
+                : "text-gray-500 hover:text-gray-800"
+            }`}
+          >
+            <div
+              className={`relative p-1 rounded-xl transition-all ${
+                activeTab === "bookings" ? "bg-[#006B5B]/15 text-[#006B5B] scale-110" : ""
+              }`}
+            >
+              <Users className="w-5 h-5" />
+              {todayFollowups.length > 0 ? (
+                <span className="absolute -top-1 -right-2 px-1.5 py-0.2 text-[9px] font-extrabold rounded-full bg-rose-600 text-white animate-pulse">
+                  {todayFollowups.length}
+                </span>
+              ) : patientsList.filter((p) => p.status === "followup").length > 0 ? (
+                <span className="absolute -top-1 -right-2 px-1 py-0.2 text-[8px] font-extrabold rounded-full bg-amber-500 text-white">
+                  {patientsList.filter((p) => p.status === "followup").length}
+                </span>
+              ) : null}
+            </div>
+            <span className="text-[10px] mt-0.5 font-medium leading-none">রোগী</span>
+          </button>
+
+          {/* 3. Online Appointments */}
+          <button
+            type="button"
+            onClick={() => setActiveTab("appointments")}
+            className={`relative flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition-all cursor-pointer ${
+              activeTab === "appointments"
+                ? "text-[#006B5B] font-bold"
+                : "text-gray-500 hover:text-gray-800"
+            }`}
+          >
+            <div
+              className={`relative p-1 rounded-xl transition-all ${
+                activeTab === "appointments" ? "bg-[#006B5B]/15 text-[#006B5B] scale-110" : ""
+              }`}
+            >
+              <Calendar className="w-5 h-5" />
+              {onlineAppointments.filter((a) => a.status === "pending").length > 0 && (
+                <span className="absolute -top-1 -right-2 px-1.5 py-0.2 text-[9px] font-extrabold rounded-full bg-rose-600 text-white animate-pulse">
+                  {onlineAppointments.filter((a) => a.status === "pending").length}
+                </span>
+              )}
+            </div>
+            <span className="text-[10px] mt-0.5 font-medium leading-none">বুকিং</span>
+          </button>
+
+          {/* 4. Accounting */}
+          <button
+            type="button"
+            onClick={() => setActiveTab("accounting")}
+            className={`relative flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition-all cursor-pointer ${
+              activeTab === "accounting"
+                ? "text-[#006B5B] font-bold"
+                : "text-gray-500 hover:text-gray-800"
+            }`}
+          >
+            <div
+              className={`relative p-1 rounded-xl transition-all ${
+                activeTab === "accounting" ? "bg-[#006B5B]/15 text-[#006B5B] scale-110" : ""
+              }`}
+            >
+              <Receipt className="w-5 h-5" />
+              {totalDueSum > 0 && (
+                <span className="absolute -top-0.5 -right-1.5 w-2 h-2 rounded-full bg-amber-500" title="বকেয়া রয়েছে" />
+              )}
+            </div>
+            <span className="text-[10px] mt-0.5 font-medium leading-none">হিসাব</span>
+          </button>
+
+          {/* 5. Popup & Offer */}
+          <button
+            type="button"
+            onClick={() => setActiveTab("popup")}
+            className={`relative flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition-all cursor-pointer ${
+              activeTab === "popup"
+                ? "text-[#006B5B] font-bold"
+                : "text-gray-500 hover:text-gray-800"
+            }`}
+          >
+            <div
+              className={`relative p-1 rounded-xl transition-all ${
+                activeTab === "popup" ? "bg-[#006B5B]/15 text-[#006B5B] scale-110" : ""
+              }`}
+            >
+              <Gift className="w-5 h-5" />
+              {popupConfig.isActive && (
+                <span className="absolute -top-0.5 -right-1 w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              )}
+            </div>
+            <span className="text-[10px] mt-0.5 font-medium leading-none">পপআপ</span>
+          </button>
+
+          {/* 6. Store */}
+          <button
+            type="button"
+            onClick={() => setActiveTab("store")}
+            className={`flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition-all cursor-pointer ${
+              activeTab === "store"
+                ? "text-[#006B5B] font-bold"
+                : "text-gray-500 hover:text-gray-800"
+            }`}
+          >
+            <div
+              className={`p-1 rounded-xl transition-all ${
+                activeTab === "store" ? "bg-[#006B5B]/15 text-[#006B5B] scale-110" : ""
+              }`}
+            >
+              <ShoppingBag className="w-5 h-5" />
+            </div>
+            <span className="text-[10px] mt-0.5 font-medium leading-none">স্টোর</span>
+          </button>
+        </div>
+      </nav>
+    </div>
+  );
 }
