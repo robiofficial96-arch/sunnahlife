@@ -2148,8 +2148,8 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               </div>
             </div>
 
-            {/* List of active follow-up patients (Clean, borderless list format) */}
-            <div className="divide-y divide-gray-100 max-h-[380px] overflow-y-auto pr-1">
+            {/* List of active follow-up patients (Open full screen list without box limits on mobile) */}
+            <div className="divide-y divide-gray-100 max-h-none overflow-visible sm:max-h-[500px] sm:overflow-y-auto sm:pr-1">
               {[...todayFollowups, ...overdueFollowups, ...upcomingFollowups].length === 0 ? (
                 <div className="py-8 text-center text-gray-400 text-xs space-y-1">
                   <p className="font-semibold text-gray-500">বর্তমানে কোনো ফলো-আপ শিডিউল নেই</p>
