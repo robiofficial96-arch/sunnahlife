@@ -72,7 +72,11 @@ import {
   subscribeToAppointments, 
   updateAppointmentStatus, 
   deleteAppointmentRecord, 
-  OnlineAppointment 
+  OnlineAppointment,
+  savePatientToFirestore,
+  updatePatientInFirestore,
+  deletePatientFromFirestore,
+  subscribeToPatients
 } from "@/lib/firebase";
 
 export interface PatientRecord {
@@ -437,20 +441,39 @@ export default function AdminDashboardPage() {
       }
     } catch {}
 
+    // 1. Load offline cached patients for instant initial render
+    let cachedLocalPatients: PatientRecord[] = [];
     try {
       const savedPatients = localStorage.getItem("sunnahlife_patients_records");
       if (savedPatients) {
         const parsed = JSON.parse(savedPatients);
         if (Array.isArray(parsed)) {
-          // Remove any legacy demo records (e.g. P-101 to P-105)
           const cleaned = parsed.filter(
             (p: any) => !["P-101", "P-102", "P-103", "P-104", "P-105"].includes(p?.id)
           );
+          cachedLocalPatients = cleaned;
           setPatientsList(cleaned);
-          localStorage.setItem("sunnahlife_patients_records", JSON.stringify(cleaned));
         }
       }
     } catch {}
+
+    // 2. Real-time Firestore subscription for cloud patient records
+    let unsubscribePatients: (() => void) | undefined;
+    try {
+      unsubscribePatients = subscribeToPatients((cloudPatients) => {
+        if (cloudPatients && cloudPatients.length > 0) {
+          setPatientsList(cloudPatients as any);
+          localStorage.setItem("sunnahlife_patients_records", JSON.stringify(cloudPatients));
+        } else if (cachedLocalPatients.length > 0) {
+          // If cloud has no records yet but local cache has records, migrate local to cloud Firestore
+          cachedLocalPatients.forEach((p) => {
+            savePatientToFirestore(p as any).catch(console.error);
+          });
+        }
+      });
+    } catch (err) {
+      console.error("Firestore patients subscribe error:", err);
+    }
 
     // Load offline pending appointments if any
     try {
@@ -482,6 +505,7 @@ export default function AdminDashboardPage() {
 
     return () => {
       if (unsubscribeApts) unsubscribeApts();
+      if (unsubscribePatients) unsubscribePatients();
     };
   }, []);
 
@@ -766,25 +790,32 @@ export default function AdminDashboardPage() {
 
   const handleQuickScheduleFollowup = (id: string, daysToAdd: number, note?: string) => {
     const newDate = addDaysToDate(daysToAdd);
+    const followupNote = note !== undefined ? note : `${daysToAdd} দিন পর রুকইয়াহ ফলো-আপ`;
     const updated = patientsList.map((p) => {
       if (p.id === id) {
         return {
           ...p,
           status: "followup" as const,
           nextFollowupDate: newDate,
-          nextFollowupNote: note !== undefined ? note : (p.nextFollowupNote || `${daysToAdd} দিন পর রুকইয়াহ ফলো-আপ`),
+          nextFollowupNote: followupNote,
         };
       }
       return p;
     });
     setPatientsList(updated);
     localStorage.setItem("sunnahlife_patients_records", JSON.stringify(updated));
+    updatePatientInFirestore(id, {
+      status: "followup",
+      nextFollowupDate: newDate,
+      nextFollowupNote: followupNote,
+    }).catch(console.error);
+
     if (selectedPatientForDrawer && selectedPatientForDrawer.id === id) {
       setSelectedPatientForDrawer({
         ...selectedPatientForDrawer,
         status: "followup",
         nextFollowupDate: newDate,
-        nextFollowupNote: note !== undefined ? note : (selectedPatientForDrawer.nextFollowupNote || `${daysToAdd} দিন পর রুকইয়াহ ফলো-আপ`),
+        nextFollowupNote: followupNote,
       });
     }
     setPopupSaveMessage(`ফলো-আপ শিডিউল সফলভাবে নির্ধারণ করা হয়েছে (${formatBanglaFollowupDate(newDate)})!`);
@@ -803,6 +834,11 @@ export default function AdminDashboardPage() {
     });
     setPatientsList(updated);
     localStorage.setItem("sunnahlife_patients_records", JSON.stringify(updated));
+    updatePatientInFirestore(id, {
+      nextFollowupDate: "",
+      nextFollowupNote: "",
+    }).catch(console.error);
+
     if (selectedPatientForDrawer && selectedPatientForDrawer.id === id) {
       const copy = { ...selectedPatientForDrawer };
       delete copy.nextFollowupDate;
@@ -814,9 +850,11 @@ export default function AdminDashboardPage() {
   };
 
   const handleMarkPatientPaid = (id: string) => {
+    let feeAmount = 0;
     const updated = patientsList.map((p) => {
       if (p.id === id) {
         const fee = Number(p.fee) || 0;
+        feeAmount = fee;
         return {
           ...p,
           paid: fee,
@@ -827,6 +865,11 @@ export default function AdminDashboardPage() {
     });
     setPatientsList(updated);
     localStorage.setItem("sunnahlife_patients_records", JSON.stringify(updated));
+    updatePatientInFirestore(id, {
+      paid: feeAmount,
+      due: 0,
+    }).catch(console.error);
+
     if (selectedPatientForDrawer && selectedPatientForDrawer.id === id) {
       const fee = Number(selectedPatientForDrawer.fee) || 0;
       setSelectedPatientForDrawer({
@@ -879,7 +922,8 @@ export default function AdminDashboardPage() {
       if (selectedPatientForDrawer && selectedPatientForDrawer.id === editingPatientId) {
         setSelectedPatientForDrawer(updatedRecord);
       }
-      setPopupSaveMessage("রোগীর তথ্য, প্রেসক্রিপশন ও পেমেন্ট সফলভাবে আপডেট করা হয়েছে!");
+      savePatientToFirestore(updatedRecord as any).catch(console.error);
+      setPopupSaveMessage("রোগীর তথ্য, প্রেসক্রিপশন ও পেমেন্ট সফলভাবে ক্লাউডে আপডেট করা হয়েছে!");
     } else {
       const maxNumericId = patientsList.reduce((max, p) => {
         const num = parseInt(p.id.replace(/\D/g, ""), 10);
@@ -891,7 +935,8 @@ export default function AdminDashboardPage() {
         ...formDataToSave,
       };
       updated = [newEntry, ...patientsList];
-      setPopupSaveMessage("নতুন রোগীর তথ্য ও হিসাব সফলভাবে যুক্ত করা হয়েছে!");
+      savePatientToFirestore(newEntry as any).catch(console.error);
+      setPopupSaveMessage("নতুন রোগীর তথ্য ও হিসাব সফলভাবে ক্লাউড ডাটাবেজে যুক্ত করা হয়েছে!");
     }
 
     setPatientsList(updated);
@@ -906,11 +951,12 @@ export default function AdminDashboardPage() {
       const updated = patientsList.filter((p) => p.id !== id);
       setPatientsList(updated);
       localStorage.setItem("sunnahlife_patients_records", JSON.stringify(updated));
+      deletePatientFromFirestore(id).catch(console.error);
       if (selectedPatientForDrawer && selectedPatientForDrawer.id === id) {
         setSelectedPatientForDrawer(null);
       }
       setExpandedPatientIds((prev) => prev.filter((itemId) => itemId !== id));
-      setPopupSaveMessage("রোগীর রেকর্ড সফলভাবে মুছে ফেলা হয়েছে!");
+      setPopupSaveMessage("রোগীর রেকর্ড ডাটাবেজ থেকে মুছে ফেলা হয়েছে!");
       setTimeout(() => setPopupSaveMessage(""), 3000);
     }
   };
@@ -921,6 +967,7 @@ export default function AdminDashboardPage() {
     );
     setPatientsList(updated);
     localStorage.setItem("sunnahlife_patients_records", JSON.stringify(updated));
+    updatePatientInFirestore(id, { status: newStatus }).catch(console.error);
     if (selectedPatientForDrawer && selectedPatientForDrawer.id === id) {
       setSelectedPatientForDrawer({ ...selectedPatientForDrawer, status: newStatus });
     }
@@ -963,6 +1010,7 @@ export default function AdminDashboardPage() {
     const updated = [newPatient, ...patientsList];
     setPatientsList(updated);
     localStorage.setItem("sunnahlife_patients_records", JSON.stringify(updated));
+    savePatientToFirestore(newPatient as any).catch(console.error);
 
     if (apt.id && !apt.id.startsWith("offline_") && !apt.id.startsWith("local_")) {
       try {

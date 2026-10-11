@@ -3,6 +3,7 @@ import {
   getFirestore, 
   collection, 
   addDoc, 
+  setDoc,
   updateDoc, 
   deleteDoc, 
   doc, 
@@ -81,3 +82,74 @@ export async function deleteAppointmentRecord(id: string) {
   const ref = doc(db, "appointments", id);
   await deleteDoc(ref);
 }
+
+export interface PatientFirestoreRecord {
+  id: string;
+  name: string;
+  age?: number | string;
+  phone: string;
+  address: string;
+  type: "online" | "offline";
+  treatmentType?: "ruqyah" | "hijama" | "both";
+  problemType: string;
+  service?: string;
+  fee?: number;
+  paid?: number;
+  due?: number;
+  notes: string;
+  prescription: string;
+  date: string;
+  timeSlot?: string;
+  status: "new" | "running" | "followup" | "cured";
+  lastFollowupDate?: string;
+  nextFollowupDate?: string;
+  nextFollowupNote?: string;
+  rawDate?: string;
+  createdAt?: string;
+  updatedAt?: number;
+}
+
+// Save or set patient record in Firestore
+export async function savePatientToFirestore(patient: PatientFirestoreRecord) {
+  const ref = doc(db, "patients", patient.id);
+  await setDoc(ref, {
+    ...patient,
+    updatedAt: Date.now(),
+  }, { merge: true });
+}
+
+// Update partial patient record in Firestore
+export async function updatePatientInFirestore(id: string, updates: Partial<PatientFirestoreRecord>) {
+  const ref = doc(db, "patients", id);
+  await updateDoc(ref, {
+    ...updates,
+    updatedAt: Date.now(),
+  });
+}
+
+// Delete patient from Firestore
+export async function deletePatientFromFirestore(id: string) {
+  const ref = doc(db, "patients", id);
+  await deleteDoc(ref);
+}
+
+// Real-time listener for patients
+export function subscribeToPatients(callback: (patients: PatientFirestoreRecord[]) => void) {
+  const colRef = collection(db, "patients");
+  return onSnapshot(colRef, (snapshot) => {
+    const list: PatientFirestoreRecord[] = [];
+    snapshot.forEach((d) => {
+      list.push(d.data() as PatientFirestoreRecord);
+    });
+    // Sort so newest or largest ID comes first
+    list.sort((a, b) => {
+      const numA = parseInt(a.id.replace(/\D/g, ""), 10) || 0;
+      const numB = parseInt(b.id.replace(/\D/g, ""), 10) || 0;
+      return numB - numA;
+    });
+    callback(list);
+  }, (err) => {
+    console.error("Firestore patients subscribe error:", err);
+  });
+}
+
