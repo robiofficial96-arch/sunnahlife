@@ -206,6 +206,121 @@ export const convert24hToBanglaTime = (timeStr: string) => {
   return formatBanglaHourMinute(h, m);
 };
 
+export const formatToDDMMYYYY = (isoDate?: string): string => {
+  if (!isoDate) return "";
+  const parts = isoDate.split("-");
+  if (parts.length === 3 && parts[0].length === 4) {
+    const [y, m, d] = parts;
+    return `${d.padStart(2, "0")}/${m.padStart(2, "0")}/${y}`;
+  }
+  return isoDate;
+};
+
+export const parseToYYYYMMDD = (input?: string): string => {
+  if (!input) return "";
+  const bengaliToEnglish: Record<string, string> = {
+    "০": "0", "১": "1", "২": "2", "৩": "3", "৪": "4",
+    "৫": "5", "৬": "6", "৭": "7", "৮": "8", "৯": "9",
+  };
+  const normalized = input.trim().replace(/[০-৯]/g, (d) => bengaliToEnglish[d] || d);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(normalized)) return normalized;
+  const match = normalized.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})$/);
+  if (match) {
+    const d = match[1].padStart(2, "0");
+    const m = match[2].padStart(2, "0");
+    const y = match[3];
+    return `${y}-${m}-${d}`;
+  }
+  return normalized;
+};
+
+export function DayMonthYearDateInput({
+  value,
+  onChange,
+  className = "",
+  placeholder = "DD/MM/YYYY (দিন/মাস/বছর)",
+  id,
+}: {
+  value?: string;
+  onChange: (isoDate: string) => void;
+  className?: string;
+  placeholder?: string;
+  id?: string;
+}) {
+  const [displayText, setDisplayText] = useState("");
+  const pickerRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (value && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      const [y, m, d] = value.split("-");
+      setDisplayText(`${d}/${m}/${y}`);
+    } else if (!value) {
+      setDisplayText("");
+    }
+  }, [value]);
+
+  const handleTextChange = (text: string) => {
+    setDisplayText(text);
+    const parsed = parseToYYYYMMDD(text);
+    if (/^\d{4}-\d{2}-\d{2}$/.test(parsed)) {
+      onChange(parsed);
+    } else if (!text.trim()) {
+      onChange("");
+    }
+  };
+
+  const handlePickerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isoVal = e.target.value;
+    onChange(isoVal);
+    if (isoVal) {
+      const [y, m, d] = isoVal.split("-");
+      setDisplayText(`${d}/${m}/${y}`);
+    } else {
+      setDisplayText("");
+    }
+  };
+
+  const handleOpenPicker = () => {
+    if (pickerRef.current) {
+      try {
+        if ("showPicker" in HTMLInputElement.prototype) {
+          pickerRef.current.showPicker();
+        } else {
+          pickerRef.current.focus();
+        }
+      } catch {
+        pickerRef.current.focus();
+      }
+    }
+  };
+
+  return (
+    <div className="relative flex items-center w-full">
+      <input
+        id={id}
+        type="text"
+        value={displayText}
+        onChange={(e) => handleTextChange(e.target.value)}
+        placeholder={placeholder}
+        className={`${className} pr-10`}
+      />
+      <div className="absolute right-2 flex items-center justify-center w-7 h-7 pointer-events-none text-[#006B5B]">
+        <Calendar className="w-4 h-4" />
+      </div>
+      <input
+        ref={pickerRef}
+        type="date"
+        value={value && /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : ""}
+        onChange={handlePickerChange}
+        onClick={handleOpenPicker}
+        className="absolute right-1 w-9 h-9 opacity-0 cursor-pointer z-10"
+        title="ক্যালেন্ডার নির্বাচন করুন"
+        tabIndex={-1}
+      />
+    </div>
+  );
+}
+
 export const BANGLA_MONTH_NAMES = [
   "জানুয়ারি",
   "ফেব্রুয়ারি",
@@ -5777,14 +5892,21 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="block font-semibold text-gray-700 mb-1">
-                      পরবর্তী সাক্ষাতের তারিখ (YYYY-MM-DD)
+                      পরবর্তী সাক্ষাতের তারিখ (দিন/মাস/বছর - DD/MM/YYYY)
                     </label>
-                    <input
-                      type="date"
+                    <DayMonthYearDateInput
                       value={patientForm.nextFollowupDate || ""}
-                      onChange={(e) => setPatientForm({ ...patientForm, nextFollowupDate: e.target.value })}
+                      onChange={(val) => setPatientForm({ ...patientForm, nextFollowupDate: val })}
                       className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white text-xs font-mono font-medium"
                     />
+                    {patientForm.nextFollowupDate && (
+                      <div className="mt-1 flex items-center gap-1.5">
+                        <span className="text-[11px] font-semibold text-[#004D40] bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-md inline-flex items-center gap-1">
+                          <span>📅</span>
+                          <span>{formatBanglaFollowupDate(patientForm.nextFollowupDate)}</span>
+                        </span>
+                      </div>
+                    )}
                     {/* Preset buttons */}
                     <div className="flex flex-wrap gap-1 mt-1.5">
                       {[7, 10, 14, 21, 30].map((days) => (
@@ -6000,13 +6122,12 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       </div>
                       <div>
                         <label className="block text-[11px] font-bold text-gray-700 mb-1">
-                          ট্রিটমেন্টের তারিখ:
+                          ট্রিটমেন্টের তারিখ (দিন/মাস/বছর):
                         </label>
-                        <input
-                          type="date"
+                        <DayMonthYearDateInput
                           value={sessionDateInput}
-                          onChange={(e) => setSessionDateInput(e.target.value)}
-                          className="w-full px-2.5 py-2 rounded-xl border border-gray-200 text-xs font-semibold outline-none focus:border-[#006B5B]"
+                          onChange={(val) => setSessionDateInput(val)}
+                          className="w-full px-2.5 py-2 rounded-xl border border-gray-200 text-xs font-semibold outline-none focus:border-[#006B5B] bg-white font-mono"
                         />
                       </div>
                     </div>
