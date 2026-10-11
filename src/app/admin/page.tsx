@@ -577,11 +577,22 @@ export default function AdminDashboardPage() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setSelectedPatientForDrawer(null);
+        setPaymentModalPatient(null);
+        setShowAddPatientModal(false);
+        setShowAddProductModal(false);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
+
+  // Whenever user switches tabs/options, immediately close any active popups, modals or drawers
+  useEffect(() => {
+    setSelectedPatientForDrawer(null);
+    setPaymentModalPatient(null);
+    setShowAddPatientModal(false);
+    setShowAddProductModal(false);
+  }, [activeTab]);
 
   const toggleProductStock = (id: string) => {
     const updated = productsList.map(p => p.id === id ? { ...p, inStock: !p.inStock } : p);
@@ -3404,11 +3415,11 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
           {/* Slide-Over Side Drawer (ক্লিক করলে যেকোনো এক পাশে খুলবে) */}
           {selectedPatientForDrawer && (
-            <div className="fixed inset-0 z-50 overflow-hidden">
+            <div className="fixed inset-0 z-[80] overflow-hidden">
               {/* Backdrop Overlay */}
               <div
                 onClick={handleClosePatientDrawer}
-                className="absolute inset-0 bg-black/50 backdrop-blur-xs transition-opacity animate-in fade-in duration-200"
+                className="absolute inset-0 bg-black/50 backdrop-blur-xs transition-opacity animate-in fade-in duration-200 cursor-pointer"
               />
 
               {/* Side Panel Sheet */}
@@ -5013,8 +5024,14 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
           {/* Add Product Modal */}
           {showAddProductModal && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-200">
-              <div className="relative w-full max-w-xl bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
+            <div 
+              onClick={() => setShowAddProductModal(false)}
+              className="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-200 cursor-pointer"
+            >
+              <div 
+                onClick={(e) => e.stopPropagation()}
+                className="relative w-full max-w-xl bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh] cursor-default"
+              >
                 <div className="px-6 py-4 bg-[#004D40] text-white flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <ShoppingBag className="w-4 h-4 text-[#F2C94C]" />
@@ -5023,8 +5040,10 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     </h4>
                   </div>
                   <button
+                    type="button"
                     onClick={() => setShowAddProductModal(false)}
-                    className="p-1 rounded-full bg-white/10 hover:bg-white/20 text-white cursor-pointer"
+                    className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white cursor-pointer transition-colors"
+                    title="বন্ধ করুন (Esc)"
                   >
                     <X className="w-5 h-5" />
                   </button>
@@ -5276,8 +5295,14 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
       )}
       {/* Add / Edit Patient Modal */}
       {showAddPatientModal && (
-        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-200">
-          <div className="relative w-full max-w-xl bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
+        <div 
+          onClick={() => setShowAddPatientModal(false)}
+          className="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-200 cursor-pointer"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-xl bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh] cursor-default"
+          >
             <div className="px-6 py-4 bg-[#004D40] text-white flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4 text-[#F2C94C]" />
@@ -5286,8 +5311,10 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 </h4>
               </div>
               <button
+                type="button"
                 onClick={() => setShowAddPatientModal(false)}
-                className="p-1 rounded-full bg-white/10 hover:bg-white/20 text-white cursor-pointer"
+                className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white cursor-pointer transition-colors"
+                title="বন্ধ করুন (Esc)"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -5823,8 +5850,14 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
       {/* Payment Installment Collection Modal (টাকা জমা নিন - ফুল বা আংশিক কিস্তি) */}
       {paymentModalPatient && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#006B5B]/20 space-y-5 animate-in fade-in zoom-in-95 duration-200">
+        <div 
+          onClick={() => setPaymentModalPatient(null)}
+          className="fixed inset-0 z-[80] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 cursor-pointer"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#006B5B]/20 space-y-5 animate-in fade-in zoom-in-95 duration-200 cursor-default"
+          >
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-gray-100 pb-3">
               <div className="flex items-center gap-2.5">
@@ -5842,6 +5875,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 type="button"
                 onClick={() => setPaymentModalPatient(null)}
                 className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
+                title="বন্ধ করুন (Esc)"
               >
                 <X className="w-5 h-5" />
               </button>
