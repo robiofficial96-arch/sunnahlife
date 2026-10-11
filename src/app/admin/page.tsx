@@ -285,6 +285,7 @@ export default function AdminDashboardPage() {
   const [paymentAmountInput, setPaymentAmountInput] = useState<string>("");
   const [paymentMethodInput, setPaymentMethodInput] = useState<"cash" | "bkash" | "nagad" | "bank" | "other">("cash");
   const [paymentNoteInput, setPaymentNoteInput] = useState<string>("");
+  const [isNewSessionFee, setIsNewSessionFee] = useState<boolean>(false);
 
   // Accounting and Financial filter states
   const [accountingYear, setAccountingYear] = useState<string>("all");
@@ -912,6 +913,7 @@ export default function AdminDashboardPage() {
     setPaymentAmountInput(due > 0 ? String(due) : "");
     setPaymentMethodInput("cash");
     setPaymentNoteInput("");
+    setIsNewSessionFee(due <= 0); // If previous dues are already cleared, default to new session fee
   };
 
   const handleSavePaymentInstallment = (e: React.FormEvent) => {
@@ -926,8 +928,14 @@ export default function AdminDashboardPage() {
 
     const currentFee = Number(paymentModalPatient.fee) || 0;
     const currentPaid = Number(paymentModalPatient.paid) || 0;
+    
+    // If it's a new session/visit fee, add this amount to total fee as well!
+    const updatedFee = isNewSessionFee ? currentFee + amountNum : currentFee;
     const newPaid = currentPaid + amountNum;
-    const newDue = Math.max(currentFee - newPaid, 0);
+    const newDue = Math.max(updatedFee - newPaid, 0);
+
+    const defaultSessionNote = isNewSessionFee ? "পরবর্তী সেশন / পুনর্বিজীট ফি" : undefined;
+    const finalNote = paymentNoteInput.trim() || defaultSessionNote;
 
     const newPayment: PaymentInstallment = {
       id: "pay_" + Date.now(),
@@ -935,7 +943,7 @@ export default function AdminDashboardPage() {
       date: new Date().toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" }),
       rawDate: getLocalDateString(new Date()),
       method: paymentMethodInput,
-      notes: paymentNoteInput.trim() || undefined,
+      notes: finalNote,
       createdAt: Date.now(),
     };
 
@@ -946,6 +954,7 @@ export default function AdminDashboardPage() {
       if (p.id === paymentModalPatient.id) {
         return {
           ...p,
+          fee: updatedFee,
           paid: newPaid,
           due: newDue,
           payments: updatedPayments,
@@ -957,6 +966,7 @@ export default function AdminDashboardPage() {
     setPatientsList(updated);
     localStorage.setItem("sunnahlife_patients_records", JSON.stringify(updated));
     updatePatientInFirestore(paymentModalPatient.id, {
+      fee: updatedFee,
       paid: newPaid,
       due: newDue,
       payments: updatedPayments,
@@ -965,6 +975,7 @@ export default function AdminDashboardPage() {
     if (selectedPatientForDrawer && selectedPatientForDrawer.id === paymentModalPatient.id) {
       setSelectedPatientForDrawer({
         ...selectedPatientForDrawer,
+        fee: updatedFee,
         paid: newPaid,
         due: newDue,
         payments: updatedPayments,
@@ -5806,6 +5817,42 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
             {/* Form */}
             <form onSubmit={handleSavePaymentInstallment} className="space-y-4">
+              {/* Payment Type Selection: Due Clearance vs New Session Fee */}
+              <div className="p-3 rounded-2xl bg-emerald-50/60 border border-emerald-200/80 space-y-2">
+                <span className="text-xs font-bold text-[#004D40] block">
+                  পেমেন্টের ধরন নির্বাচন করুন:
+                </span>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <button
+                    type="button"
+                    onClick={() => setIsNewSessionFee(false)}
+                    className={`py-2 px-3 rounded-xl border font-bold text-center transition-all cursor-pointer ${
+                      !isNewSessionFee
+                        ? "bg-[#006B5B] text-white border-[#006B5B] shadow-2xs"
+                        : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
+                    }`}
+                  >
+                    পূর্বের বকেয়া পরিশোধ
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsNewSessionFee(true)}
+                    className={`py-2 px-3 rounded-xl border font-bold text-center transition-all cursor-pointer ${
+                      isNewSessionFee
+                        ? "bg-[#006B5B] text-white border-[#006B5B] shadow-2xs"
+                        : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
+                    }`}
+                  >
+                    + নতুন সেশন / ভিজিট ফি
+                  </button>
+                </div>
+                {isNewSessionFee && (
+                  <p className="text-[11px] text-emerald-800 font-medium">
+                    💡 এই টাকাটি রোগীর মোট চিকিৎসা ফি-এর সাথে স্বয়ংক্রিয়ভাবে যোগ হবে এবং জমা হিসেবে রেকর্ড হবে।
+                  </p>
+                )}
+              </div>
+
               <div>
                 <label className="block text-xs font-bold text-gray-700 mb-1">
                   এখন কত টাকা জমা দিচ্ছেন? (৳) <span className="text-red-500">*</span>
