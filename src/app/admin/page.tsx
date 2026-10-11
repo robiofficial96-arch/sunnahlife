@@ -2101,7 +2101,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
           </div>
 
           {/* Patient Follow-up Scheduling Radar & Action Center */}
-          <div className="p-6 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
+          <div className="p-0 sm:p-6 rounded-none sm:rounded-3xl bg-transparent sm:bg-white border-0 sm:border sm:border-[#006B5B]/15 shadow-none sm:shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-gray-100 pb-3">
               <div>
                 <h3 className="font-bold text-base text-[#004D40] flex items-center gap-2">
