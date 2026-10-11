@@ -275,6 +275,7 @@ export default function AdminDashboardPage() {
   const [selectedPatientForDrawer, setSelectedPatientForDrawer] = useState<PatientRecord | null>(null);
   const [expandedPatientIds, setExpandedPatientIds] = useState<string[]>([]);
   const [patientViewPreference, setPatientViewPreference] = useState<"drawer" | "accordion">("drawer");
+  const [isSyncingCloud, setIsSyncingCloud] = useState(false);
 
   // Accounting and Financial filter states
   const [accountingYear, setAccountingYear] = useState<string>("all");
@@ -462,13 +463,28 @@ export default function AdminDashboardPage() {
     try {
       unsubscribePatients = subscribeToPatients((cloudPatients) => {
         if (cloudPatients && cloudPatients.length > 0) {
-          setPatientsList(cloudPatients as any);
-          localStorage.setItem("sunnahlife_patients_records", JSON.stringify(cloudPatients));
+          // Check if there are local patients from previous sessions that are NOT yet in cloud
+          const cloudIds = new Set(cloudPatients.map((c) => c.id));
+          const unsyncedLocal = cachedLocalPatients.filter((lp) => !cloudIds.has(lp.id));
+
+          if (unsyncedLocal.length > 0) {
+            // Automatically upload unsynced previous local patients to Firestore!
+            unsyncedLocal.forEach((p) => {
+              savePatientToFirestore(p as any).catch(console.error);
+            });
+            const merged = [...cloudPatients, ...unsyncedLocal];
+            setPatientsList(merged as any);
+            localStorage.setItem("sunnahlife_patients_records", JSON.stringify(merged));
+          } else {
+            setPatientsList(cloudPatients as any);
+            localStorage.setItem("sunnahlife_patients_records", JSON.stringify(cloudPatients));
+          }
         } else if (cachedLocalPatients.length > 0) {
-          // If cloud has no records yet but local cache has records, migrate local to cloud Firestore
+          // If cloud has no records yet but local cache has records, migrate all to cloud Firestore
           cachedLocalPatients.forEach((p) => {
             savePatientToFirestore(p as any).catch(console.error);
           });
+          setPatientsList(cachedLocalPatients);
         }
       });
     } catch (err) {
@@ -1094,6 +1110,28 @@ export default function AdminDashboardPage() {
 
   const handleClosePatientDrawer = () => {
     setSelectedPatientForDrawer(null);
+  };
+
+  const handleManualSyncToCloud = async () => {
+    if (patientsList.length === 0) {
+      alert("সিঙ্ক করার মতো কোনো রোগীর রেকর্ড তালিকায় নেই।");
+      return;
+    }
+    setIsSyncingCloud(true);
+    try {
+      let count = 0;
+      for (const p of patientsList) {
+        await savePatientToFirestore(p as any);
+        count++;
+      }
+      setPopupSaveMessage(`আলহামদুলিল্লাহ! পূর্বের ${count} জন রোগীর তথ্যই ক্লাউড ডাটাবেজে সফলভাবে সিঙ্ক ও সুরক্ষিত করা হয়েছে!`);
+    } catch (err) {
+      console.error("Manual sync error:", err);
+      setPopupSaveMessage("ক্লাউডে সিঙ্ক করতে সমস্যা হয়েছে। ইন্টারনেট সংযোগ চেক করুন।");
+    } finally {
+      setIsSyncingCloud(false);
+      setTimeout(() => setPopupSaveMessage(""), 4500);
+    }
   };
 
   const handleExportCSV = () => {
@@ -2366,6 +2404,16 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               </div>
 
               <div className="flex flex-wrap items-center gap-2.5">
+                <button
+                  onClick={handleManualSyncToCloud}
+                  disabled={isSyncingCloud}
+                  className="px-4 py-2.5 rounded-xl border border-emerald-300 bg-emerald-50/70 hover:bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center gap-2 transition-colors cursor-pointer shadow-2xs disabled:opacity-60"
+                  title="আপনার ব্রাউজারে থাকা পূর্বের সকল রোগীর তথ্য সরাসরি ক্লাউড ডাটাবেজে আপলোড করুন"
+                >
+                  <RotateCcw className={`w-4 h-4 text-emerald-700 ${isSyncingCloud ? "animate-spin" : ""}`} />
+                  <span>{isSyncingCloud ? "সিঙ্ক হচ্ছে..." : "ক্লাউডে ডাটা সিঙ্ক"}</span>
+                </button>
+
                 <button
                   onClick={handleExportCSV}
                   className="px-4 py-2.5 rounded-xl border border-gray-200 hover:border-[#006B5B] text-gray-700 hover:text-[#006B5B] text-xs font-bold flex items-center gap-2 transition-colors cursor-pointer shadow-2xs"
