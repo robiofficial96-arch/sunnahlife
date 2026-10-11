@@ -292,6 +292,7 @@ export default function AdminDashboardPage() {
   const [accountingMonth, setAccountingMonth] = useState<string>("all");
   const [accountingSearch, setAccountingSearch] = useState<string>("");
   const [accountingDueOnly, setAccountingDueOnly] = useState<boolean>(false);
+  const [isAccountingExpanded, setIsAccountingExpanded] = useState<boolean>(false);
 
   const [patientForm, setPatientForm] = useState<Omit<PatientRecord, "id">>({
     name: "",
@@ -4274,29 +4275,33 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 </p>
               </div>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-xs text-left">
-                  <thead>
-                    <tr className="border-b border-gray-200 text-gray-600 bg-gray-50/80 font-bold">
-                      <th className="p-3">আইডি ও নাম</th>
-                      <th className="p-3">বয়স</th>
-                      <th className="p-3">যোগাযোগ</th>
-                      <th className="p-3">ধরন ও তারিখ</th>
-                      <th className="p-3 text-right">মোট ফি</th>
-                      <th className="p-3 text-right">পরিশোধিত</th>
-                      <th className="p-3 text-right">বকেয়া</th>
-                      <th className="p-3 text-center">স্ট্যাটাস</th>
-                      <th className="p-3 text-center">তাৎক্ষণিক অ্যাকশন</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100 font-medium">
-                    {accountingFilteredPatients.map((p) => {
-                      const f = Number(p.fee) || 0;
-                      const pd = Number(p.paid) || 0;
-                      const d = p.due !== undefined ? Number(p.due) : Math.max(f - pd, 0);
+              <div className="space-y-3">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs text-left">
+                    <thead>
+                      <tr className="border-b border-gray-200 text-gray-600 bg-gray-50/80 font-bold">
+                        <th className="p-3">আইডি ও নাম</th>
+                        <th className="p-3">বয়স</th>
+                        <th className="p-3">যোগাযোগ</th>
+                        <th className="p-3">ধরন ও তারিখ</th>
+                        <th className="p-3 text-right">মোট ফি</th>
+                        <th className="p-3 text-right">পরিশোধিত</th>
+                        <th className="p-3 text-right">বকেয়া</th>
+                        <th className="p-3 text-center">স্ট্যাটাস</th>
+                        <th className="p-3 text-center">তাৎক্ষণিক অ্যাকশন</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100 font-medium">
+                      {(isAccountingExpanded 
+                        ? accountingFilteredPatients 
+                        : accountingFilteredPatients.slice(0, 8)
+                      ).map((p) => {
+                        const f = Number(p.fee) || 0;
+                        const pd = Number(p.paid) || 0;
+                        const d = p.due !== undefined ? Number(p.due) : Math.max(f - pd, 0);
 
-                      return (
-                        <tr key={p.id} className="hover:bg-gray-50/80 transition-colors">
+                        return (
+                          <tr key={p.id} className="hover:bg-gray-50/80 transition-colors">
                           <td className="p-3">
                             <div>
                               <div className="flex items-center gap-1.5">
@@ -4448,7 +4453,31 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   </tfoot>
                 </table>
               </div>
-            )}
+
+              {/* Expand / Collapse Button if there are more than 8 patients */}
+              {accountingFilteredPatients.length > 8 && (
+                <div className="pt-2 flex justify-center border-t border-gray-100">
+                  <button
+                    type="button"
+                    onClick={() => setIsAccountingExpanded(!isAccountingExpanded)}
+                    className="px-5 py-2 rounded-xl bg-gray-100 hover:bg-[#006B5B] hover:text-white text-gray-700 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-2xs group"
+                  >
+                    {isAccountingExpanded ? (
+                      <>
+                        <ChevronUp className="w-4 h-4 text-gray-500 group-hover:text-white" />
+                        <span>সংক্ষেপ করুন (প্রথম ৮ জন দেখুন)</span>
+                      </>
+                    ) : (
+                      <>
+                        <ChevronDown className="w-4 h-4 text-gray-500 group-hover:text-white" />
+                        <span>সম্পূর্ণ তালিকা খুলুন (সকল {accountingFilteredPatients.length} জন রোগী দেখুন)</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
           </div>
         </div>
       )}
