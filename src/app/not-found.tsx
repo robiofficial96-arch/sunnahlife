@@ -9,7 +9,7 @@ export default function NotFound() {
         <div className="flex flex-col items-center justify-center gap-2 mx-auto">
           <div className="relative w-16 h-16">
             <Image
-              src="/sunnahlife_applogo.svg"
+              src="/sunnah-icon-logo.svg"
               alt="সুন্নাহলাইফ আইকন"
               fill
               sizes="64px"
@@ -19,7 +19,7 @@ export default function NotFound() {
           </div>
           <div className="relative w-44 h-12">
             <Image
-              src="/sunnahlife_logo.svg"
+              src="/sunnah-logo.svg"
               alt="সুন্নাহলাইফ"
               fill
               sizes="176px"

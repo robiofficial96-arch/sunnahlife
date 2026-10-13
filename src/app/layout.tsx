@@ -79,13 +79,13 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/sunnahlife_applogo.svg", type: "image/svg+xml" },
-      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/sunnah-icon-logo.svg", type: "image/svg+xml" },
+      { url: "/icon-192-v2.png", sizes: "192x192", type: "image/png" },
     ],
     apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+      { url: "/apple-touch-icon-v2.png", sizes: "180x180", type: "image/png" },
     ],
-    shortcut: "/sunnahlife_applogo.svg",
+    shortcut: "/sunnah-icon-logo.svg",
   },
   openGraph: {
     type: "website",

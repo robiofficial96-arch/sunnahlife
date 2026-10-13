@@ -1830,7 +1830,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
           <div className="flex flex-col items-center justify-center gap-2 mx-auto">
             <div className="relative h-12 w-12">
               <Image
-                src="/sunnahlife_applogo.svg"
+                src="/sunnah-icon-logo.svg"
                 alt="সুন্নাহলাইফ আইকন"
                 fill
                 className="object-contain"
@@ -1839,7 +1839,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
             </div>
             <div className="relative h-10 w-44">
               <Image
-                src="/sunnahlife_logo.svg"
+                src="/sunnah-logo.svg"
                 alt="সুন্নাহলাইফ"
                 fill
                 className="object-contain"
@@ -1917,7 +1917,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               <Link href="/admin" className="flex items-center gap-2 group">
                 <div className="relative h-8 w-8 sm:h-9 sm:w-9 shrink-0">
                   <Image
-                    src="/sunnahlife_applogo.svg"
+                    src="/sunnah-icon-logo.svg"
                     alt="সুন্নাহলাইফ আইকন"
                     fill
                     className="object-contain"
@@ -1926,7 +1926,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 </div>
                 <div className="relative h-8 sm:h-9 w-28 sm:w-36">
                   <Image
-                    src="/sunnahlife_logo.svg"
+                    src="/sunnah-logo.svg"
                     alt="সুন্নাহলাইফ"
                     fill
                     className="object-contain object-left"
