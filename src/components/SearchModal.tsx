@@ -163,7 +163,7 @@ export default function SearchModal({ isOpen, onClose }: Props) {
       >
         {/* Search Input Bar */}
         <div className="relative flex items-center p-3 sm:p-4 border-b border-gray-100">
-          <Search className="w-5 h-5 text-[#006B5B] shrink-0 ml-1.5" />
+          <Search className="w-5 h-5 text-[#29B34F] shrink-0 ml-1.5" />
           <input
             ref={inputRef}
             type="text"
@@ -199,11 +199,11 @@ export default function SearchModal({ isOpen, onClose }: Props) {
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 <button
                   onClick={() => handleNavigate("/quran")}
-                  className="p-3 rounded-2xl bg-emerald-50/70 border border-emerald-100 hover:border-[#006B5B] hover:bg-emerald-50 text-left transition-all cursor-pointer flex items-center gap-2.5"
+                  className="p-3 rounded-2xl bg-emerald-50/70 border border-emerald-100 hover:border-[#29B34F] hover:bg-emerald-50 text-left transition-all cursor-pointer flex items-center gap-2.5"
                 >
-                  <BookOpen className="w-4 h-4 text-[#006B5B] shrink-0" />
+                  <BookOpen className="w-4 h-4 text-[#29B34F] shrink-0" />
                   <div>
-                    <div className="text-xs font-bold text-[#004D40]">আল-কুরআন</div>
+                    <div className="text-xs font-bold text-[#166534]">আল-কুরআন</div>
                     <div className="text-[10px] text-gray-500">১১৪টি সূরা ও অর্থ</div>
                   </div>
                 </button>
@@ -278,7 +278,7 @@ export default function SearchModal({ isOpen, onClose }: Props) {
           {results.surahs.length > 0 && (
             <div className="space-y-2">
               <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1.5 px-1">
-                <BookOpen className="w-3.5 h-3.5 text-[#006B5B]" />
+                <BookOpen className="w-3.5 h-3.5 text-[#29B34F]" />
                 <span>আল-কুরআনুল কারীম ({results.surahs.length})</span>
               </div>
               <div className="space-y-1.5">
@@ -289,11 +289,11 @@ export default function SearchModal({ isOpen, onClose }: Props) {
                     className="w-full p-2.5 rounded-xl hover:bg-emerald-50/70 border border-transparent hover:border-emerald-200 text-left transition-colors flex items-center justify-between group cursor-pointer"
                   >
                     <div className="flex items-center gap-2.5">
-                      <span className="w-6 h-6 rounded-lg bg-[#006B5B]/10 text-[#006B5B] flex items-center justify-center text-xs font-bold font-mono">
+                      <span className="w-6 h-6 rounded-lg bg-[#29B34F]/10 text-[#29B34F] flex items-center justify-center text-xs font-bold font-mono">
                         {s.number}
                       </span>
                       <div>
-                        <div className="text-xs font-bold text-gray-900 group-hover:text-[#006B5B]">
+                        <div className="text-xs font-bold text-gray-900 group-hover:text-[#29B34F]">
                           সূরা {s.nameBangla} ({s.meaningBangla})
                         </div>
                         <div className="text-[10px] text-gray-400">
@@ -382,7 +382,7 @@ export default function SearchModal({ isOpen, onClose }: Props) {
           {results.duas.length > 0 && (
             <div className="space-y-2">
               <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1.5 px-1">
-                <Sparkles className="w-3.5 h-3.5 text-[#006B5B]" />
+                <Sparkles className="w-3.5 h-3.5 text-[#29B34F]" />
                 <span>দোয়া ও আযকার ({results.duas.length})</span>
               </div>
               <div className="space-y-1.5">
@@ -393,11 +393,11 @@ export default function SearchModal({ isOpen, onClose }: Props) {
                     className="w-full p-2.5 rounded-xl hover:bg-emerald-50/70 border border-transparent hover:border-emerald-200 text-left transition-colors flex items-center justify-between group cursor-pointer"
                   >
                     <div className="flex items-center gap-2.5">
-                      <div className="w-7 h-7 rounded-lg bg-emerald-100 text-[#006B5B] flex items-center justify-center shrink-0">
+                      <div className="w-7 h-7 rounded-lg bg-emerald-100 text-[#29B34F] flex items-center justify-center shrink-0">
                         <Sparkles className="w-3.5 h-3.5" />
                       </div>
                       <div>
-                        <div className="text-xs font-bold text-gray-900 group-hover:text-[#006B5B]">
+                        <div className="text-xs font-bold text-gray-900 group-hover:text-[#29B34F]">
                           {d.title}
                         </div>
                         <div className="text-[10px] text-gray-500 line-clamp-1">

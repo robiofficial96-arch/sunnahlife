@@ -300,7 +300,7 @@ export default function AudioPlayer() {
     : RUQYAH_AUDIO_LIST.filter(t => t.category === selectedCategory);
 
   return (
-    <div className="w-full bg-white rounded-3xl border border-[#006B5B]/15 shadow-sm p-4 sm:p-6 md:p-8 space-y-6">
+    <div className="w-full bg-white rounded-3xl border border-[#29B34F]/15 shadow-sm p-4 sm:p-6 md:p-8 space-y-6">
       {/* Hidden Native HTML5 Audio Element with Native Background Playback */}
       <audio
         ref={audioRef}
@@ -316,7 +316,7 @@ export default function AudioPlayer() {
       />
 
       {/* Main Islamic Audio Console */}
-      <div className="bg-gradient-to-br from-[#004D40] via-[#005B4D] to-[#00382E] text-white rounded-3xl p-5 sm:p-7 md:p-8 shadow-xl relative overflow-hidden border border-white/10">
+      <div className="bg-gradient-to-br from-[#166534] via-[#005B4D] to-[#14532D] text-white rounded-3xl p-5 sm:p-7 md:p-8 shadow-xl relative overflow-hidden border border-white/10">
         {/* Glow ambient background circles */}
         <div className="absolute -right-16 -top-16 w-56 h-56 bg-emerald-400/10 rounded-full blur-2xl pointer-events-none" />
         <div className="absolute -left-16 -bottom-16 w-56 h-56 bg-[#D4A017]/10 rounded-full blur-2xl pointer-events-none" />
@@ -433,11 +433,11 @@ export default function AudioPlayer() {
               {/* Big Main Play/Pause Button */}
               <button
                 onClick={togglePlay}
-                className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#D4A017] text-[#00382E] flex items-center justify-center hover:bg-[#F2C94C] transition-all transform active:scale-95 shadow-xl cursor-pointer shrink-0 font-bold"
+                className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#D4A017] text-[#14532D] flex items-center justify-center hover:bg-[#F2C94C] transition-all transform active:scale-95 shadow-xl cursor-pointer shrink-0 font-bold"
                 title={isPlaying ? "বিরতি" : "প্লে করুন"}
               >
                 {isLoading ? (
-                  <Loader2 className="w-7 h-7 animate-spin text-[#00382E]" />
+                  <Loader2 className="w-7 h-7 animate-spin text-[#14532D]" />
                 ) : isPlaying ? (
                   <Pause className="w-7 h-7 fill-current" />
                 ) : (
@@ -471,7 +471,7 @@ export default function AudioPlayer() {
                 onClick={toggleLoop}
                 className={`p-2.5 sm:px-3 sm:py-2.5 rounded-xl border transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-semibold ${
                   isLooping
-                    ? "bg-[#D4A017] text-[#00382E] border-[#D4A017] shadow-sm"
+                    ? "bg-[#D4A017] text-[#14532D] border-[#D4A017] shadow-sm"
                     : "bg-white/10 hover:bg-white/20 text-white border-white/15"
                 }`}
                 title={isLooping ? "রিপিট মোড চালু আছে" : "রিপিট / লুপ মোড চালু করুন (ঘুমের সময় কার্যকরী)"}
@@ -532,8 +532,8 @@ export default function AudioPlayer() {
             onClick={() => setSelectedCategory(cat.id)}
             className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
               selectedCategory === cat.id
-                ? "bg-[#006B5B] text-white shadow-xs"
-                : "bg-[#FAFAF7] text-gray-700 hover:bg-gray-100 hover:text-[#006B5B] border border-gray-200/80"
+                ? "bg-[#29B34F] text-white shadow-xs"
+                : "bg-[#FAFAF7] text-gray-700 hover:bg-gray-100 hover:text-[#29B34F] border border-gray-200/80"
             }`}
           >
             {cat.label}
@@ -544,8 +544,8 @@ export default function AudioPlayer() {
       {/* Ruqyah Playlist Section */}
       <div className="space-y-3">
         <div className="flex items-center justify-between pb-1">
-          <h4 className="text-base sm:text-lg font-bold text-[#004D40] flex items-center gap-2">
-            <Headphones className="w-5 h-5 text-[#006B5B]" />
+          <h4 className="text-base sm:text-lg font-bold text-[#166534] flex items-center gap-2">
+            <Headphones className="w-5 h-5 text-[#29B34F]" />
             <span>নির্বাচিত শক্তিশালী রুকইয়াহ অডিও তালিকা ({filteredTracks.length}টি)</span>
           </h4>
           <span className="text-xs text-gray-500 font-medium hidden sm:inline">
@@ -564,8 +564,8 @@ export default function AudioPlayer() {
                 onClick={() => handleSelectTrack(track)}
                 className={`p-4 sm:p-5 rounded-2xl border transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
                   isCurrent
-                    ? "bg-[#006B5B]/5 border-[#006B5B] shadow-sm ring-1 ring-[#006B5B]/30"
-                    : "bg-white border-gray-200 hover:border-[#006B5B]/40 hover:bg-[#FAFAF7]"
+                    ? "bg-[#29B34F]/5 border-[#29B34F] shadow-sm ring-1 ring-[#29B34F]/30"
+                    : "bg-white border-gray-200 hover:border-[#29B34F]/40 hover:bg-[#FAFAF7]"
                 }`}
               >
                 <div className="flex items-center gap-3.5 min-w-0">
@@ -573,10 +573,10 @@ export default function AudioPlayer() {
                   <div
                     className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-all ${
                       isCurrent && isPlaying
-                        ? "bg-[#006B5B] text-white shadow-md animate-pulse"
+                        ? "bg-[#29B34F] text-white shadow-md animate-pulse"
                         : isCurrent
-                        ? "bg-[#006B5B] text-white shadow-xs"
-                        : "bg-[#FAFAF7] text-[#006B5B] border border-[#006B5B]/20"
+                        ? "bg-[#29B34F] text-white shadow-xs"
+                        : "bg-[#FAFAF7] text-[#29B34F] border border-[#29B34F]/20"
                     }`}
                   >
                     {isCurrent && isPlaying ? (
@@ -591,10 +591,10 @@ export default function AudioPlayer() {
                       <span className="text-xs font-mono font-bold text-gray-400">
                         {bngIndex}.
                       </span>
-                      <h5 className={`text-base font-bold truncate ${isCurrent ? "text-[#004D40]" : "text-gray-900"}`}>
+                      <h5 className={`text-base font-bold truncate ${isCurrent ? "text-[#166534]" : "text-gray-900"}`}>
                         {track.title}
                       </h5>
-                      <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#006B5B] font-semibold border border-emerald-200/60">
+                      <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#29B34F] font-semibold border border-emerald-200/60">
                         {track.categoryLabel}
                       </span>
                     </div>
@@ -622,10 +622,10 @@ export default function AudioPlayer() {
                     type="button"
                     className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-colors ${
                       isCurrent && isPlaying
-                        ? "bg-[#004D40] text-white"
+                        ? "bg-[#166534] text-white"
                         : isCurrent
-                        ? "bg-[#006B5B] text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-[#006B5B] hover:text-white"
+                        ? "bg-[#29B34F] text-white"
+                        : "bg-gray-100 text-gray-700 hover:bg-[#29B34F] hover:text-white"
                     }`}
                   >
                     {isCurrent && isPlaying ? "বাজছে..." : isCurrent ? "চালু করুন" : "প্লে করুন"}

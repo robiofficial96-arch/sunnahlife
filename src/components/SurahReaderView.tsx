@@ -246,7 +246,7 @@ export default function SurahReaderView({ surah, prevSurah, nextSurah }: Props) 
       <div className="flex items-center justify-between gap-4">
         <Link
           href="/quran"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-[#006B5B] transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-[#29B34F] transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>সকল সূরায় ফিরে যান</span>
@@ -256,7 +256,7 @@ export default function SurahReaderView({ surah, prevSurah, nextSurah }: Props) 
           {prevSurah && (
             <Link
               href={`/quran/${prevSurah.number}`}
-              className="p-2 rounded-xl bg-white border border-gray-200 hover:border-[#006B5B] text-gray-600 hover:text-[#006B5B] text-xs font-medium flex items-center gap-1 transition-colors"
+              className="p-2 rounded-xl bg-white border border-gray-200 hover:border-[#29B34F] text-gray-600 hover:text-[#29B34F] text-xs font-medium flex items-center gap-1 transition-colors"
               title={`পূর্ববর্তী: ${prevSurah.nameBangla}`}
             >
               <ChevronLeft className="w-4 h-4" />
@@ -267,7 +267,7 @@ export default function SurahReaderView({ surah, prevSurah, nextSurah }: Props) 
           {nextSurah && (
             <Link
               href={`/quran/${nextSurah.number}`}
-              className="p-2 rounded-xl bg-white border border-gray-200 hover:border-[#006B5B] text-gray-600 hover:text-[#006B5B] text-xs font-medium flex items-center gap-1 transition-colors"
+              className="p-2 rounded-xl bg-white border border-gray-200 hover:border-[#29B34F] text-gray-600 hover:text-[#29B34F] text-xs font-medium flex items-center gap-1 transition-colors"
               title={`পরবর্তী: ${nextSurah.nameBangla}`}
             >
               <span className="hidden sm:inline">{nextSurah.nameBangla}</span>
@@ -278,7 +278,7 @@ export default function SurahReaderView({ surah, prevSurah, nextSurah }: Props) 
       </div>
 
       {/* Surah Header Card */}
-      <div className="bg-radial from-[#006B5B] to-[#004D40] text-white rounded-3xl p-6 sm:p-8 md:p-10 shadow-lg text-center space-y-4">
+      <div className="bg-radial from-[#29B34F] to-[#166534] text-white rounded-3xl p-6 sm:p-8 md:p-10 shadow-lg text-center space-y-4">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 text-emerald-100 text-xs font-semibold">
           <span>সূরা নম্বর: {surah.number}</span>
           <span>•</span>
@@ -320,13 +320,13 @@ export default function SurahReaderView({ surah, prevSurah, nextSurah }: Props) 
       </div>
 
       {/* Audio Player & Reader Settings Toolbar */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#006B5B]/15 shadow-xs space-y-4">
+      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#29B34F]/15 shadow-xs space-y-4">
         {/* Full Surah Audio Bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-4 border-b border-gray-100">
           <div className="flex items-center gap-3 w-full sm:w-auto">
             <button
               onClick={togglePlayFull}
-              className="w-12 h-12 rounded-full bg-[#006B5B] text-white flex items-center justify-center hover:bg-[#004D40] transition-colors shrink-0 shadow-sm cursor-pointer"
+              className="w-12 h-12 rounded-full bg-[#29B34F] text-white flex items-center justify-center hover:bg-[#166534] transition-colors shrink-0 shadow-sm cursor-pointer"
               title={isPlayingFull ? "বিরতি" : "পূর্ণাঙ্গ সূরা অডিও শুনুন"}
             >
               {isAudioBuffering ? (
@@ -340,8 +340,8 @@ export default function SurahReaderView({ surah, prevSurah, nextSurah }: Props) 
 
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-[#004D40]">পূর্ণাঙ্গ তিলাওয়াত</span>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-[#006B5B] font-semibold">
+                <span className="text-xs font-bold text-[#166534]">পূর্ণাঙ্গ তিলাওয়াত</span>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-[#29B34F] font-semibold">
                   মিশারি রশিদ
                 </span>
               </div>
@@ -358,7 +358,7 @@ export default function SurahReaderView({ surah, prevSurah, nextSurah }: Props) 
               max={duration || 100}
               value={currentTime}
               onChange={handleSeek}
-              className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#006B5B]"
+              className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#29B34F]"
             />
 
             <button
@@ -368,7 +368,7 @@ export default function SurahReaderView({ surah, prevSurah, nextSurah }: Props) 
                   setIsMuted(!isMuted);
                 }
               }}
-              className="p-2 rounded-xl text-gray-500 hover:text-[#006B5B] hover:bg-gray-50 transition-colors"
+              className="p-2 rounded-xl text-gray-500 hover:text-[#29B34F] hover:bg-gray-50 transition-colors"
             >
               {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
             </button>
@@ -384,19 +384,19 @@ export default function SurahReaderView({ surah, prevSurah, nextSurah }: Props) 
             <div className="inline-flex rounded-xl bg-gray-100 p-0.5">
               <button
                 onClick={() => setFontSize("md")}
-                className={`px-2.5 py-1 rounded-lg font-medium transition-all ${fontSize === "md" ? "bg-white text-[#006B5B] shadow-2xs font-bold" : "text-gray-600"}`}
+                className={`px-2.5 py-1 rounded-lg font-medium transition-all ${fontSize === "md" ? "bg-white text-[#29B34F] shadow-2xs font-bold" : "text-gray-600"}`}
               >
                 স্বাভাবিক
               </button>
               <button
                 onClick={() => setFontSize("lg")}
-                className={`px-2.5 py-1 rounded-lg font-medium transition-all ${fontSize === "lg" ? "bg-white text-[#006B5B] shadow-2xs font-bold" : "text-gray-600"}`}
+                className={`px-2.5 py-1 rounded-lg font-medium transition-all ${fontSize === "lg" ? "bg-white text-[#29B34F] shadow-2xs font-bold" : "text-gray-600"}`}
               >
                 বড়
               </button>
               <button
                 onClick={() => setFontSize("xl")}
-                className={`px-2.5 py-1 rounded-lg font-medium transition-all ${fontSize === "xl" ? "bg-white text-[#006B5B] shadow-2xs font-bold" : "text-gray-600"}`}
+                className={`px-2.5 py-1 rounded-lg font-medium transition-all ${fontSize === "xl" ? "bg-white text-[#29B34F] shadow-2xs font-bold" : "text-gray-600"}`}
               >
                 বিশাল
               </button>
@@ -406,7 +406,7 @@ export default function SurahReaderView({ surah, prevSurah, nextSurah }: Props) 
           {/* Translation Toggle */}
           <button
             onClick={() => setShowTranslation(!showTranslation)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 hover:border-[#006B5B] text-gray-700 hover:text-[#006B5B] font-medium transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 hover:border-[#29B34F] text-gray-700 hover:text-[#29B34F] font-medium transition-colors"
           >
             {showTranslation ? <Eye className="w-3.5 h-3.5 text-emerald-600" /> : <EyeOff className="w-3.5 h-3.5 text-gray-400" />}
             <span>বাংলা অনুবাদ: {showTranslation ? "দৃশ্যমান" : "লুকানো"}</span>
@@ -417,7 +417,7 @@ export default function SurahReaderView({ surah, prevSurah, nextSurah }: Props) 
       {/* Loading Indicator */}
       {isLoadingAyahs && (
         <div className="py-20 text-center space-y-3">
-          <Loader2 className="w-8 h-8 text-[#006B5B] animate-spin mx-auto" />
+          <Loader2 className="w-8 h-8 text-[#29B34F] animate-spin mx-auto" />
           <p className="text-sm text-gray-500 font-medium">পবিত্র কুরআনের আয়াতসমূহ লোড হচ্ছে...</p>
         </div>
       )}
@@ -446,14 +446,14 @@ export default function SurahReaderView({ surah, prevSurah, nextSurah }: Props) 
                 id={`ayah-${ayah.numberInSurah}`}
                 className={`p-6 sm:p-8 rounded-3xl bg-white border transition-all ${
                   isPlayingThisAyah
-                    ? "border-[#006B5B] shadow-md ring-2 ring-[#006B5B]/15 bg-emerald-50/15"
-                    : "border-[#006B5B]/15 hover:border-[#006B5B]/35 shadow-xs"
+                    ? "border-[#29B34F] shadow-md ring-2 ring-[#29B34F]/15 bg-emerald-50/15"
+                    : "border-[#29B34F]/15 hover:border-[#29B34F]/35 shadow-xs"
                 }`}
               >
                 {/* Ayah Top Meta */}
                 <div className="flex items-center justify-between gap-3 border-b border-gray-100 pb-3 mb-4">
                   <div className="flex items-center gap-2">
-                    <span className="w-8 h-8 rounded-full bg-[#006B5B]/10 text-[#006B5B] flex items-center justify-center text-xs font-bold font-mono">
+                    <span className="w-8 h-8 rounded-full bg-[#29B34F]/10 text-[#29B34F] flex items-center justify-center text-xs font-bold font-mono">
                       {ayah.numberInSurah}
                     </span>
                     <span className="text-xs text-gray-400 font-mono">
@@ -468,8 +468,8 @@ export default function SurahReaderView({ surah, prevSurah, nextSurah }: Props) 
                       onClick={() => handlePlayAyah(ayah)}
                       className={`p-2 rounded-xl transition-colors ${
                         isPlayingThisAyah
-                          ? "bg-[#006B5B] text-white shadow-xs"
-                          : "text-gray-500 hover:text-[#006B5B] hover:bg-gray-100"
+                          ? "bg-[#29B34F] text-white shadow-xs"
+                          : "text-gray-500 hover:text-[#29B34F] hover:bg-gray-100"
                       }`}
                       title={isPlayingThisAyah ? "আয়াত তিলাওয়াত বন্ধ" : "আয়াত তিলাওয়াত শুনুন"}
                     >
@@ -479,7 +479,7 @@ export default function SurahReaderView({ surah, prevSurah, nextSurah }: Props) 
                     {/* Copy Ayah */}
                     <button
                       onClick={() => copyAyah(ayah)}
-                      className="p-2 rounded-xl text-gray-500 hover:text-[#006B5B] hover:bg-gray-100 transition-colors"
+                      className="p-2 rounded-xl text-gray-500 hover:text-[#29B34F] hover:bg-gray-100 transition-colors"
                       title="আয়াত ও অর্থ কপি করুন"
                     >
                       {copiedAyahNum === ayah.numberInSurah ? (
@@ -503,7 +503,7 @@ export default function SurahReaderView({ surah, prevSurah, nextSurah }: Props) 
                 </div>
 
                 {/* Arabic Text */}
-                <div className="bg-[#FAFAF7] p-5 sm:p-7 rounded-2xl border border-[#006B5B]/10 mb-4">
+                <div className="bg-[#FAFAF7] p-5 sm:p-7 rounded-2xl border border-[#29B34F]/10 mb-4">
                   <p className={`font-arabic text-emerald-950 text-right font-medium tracking-wide ${arabicSizeClass}`}>
                     {ayah.textArabic}
                   </p>
@@ -532,7 +532,7 @@ export default function SurahReaderView({ surah, prevSurah, nextSurah }: Props) 
         {prevSurah ? (
           <Link
             href={`/quran/${prevSurah.number}`}
-            className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-white border border-[#006B5B]/20 hover:border-[#006B5B] text-gray-700 hover:text-[#006B5B] text-sm font-semibold flex items-center justify-center gap-2 transition-all shadow-xs"
+            className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-white border border-[#29B34F]/20 hover:border-[#29B34F] text-gray-700 hover:text-[#29B34F] text-sm font-semibold flex items-center justify-center gap-2 transition-all shadow-xs"
           >
             <ChevronLeft className="w-4 h-4" />
             <span>পূর্ববর্তী: {prevSurah.nameBangla} ({prevSurah.number})</span>
@@ -541,7 +541,7 @@ export default function SurahReaderView({ surah, prevSurah, nextSurah }: Props) 
 
         <Link
           href="/quran"
-          className="px-5 py-3 rounded-2xl bg-[#006B5B] text-white hover:bg-[#004D40] text-sm font-semibold flex items-center justify-center gap-2 transition-all shadow-xs"
+          className="px-5 py-3 rounded-2xl bg-[#29B34F] text-white hover:bg-[#166534] text-sm font-semibold flex items-center justify-center gap-2 transition-all shadow-xs"
         >
           <BookOpen className="w-4 h-4" />
           <span>১১৪টি সূরার সূচিপত্র</span>
@@ -550,7 +550,7 @@ export default function SurahReaderView({ surah, prevSurah, nextSurah }: Props) 
         {nextSurah ? (
           <Link
             href={`/quran/${nextSurah.number}`}
-            className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-white border border-[#006B5B]/20 hover:border-[#006B5B] text-gray-700 hover:text-[#006B5B] text-sm font-semibold flex items-center justify-center gap-2 transition-all shadow-xs"
+            className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-white border border-[#29B34F]/20 hover:border-[#29B34F] text-gray-700 hover:text-[#29B34F] text-sm font-semibold flex items-center justify-center gap-2 transition-all shadow-xs"
           >
             <span>পরবর্তী: {nextSurah.nameBangla} ({nextSurah.number})</span>
             <ChevronRight className="w-4 h-4" />

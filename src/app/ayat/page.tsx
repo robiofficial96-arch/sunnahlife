@@ -18,11 +18,11 @@ export default function AyatPage() {
     <div className="py-8 md:py-12 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
       {/* Header */}
       <div className="text-center space-y-3 max-w-2xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#006B5B]/10 text-[#006B5B] text-xs font-semibold">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#29B34F]/10 text-[#29B34F] text-xs font-semibold">
           <BookOpen className="w-3.5 h-3.5 text-[#D4A017]" />
           <span>কুরআনের নিরাময় ও হিফয</span>
         </div>
-        <h1 className="text-3xl md:text-4xl font-extrabold text-[#004D40] tracking-tight">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-[#166534] tracking-tight">
           রুকইয়াহ শারইয়্যাহর মূল আয়াতসমূহ
         </h1>
         <p className="text-sm md:text-base text-gray-600 leading-relaxed">
@@ -33,14 +33,14 @@ export default function AyatPage() {
         <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
           <a
             href="/quran"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#006B5B] text-white text-xs font-semibold hover:bg-[#004D40] transition-colors shadow-xs"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#29B34F] text-white text-xs font-semibold hover:bg-[#166534] transition-colors shadow-xs"
           >
             <BookOpen className="w-4 h-4 text-[#F2C94C]" />
             <span>১১৪টি পূর্ণাঙ্গ সূরা ও অডিও তিলাওয়াত দেখুন</span>
           </a>
           <a
             href="/audio"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#FAFAF7] border border-[#006B5B]/20 text-[#006B5B] text-xs font-semibold hover:bg-[#006B5B]/10 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#FAFAF7] border border-[#29B34F]/20 text-[#29B34F] text-xs font-semibold hover:bg-[#29B34F]/10 transition-colors"
           >
             <span>রুকইয়াহ অডিও লাইব্রেরি</span>
           </a>
@@ -52,15 +52,15 @@ export default function AyatPage() {
         {RUQYAH_AYAT_LIST.map((ayah) => (
           <div
             key={ayah.id}
-            className="p-6 md:p-8 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4"
+            className="p-6 md:p-8 rounded-3xl bg-white border border-[#29B34F]/15 shadow-xs space-y-4"
           >
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 pb-3">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-[#D4A017]" />
-                <h3 className="text-lg md:text-xl font-bold text-[#004D40]">
+                <h3 className="text-lg md:text-xl font-bold text-[#166534]">
                   {ayah.surahName}
                 </h3>
-                <span className="text-xs bg-[#006B5B]/10 text-[#006B5B] px-2 py-0.5 rounded-md font-medium">
+                <span className="text-xs bg-[#29B34F]/10 text-[#29B34F] px-2 py-0.5 rounded-md font-medium">
                   আয়াত: {ayah.ayahNumber}
                 </span>
               </div>
@@ -71,7 +71,7 @@ export default function AyatPage() {
             </div>
 
             {/* Arabic */}
-            <div className="bg-[#FAFAF7] p-6 rounded-2xl border border-[#006B5B]/15">
+            <div className="bg-[#FAFAF7] p-6 rounded-2xl border border-[#29B34F]/15">
               <p className="font-arabic text-xl md:text-3xl text-emerald-950 leading-loose text-right font-medium">
                 {ayah.arabic}
               </p>
@@ -85,7 +85,7 @@ export default function AyatPage() {
 
             {/* Ruqyah Benefit & Copy */}
             <div className="pt-3 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div className="text-xs text-[#006B5B] bg-emerald-50 p-2.5 rounded-xl border border-emerald-100 flex items-start gap-2">
+              <div className="text-xs text-[#29B34F] bg-emerald-50 p-2.5 rounded-xl border border-emerald-100 flex items-start gap-2">
                 <Sparkles className="w-4 h-4 text-[#D4A017] shrink-0 mt-0.5" />
                 <span><strong>রুকইয়াহর প্রয়োগ:</strong> {ayah.ruqyahPurpose}</span>
               </div>

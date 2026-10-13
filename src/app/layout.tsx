@@ -26,7 +26,7 @@ const amiri = Amiri({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#006B5B",
+  themeColor: "#29B34F",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -242,7 +242,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="notranslate min-h-screen flex flex-col bg-[#FAFAF7] text-[#1f2937] antialiased pb-20 md:pb-0 selection:bg-[#006B5B] selection:text-white">
+      <body className="notranslate min-h-screen flex flex-col bg-[#FAFAF7] text-[#1f2937] antialiased pb-20 md:pb-0 selection:bg-[#29B34F] selection:text-white">
         <Header />
         <main className="flex-1 bg-[#FAFAF7]">{children}</main>
         <Footer />

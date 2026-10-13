@@ -304,7 +304,7 @@ export function DayMonthYearDateInput({
         placeholder={placeholder}
         className={`${className} pr-10`}
       />
-      <div className="absolute right-2 flex items-center justify-center w-7 h-7 pointer-events-none text-[#006B5B]">
+      <div className="absolute right-2 flex items-center justify-center w-7 h-7 pointer-events-none text-[#29B34F]">
         <Calendar className="w-4 h-4" />
       </div>
       <input
@@ -1826,7 +1826,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-[#FAFAF7] flex flex-col items-center justify-center p-4">
-        <div className="max-w-md w-full bg-white rounded-3xl border border-[#006B5B]/20 p-6 md:p-8 shadow-sm space-y-6 text-center">
+        <div className="max-w-md w-full bg-white rounded-3xl border border-[#29B34F]/20 p-6 md:p-8 shadow-sm space-y-6 text-center">
           <div className="flex flex-col items-center justify-center gap-2 mx-auto">
             <div className="relative h-12 w-12">
               <Image
@@ -1848,12 +1848,12 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
             </div>
           </div>
 
-          <div className="w-14 h-14 mx-auto rounded-2xl bg-[#006B5B]/10 text-[#006B5B] flex items-center justify-center">
+          <div className="w-14 h-14 mx-auto rounded-2xl bg-[#29B34F]/10 text-[#29B34F] flex items-center justify-center">
             <Lock className="w-7 h-7" />
           </div>
 
           <div className="space-y-1">
-            <h1 className="text-xl font-bold text-[#004D40]">অ্যাডমিন অ্যাক্সেস লক</h1>
+            <h1 className="text-xl font-bold text-[#166534]">অ্যাডমিন অ্যাক্সেস লক</h1>
             <p className="text-xs text-gray-500">
               এটি সুন্নাহলাইফ প্ল্যাটফর্মের অভ্যন্তরীণ প্রশাসনিক এলাকা। প্রবেশ করতে অ্যাডমিন পিন প্রদান করুন।
             </p>
@@ -1870,7 +1870,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   setError("");
                 }}
                 placeholder="পিন কোড লিখুন"
-                className="w-full text-center tracking-widest text-lg font-mono p-3 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#006B5B] disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="w-full text-center tracking-widest text-lg font-mono p-3 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#29B34F] disabled:bg-gray-100 disabled:cursor-not-allowed"
                 autoFocus
               />
               {error && <p className="text-xs text-red-600 font-medium mt-1.5">{error}</p>}
@@ -1879,7 +1879,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
             <button
               type="submit"
               disabled={isLoggingIn}
-              className="w-full py-3 rounded-xl bg-[#006B5B] hover:bg-[#004D40] disabled:opacity-60 text-white font-bold text-sm shadow-xs transition-colors cursor-pointer flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-xl bg-[#29B34F] hover:bg-[#166534] disabled:opacity-60 text-white font-bold text-sm shadow-xs transition-colors cursor-pointer flex items-center justify-center gap-2"
             >
               {isLoggingIn ? (
                 <>
@@ -1894,10 +1894,10 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
           <div className="pt-2 flex items-center justify-between text-[11px] text-gray-400 border-t border-gray-100">
             <span className="flex items-center gap-1 text-gray-500">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#006B5B]" />
+              <ShieldCheck className="w-3.5 h-3.5 text-[#29B34F]" />
               <span>সুরক্ষিত অ্যাডমিন পোর্টাল</span>
             </span>
-            <Link href="/" className="text-[#006B5B] hover:underline font-semibold flex items-center gap-1">
+            <Link href="/" className="text-[#29B34F] hover:underline font-semibold flex items-center gap-1">
               <span>← মূল ওয়েবসাইট</span>
             </Link>
           </div>
@@ -1909,7 +1909,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
   return (
     <div className="min-h-screen bg-[#FAFAF7] flex flex-col">
       {/* Dedicated Admin Sticky Header */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#006B5B]/15 shadow-2xs">
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#29B34F]/15 shadow-2xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-18">
             {/* Left: Logo & Admin Badge */}
@@ -1934,7 +1934,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   />
                 </div>
               </Link>
-              <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#006B5B]/10 text-[#006B5B] text-xs font-bold border border-[#006B5B]/20">
+              <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#29B34F]/10 text-[#29B34F] text-xs font-bold border border-[#29B34F]/20">
                 <ShieldCheck className="w-3.5 h-3.5" />
                 <span>অ্যাডমিন পোর্টাল</span>
               </span>
@@ -1952,12 +1952,12 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 href="/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-[#006B5B] text-xs font-bold flex items-center gap-1.5 border border-[#006B5B]/20 transition-all cursor-pointer shadow-2xs"
+                className="px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-[#29B34F] text-xs font-bold flex items-center gap-1.5 border border-[#29B34F]/20 transition-all cursor-pointer shadow-2xs"
                 title="নতুন ট্যাবে মূল ওয়েবসাইট দেখুন"
               >
                 <Globe className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">মূল ওয়েবসাইট দেখুন</span>
-                <ExternalLink className="w-3 h-3 text-[#006B5B]/70" />
+                <ExternalLink className="w-3 h-3 text-[#29B34F]/70" />
               </Link>
 
               <button
@@ -1980,8 +1980,8 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 onClick={() => setActiveTab("overview")}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer ${
                   activeTab === "overview"
-                    ? "bg-[#006B5B] text-white shadow-xs"
-                    : "text-gray-600 hover:text-[#006B5B] hover:bg-white"
+                    ? "bg-[#29B34F] text-white shadow-xs"
+                    : "text-gray-600 hover:text-[#29B34F] hover:bg-white"
                 }`}
               >
                 <BarChart3 className="w-3.5 h-3.5" />
@@ -1992,8 +1992,8 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 onClick={() => setActiveTab("bookings")}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer ${
                   activeTab === "bookings"
-                    ? "bg-[#006B5B] text-white shadow-xs"
-                    : "text-gray-600 hover:text-[#006B5B] hover:bg-white"
+                    ? "bg-[#29B34F] text-white shadow-xs"
+                    : "text-gray-600 hover:text-[#29B34F] hover:bg-white"
                 }`}
               >
                 <Users className="w-3.5 h-3.5" />
@@ -2013,8 +2013,8 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 onClick={() => setActiveTab("appointments")}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer ${
                   activeTab === "appointments"
-                    ? "bg-[#006B5B] text-white shadow-xs"
-                    : "text-gray-600 hover:text-[#006B5B] hover:bg-white"
+                    ? "bg-[#29B34F] text-white shadow-xs"
+                    : "text-gray-600 hover:text-[#29B34F] hover:bg-white"
                 }`}
               >
                 <Calendar className="w-3.5 h-3.5 text-[#D4A017]" />
@@ -2033,8 +2033,8 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 onClick={() => setActiveTab("accounting")}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer ${
                   activeTab === "accounting"
-                    ? "bg-[#006B5B] text-white shadow-xs"
-                    : "text-gray-600 hover:text-[#006B5B] hover:bg-white"
+                    ? "bg-[#29B34F] text-white shadow-xs"
+                    : "text-gray-600 hover:text-[#29B34F] hover:bg-white"
                 }`}
               >
                 <Receipt className="w-3.5 h-3.5" />
@@ -2054,8 +2054,8 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 onClick={() => setActiveTab("popup")}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer ${
                   activeTab === "popup"
-                    ? "bg-[#006B5B] text-white shadow-xs"
-                    : "text-gray-600 hover:text-[#006B5B] hover:bg-white"
+                    ? "bg-[#29B34F] text-white shadow-xs"
+                    : "text-gray-600 hover:text-[#29B34F] hover:bg-white"
                 }`}
               >
                 <Gift className="w-3.5 h-3.5 text-[#D4A017]" />
@@ -2067,8 +2067,8 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 onClick={() => setActiveTab("store")}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer ${
                   activeTab === "store"
-                    ? "bg-[#006B5B] text-white shadow-xs"
-                    : "text-gray-600 hover:text-[#006B5B] hover:bg-white"
+                    ? "bg-[#29B34F] text-white shadow-xs"
+                    : "text-gray-600 hover:text-[#29B34F] hover:bg-white"
                 }`}
               >
                 <ShoppingBag className="w-3.5 h-3.5" />
@@ -2089,7 +2089,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div 
               onClick={() => setActiveTab("accounting")}
-              className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1 cursor-pointer hover:border-[#006B5B] hover:shadow-xs transition-all group"
+              className="p-5 rounded-3xl bg-white border border-[#29B34F]/15 shadow-2xs space-y-1 cursor-pointer hover:border-[#29B34F] hover:shadow-xs transition-all group"
               title="ক্লিক করে মাসিক ও বাৎসরিক পূর্ণাঙ্গ হিসাব দেখুন"
             >
               <span className="text-xs text-gray-500 font-medium flex items-center justify-between">
@@ -2101,7 +2101,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 <span className="text-gray-500 font-medium">
                   মোট ধার্য ফি: ৳{totalFeeSum.toLocaleString("bn-BD")}
                 </span>
-                <span className="text-[#006B5B] font-bold group-hover:underline">রিপোর্ট →</span>
+                <span className="text-[#29B34F] font-bold group-hover:underline">রিপোর্ট →</span>
               </div>
             </div>
 
@@ -2110,7 +2110,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 setActiveTab("accounting");
                 setAccountingDueOnly(true);
               }}
-              className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1 cursor-pointer hover:border-amber-400 hover:shadow-xs transition-all group"
+              className="p-5 rounded-3xl bg-white border border-[#29B34F]/15 shadow-2xs space-y-1 cursor-pointer hover:border-amber-400 hover:shadow-xs transition-all group"
               title="ক্লিক করে সকল বকেয়া রোগীর বিস্তারিত তালিকা দেখুন"
             >
               <span className="text-xs text-gray-500 font-medium flex items-center justify-between">
@@ -2130,14 +2130,14 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               </div>
             </div>
 
-            <div className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1">
+            <div className="p-5 rounded-3xl bg-white border border-[#29B34F]/15 shadow-2xs space-y-1">
               <span className="text-xs text-gray-500 font-medium">নিবন্ধিত রোগী</span>
-              <p className="text-2xl font-bold text-[#004D40]">{patientsList.length} জন</p>
+              <p className="text-2xl font-bold text-[#166534]">{patientsList.length} জন</p>
               <div className="text-[11px] font-semibold">
                 {todayFollowups.length > 0 ? (
                   <span className="text-rose-600 font-bold">🔴 আজ {todayFollowups.length} জনের ফলো-আপ</span>
                 ) : (
-                  <span className="text-[#006B5B]">
+                  <span className="text-[#29B34F]">
                     {patientsList.filter((p) => p.status === "followup").length} জনের ফলো-আপ প্রয়োজন
                   </span>
                 )}
@@ -2146,14 +2146,14 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
             <div 
               onClick={() => setActiveTab("appointments")}
-              className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-2xs space-y-1 cursor-pointer hover:border-[#006B5B] hover:shadow-xs transition-all group"
+              className="p-5 rounded-3xl bg-white border border-[#29B34F]/15 shadow-2xs space-y-1 cursor-pointer hover:border-[#29B34F] hover:shadow-xs transition-all group"
               title="ক্লিক করে সকল অনলাইন অ্যাপয়েন্টমেন্ট রিকোয়েস্ট দেখুন"
             >
               <span className="text-xs text-gray-500 font-medium flex items-center justify-between">
                 <span>অনলাইন বুকিং</span>
-                <Calendar className="w-4 h-4 text-[#006B5B] group-hover:scale-110 transition-transform" />
+                <Calendar className="w-4 h-4 text-[#29B34F] group-hover:scale-110 transition-transform" />
               </span>
-              <p className="text-2xl font-bold text-[#004D40]">{onlineAppointments.length} টি</p>
+              <p className="text-2xl font-bold text-[#166534]">{onlineAppointments.length} টি</p>
               <div className="text-[11px] font-semibold flex items-center justify-between">
                 {onlineAppointments.filter((a) => a.status === "pending").length > 0 ? (
                   <span className="text-rose-600 font-bold animate-pulse">
@@ -2162,22 +2162,22 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 ) : (
                   <span className="text-emerald-600 font-semibold">✓ সব আপডেট করা</span>
                 )}
-                <span className="text-[#006B5B] font-bold group-hover:underline">তালিকা →</span>
+                <span className="text-[#29B34F] font-bold group-hover:underline">তালিকা →</span>
               </div>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Quick Patients Table */}
-          <div className="p-6 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
+          <div className="p-6 rounded-3xl bg-white border border-[#29B34F]/15 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-              <h3 className="font-bold text-base text-[#004D40] flex items-center gap-2">
-                <Users className="w-4 h-4 text-[#006B5B]" />
+              <h3 className="font-bold text-base text-[#166534] flex items-center gap-2">
+                <Users className="w-4 h-4 text-[#29B34F]" />
                 সর্বশেষ রোগী ও কনসালটেশন
               </h3>
               <button
                 onClick={() => setActiveTab("bookings")}
-                className="text-xs text-[#006B5B] font-semibold hover:underline cursor-pointer"
+                className="text-xs text-[#29B34F] font-semibold hover:underline cursor-pointer"
               >
                 সকল রোগী দেখুন →
               </button>
@@ -2215,7 +2215,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   <div className="flex items-center gap-2">
                     <span className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-full border ${
                       p.status === "running"
-                        ? "bg-emerald-50 text-[#004D40] border-emerald-200/70"
+                        ? "bg-emerald-50 text-[#166534] border-emerald-200/70"
                         : p.status === "followup"
                         ? "bg-teal-50 text-teal-900 border-teal-200/70"
                         : p.status === "cured"
@@ -2247,11 +2247,11 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
           </div>
 
           {/* Patient Follow-up Scheduling Radar & Action Center */}
-          <div className="p-0 sm:p-6 rounded-none sm:rounded-3xl bg-transparent sm:bg-white border-0 sm:border sm:border-[#006B5B]/15 shadow-none sm:shadow-xs space-y-4">
+          <div className="p-0 sm:p-6 rounded-none sm:rounded-3xl bg-transparent sm:bg-white border-0 sm:border sm:border-[#29B34F]/15 shadow-none sm:shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-gray-100 pb-3">
               <div>
-                <h3 className="font-bold text-base text-[#004D40] flex items-center gap-2">
-                  <CalendarDays className="w-4 h-4 text-[#006B5B]" />
+                <h3 className="font-bold text-base text-[#166534] flex items-center gap-2">
+                  <CalendarDays className="w-4 h-4 text-[#29B34F]" />
                   ফলো-আপ শিডিউল ও রাডার
                 </h3>
                 <p className="text-[11px] text-gray-500 mt-0.5">
@@ -2263,7 +2263,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   setActiveTab("bookings");
                   setPatientFilter("today_followup");
                 }}
-                className="text-xs text-[#006B5B] font-bold hover:underline cursor-pointer"
+                className="text-xs text-[#29B34F] font-bold hover:underline cursor-pointer"
               >
                 শিডিউল তালিকা →
               </button>
@@ -2321,7 +2321,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                                 ? "bg-rose-600 text-white animate-pulse" 
                                 : isOverdue 
                                 ? "bg-rose-100 text-rose-800" 
-                                : "bg-emerald-100 text-[#004D40]"
+                                : "bg-emerald-100 text-[#166534]"
                             }`}>
                               {isToday 
                                 ? "আজকের দিন" 
@@ -2334,7 +2334,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                             {p.phone} • {p.problemType}
                           </p>
                           {p.nextFollowupNote && (
-                            <p className="text-[11px] text-[#004D40] font-semibold bg-emerald-50/70 px-2 py-0.5 rounded-md inline-block mt-0.5">
+                            <p className="text-[11px] text-[#166534] font-semibold bg-emerald-50/70 px-2 py-0.5 rounded-md inline-block mt-0.5">
                               নোট: {p.nextFollowupNote}
                             </p>
                           )}
@@ -2363,7 +2363,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           <button
                             type="button"
                             onClick={() => handleQuickScheduleFollowup(p.id, 7)}
-                            className="px-2 py-0.5 rounded-md bg-gray-100 hover:bg-[#006B5B] hover:text-white text-gray-700 font-semibold transition-colors cursor-pointer"
+                            className="px-2 py-0.5 rounded-md bg-gray-100 hover:bg-[#29B34F] hover:text-white text-gray-700 font-semibold transition-colors cursor-pointer"
                             title="৭ দিন পর পুনঃনির্ধারণ করুন"
                           >
                             +৭ দিন
@@ -2371,7 +2371,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           <button
                             type="button"
                             onClick={() => handleQuickScheduleFollowup(p.id, 14)}
-                            className="px-2 py-0.5 rounded-md bg-gray-100 hover:bg-[#006B5B] hover:text-white text-gray-700 font-semibold transition-colors cursor-pointer"
+                            className="px-2 py-0.5 rounded-md bg-gray-100 hover:bg-[#29B34F] hover:text-white text-gray-700 font-semibold transition-colors cursor-pointer"
                             title="১৪ দিন পর পুনঃনির্ধারণ করুন"
                           >
                             +১৪ দিন
@@ -2399,14 +2399,14 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
       {activeTab === "appointments" && (
         <div className="space-y-6">
           {/* Top Header Card */}
-          <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
+          <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#29B34F]/15 shadow-xs space-y-4">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-100 pb-5">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="p-2 rounded-xl bg-emerald-50 text-[#006B5B]">
-                    <Calendar className="w-5 h-5 text-[#006B5B]" />
+                  <span className="p-2 rounded-xl bg-emerald-50 text-[#29B34F]">
+                    <Calendar className="w-5 h-5 text-[#29B34F]" />
                   </span>
-                  <h3 className="font-extrabold text-xl text-[#004D40]">
+                  <h3 className="font-extrabold text-xl text-[#166534]">
                     অনলাইন রুকইয়াহ ও ডায়াগনোসিস অ্যাপয়েন্টমেন্ট
                   </h3>
                 </div>
@@ -2416,7 +2416,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-[#006B5B] text-xs font-bold">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-[#29B34F] text-xs font-bold">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
                   রিয়েল-টাইম ক্লাউড সিঙ্ক চালু
                 </span>
@@ -2428,7 +2428,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               <div 
                 onClick={() => setAppointmentFilter("all")}
                 className={`p-3.5 rounded-2xl border text-center cursor-pointer transition-all ${
-                  appointmentFilter === "all" ? "bg-[#006B5B]/10 border-[#006B5B] font-bold" : "bg-gray-50 border-gray-200"
+                  appointmentFilter === "all" ? "bg-[#29B34F]/10 border-[#29B34F] font-bold" : "bg-gray-50 border-gray-200"
                 }`}
               >
                 <span className="text-xs text-gray-500 block">মোট আবেদন</span>
@@ -2481,7 +2481,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   placeholder="রোগীর নাম, ফোন নম্বর বা জেলা দিয়ে খুঁজুন..."
                   value={appointmentSearch}
                   onChange={(e) => setAppointmentSearch(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200 text-xs md:text-sm focus:outline-hidden focus:border-[#006B5B] bg-white"
+                  className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200 text-xs md:text-sm focus:outline-hidden focus:border-[#29B34F] bg-white"
                 />
               </div>
 
@@ -2500,7 +2500,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       onClick={() => setAppointmentFilter(st)}
                       className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
                         appointmentFilter === st
-                          ? "bg-[#006B5B] text-white"
+                          ? "bg-[#29B34F] text-white"
                           : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                       }`}
                     >
@@ -2515,7 +2515,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
           {/* Appointments Grid */}
           {filteredAppointments.length === 0 ? (
             <div className="p-12 text-center rounded-3xl bg-white border border-gray-200 space-y-3">
-              <div className="w-12 h-12 rounded-full bg-emerald-50 text-[#006B5B] flex items-center justify-center mx-auto">
+              <div className="w-12 h-12 rounded-full bg-emerald-50 text-[#29B34F] flex items-center justify-center mx-auto">
                 <Calendar className="w-6 h-6" />
               </div>
               <h4 className="font-bold text-gray-700 text-sm">কোনো অনলাইন অ্যাপয়েন্টমেন্ট রেকর্ড পাওয়া যায়নি</h4>
@@ -2536,7 +2536,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 return (
                   <div
                     key={apt.id || apt.createdAt}
-                    className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 hover:border-[#006B5B]/40 shadow-2xs hover:shadow-xs transition-all space-y-4 flex flex-col justify-between"
+                    className="p-5 rounded-3xl bg-white border border-[#29B34F]/15 hover:border-[#29B34F]/40 shadow-2xs hover:shadow-xs transition-all space-y-4 flex flex-col justify-between"
                   >
                     <div className="space-y-3">
                       {/* Header row */}
@@ -2589,7 +2589,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                                 ? "🩸 হিজামা"
                                 : "🌿 রুকইয়াহ"}
                             </span>
-                            <span className="font-bold text-[#006B5B] flex items-center gap-1">
+                            <span className="font-bold text-[#29B34F] flex items-center gap-1">
                               <Sparkles className="w-3.5 h-3.5 text-[#D4A017]" />
                               {apt.serviceName}
                             </span>
@@ -2650,7 +2650,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                         <button
                           type="button"
                           onClick={() => handleConvertAppointmentToPatient(apt)}
-                          className="px-3.5 py-1.5 rounded-xl bg-[#006B5B] hover:bg-[#004D40] text-white font-bold transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer"
+                          className="px-3.5 py-1.5 rounded-xl bg-[#29B34F] hover:bg-[#166534] text-white font-bold transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer"
                           title="এই আবেদনটি সরাসরি রোগী ও ফলো-আপ তালিকায় ট্রান্সফার করুন"
                         >
                           <UserPlus className="w-3.5 h-3.5" />
@@ -2678,14 +2678,14 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
       {activeTab === "bookings" && (
         <div className="space-y-6">
           {/* Top Header Card */}
-          <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
+          <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#29B34F]/15 shadow-xs space-y-4">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-100 pb-5">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="p-2 rounded-xl bg-emerald-50 text-[#006B5B]">
+                  <span className="p-2 rounded-xl bg-emerald-50 text-[#29B34F]">
                     <Users className="w-5 h-5" />
                   </span>
-                  <h3 className="font-extrabold text-xl text-[#004D40]">
+                  <h3 className="font-extrabold text-xl text-[#166534]">
                     রোগী ও কনসালটেশন রেকর্ড (Patient Management & CRM)
                   </h3>
                 </div>
@@ -2707,7 +2707,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
                 <button
                   onClick={handleExportCSV}
-                  className="px-4 py-2.5 rounded-xl border border-gray-200 hover:border-[#006B5B] text-gray-700 hover:text-[#006B5B] text-xs font-bold flex items-center gap-2 transition-colors cursor-pointer shadow-2xs"
+                  className="px-4 py-2.5 rounded-xl border border-gray-200 hover:border-[#29B34F] text-gray-700 hover:text-[#29B34F] text-xs font-bold flex items-center gap-2 transition-colors cursor-pointer shadow-2xs"
                   title="সকল রোগীর তথ্য এক্সেল (CSV) ফাইলে ডাউনলোড করুন"
                 >
                   <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
@@ -2716,7 +2716,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
                 <button
                   onClick={handleOpenAddPatient}
-                  className="px-5 py-2.5 rounded-xl bg-[#006B5B] hover:bg-[#004D40] text-white text-xs font-bold flex items-center gap-2 transition-all shadow-xs cursor-pointer active:scale-98"
+                  className="px-5 py-2.5 rounded-xl bg-[#29B34F] hover:bg-[#166534] text-white text-xs font-bold flex items-center gap-2 transition-all shadow-xs cursor-pointer active:scale-98"
                 >
                   <UserPlus className="w-4 h-4" />
                   <span>নতুন রোগী এন্ট্রি করুন</span>
@@ -2730,19 +2730,19 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 onClick={() => setPatientFilter("all")}
                 className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
                   patientFilter === "all" 
-                    ? "bg-[#006B5B]/10 border-[#006B5B] ring-1 ring-[#006B5B] shadow-2xs" 
-                    : "bg-white border-gray-200/90 text-gray-800 hover:border-[#006B5B]/30 shadow-2xs"
+                    ? "bg-[#29B34F]/10 border-[#29B34F] ring-1 ring-[#29B34F] shadow-2xs" 
+                    : "bg-white border-gray-200/90 text-gray-800 hover:border-[#29B34F]/30 shadow-2xs"
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className={`text-[11px] font-semibold ${patientFilter === "all" ? "text-[#004D40] font-bold" : "text-gray-500"}`}>
+                  <span className={`text-[11px] font-semibold ${patientFilter === "all" ? "text-[#166534] font-bold" : "text-gray-500"}`}>
                     মোট রোগী
                   </span>
-                  <div className={`p-1.5 rounded-lg ${patientFilter === "all" ? "bg-[#006B5B] text-white" : "bg-gray-100 text-gray-500"}`}>
+                  <div className={`p-1.5 rounded-lg ${patientFilter === "all" ? "bg-[#29B34F] text-white" : "bg-gray-100 text-gray-500"}`}>
                     <Users className="w-3.5 h-3.5" />
                   </div>
                 </div>
-                <div className="text-xl font-extrabold text-[#004D40] mt-1">{patientsList.length} জন</div>
+                <div className="text-xl font-extrabold text-[#166534] mt-1">{patientsList.length} জন</div>
                 <span className="text-[10px] text-gray-400">সকল নিবন্ধিত রেকর্ড</span>
               </div>
 
@@ -2790,19 +2790,19 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 onClick={() => setPatientFilter("online")}
                 className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
                   patientFilter === "online" 
-                    ? "bg-[#006B5B]/10 border-[#006B5B] ring-1 ring-[#006B5B] shadow-2xs" 
-                    : "bg-white border-gray-200/90 text-gray-800 hover:border-[#006B5B]/30 shadow-2xs"
+                    ? "bg-[#29B34F]/10 border-[#29B34F] ring-1 ring-[#29B34F] shadow-2xs" 
+                    : "bg-white border-gray-200/90 text-gray-800 hover:border-[#29B34F]/30 shadow-2xs"
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className={`text-[11px] font-semibold ${patientFilter === "online" ? "text-[#004D40] font-bold" : "text-gray-500"}`}>
+                  <span className={`text-[11px] font-semibold ${patientFilter === "online" ? "text-[#166534] font-bold" : "text-gray-500"}`}>
                     অনলাইন
                   </span>
-                  <div className={`p-1.5 rounded-lg ${patientFilter === "online" ? "bg-[#006B5B] text-white" : "bg-gray-100 text-gray-500"}`}>
+                  <div className={`p-1.5 rounded-lg ${patientFilter === "online" ? "bg-[#29B34F] text-white" : "bg-gray-100 text-gray-500"}`}>
                     <Globe className="w-3.5 h-3.5" />
                   </div>
                 </div>
-                <div className="text-xl font-extrabold text-[#004D40] mt-1">
+                <div className="text-xl font-extrabold text-[#166534] mt-1">
                   {patientsList.filter((p) => p.type === "online").length} জন
                 </div>
                 <span className="text-[10px] text-gray-400">ফোন বা ভিডিও কল</span>
@@ -2812,19 +2812,19 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 onClick={() => setPatientFilter("offline")}
                 className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
                   patientFilter === "offline" 
-                    ? "bg-[#006B5B]/10 border-[#006B5B] ring-1 ring-[#006B5B] shadow-2xs" 
-                    : "bg-white border-gray-200/90 text-gray-800 hover:border-[#006B5B]/30 shadow-2xs"
+                    ? "bg-[#29B34F]/10 border-[#29B34F] ring-1 ring-[#29B34F] shadow-2xs" 
+                    : "bg-white border-gray-200/90 text-gray-800 hover:border-[#29B34F]/30 shadow-2xs"
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className={`text-[11px] font-semibold ${patientFilter === "offline" ? "text-[#004D40] font-bold" : "text-gray-500"}`}>
+                  <span className={`text-[11px] font-semibold ${patientFilter === "offline" ? "text-[#166534] font-bold" : "text-gray-500"}`}>
                     সরাসরি চেম্বার
                   </span>
-                  <div className={`p-1.5 rounded-lg ${patientFilter === "offline" ? "bg-[#006B5B] text-white" : "bg-gray-100 text-gray-500"}`}>
+                  <div className={`p-1.5 rounded-lg ${patientFilter === "offline" ? "bg-[#29B34F] text-white" : "bg-gray-100 text-gray-500"}`}>
                     <Building2 className="w-3.5 h-3.5" />
                   </div>
                 </div>
-                <div className="text-xl font-extrabold text-[#004D40] mt-1">
+                <div className="text-xl font-extrabold text-[#166534] mt-1">
                   {patientsList.filter((p) => p.type === "offline").length} জন
                 </div>
                 <span className="text-[10px] text-gray-400">সেন্টারে উপস্থিত</span>
@@ -2837,7 +2837,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     ? "bg-rose-50 border-rose-400 ring-1 ring-rose-400 shadow-2xs" 
                     : todayFollowups.length > 0
                     ? "bg-rose-50/40 border-rose-200 text-gray-800 hover:border-rose-400 shadow-2xs"
-                    : "bg-white border-gray-200/90 text-gray-800 hover:border-[#006B5B]/30 shadow-2xs"
+                    : "bg-white border-gray-200/90 text-gray-800 hover:border-[#29B34F]/30 shadow-2xs"
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -2848,7 +2848,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     <CalendarDays className="w-3.5 h-3.5" />
                   </div>
                 </div>
-                <div className={`text-xl font-extrabold mt-1 ${todayFollowups.length > 0 ? "text-rose-800" : "text-[#004D40]"}`}>
+                <div className={`text-xl font-extrabold mt-1 ${todayFollowups.length > 0 ? "text-rose-800" : "text-[#166534]"}`}>
                   {todayFollowups.length} জন
                 </div>
                 <span className="text-[10px] text-gray-400">
@@ -2864,7 +2864,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 <button
                   onClick={() => setPatientFilter("all")}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                    patientFilter === "all" ? "bg-white text-[#004D40] shadow-xs" : "text-gray-600 hover:text-[#006B5B]"
+                    patientFilter === "all" ? "bg-white text-[#166534] shadow-xs" : "text-gray-600 hover:text-[#29B34F]"
                   }`}
                 >
                   <Users className="w-3.5 h-3.5" />
@@ -2895,7 +2895,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       ? "bg-rose-600 text-white shadow-xs" 
                       : todayFollowups.length > 0 
                       ? "bg-rose-100/80 text-rose-800 hover:bg-rose-200" 
-                      : "text-gray-600 hover:text-[#006B5B]"
+                      : "text-gray-600 hover:text-[#29B34F]"
                   }`}
                 >
                   <CalendarDays className="w-3.5 h-3.5" />
@@ -2904,7 +2904,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 <button
                   onClick={() => setPatientFilter("upcoming_followup")}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                    patientFilter === "upcoming_followup" ? "bg-[#006B5B] text-white shadow-xs" : "text-gray-600 hover:text-[#006B5B]"
+                    patientFilter === "upcoming_followup" ? "bg-[#29B34F] text-white shadow-xs" : "text-gray-600 hover:text-[#29B34F]"
                   }`}
                 >
                   <Clock className="w-3.5 h-3.5" />
@@ -2913,7 +2913,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 <button
                   onClick={() => setPatientFilter("overdue_followup")}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                    patientFilter === "overdue_followup" ? "bg-gray-800 text-white shadow-xs" : "text-gray-600 hover:text-[#006B5B]"
+                    patientFilter === "overdue_followup" ? "bg-gray-800 text-white shadow-xs" : "text-gray-600 hover:text-[#29B34F]"
                   }`}
                 >
                   <AlertCircle className="w-3.5 h-3.5" />
@@ -2922,7 +2922,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 <button
                   onClick={() => setPatientFilter("online")}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                    patientFilter === "online" ? "bg-white text-[#006B5B] shadow-xs" : "text-gray-600 hover:text-[#006B5B]"
+                    patientFilter === "online" ? "bg-white text-[#29B34F] shadow-xs" : "text-gray-600 hover:text-[#29B34F]"
                   }`}
                 >
                   <Globe className="w-3.5 h-3.5" />
@@ -2931,7 +2931,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 <button
                   onClick={() => setPatientFilter("offline")}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                    patientFilter === "offline" ? "bg-white text-[#006B5B] shadow-xs" : "text-gray-600 hover:text-[#006B5B]"
+                    patientFilter === "offline" ? "bg-white text-[#29B34F] shadow-xs" : "text-gray-600 hover:text-[#29B34F]"
                   }`}
                 >
                   <Building2 className="w-3.5 h-3.5" />
@@ -2940,7 +2940,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 <button
                   onClick={() => setPatientFilter("followup")}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                    patientFilter === "followup" ? "bg-white text-[#006B5B] shadow-xs" : "text-gray-600 hover:text-[#006B5B]"
+                    patientFilter === "followup" ? "bg-white text-[#29B34F] shadow-xs" : "text-gray-600 hover:text-[#29B34F]"
                   }`}
                 >
                   <Bell className="w-3.5 h-3.5" />
@@ -2949,7 +2949,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 <button
                   onClick={() => setPatientFilter("cured")}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                    patientFilter === "cured" ? "bg-white text-[#006B5B] shadow-xs" : "text-gray-600 hover:text-[#006B5B]"
+                    patientFilter === "cured" ? "bg-white text-[#29B34F] shadow-xs" : "text-gray-600 hover:text-[#29B34F]"
                   }`}
                 >
                   <CheckCircle2 className="w-3.5 h-3.5" />
@@ -2965,7 +2965,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   value={patientSearch}
                   onChange={(e) => setPatientSearch(e.target.value)}
                   placeholder="নাম, ফোন, এলাকা বা সমস্যা দিয়ে খুঁজুন..."
-                  className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200 text-xs outline-none focus:border-[#006B5B] bg-[#FAFAF7]"
+                  className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200 text-xs outline-none focus:border-[#29B34F] bg-[#FAFAF7]"
                 />
               </div>
             </div>
@@ -2980,7 +2980,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     onClick={() => setPatientViewPreference("drawer")}
                     className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer ${
                       patientViewPreference === "drawer"
-                        ? "bg-white text-[#004D40] font-bold shadow-2xs"
+                        ? "bg-white text-[#166534] font-bold shadow-2xs"
                         : "text-gray-500 hover:text-gray-900"
                     }`}
                     title="ক্লিক করলে পাশে স্লাইড-ওভার প্যানেল খুলবে"
@@ -2993,7 +2993,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     onClick={() => setPatientViewPreference("accordion")}
                     className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer ${
                       patientViewPreference === "accordion"
-                        ? "bg-white text-[#004D40] font-bold shadow-2xs"
+                        ? "bg-white text-[#166534] font-bold shadow-2xs"
                         : "text-gray-500 hover:text-gray-900"
                     }`}
                     title="ক্লিক করলে নিচে বিস্তারিত খুলবে"
@@ -3044,7 +3044,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 </p>
                 <button
                   onClick={handleOpenAddPatient}
-                  className="px-4 py-2 rounded-xl bg-[#006B5B] text-white text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-[#29B34F] text-white text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer"
                 >
                   <UserPlus className="w-3.5 h-3.5" />
                   <span>নতুন রোগী যুক্ত করুন</span>
@@ -3060,8 +3060,8 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     key={p.id}
                     className={`rounded-2xl border transition-all duration-200 overflow-hidden bg-white ${
                       isSelectedInDrawer
-                        ? "border-[#006B5B] ring-2 ring-[#006B5B]/20 shadow-xs"
-                        : "border-gray-200 hover:border-[#006B5B]/30 shadow-2xs hover:shadow-xs"
+                        ? "border-[#29B34F] ring-2 ring-[#29B34F]/20 shadow-xs"
+                        : "border-gray-200 hover:border-[#29B34F]/30 shadow-2xs hover:shadow-xs"
                     }`}
                   >
                     {/* Compact Main Row */}
@@ -3110,7 +3110,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
                         <span className={`text-[10px] sm:text-[11px] font-semibold px-2.5 py-0.5 rounded-md flex items-center gap-1 shrink-0 ${
                           p.type === "online" 
-                            ? "bg-emerald-50 text-[#006B5B] border border-emerald-200/60" 
+                            ? "bg-emerald-50 text-[#29B34F] border border-emerald-200/60" 
                             : "bg-teal-50 text-teal-800 border border-teal-200/60"
                         }`}>
                           {p.type === "online" ? <Globe className="w-3 h-3" /> : <Building2 className="w-3 h-3" />}
@@ -3133,7 +3133,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           p.status === "new"
                             ? "bg-amber-50 text-amber-800 border border-amber-200/70"
                             : p.status === "running"
-                            ? "bg-emerald-50 text-[#004D40] border border-emerald-200/70"
+                            ? "bg-emerald-50 text-[#166534] border border-emerald-200/70"
                             : p.status === "followup"
                             ? "bg-teal-50 text-teal-900 border border-teal-200/70 font-semibold"
                             : "bg-gray-50 text-gray-700 border border-gray-200/70"
@@ -3146,7 +3146,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           )}
                           {p.status === "running" && (
                             <>
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#006B5B] shrink-0" />
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#29B34F] shrink-0" />
                               <span>চিকিৎসা চলছে</span>
                             </>
                           )}
@@ -3158,7 +3158,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           )}
                           {p.status === "cured" && (
                             <>
-                              <CheckCircle2 className="w-3 h-3 text-[#006B5B] shrink-0" />
+                              <CheckCircle2 className="w-3 h-3 text-[#29B34F] shrink-0" />
                               <span>সুস্থ ও সমাপ্ত</span>
                             </>
                           )}
@@ -3171,7 +3171,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                               ? "bg-rose-600 text-white animate-pulse shadow-2xs"
                               : (getDaysDifference(p.nextFollowupDate) ?? 0) < 0
                               ? "bg-red-50 text-red-800 border border-red-200"
-                              : "bg-emerald-50 text-[#004D40] border border-emerald-200"
+                              : "bg-emerald-50 text-[#166534] border border-emerald-200"
                           }`}>
                             <CalendarDays className="w-3 h-3 shrink-0" />
                             <span>
@@ -3221,7 +3221,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                             href={getDirectChatWhatsAppUrl(p)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="p-1.5 rounded-lg bg-[#25D366]/10 text-[#006B5B] hover:bg-[#25D366] hover:text-white transition-all cursor-pointer"
+                            className="p-1.5 rounded-lg bg-[#25D366]/10 text-[#29B34F] hover:bg-[#25D366] hover:text-white transition-all cursor-pointer"
                             title="সরাসরি WhatsApp চ্যাট শুরু করুন"
                           >
                             <MessageCircle className="w-4 h-4" />
@@ -3233,7 +3233,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                               href={getFollowupWhatsAppUrl(p)}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-2.5 py-1 rounded-lg bg-[#006B5B] hover:bg-[#004D40] text-white text-[11px] font-bold flex items-center gap-1 shadow-2xs transition-colors cursor-pointer"
+                              className="px-2.5 py-1 rounded-lg bg-[#29B34F] hover:bg-[#166534] text-white text-[11px] font-bold flex items-center gap-1 shadow-2xs transition-colors cursor-pointer"
                               title="রোগীর খোঁজ নেওয়ার জন্য স্বয়ংক্রিয় বাংলা ফলো-আপ মেসেজ পাঠান"
                             >
                               <HeartHandshake className="w-3.5 h-3.5" />
@@ -3245,7 +3245,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           <button
                             type="button"
                             onClick={() => handleOpenPatientDrawer(p)}
-                            className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-[#006B5B] transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-[#29B34F] transition-colors cursor-pointer"
                             title="সাইড প্যানেলে বিস্তারিত ও ফলো-আপ দেখুন"
                           >
                             <PanelRight className="w-4 h-4" />
@@ -3259,7 +3259,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                             title={isExpanded ? "সংক্ষেপ করুন" : "নিচে বিস্তারিত দেখুন"}
                           >
                             {isExpanded ? (
-                              <ChevronUp className="w-4 h-4 text-[#006B5B]" />
+                              <ChevronUp className="w-4 h-4 text-[#29B34F]" />
                             ) : (
                               <ChevronDown className="w-4 h-4" />
                             )}
@@ -3278,7 +3278,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                             <select
                               value={p.status}
                               onChange={(e) => handleUpdatePatientStatus(p.id, e.target.value as any)}
-                              className="text-xs font-semibold px-3 py-1.5 rounded-xl border border-gray-200 outline-none bg-white text-gray-800 focus:border-[#006B5B] cursor-pointer"
+                              className="text-xs font-semibold px-3 py-1.5 rounded-xl border border-gray-200 outline-none bg-white text-gray-800 focus:border-[#29B34F] cursor-pointer"
                             >
                               <option value="new">নতুন রোগী</option>
                               <option value="running">চিকিৎসা চলছে</option>
@@ -3288,7 +3288,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           </div>
 
                           <div className="text-xs text-gray-500 flex items-center gap-2">
-                            <Clock className="w-3.5 h-3.5 text-[#006B5B]" />
+                            <Clock className="w-3.5 h-3.5 text-[#29B34F]" />
                             <span>ভিজিট: {p.date} {p.timeSlot ? `(${p.timeSlot})` : ""}</span>
                           </div>
                         </div>
@@ -3306,7 +3306,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                                   ? "bg-rose-600 text-white animate-pulse"
                                   : (getDaysDifference(p.nextFollowupDate) ?? 0) < 0
                                   ? "bg-red-100 text-red-800"
-                                  : "bg-emerald-100 text-[#004D40]"
+                                  : "bg-emerald-100 text-[#166534]"
                               }`}>
                                 {getDaysDifference(p.nextFollowupDate) === 0
                                   ? "আজ ফলো-আপের দিন"
@@ -3323,7 +3323,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                             <div className="space-y-0.5">
                               <p className="text-gray-700">
                                 <span className="font-semibold text-gray-500">পরবর্তী তারিখ: </span>
-                                <span className="font-bold text-[#004D40]">
+                                <span className="font-bold text-[#166534]">
                                   {p.nextFollowupDate ? formatBanglaFollowupDate(p.nextFollowupDate) : "নির্ধারণ করুন"}
                                 </span>
                               </p>
@@ -3339,7 +3339,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                               <button
                                 type="button"
                                 onClick={() => handleQuickScheduleFollowup(p.id, 7)}
-                                className="px-2 py-1 text-[11px] font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#006B5B] hover:text-[#006B5B] cursor-pointer"
+                                className="px-2 py-1 text-[11px] font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#29B34F] hover:text-[#29B34F] cursor-pointer"
                                 title="৭ দিন পর ফলো-আপ"
                               >
                                 +৭ দিন
@@ -3347,7 +3347,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                               <button
                                 type="button"
                                 onClick={() => handleQuickScheduleFollowup(p.id, 10)}
-                                className="px-2 py-1 text-[11px] font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#006B5B] hover:text-[#006B5B] cursor-pointer"
+                                className="px-2 py-1 text-[11px] font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#29B34F] hover:text-[#29B34F] cursor-pointer"
                                 title="১০ দিন পর ফলো-আপ"
                               >
                                 +১০ দিন
@@ -3355,7 +3355,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                               <button
                                 type="button"
                                 onClick={() => handleQuickScheduleFollowup(p.id, 14)}
-                                className="px-2 py-1 text-[11px] font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#006B5B] hover:text-[#006B5B] cursor-pointer"
+                                className="px-2 py-1 text-[11px] font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#29B34F] hover:text-[#29B34F] cursor-pointer"
                                 title="১৪ দিন পর ফলো-আপ"
                               >
                                 +১৪ দিন
@@ -3363,7 +3363,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                               <button
                                 type="button"
                                 onClick={() => handleQuickScheduleFollowup(p.id, 30)}
-                                className="px-2 py-1 text-[11px] font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#006B5B] hover:text-[#006B5B] cursor-pointer"
+                                className="px-2 py-1 text-[11px] font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#29B34F] hover:text-[#29B34F] cursor-pointer"
                                 title="১ মাস পর ফলো-আপ"
                               >
                                 +১ মাস
@@ -3385,17 +3385,17 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                         {/* Contact & Location & Age */}
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-gray-600">
                           <div className="flex items-center gap-2 bg-white p-2.5 rounded-xl border border-gray-100">
-                            <Phone className="w-4 h-4 text-[#006B5B] shrink-0" />
+                            <Phone className="w-4 h-4 text-[#29B34F] shrink-0" />
                             <div>
                               <span className="text-gray-400 block text-[10px]">মোবাইল (WhatsApp):</span>
-                              <a href={`tel:${p.phone}`} className="font-bold text-gray-900 hover:text-[#006B5B]">
+                              <a href={`tel:${p.phone}`} className="font-bold text-gray-900 hover:text-[#29B34F]">
                                 {p.phone}
                               </a>
                             </div>
                           </div>
 
                           <div className="flex items-center gap-2 bg-white p-2.5 rounded-xl border border-gray-100">
-                            <MapPin className="w-4 h-4 text-[#006B5B] shrink-0" />
+                            <MapPin className="w-4 h-4 text-[#29B34F] shrink-0" />
                             <div>
                               <span className="text-gray-400 block text-[10px]">ঠিকানা / এলাকা:</span>
                               <span className="font-medium text-gray-800">{p.address || "ঠিকানা উল্লেখ নেই"}</span>
@@ -3403,7 +3403,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           </div>
 
                           <div className="flex items-center gap-2 bg-white p-2.5 rounded-xl border border-gray-100">
-                            <Users className="w-4 h-4 text-[#006B5B] shrink-0" />
+                            <Users className="w-4 h-4 text-[#29B34F] shrink-0" />
                             <div>
                               <span className="text-gray-400 block text-[10px]">রোগীর বয়স:</span>
                               <span className="font-bold text-gray-800">{p.age ? `${p.age} বছর` : "উল্লেখ নেই"}</span>
@@ -3424,7 +3424,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           </div>
 
                           <div className="p-3.5 rounded-xl bg-emerald-50/70 border border-emerald-200/80 space-y-1">
-                            <span className="text-[11px] font-bold text-[#004D40] flex items-center gap-1.5">
+                            <span className="text-[11px] font-bold text-[#166534] flex items-center gap-1.5">
                               <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
                               <span>আমল ও প্রেসক্রিপশন:</span>
                             </span>
@@ -3444,7 +3444,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                             <div className="p-3.5 rounded-xl bg-white border border-gray-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
                               <div className="flex items-center gap-4 text-xs">
                                 <div className="flex items-center gap-1.5 text-gray-500 font-semibold">
-                                  <Coins className="w-4 h-4 text-[#006B5B]" />
+                                  <Coins className="w-4 h-4 text-[#29B34F]" />
                                   <span>ফি হিসাব:</span>
                                 </div>
                                 <div>
@@ -3492,7 +3492,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                               href={getFollowupWhatsAppUrl(p)}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-3.5 py-2 rounded-xl bg-[#006B5B] hover:bg-[#004D40] text-white font-bold text-xs flex items-center gap-1.5 shadow-2xs transition-colors cursor-pointer"
+                              className="px-3.5 py-2 rounded-xl bg-[#29B34F] hover:bg-[#166534] text-white font-bold text-xs flex items-center gap-1.5 shadow-2xs transition-colors cursor-pointer"
                               title="স্বয়ংক্রিয় বাংলা ফলো-আপ মেসেজ পাঠান"
                             >
                               <HeartHandshake className="w-3.5 h-3.5" />
@@ -3503,7 +3503,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                               href={getPrescriptionWhatsAppUrl(p)}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-3.5 py-2 rounded-xl bg-[#004D40] hover:bg-[#00382E] text-white font-bold text-xs flex items-center gap-1.5 shadow-2xs transition-colors cursor-pointer"
+                              className="px-3.5 py-2 rounded-xl bg-[#166534] hover:bg-[#14532D] text-white font-bold text-xs flex items-center gap-1.5 shadow-2xs transition-colors cursor-pointer"
                               title="নির্ধারিত প্রেসক্রিপশন রিমাইন্ডার পাঠান"
                             >
                               <Send className="w-3.5 h-3.5" />
@@ -3525,7 +3525,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           <div className="flex items-center gap-1.5">
                             <button
                               onClick={() => handleOpenEditPatient(p)}
-                              className="px-3 py-1.5 rounded-xl text-gray-600 hover:text-[#006B5B] hover:bg-emerald-50 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
+                              className="px-3 py-1.5 rounded-xl text-gray-600 hover:text-[#29B34F] hover:bg-emerald-50 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
                             >
                               <Edit3 className="w-3.5 h-3.5" />
                               <span>এডিট</span>
@@ -3560,7 +3560,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               {/* Side Panel Sheet */}
               <div className="fixed inset-y-0 right-0 w-full sm:w-[480px] md:w-[540px] bg-white shadow-2xl flex flex-col justify-between animate-in slide-in-from-right duration-300 border-l border-gray-200">
                 {/* Drawer Sticky Top Header */}
-                <div className="px-5 py-4 bg-[#004D40] text-white flex items-center justify-between shrink-0 shadow-sm">
+                <div className="px-5 py-4 bg-[#166534] text-white flex items-center justify-between shrink-0 shadow-sm">
                   <div className="flex items-center gap-2.5 min-w-0">
                     <span className="font-mono text-xs font-bold bg-white/20 text-white px-2 py-0.5 rounded-md shrink-0">
                       {selectedPatientForDrawer.id}
@@ -3619,7 +3619,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
                         <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-md flex items-center gap-1 ${
                           selectedPatientForDrawer.type === "online" 
-                            ? "bg-emerald-50 text-[#006B5B] border border-emerald-200/60" 
+                            ? "bg-emerald-50 text-[#29B34F] border border-emerald-200/60" 
                             : "bg-teal-50 text-teal-800 border border-teal-200/60"
                         }`}>
                           {selectedPatientForDrawer.type === "online" ? <Globe className="w-3 h-3" /> : <Building2 className="w-3 h-3" />}
@@ -3643,7 +3643,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       <select
                         value={selectedPatientForDrawer.status}
                         onChange={(e) => handleUpdatePatientStatus(selectedPatientForDrawer.id, e.target.value as any)}
-                        className="w-full text-xs font-semibold p-2.5 rounded-xl border border-gray-200 outline-none bg-white text-gray-800 focus:border-[#006B5B] cursor-pointer"
+                        className="w-full text-xs font-semibold p-2.5 rounded-xl border border-gray-200 outline-none bg-white text-gray-800 focus:border-[#29B34F] cursor-pointer"
                       >
                         <option value="new">নতুন রোগী</option>
                         <option value="running">চিকিৎসা চলছে</option>
@@ -3666,7 +3666,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                             ? "bg-rose-600 text-white animate-pulse"
                             : (getDaysDifference(selectedPatientForDrawer.nextFollowupDate) ?? 0) < 0
                             ? "bg-red-100 text-red-800"
-                            : "bg-emerald-100 text-[#004D40]"
+                            : "bg-emerald-100 text-[#166534]"
                         }`}>
                           {getDaysDifference(selectedPatientForDrawer.nextFollowupDate) === 0
                             ? "আজকে ফলো-আপ"
@@ -3682,7 +3682,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     <div className="text-xs space-y-1.5 text-gray-700">
                       <div className="flex items-center justify-between">
                         <span className="text-gray-500">নির্ধারিত তারিখ:</span>
-                        <span className="font-bold text-[#004D40]">
+                        <span className="font-bold text-[#166534]">
                           {selectedPatientForDrawer.nextFollowupDate 
                             ? formatBanglaFollowupDate(selectedPatientForDrawer.nextFollowupDate) 
                             : "এখনো নির্ধারণ করা হয়নি"}
@@ -3709,7 +3709,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                             key={d}
                             type="button"
                             onClick={() => handleQuickScheduleFollowup(selectedPatientForDrawer.id, d)}
-                            className="px-2.5 py-1 rounded-lg bg-white border border-gray-200 hover:border-[#006B5B] hover:text-[#006B5B] text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
+                            className="px-2.5 py-1 rounded-lg bg-white border border-gray-200 hover:border-[#29B34F] hover:text-[#29B34F] text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
                           >
                             +{d === 30 ? "১ মাস" : `${d} দিন`}
                           </button>
@@ -3738,7 +3738,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                         href={getFollowupWhatsAppUrl(selectedPatientForDrawer)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full p-3 rounded-2xl bg-[#006B5B] hover:bg-[#004D40] text-white font-bold text-xs flex items-center justify-between shadow-xs transition-colors cursor-pointer"
+                        className="w-full p-3 rounded-2xl bg-[#29B34F] hover:bg-[#166534] text-white font-bold text-xs flex items-center justify-between shadow-xs transition-colors cursor-pointer"
                       >
                         <div className="flex items-center gap-2">
                           <HeartHandshake className="w-4 h-4" />
@@ -3752,7 +3752,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                         href={getPrescriptionWhatsAppUrl(selectedPatientForDrawer)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full p-3 rounded-2xl bg-[#004D40] hover:bg-[#00382E] text-white font-bold text-xs flex items-center justify-between shadow-xs transition-colors cursor-pointer"
+                        className="w-full p-3 rounded-2xl bg-[#166534] hover:bg-[#14532D] text-white font-bold text-xs flex items-center justify-between shadow-xs transition-colors cursor-pointer"
                       >
                         <div className="flex items-center gap-2">
                           <FileText className="w-4 h-4" />
@@ -3784,7 +3784,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       <div className="p-4 rounded-2xl bg-[#FAFAF7] border border-gray-200 space-y-3 shadow-2xs">
                         <div className="flex items-center justify-between">
                           <span className="text-[11px] font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1.5">
-                            <Coins className="w-3.5 h-3.5 text-[#006B5B]" />
+                            <Coins className="w-3.5 h-3.5 text-[#29B34F]" />
                             <span>চিকিৎসা ফি ও পেমেন্ট হিসাব</span>
                           </span>
                           {due > 0 ? (
@@ -3831,7 +3831,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                         {/* Treatment Sessions History (একাধিক সেশন ও নতুন ট্রিটমেন্ট খতিয়ান) */}
                         {selectedPatientForDrawer.sessions && selectedPatientForDrawer.sessions.length > 0 && (
                           <div className="pt-2 border-t border-gray-200/80 space-y-1.5">
-                            <span className="text-[10px] font-bold text-[#004D40] uppercase tracking-wider block">
+                            <span className="text-[10px] font-bold text-[#166534] uppercase tracking-wider block">
                               সেশন ও ট্রিটমেন্ট ইতিহাস ({selectedPatientForDrawer.sessions.length}টি)
                             </span>
                             <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
@@ -3909,17 +3909,17 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     <div className="space-y-2">
                       <div className="flex items-center justify-between p-2 rounded-xl bg-gray-50">
                         <div className="flex items-center gap-2">
-                          <Phone className="w-4 h-4 text-[#006B5B]" />
+                          <Phone className="w-4 h-4 text-[#29B34F]" />
                           <span className="font-semibold text-gray-700">মোবাইল নম্বর:</span>
                         </div>
-                        <a href={`tel:${selectedPatientForDrawer.phone}`} className="font-mono font-bold text-gray-900 hover:text-[#006B5B]">
+                        <a href={`tel:${selectedPatientForDrawer.phone}`} className="font-mono font-bold text-gray-900 hover:text-[#29B34F]">
                           {selectedPatientForDrawer.phone}
                         </a>
                       </div>
 
                       <div className="flex items-center justify-between p-2 rounded-xl bg-gray-50">
                         <div className="flex items-center gap-2">
-                          <Users className="w-4 h-4 text-[#006B5B]" />
+                          <Users className="w-4 h-4 text-[#29B34F]" />
                           <span className="font-semibold text-gray-700">রোগীর বয়স:</span>
                         </div>
                         <span className="font-bold text-gray-900">
@@ -3929,7 +3929,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
                       <div className="flex items-center justify-between p-2 rounded-xl bg-gray-50">
                         <div className="flex items-center gap-2">
-                          <MapPin className="w-4 h-4 text-[#006B5B]" />
+                          <MapPin className="w-4 h-4 text-[#29B34F]" />
                           <span className="font-semibold text-gray-700">ঠিকানা / এলাকা:</span>
                         </div>
                         <span className="font-medium text-gray-800 text-right max-w-[200px] truncate">
@@ -3939,7 +3939,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
                       <div className="flex items-center justify-between p-2 rounded-xl bg-gray-50">
                         <div className="flex items-center gap-2">
-                          <Clock className="w-4 h-4 text-[#006B5B]" />
+                          <Clock className="w-4 h-4 text-[#29B34F]" />
                           <span className="font-semibold text-gray-700">তারিখ ও সময়:</span>
                         </div>
                         <span className="font-medium text-gray-800">
@@ -3962,7 +3962,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
                   {/* Prescription & Ruqyah Routine */}
                   <div className="p-4 rounded-2xl bg-emerald-50/50 border border-emerald-200/80 space-y-2 shadow-2xs">
-                    <span className="text-[11px] font-bold text-[#004D40] flex items-center gap-1.5">
+                    <span className="text-[11px] font-bold text-[#166534] flex items-center gap-1.5">
                       <CheckCheck className="w-4 h-4 text-emerald-600" />
                       <span>আমল ও প্রেসক্রিপশন:</span>
                     </span>
@@ -3986,7 +3986,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   <button
                     type="button"
                     onClick={handleClosePatientDrawer}
-                    className="px-5 py-2 rounded-xl bg-[#004D40] hover:bg-[#00382E] text-white font-bold text-xs cursor-pointer transition-colors shadow-xs"
+                    className="px-5 py-2 rounded-xl bg-[#166534] hover:bg-[#14532D] text-white font-bold text-xs cursor-pointer transition-colors shadow-xs"
                   >
                     বন্ধ করুন
                   </button>
@@ -4001,15 +4001,15 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
       {activeTab === "accounting" && (
         <div className="space-y-6">
           {/* Top Header Card */}
-          <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-5">
+          <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#29B34F]/15 shadow-xs space-y-5">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-100 pb-5">
               <div>
                 <div className="flex items-center gap-2.5">
-                  <span className="p-2.5 rounded-2xl bg-emerald-50 text-[#006B5B] shadow-2xs">
+                  <span className="p-2.5 rounded-2xl bg-emerald-50 text-[#29B34F] shadow-2xs">
                     <Receipt className="w-5 h-5" />
                   </span>
                   <div>
-                    <h3 className="font-extrabold text-xl text-[#004D40]">
+                    <h3 className="font-extrabold text-xl text-[#166534]">
                       আর্থিক হিসাব ও আয়-বকেয়া খতিয়ান (Accounting & Revenue)
                     </h3>
                     <p className="text-xs text-gray-500 mt-0.5">
@@ -4023,7 +4023,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 <button
                   type="button"
                   onClick={handleExportAccountingCSV}
-                  className="px-4 py-2.5 rounded-xl border border-gray-200 hover:border-[#006B5B] text-gray-700 hover:text-[#006B5B] text-xs font-bold flex items-center gap-2 transition-colors cursor-pointer shadow-2xs bg-white"
+                  className="px-4 py-2.5 rounded-xl border border-gray-200 hover:border-[#29B34F] text-gray-700 hover:text-[#29B34F] text-xs font-bold flex items-center gap-2 transition-colors cursor-pointer shadow-2xs bg-white"
                   title="বাছাইকৃত সময়ের হিসাব এক্সেল (CSV) ফাইলে ডাউনলোড করুন"
                 >
                   <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
@@ -4049,7 +4049,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 <div className="flex flex-wrap items-center gap-2.5">
                   {/* Year selector */}
                   <div className="flex items-center gap-1.5 bg-[#FAFAF7] border border-gray-200 px-3 py-1.5 rounded-xl text-xs font-semibold">
-                    <Calendar className="w-3.5 h-3.5 text-[#006B5B]" />
+                    <Calendar className="w-3.5 h-3.5 text-[#29B34F]" />
                     <span className="text-gray-500">বছর:</span>
                     <select
                       value={accountingYear}
@@ -4067,7 +4067,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
                   {/* Month selector */}
                   <div className="flex items-center gap-1.5 bg-[#FAFAF7] border border-gray-200 px-3 py-1.5 rounded-xl text-xs font-semibold">
-                    <Clock className="w-3.5 h-3.5 text-[#006B5B]" />
+                    <Clock className="w-3.5 h-3.5 text-[#29B34F]" />
                     <span className="text-gray-500">মাস:</span>
                     <select
                       value={accountingMonth}
@@ -4094,7 +4094,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       }}
                       className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                         accountingYear === String(currentYear) && accountingMonth === String(currentMonth)
-                          ? "bg-[#006B5B] text-white shadow-2xs"
+                          ? "bg-[#29B34F] text-white shadow-2xs"
                           : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                       }`}
                     >
@@ -4112,7 +4112,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       }}
                       className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                         accountingMonth !== "all" && Number(accountingMonth) === (currentMonth === 1 ? 12 : currentMonth - 1)
-                          ? "bg-[#006B5B] text-white shadow-2xs"
+                          ? "bg-[#29B34F] text-white shadow-2xs"
                           : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                       }`}
                     >
@@ -4128,7 +4128,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       }}
                       className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                         accountingYear === String(currentYear) && accountingMonth === "all"
-                          ? "bg-[#006B5B] text-white shadow-2xs"
+                          ? "bg-[#29B34F] text-white shadow-2xs"
                           : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                       }`}
                     >
@@ -4144,7 +4144,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       }}
                       className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                         accountingYear === "all" && accountingMonth === "all" && !accountingDueOnly
-                          ? "bg-[#006B5B] text-white shadow-2xs"
+                          ? "bg-[#29B34F] text-white shadow-2xs"
                           : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                       }`}
                     >
@@ -4175,7 +4175,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     value={accountingSearch}
                     onChange={(e) => setAccountingSearch(e.target.value)}
                     placeholder="হিসাবে নাম, মোবাইল দিয়ে খুঁজুন..."
-                    className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200 text-xs outline-none focus:border-[#006B5B] bg-[#FAFAF7]"
+                    className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200 text-xs outline-none focus:border-[#29B34F] bg-[#FAFAF7]"
                   />
                 </div>
               </div>
@@ -4183,7 +4183,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               {/* Active Filter Indicator Badge */}
               <div className="flex items-center gap-2 text-xs text-gray-500 pt-1">
                 <span className="font-semibold">বর্তমান ফিল্টার:</span>
-                <span className="font-bold text-[#004D40] bg-emerald-50 px-2.5 py-0.5 rounded-lg border border-emerald-200">
+                <span className="font-bold text-[#166534] bg-emerald-50 px-2.5 py-0.5 rounded-lg border border-emerald-200">
                   {accountingMonth !== "all" ? BANGLA_MONTH_NAMES[Number(accountingMonth) - 1] : "সকল মাস"}{" "}
                   {accountingYear !== "all" ? `${accountingYear} সাল` : "(সর্বকালীন)"}
                   {accountingDueOnly ? " • শুধুমাত্র বকেয়া" : ""}
@@ -4197,11 +4197,11 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               <div className="p-5 rounded-2xl bg-[#FAFAF7] border border-gray-200 shadow-2xs space-y-1.5">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-gray-600">মোট আগত রোগী</span>
-                  <div className="p-1.5 rounded-lg bg-emerald-100/70 text-[#006B5B]">
+                  <div className="p-1.5 rounded-lg bg-emerald-100/70 text-[#29B34F]">
                     <Users className="w-4 h-4" />
                   </div>
                 </div>
-                <p className="text-2xl sm:text-3xl font-black text-[#004D40]">
+                <p className="text-2xl sm:text-3xl font-black text-[#166534]">
                   {accountingFilteredPatients.length} জন
                 </p>
                 <div className="text-[11px] text-gray-500 font-medium">
@@ -4274,11 +4274,11 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
           </div>
 
           {/* Monthly Breakdown Table for Selected Year */}
-          <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
+          <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#29B34F]/15 shadow-xs space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-3">
               <div>
-                <h4 className="font-bold text-base text-[#004D40] flex items-center gap-2">
-                  <BarChart3 className="w-4 h-4 text-[#006B5B]" />
+                <h4 className="font-bold text-base text-[#166534] flex items-center gap-2">
+                  <BarChart3 className="w-4 h-4 text-[#29B34F]" />
                   <span>{activeBreakdownYear} সালের মাসভিত্তিক আয় ও বকেয়ার খতিয়ান</span>
                 </h4>
                 <p className="text-xs text-gray-500 mt-0.5">
@@ -4287,7 +4287,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               </div>
 
               {accountingYear === "all" && (
-                <span className="text-xs text-[#006B5B] bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 font-semibold">
+                <span className="text-xs text-[#29B34F] bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 font-semibold">
                   চলতি বছর ({activeBreakdownYear}) প্রদর্শিত
                 </span>
               )}
@@ -4322,7 +4322,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           <div className="flex items-center gap-2">
                             <span className="font-bold text-gray-900">{m.monthName}</span>
                             {isCurrentMonth && (
-                              <span className="text-[9px] font-extrabold bg-[#006B5B] text-white px-1.5 py-0.2 rounded-md">
+                              <span className="text-[9px] font-extrabold bg-[#29B34F] text-white px-1.5 py-0.2 rounded-md">
                                 বর্তমান মাস
                               </span>
                             )}
@@ -4330,7 +4330,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                         </td>
                         <td className="p-3 text-center">
                           <span className={`px-2 py-0.5 rounded-full text-xs ${
-                            m.patientCount > 0 ? "bg-emerald-100 text-[#004D40] font-bold" : "text-gray-400"
+                            m.patientCount > 0 ? "bg-emerald-100 text-[#166534] font-bold" : "text-gray-400"
                           }`}>
                             {m.patientCount} জন
                           </span>
@@ -4370,8 +4370,8 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                             }}
                             className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
                               isSelectedMonth
-                                ? "bg-[#006B5B] text-white shadow-2xs"
-                                : "bg-gray-100 hover:bg-[#006B5B] hover:text-white text-gray-700"
+                                ? "bg-[#29B34F] text-white shadow-2xs"
+                                : "bg-gray-100 hover:bg-[#29B34F] hover:text-white text-gray-700"
                             }`}
                             title={`${m.monthName} মাসের রোগীদের তালিকা নিচে দেখুন`}
                           >
@@ -4385,7 +4385,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 <tfoot>
                   <tr className="border-t-2 border-gray-200 bg-gray-50 font-bold text-xs text-gray-900">
                     <td className="p-3 font-extrabold">মোট বাৎসরিক হিসাব</td>
-                    <td className="p-3 text-center text-[#004D40]">
+                    <td className="p-3 text-center text-[#166534]">
                       {monthlyBreakdown.reduce((sum, m) => sum + m.patientCount, 0)} জন
                     </td>
                     <td className="p-3 text-right text-gray-900">
@@ -4413,9 +4413,9 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
           {/* Yearly Comparison Overview Table */}
           {detectedYears.length > 1 && (
-            <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
-              <h4 className="font-bold text-base text-[#004D40] flex items-center gap-2 border-b border-gray-100 pb-3">
-                <TrendingUp className="w-4 h-4 text-[#006B5B]" />
+            <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#29B34F]/15 shadow-xs space-y-4">
+              <h4 className="font-bold text-base text-[#166534] flex items-center gap-2 border-b border-gray-100 pb-3">
+                <TrendingUp className="w-4 h-4 text-[#29B34F]" />
                 <span>বাৎসরিক আর্থিক প্রবৃদ্ধি ও তুলনা (Yearly Comparison)</span>
               </h4>
 
@@ -4452,7 +4452,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                               setAccountingYear(String(y.year));
                               setAccountingMonth("all");
                             }}
-                            className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-gray-100 hover:bg-[#006B5B] hover:text-white transition-colors cursor-pointer"
+                            className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-gray-100 hover:bg-[#29B34F] hover:text-white transition-colors cursor-pointer"
                           >
                             বছর নির্বাচন করুন
                           </button>
@@ -4466,11 +4466,11 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
           )}
 
           {/* Period Patients Financial Ledger & Actions Table */}
-          <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
+          <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#29B34F]/15 shadow-xs space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-3">
               <div>
-                <h4 className="font-bold text-base text-[#004D40] flex items-center gap-2">
-                  <Users className="w-4 h-4 text-[#006B5B]" />
+                <h4 className="font-bold text-base text-[#166534] flex items-center gap-2">
+                  <Users className="w-4 h-4 text-[#29B34F]" />
                   <span>বাছাইকৃত সময়ের রোগী ও পেমেন্ট বিবরণী</span>
                 </h4>
                 <p className="text-xs text-gray-500 mt-0.5">
@@ -4480,7 +4480,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
               <div className="flex items-center gap-2 text-xs">
                 <span className="text-gray-500 font-medium">মোট পাওয়া গেছে:</span>
-                <span className="font-extrabold text-[#004D40] bg-emerald-50 px-2.5 py-0.5 rounded-lg border border-emerald-200">
+                <span className="font-extrabold text-[#166534] bg-emerald-50 px-2.5 py-0.5 rounded-lg border border-emerald-200">
                   {accountingFilteredPatients.length} জন
                 </span>
               </div>
@@ -4583,7 +4583,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           <td className="p-3 text-center whitespace-nowrap">
                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
                               p.status === "running"
-                                ? "bg-emerald-50 text-[#004D40] border-emerald-200"
+                                ? "bg-emerald-50 text-[#166534] border-emerald-200"
                                 : p.status === "followup"
                                 ? "bg-teal-50 text-teal-900 border-teal-200"
                                 : p.status === "cured"
@@ -4666,7 +4666,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       <td className="p-3 text-right font-black text-amber-800">
                         ৳{periodTotalDue.toLocaleString("bn-BD")}
                       </td>
-                      <td colSpan={2} className="p-3 text-center text-xs text-[#004D40]">
+                      <td colSpan={2} className="p-3 text-center text-xs text-[#166534]">
                         আদায়ের হার: {periodCollectionRate}%
                       </td>
                     </tr>
@@ -4680,7 +4680,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   <button
                     type="button"
                     onClick={() => setIsAccountingExpanded(!isAccountingExpanded)}
-                    className="px-5 py-2 rounded-xl bg-gray-100 hover:bg-[#006B5B] hover:text-white text-gray-700 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-2xs group"
+                    className="px-5 py-2 rounded-xl bg-gray-100 hover:bg-[#29B34F] hover:text-white text-gray-700 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-2xs group"
                   >
                     {isAccountingExpanded ? (
                       <>
@@ -4716,7 +4716,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
           )}
 
           {/* Top Status & Quick Toggle Card */}
-          <div className="p-6 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="p-6 rounded-3xl bg-white border border-[#29B34F]/15 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <span className="text-xs font-bold uppercase tracking-wider text-gray-500">বর্তমান অবস্থা</span>
@@ -4739,7 +4739,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   </span>
                 )}
               </div>
-              <h3 className="text-lg font-bold text-[#004D40]">
+              <h3 className="text-lg font-bold text-[#166534]">
                 হোমপেজ ও সাইটওয়াইড অফার পপআপ
               </h3>
               <p className="text-xs text-gray-500">
@@ -4765,9 +4765,9 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Left: Live Preview */}
-            <div className="lg:col-span-5 p-6 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
+            <div className="lg:col-span-5 p-6 rounded-3xl bg-white border border-[#29B34F]/15 shadow-xs space-y-4">
               <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-                <h4 className="font-bold text-[#004D40] text-sm flex items-center gap-2">
+                <h4 className="font-bold text-[#166534] text-sm flex items-center gap-2">
                   <Gift className="w-4 h-4 text-[#D4A017]" />
                   <span>লাইভ প্রিভিউ (Preview)</span>
                 </h4>
@@ -4776,7 +4776,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
               {/* Mini Preview Card */}
               <div className="rounded-2xl border border-gray-200 overflow-hidden bg-[#FAFAF7] shadow-sm">
-                <div className="relative aspect-[682/1024] max-h-80 bg-[#00382E] mx-auto">
+                <div className="relative aspect-[682/1024] max-h-80 bg-[#14532D] mx-auto">
                   <Image
                     src={popupConfig.image}
                     alt={popupConfig.title}
@@ -4789,7 +4789,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 </div>
 
                 <div className="p-4 space-y-3">
-                  <h5 className="font-bold text-sm text-[#004D40] leading-snug">
+                  <h5 className="font-bold text-sm text-[#166534] leading-snug">
                     {popupConfig.title}
                   </h5>
                   <p className="text-xs text-gray-600">
@@ -4822,9 +4822,9 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
             </div>
 
             {/* Right: Form Editor */}
-            <div className="lg:col-span-7 p-6 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
+            <div className="lg:col-span-7 p-6 rounded-3xl bg-white border border-[#29B34F]/15 shadow-xs space-y-4">
               <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-                <h4 className="font-bold text-[#004D40] text-sm">পপআপ তথ্য এডিটর</h4>
+                <h4 className="font-bold text-[#166534] text-sm">পপআপ তথ্য এডিটর</h4>
                 <button
                   type="button"
                   onClick={handleResetPopup}
@@ -4843,7 +4843,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     type="text"
                     value={popupConfig.badge}
                     onChange={(e) => setPopupConfig({ ...popupConfig, badge: e.target.value })}
-                    className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#006B5B] outline-none"
+                    className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#29B34F] outline-none"
                   />
                 </div>
 
@@ -4853,7 +4853,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     type="text"
                     value={popupConfig.title}
                     onChange={(e) => setPopupConfig({ ...popupConfig, title: e.target.value })}
-                    className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#006B5B] outline-none"
+                    className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#29B34F] outline-none"
                   />
                 </div>
 
@@ -4863,7 +4863,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     type="text"
                     value={popupConfig.subtitle}
                     onChange={(e) => setPopupConfig({ ...popupConfig, subtitle: e.target.value })}
-                    className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#006B5B] outline-none"
+                    className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#29B34F] outline-none"
                   />
                 </div>
 
@@ -4874,7 +4874,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       type="text"
                       value={popupConfig.regularFee}
                       onChange={(e) => setPopupConfig({ ...popupConfig, regularFee: e.target.value })}
-                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#006B5B] outline-none"
+                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#29B34F] outline-none"
                     />
                   </div>
                   <div>
@@ -4883,7 +4883,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       type="text"
                       value={popupConfig.offerFee}
                       onChange={(e) => setPopupConfig({ ...popupConfig, offerFee: e.target.value })}
-                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#006B5B] outline-none"
+                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#29B34F] outline-none"
                     />
                   </div>
                 </div>
@@ -4895,7 +4895,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       type="text"
                       value={popupConfig.timeText}
                       onChange={(e) => setPopupConfig({ ...popupConfig, timeText: e.target.value })}
-                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#006B5B] outline-none"
+                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#29B34F] outline-none"
                     />
                   </div>
                   <div>
@@ -4904,7 +4904,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       type="text"
                       value={popupConfig.seatsText}
                       onChange={(e) => setPopupConfig({ ...popupConfig, seatsText: e.target.value })}
-                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#006B5B] outline-none"
+                      className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#29B34F] outline-none"
                     />
                   </div>
                 </div>
@@ -4915,7 +4915,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     type="text"
                     value={popupConfig.phone}
                     onChange={(e) => setPopupConfig({ ...popupConfig, phone: e.target.value })}
-                    className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#006B5B] outline-none"
+                    className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#29B34F] outline-none"
                   />
                 </div>
 
@@ -4925,7 +4925,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     rows={3}
                     value={popupConfig.whatsappMessage}
                     onChange={(e) => setPopupConfig({ ...popupConfig, whatsappMessage: e.target.value })}
-                    className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#006B5B] outline-none text-xs"
+                    className="w-full p-2.5 rounded-xl border border-gray-200 focus:border-[#29B34F] outline-none text-xs"
                   />
                 </div>
 
@@ -4964,7 +4964,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       type="datetime-local"
                       value={popupConfig.expiryDate ? popupConfig.expiryDate.slice(0, 16) : ""}
                       onChange={(e) => setPopupConfig({ ...popupConfig, expiryDate: e.target.value })}
-                      className="p-2.5 rounded-xl border border-gray-200 focus:border-[#006B5B] outline-none bg-white text-xs font-mono"
+                      className="p-2.5 rounded-xl border border-gray-200 focus:border-[#29B34F] outline-none bg-white text-xs font-mono"
                     />
 
                     {/* Quick Presets for Expiry */}
@@ -4977,7 +4977,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           d.setHours(23, 59, 0, 0);
                           setPopupConfig({ ...popupConfig, expiryDate: d.toISOString().slice(0, 16) });
                         }}
-                        className="px-2.5 py-1 text-xs font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#006B5B] hover:text-[#006B5B] cursor-pointer"
+                        className="px-2.5 py-1 text-xs font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#29B34F] hover:text-[#29B34F] cursor-pointer"
                       >
                         +৩ দিন
                       </button>
@@ -4989,7 +4989,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           d.setHours(23, 59, 0, 0);
                           setPopupConfig({ ...popupConfig, expiryDate: d.toISOString().slice(0, 16) });
                         }}
-                        className="px-2.5 py-1 text-xs font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#006B5B] hover:text-[#006B5B] cursor-pointer"
+                        className="px-2.5 py-1 text-xs font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#29B34F] hover:text-[#29B34F] cursor-pointer"
                       >
                         +৭ দিন
                       </button>
@@ -5001,7 +5001,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           d.setHours(23, 59, 0, 0);
                           setPopupConfig({ ...popupConfig, expiryDate: d.toISOString().slice(0, 16) });
                         }}
-                        className="px-2.5 py-1 text-xs font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#006B5B] hover:text-[#006B5B] cursor-pointer"
+                        className="px-2.5 py-1 text-xs font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#29B34F] hover:text-[#29B34F] cursor-pointer"
                       >
                         +১৫ দিন
                       </button>
@@ -5013,7 +5013,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           d.setHours(23, 59, 0, 0);
                           setPopupConfig({ ...popupConfig, expiryDate: d.toISOString().slice(0, 16) });
                         }}
-                        className="px-2.5 py-1 text-xs font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#006B5B] hover:text-[#006B5B] cursor-pointer"
+                        className="px-2.5 py-1 text-xs font-semibold bg-white border border-gray-200 rounded-lg hover:border-[#29B34F] hover:text-[#29B34F] cursor-pointer"
                       >
                         +৩০ দিন
                       </button>
@@ -5033,7 +5033,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 <div className="pt-2 flex items-center gap-3">
                   <button
                     type="submit"
-                    className="px-6 py-2.5 rounded-xl bg-[#006B5B] hover:bg-[#004D40] text-white font-bold text-xs flex items-center gap-2 transition-colors cursor-pointer shadow-sm"
+                    className="px-6 py-2.5 rounded-xl bg-[#29B34F] hover:bg-[#166534] text-white font-bold text-xs flex items-center gap-2 transition-colors cursor-pointer shadow-sm"
                   >
                     <Save className="w-4 h-4" />
                     <span>পরিবর্তন সেভ করুন</span>
@@ -5048,10 +5048,10 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
       {activeTab === "store" && (
         <div className="space-y-6">
           {/* Header Action Bar */}
-          <div className="p-6 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="p-6 rounded-3xl bg-white border border-[#29B34F]/15 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-gray-500">সুন্নাহ স্টোর ক্যাটালগ</span>
-              <h3 className="text-lg font-bold text-[#004D40] flex items-center gap-2">
+              <h3 className="text-lg font-bold text-[#166534] flex items-center gap-2">
                 <span>পণ্য ও সামগ্রী তালিকা ({productsList.length}টি)</span>
               </h3>
               <p className="text-xs text-gray-500">
@@ -5062,7 +5062,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
             <button
               type="button"
               onClick={handleOpenAddProduct}
-              className="px-5 py-2.5 rounded-xl bg-[#006B5B] hover:bg-[#004D40] text-white font-bold text-xs flex items-center gap-2 transition-colors cursor-pointer shadow-sm shrink-0"
+              className="px-5 py-2.5 rounded-xl bg-[#29B34F] hover:bg-[#166534] text-white font-bold text-xs flex items-center gap-2 transition-colors cursor-pointer shadow-sm shrink-0"
             >
               <PlusCircle className="w-4 h-4" />
               <span>নতুন পণ্য যোগ করুন</span>
@@ -5074,7 +5074,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
             {productsList.map((product) => (
               <div
                 key={product.id}
-                className="p-5 rounded-3xl bg-white border border-gray-200 hover:border-[#006B5B]/30 shadow-xs flex flex-col justify-between space-y-3"
+                className="p-5 rounded-3xl bg-white border border-gray-200 hover:border-[#29B34F]/30 shadow-xs flex flex-col justify-between space-y-3"
               >
                 <div className="space-y-3">
                   {/* Product Image Preview */}
@@ -5086,7 +5086,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     />
                     <div className="absolute top-2.5 left-2.5 flex flex-col gap-1">
                       {product.badge && (
-                        <span className="px-2 py-0.5 rounded-md bg-[#006B5B] text-white text-[10px] font-bold shadow-xs">
+                        <span className="px-2 py-0.5 rounded-md bg-[#29B34F] text-white text-[10px] font-bold shadow-xs">
                           {product.badge}
                         </span>
                       )}
@@ -5125,7 +5125,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
                 <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
                   <div>
-                    <span className="text-lg font-extrabold text-[#004D40]">
+                    <span className="text-lg font-extrabold text-[#166534]">
                       ৳{product.price}
                     </span>
                     {product.regularPrice && (
@@ -5138,7 +5138,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   <div className="flex items-center gap-1.5">
                     <button
                       onClick={() => handleOpenEditProduct(product)}
-                      className="p-2 rounded-xl text-gray-500 hover:text-[#006B5B] hover:bg-emerald-50 transition-colors cursor-pointer flex items-center gap-1 text-xs font-semibold"
+                      className="p-2 rounded-xl text-gray-500 hover:text-[#29B34F] hover:bg-emerald-50 transition-colors cursor-pointer flex items-center gap-1 text-xs font-semibold"
                       title="পণ্য এডিট / মূল্য বা ছবি পরিবর্তন করুন"
                     >
                       <Edit3 className="w-4 h-4" />
@@ -5167,7 +5167,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 onClick={(e) => e.stopPropagation()}
                 className="relative w-full max-w-xl bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh] cursor-default"
               >
-                <div className="px-6 py-4 bg-[#004D40] text-white flex items-center justify-between">
+                <div className="px-6 py-4 bg-[#166534] text-white flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <ShoppingBag className="w-4 h-4 text-[#F2C94C]" />
                     <h4 className="font-bold text-sm md:text-base">
@@ -5193,7 +5193,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       placeholder="যেমন: খাঁটি মধু, সিদর পাউডার..."
                       value={newProduct.banglaName}
                       onChange={(e) => setNewProduct({ ...newProduct, banglaName: e.target.value })}
-                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F]"
                     />
                   </div>
 
@@ -5203,7 +5203,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       <select
                         value={newProduct.category}
                         onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
-                        className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white"
+                        className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F] bg-white"
                       >
                         <option value="ruqyah_items">রুকইয়াহ সামগ্রী</option>
                         <option value="oils_honey">খাঁটি তেল ও মধু</option>
@@ -5219,7 +5219,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                         placeholder="যেমন: ১০০ গ্রাম / ২৫০ মিলি"
                         value={newProduct.weightOrQuantity}
                         onChange={(e) => setNewProduct({ ...newProduct, weightOrQuantity: e.target.value })}
-                        className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                        className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F]"
                       />
                     </div>
                   </div>
@@ -5228,7 +5228,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   <div className="p-3.5 rounded-2xl bg-gray-50 border border-gray-200 space-y-2.5">
                     <div className="flex items-center justify-between">
                       <label className="font-bold text-gray-700 flex items-center gap-1.5">
-                        <Camera className="w-4 h-4 text-[#006B5B]" />
+                        <Camera className="w-4 h-4 text-[#29B34F]" />
                         <span>পণ্যের ছবি (Device Upload / Camera)</span>
                       </label>
                       {newProduct.image && (
@@ -5281,7 +5281,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                             type="button"
                             onClick={() => fileInputRef.current?.click()}
                             disabled={imageUploading}
-                            className="px-3.5 py-2 rounded-xl bg-[#004D40] hover:bg-[#00382e] text-white font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-xs cursor-pointer disabled:opacity-50"
+                            className="px-3.5 py-2 rounded-xl bg-[#166534] hover:bg-[#14532D] text-white font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-xs cursor-pointer disabled:opacity-50"
                           >
                             <Upload className="w-3.5 h-3.5" />
                             <span>{newProduct.image ? "ছবি পরিবর্তন করুন" : "মোবাইল/পিসি থেকে আপলোড"}</span>
@@ -5307,7 +5307,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     {/* Collapsible Image URL fallback */}
                     <div className="pt-2 border-t border-gray-200/60">
                       <details className="text-[11px] text-gray-500 cursor-pointer">
-                        <summary className="font-semibold hover:text-[#006B5B] select-none inline-flex items-center gap-1.5">
+                        <summary className="font-semibold hover:text-[#29B34F] select-none inline-flex items-center gap-1.5">
                           <ExternalLink className="w-3.5 h-3.5 text-gray-400" />
                           <span>অথবা অনলাইনের ছবির লিঙ্ক (URL) দিন</span>
                         </summary>
@@ -5317,7 +5317,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                             placeholder="https://example.com/product-image.jpg"
                             value={newProduct.image}
                             onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })}
-                            className="w-full p-2 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white text-xs"
+                            className="w-full p-2 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F] bg-white text-xs"
                           />
                         </div>
                       </details>
@@ -5333,7 +5333,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                         placeholder="250"
                         value={newProduct.price}
                         onChange={(e) => setNewProduct({ ...newProduct, price: Number(e.target.value) })}
-                        className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                        className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F]"
                       />
                     </div>
 
@@ -5344,7 +5344,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                         placeholder="350"
                         value={newProduct.regularPrice}
                         onChange={(e) => setNewProduct({ ...newProduct, regularPrice: Number(e.target.value) })}
-                        className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                        className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F]"
                       />
                     </div>
                   </div>
@@ -5357,7 +5357,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                         placeholder="যেমন: নতুন পণ্য / বিশেষ ছাড়"
                         value={newProduct.badge || ""}
                         onChange={(e) => setNewProduct({ ...newProduct, badge: e.target.value })}
-                        className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                        className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F]"
                       />
                     </div>
 
@@ -5366,7 +5366,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       <select
                         value={newProduct.inStock ? "true" : "false"}
                         onChange={(e) => setNewProduct({ ...newProduct, inStock: e.target.value === "true" })}
-                        className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white"
+                        className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F] bg-white"
                       >
                         <option value="true">● স্টকে আছে</option>
                         <option value="false">○ স্টক শেষ</option>
@@ -5381,7 +5381,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       placeholder="পণ্যটির গুরুত্ব ও কার্যকারিতা..."
                       value={newProduct.description}
                       onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
-                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F]"
                     />
                   </div>
 
@@ -5392,7 +5392,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       placeholder="হাদীসের নির্দেশনা...&#10;শারীরিক আরোগ্য..."
                       value={newProduct.benefitsText}
                       onChange={(e) => setNewProduct({ ...newProduct, benefitsText: e.target.value })}
-                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F]"
                     />
                   </div>
 
@@ -5403,7 +5403,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       placeholder="পানিতে গুলিয়ে সেবন / শরীরে মালিশ..."
                       value={newProduct.usageInstructions}
                       onChange={(e) => setNewProduct({ ...newProduct, usageInstructions: e.target.value })}
-                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F]"
                     />
                   </div>
 
@@ -5417,7 +5417,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     </button>
                     <button
                       type="submit"
-                      className="px-5 py-2 rounded-xl bg-[#006B5B] hover:bg-[#004D40] text-white font-bold cursor-pointer"
+                      className="px-5 py-2 rounded-xl bg-[#29B34F] hover:bg-[#166534] text-white font-bold cursor-pointer"
                     >
                       {editingProductId ? "পরিবর্তন সেভ করুন" : "পণ্য সেভ করুন"}
                     </button>
@@ -5438,7 +5438,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
             onClick={(e) => e.stopPropagation()}
             className="relative w-full max-w-xl bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh] cursor-default"
           >
-            <div className="px-6 py-4 bg-[#004D40] text-white flex items-center justify-between">
+            <div className="px-6 py-4 bg-[#166534] text-white flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4 text-[#F2C94C]" />
                 <h4 className="font-bold text-sm md:text-base">
@@ -5466,7 +5466,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     placeholder="যেমন: মুহাম্মদ আব্দুল্লাহ"
                     value={patientForm.name}
                     onChange={(e) => setPatientForm({ ...patientForm, name: e.target.value })}
-                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F]"
                   />
                 </div>
 
@@ -5478,7 +5478,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     placeholder="যেমন: 017xxxxxxxx"
                     value={patientForm.phone}
                     onChange={(e) => setPatientForm({ ...patientForm, phone: e.target.value })}
-                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F]"
                   />
                 </div>
 
@@ -5492,7 +5492,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       placeholder="যেমন: ২৫"
                       value={patientForm.age || ""}
                       onChange={(e) => setPatientForm({ ...patientForm, age: e.target.value })}
-                      className="w-full p-2.5 pr-12 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] font-semibold text-gray-800"
+                      className="w-full p-2.5 pr-12 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F] font-semibold text-gray-800"
                     />
                     <span className="absolute right-3 top-2.5 text-xs text-gray-400 font-medium pointer-events-none">
                       বছর
@@ -5517,8 +5517,8 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     onClick={() => setPatientForm({ ...patientForm, treatmentType: "ruqyah" })}
                     className={`py-2 px-3 rounded-xl text-xs font-bold transition-all border flex items-center justify-center gap-1.5 cursor-pointer ${
                       patientForm.treatmentType === "ruqyah" || !patientForm.treatmentType
-                        ? "bg-[#006B5B] text-white border-[#006B5B] shadow-xs"
-                        : "bg-white text-gray-700 border-gray-200 hover:border-[#006B5B]/50 hover:bg-emerald-50/50"
+                        ? "bg-[#29B34F] text-white border-[#29B34F] shadow-xs"
+                        : "bg-white text-gray-700 border-gray-200 hover:border-[#29B34F]/50 hover:bg-emerald-50/50"
                     }`}
                   >
                     <span>🌿</span>
@@ -5562,7 +5562,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     placeholder="যেমন: কামরাঙ্গীরচর / মিরপুর, ঢাকা"
                     value={patientForm.address}
                     onChange={(e) => setPatientForm({ ...patientForm, address: e.target.value })}
-                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F]"
                   />
                 </div>
 
@@ -5571,7 +5571,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   <select
                     value={patientForm.type}
                     onChange={(e) => setPatientForm({ ...patientForm, type: e.target.value as any })}
-                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white font-semibold"
+                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F] bg-white font-semibold"
                   >
                     <option value="online">অনলাইন (ফোন / ভিডিও)</option>
                     <option value="offline">সরাসরি চেম্বার (সেন্টারে উপস্থিত)</option>
@@ -5583,7 +5583,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   <select
                     value={patientForm.status}
                     onChange={(e) => setPatientForm({ ...patientForm, status: e.target.value as any })}
-                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white font-semibold"
+                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F] bg-white font-semibold"
                   >
                     <option value="new">নতুন রোগী (New Patient)</option>
                     <option value="running">চিকিৎসা চলছে (Under Treatment)</option>
@@ -5599,7 +5599,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   <label className="block font-bold text-gray-800 text-xs">
                     সমস্যার ক্যাটাগরি * <span className="text-[10px] font-semibold text-emerald-800 bg-emerald-100/90 px-2 py-0.5 rounded-full border border-emerald-300/80 ml-1.5">একাধিক নির্বাচনযোগ্য</span>
                   </label>
-                  <span className={`text-[11px] font-semibold ${currentCategories.length > 0 ? "text-[#006B5B]" : "text-amber-700"}`}>
+                  <span className={`text-[11px] font-semibold ${currentCategories.length > 0 ? "text-[#29B34F]" : "text-amber-700"}`}>
                     {currentCategories.length > 0 ? `✓ ${currentCategories.length}টি ক্যাটাগরি নির্বাচিত` : "⚠️ কমপক্ষে ১টি নির্বাচন করুন"}
                   </span>
                 </div>
@@ -5615,12 +5615,12 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                         onClick={() => handleToggleCategory(cat)}
                         className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer border select-none ${
                           isSelected
-                            ? "bg-[#006B5B] text-white border-[#006B5B] shadow-xs hover:bg-[#005749]"
-                            : "bg-white text-gray-700 border-gray-200 hover:border-[#006B5B]/50 hover:bg-emerald-50/60"
+                            ? "bg-[#29B34F] text-white border-[#29B34F] shadow-xs hover:bg-[#005749]"
+                            : "bg-white text-gray-700 border-gray-200 hover:border-[#29B34F]/50 hover:bg-emerald-50/60"
                         }`}
                       >
                         <span className={`w-3.5 h-3.5 rounded-full flex items-center justify-center text-[9px] font-bold border transition-colors ${
-                          isSelected ? "bg-white text-[#006B5B] border-white" : "border-gray-300 text-transparent"
+                          isSelected ? "bg-white text-[#29B34F] border-white" : "border-gray-300 text-transparent"
                         }`}>
                           ✓
                         </span>
@@ -5668,13 +5668,13 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                         handleAddCustomCategory();
                       }
                     }}
-                    className="flex-1 p-2 text-xs rounded-xl border border-gray-200 bg-white outline-none focus:border-[#006B5B]"
+                    className="flex-1 p-2 text-xs rounded-xl border border-gray-200 bg-white outline-none focus:border-[#29B34F]"
                   />
                   <button
                     type="button"
                     onClick={handleAddCustomCategory}
                     disabled={!customCategoryInput.trim()}
-                    className="px-3.5 py-2 bg-[#006B5B] hover:bg-[#005749] disabled:opacity-40 text-white text-xs font-semibold rounded-xl transition-colors cursor-pointer shrink-0 flex items-center gap-1 shadow-2xs"
+                    className="px-3.5 py-2 bg-[#29B34F] hover:bg-[#005749] disabled:opacity-40 text-white text-xs font-semibold rounded-xl transition-colors cursor-pointer shrink-0 flex items-center gap-1 shadow-2xs"
                   >
                     <PlusCircle className="w-3.5 h-3.5" />
                     <span>যোগ করুন</span>
@@ -5695,7 +5695,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           date: new Date().toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" }),
                         })
                       }
-                      className="text-xs text-[#006B5B] hover:underline flex items-center gap-1 font-medium"
+                      className="text-xs text-[#29B34F] hover:underline flex items-center gap-1 font-medium"
                       title="আজকের তারিখ বসান"
                     >
                       <CalendarDays className="w-3 h-3" />
@@ -5707,7 +5707,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     placeholder="যেমন: ১৫ সেপ্টেম্বর, ২০২৬"
                     value={patientForm.date}
                     onChange={(e) => setPatientForm({ ...patientForm, date: e.target.value })}
-                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                    className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F]"
                   />
                 </div>
 
@@ -5717,7 +5717,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     <button
                       type="button"
                       onClick={() => setPatientForm({ ...patientForm, timeSlot: getCurrentBanglaTime() })}
-                      className="text-xs text-[#006B5B] hover:underline flex items-center gap-1 font-medium"
+                      className="text-xs text-[#29B34F] hover:underline flex items-center gap-1 font-medium"
                       title="বর্তমান সময় স্বয়ংক্রিয়ভাবে বসান"
                     >
                       <Clock className="w-3 h-3" />
@@ -5735,15 +5735,15 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           timePickerInputRef.current?.showPicker();
                         } catch {}
                       }}
-                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F]"
                     />
                     <div className="relative shrink-0">
                       <button
                         type="button"
-                        className="flex items-center gap-1.5 px-3 py-2.5 bg-emerald-50 hover:bg-emerald-100 text-[#006B5B] border border-emerald-200 rounded-xl font-medium text-xs sm:text-sm transition-colors cursor-pointer"
+                        className="flex items-center gap-1.5 px-3 py-2.5 bg-emerald-50 hover:bg-emerald-100 text-[#29B34F] border border-emerald-200 rounded-xl font-medium text-xs sm:text-sm transition-colors cursor-pointer"
                         title="ঘড়ির ডায়ালগ খুলে সময় নির্বাচন করুন"
                       >
-                        <Clock className="w-4 h-4 text-[#006B5B]" />
+                        <Clock className="w-4 h-4 text-[#29B34F]" />
                         <span>ঘড়ি নির্বাচন</span>
                       </button>
                       <input
@@ -5778,7 +5778,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   placeholder="রোগীর কী কী শারীরিক বা আধ্যাত্মিক সমস্যা অনুভূত হচ্ছে, কতদিন ধরে সমস্যা, পূর্বের কোনো চিকিৎসা ইত্যাদি..."
                   value={patientForm.notes}
                   onChange={(e) => setPatientForm({ ...patientForm, notes: e.target.value })}
-                  className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                  className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F]"
                 />
               </div>
 
@@ -5792,7 +5792,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   placeholder="যেমন: প্রতিদিন সকালে খালি পেটে সানা মাক্কি চা, ৩ কুল আমল, রুকইয়াহ তেল মালিশ, ঘরে সূরা বাকারা বাজানো..."
                   value={patientForm.prescription}
                   onChange={(e) => setPatientForm({ ...patientForm, prescription: e.target.value })}
-                  className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B]"
+                  className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F]"
                 />
               </div>
 
@@ -5800,8 +5800,8 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               <div className="p-4 rounded-2xl bg-[#FAFAF7] border border-gray-200/90 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5">
-                    <Coins className="w-4 h-4 text-[#006B5B]" />
-                    <span className="font-bold text-xs text-[#004D40]">
+                    <Coins className="w-4 h-4 text-[#29B34F]" />
+                    <span className="font-bold text-xs text-[#166534]">
                       চিকিৎসা ফি ও পেমেন্ট হিসাব (৳)
                     </span>
                   </div>
@@ -5829,7 +5829,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           due: Math.max(feeVal - paidVal, 0),
                         });
                       }}
-                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white text-xs font-semibold"
+                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F] bg-white text-xs font-semibold"
                     />
                   </div>
 
@@ -5851,7 +5851,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           due: Math.max(feeVal - paidVal, 0),
                         });
                       }}
-                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white text-xs font-semibold text-emerald-700"
+                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F] bg-white text-xs font-semibold text-emerald-700"
                     />
                   </div>
 
@@ -5917,11 +5917,11 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     <DayMonthYearDateInput
                       value={patientForm.nextFollowupDate || ""}
                       onChange={(val) => setPatientForm({ ...patientForm, nextFollowupDate: val })}
-                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white text-xs font-mono font-medium"
+                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F] bg-white text-xs font-mono font-medium"
                     />
                     {patientForm.nextFollowupDate && (
                       <div className="mt-1 flex items-center gap-1.5">
-                        <span className="text-[11px] font-semibold text-[#004D40] bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-md inline-flex items-center gap-1">
+                        <span className="text-[11px] font-semibold text-[#166534] bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-md inline-flex items-center gap-1">
                           <span>📅</span>
                           <span>{formatBanglaFollowupDate(patientForm.nextFollowupDate)}</span>
                         </span>
@@ -5934,7 +5934,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           key={days}
                           type="button"
                           onClick={() => setPatientForm((prev) => ({ ...prev, nextFollowupDate: addDaysToDate(days) }))}
-                          className="px-2 py-0.5 text-[10px] font-semibold bg-white border border-gray-200 rounded-md hover:bg-emerald-50 hover:border-[#006B5B] text-gray-700 cursor-pointer"
+                          className="px-2 py-0.5 text-[10px] font-semibold bg-white border border-gray-200 rounded-md hover:bg-emerald-50 hover:border-[#29B34F] text-gray-700 cursor-pointer"
                         >
                           +{days === 30 ? "১ মাস" : `${days} দিন`}
                         </button>
@@ -5960,7 +5960,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       placeholder="যেমন: ৭ দিন পর আমল ও প্রতিক্রিয়া চেক"
                       value={patientForm.nextFollowupNote || ""}
                       onChange={(e) => setPatientForm({ ...patientForm, nextFollowupNote: e.target.value })}
-                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] bg-white text-xs"
+                      className="w-full p-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F] bg-white text-xs"
                     />
                     <span className="text-[10px] text-gray-500 mt-1 block">
                       এই নোটটি WhatsApp রিমাইন্ডার মেসেজে স্বয়ংক্রিয়ভাবে যুক্ত হবে।
@@ -5980,7 +5980,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-[#006B5B] hover:bg-[#004D40] text-white font-bold cursor-pointer transition-colors shadow-xs"
+                  className="px-5 py-2 rounded-xl bg-[#29B34F] hover:bg-[#166534] text-white font-bold cursor-pointer transition-colors shadow-xs"
                 >
                   {editingPatientId ? "তথ্য আপডেট করুন" : "রোগী সেভ করুন"}
                 </button>
@@ -5998,16 +5998,16 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
         >
           <div 
             onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#006B5B]/20 space-y-5 animate-in fade-in zoom-in-95 duration-200 cursor-default"
+            className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#29B34F]/20 space-y-5 animate-in fade-in zoom-in-95 duration-200 cursor-default"
           >
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-gray-100 pb-3">
               <div className="flex items-center gap-2.5">
-                <div className="p-2 rounded-xl bg-emerald-50 text-[#006B5B]">
+                <div className="p-2 rounded-xl bg-emerald-50 text-[#29B34F]">
                   <Coins className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-base text-[#004D40]">টাকা জমা নিন / কিস্তি রেকর্ড</h3>
+                  <h3 className="font-bold text-base text-[#166534]">টাকা জমা নিন / কিস্তি রেকর্ড</h3>
                   <p className="text-[11px] text-gray-500">
                     রোগী: <span className="font-bold text-gray-800">{paymentModalPatient.name}</span> ({paymentModalPatient.id})
                   </p>
@@ -6098,7 +6098,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
             <form onSubmit={handleSavePaymentInstallment} className="space-y-4">
               {/* Payment Type Selection: Due Clearance vs New Session Fee */}
               <div className="p-3 rounded-2xl bg-emerald-50/60 border border-emerald-200/80 space-y-2">
-                <span className="text-xs font-bold text-[#004D40] block">
+                <span className="text-xs font-bold text-[#166534] block">
                   পেমেন্টের ধরন নির্বাচন করুন:
                 </span>
                 <div className="grid grid-cols-2 gap-2 text-xs">
@@ -6107,7 +6107,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     onClick={() => setIsNewSessionFee(false)}
                     className={`py-2 px-3 rounded-xl border font-bold text-center transition-all cursor-pointer ${
                       !isNewSessionFee
-                        ? "bg-[#006B5B] text-white border-[#006B5B] shadow-2xs"
+                        ? "bg-[#29B34F] text-white border-[#29B34F] shadow-2xs"
                         : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
                     }`}
                   >
@@ -6118,7 +6118,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     onClick={() => setIsNewSessionFee(true)}
                     className={`py-2 px-3 rounded-xl border font-bold text-center transition-all cursor-pointer ${
                       isNewSessionFee
-                        ? "bg-[#006B5B] text-white border-[#006B5B] shadow-2xs"
+                        ? "bg-[#29B34F] text-white border-[#29B34F] shadow-2xs"
                         : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
                     }`}
                   >
@@ -6137,7 +6137,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           placeholder="যেমন: ২য় সেশন রুকইয়াহ / হিজামা"
                           value={sessionTreatmentTitle}
                           onChange={(e) => setSessionTreatmentTitle(e.target.value)}
-                          className="w-full px-2.5 py-2 rounded-xl border border-gray-200 text-xs font-semibold outline-none focus:border-[#006B5B]"
+                          className="w-full px-2.5 py-2 rounded-xl border border-gray-200 text-xs font-semibold outline-none focus:border-[#29B34F]"
                         />
                       </div>
                       <div>
@@ -6147,7 +6147,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                         <DayMonthYearDateInput
                           value={sessionDateInput}
                           onChange={(val) => setSessionDateInput(val)}
-                          className="w-full px-2.5 py-2 rounded-xl border border-gray-200 text-xs font-semibold outline-none focus:border-[#006B5B] bg-white font-mono"
+                          className="w-full px-2.5 py-2 rounded-xl border border-gray-200 text-xs font-semibold outline-none focus:border-[#29B34F] bg-white font-mono"
                         />
                       </div>
                     </div>
@@ -6162,7 +6162,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           placeholder="যেমন: ১০০০"
                           value={sessionCostInput}
                           onChange={(e) => setSessionCostInput(e.target.value)}
-                          className="w-full px-2.5 py-2 rounded-xl border border-gray-200 text-xs font-bold text-gray-900 outline-none focus:border-[#006B5B]"
+                          className="w-full px-2.5 py-2 rounded-xl border border-gray-200 text-xs font-bold text-gray-900 outline-none focus:border-[#29B34F]"
                         />
                       </div>
                       <div>
@@ -6174,7 +6174,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           placeholder="যেমন: নতুন আমল বা সুন্নাহ নির্দেশনা"
                           value={sessionPrescriptionInput}
                           onChange={(e) => setSessionPrescriptionInput(e.target.value)}
-                          className="w-full px-2.5 py-2 rounded-xl border border-gray-200 text-xs outline-none focus:border-[#006B5B]"
+                          className="w-full px-2.5 py-2 rounded-xl border border-gray-200 text-xs outline-none focus:border-[#29B34F]"
                         />
                       </div>
                     </div>
@@ -6201,7 +6201,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     placeholder="টাকার পরিমাণ লিখুন..."
                     value={paymentAmountInput}
                     onChange={(e) => setPaymentAmountInput(e.target.value)}
-                    className="w-full pl-8 pr-3 py-2.5 rounded-xl border border-gray-300 outline-none focus:border-[#006B5B] text-base font-bold text-emerald-700"
+                    className="w-full pl-8 pr-3 py-2.5 rounded-xl border border-gray-300 outline-none focus:border-[#29B34F] text-base font-bold text-emerald-700"
                     autoFocus
                   />
                 </div>
@@ -6224,7 +6224,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       onClick={() => setPaymentMethodInput(m.id as any)}
                       className={`py-2 rounded-xl border font-bold text-center transition-all cursor-pointer ${
                         paymentMethodInput === m.id
-                          ? "bg-[#006B5B] text-white border-[#006B5B] shadow-2xs"
+                          ? "bg-[#29B34F] text-white border-[#29B34F] shadow-2xs"
                           : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
                       }`}
                     >
@@ -6243,7 +6243,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   placeholder="যেমন: ২য় কিস্তি পরিশোধ / ওষুধ সামগ্রীর ফি"
                   value={paymentNoteInput}
                   onChange={(e) => setPaymentNoteInput(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-gray-200 outline-none focus:border-[#006B5B] text-xs"
+                  className="w-full px-3 py-2 rounded-xl border border-gray-200 outline-none focus:border-[#29B34F] text-xs"
                 />
               </div>
 
@@ -6258,7 +6258,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 rounded-xl bg-[#006B5B] hover:bg-[#004D40] text-white text-xs font-bold transition-all shadow-xs cursor-pointer flex items-center gap-1.5"
+                  className="px-5 py-2.5 rounded-xl bg-[#29B34F] hover:bg-[#166534] text-white text-xs font-bold transition-all shadow-xs cursor-pointer flex items-center gap-1.5"
                 >
                   <Coins className="w-4 h-4" />
                   <span>জমা নিশ্চিত করুন</span>
@@ -6273,7 +6273,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
       {/* Mobile Admin Bottom Navigation Bar (App Bar) */}
       <nav
         aria-label="অ্যাডমিন মোবাইল নেভিগেশন বার"
-        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-[#006B5B]/15 shadow-[0_-4px_20px_rgba(0,107,91,0.08)] px-2 py-1.5 safe-area-pb"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-[#29B34F]/15 shadow-[0_-4px_20px_rgba(0,107,91,0.08)] px-2 py-1.5 safe-area-pb"
       >
         <div className="flex items-center justify-around max-w-md mx-auto">
           {/* 1. Overview */}
@@ -6282,13 +6282,13 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
             onClick={() => setActiveTab("overview")}
             className={`flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition-all cursor-pointer ${
               activeTab === "overview"
-                ? "text-[#006B5B] font-bold"
+                ? "text-[#29B34F] font-bold"
                 : "text-gray-500 hover:text-gray-800"
             }`}
           >
             <div
               className={`p-1 rounded-xl transition-all ${
-                activeTab === "overview" ? "bg-[#006B5B]/15 text-[#006B5B] scale-110" : ""
+                activeTab === "overview" ? "bg-[#29B34F]/15 text-[#29B34F] scale-110" : ""
               }`}
             >
               <BarChart3 className="w-5 h-5" />
@@ -6302,13 +6302,13 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
             onClick={() => setActiveTab("bookings")}
             className={`relative flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition-all cursor-pointer ${
               activeTab === "bookings"
-                ? "text-[#006B5B] font-bold"
+                ? "text-[#29B34F] font-bold"
                 : "text-gray-500 hover:text-gray-800"
             }`}
           >
             <div
               className={`relative p-1 rounded-xl transition-all ${
-                activeTab === "bookings" ? "bg-[#006B5B]/15 text-[#006B5B] scale-110" : ""
+                activeTab === "bookings" ? "bg-[#29B34F]/15 text-[#29B34F] scale-110" : ""
               }`}
             >
               <Users className="w-5 h-5" />
@@ -6331,13 +6331,13 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
             onClick={() => setActiveTab("appointments")}
             className={`relative flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition-all cursor-pointer ${
               activeTab === "appointments"
-                ? "text-[#006B5B] font-bold"
+                ? "text-[#29B34F] font-bold"
                 : "text-gray-500 hover:text-gray-800"
             }`}
           >
             <div
               className={`relative p-1 rounded-xl transition-all ${
-                activeTab === "appointments" ? "bg-[#006B5B]/15 text-[#006B5B] scale-110" : ""
+                activeTab === "appointments" ? "bg-[#29B34F]/15 text-[#29B34F] scale-110" : ""
               }`}
             >
               <Calendar className="w-5 h-5" />
@@ -6356,13 +6356,13 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
             onClick={() => setActiveTab("accounting")}
             className={`relative flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition-all cursor-pointer ${
               activeTab === "accounting"
-                ? "text-[#006B5B] font-bold"
+                ? "text-[#29B34F] font-bold"
                 : "text-gray-500 hover:text-gray-800"
             }`}
           >
             <div
               className={`relative p-1 rounded-xl transition-all ${
-                activeTab === "accounting" ? "bg-[#006B5B]/15 text-[#006B5B] scale-110" : ""
+                activeTab === "accounting" ? "bg-[#29B34F]/15 text-[#29B34F] scale-110" : ""
               }`}
             >
               <Receipt className="w-5 h-5" />
@@ -6379,13 +6379,13 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
             onClick={() => setActiveTab("popup")}
             className={`relative flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition-all cursor-pointer ${
               activeTab === "popup"
-                ? "text-[#006B5B] font-bold"
+                ? "text-[#29B34F] font-bold"
                 : "text-gray-500 hover:text-gray-800"
             }`}
           >
             <div
               className={`relative p-1 rounded-xl transition-all ${
-                activeTab === "popup" ? "bg-[#006B5B]/15 text-[#006B5B] scale-110" : ""
+                activeTab === "popup" ? "bg-[#29B34F]/15 text-[#29B34F] scale-110" : ""
               }`}
             >
               <Gift className="w-5 h-5" />
@@ -6402,13 +6402,13 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
             onClick={() => setActiveTab("store")}
             className={`flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition-all cursor-pointer ${
               activeTab === "store"
-                ? "text-[#006B5B] font-bold"
+                ? "text-[#29B34F] font-bold"
                 : "text-gray-500 hover:text-gray-800"
             }`}
           >
             <div
               className={`p-1 rounded-xl transition-all ${
-                activeTab === "store" ? "bg-[#006B5B]/15 text-[#006B5B] scale-110" : ""
+                activeTab === "store" ? "bg-[#29B34F]/15 text-[#29B34F] scale-110" : ""
               }`}
             >
               <ShoppingBag className="w-5 h-5" />

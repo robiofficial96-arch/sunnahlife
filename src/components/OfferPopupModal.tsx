@@ -139,7 +139,7 @@ export default function OfferPopupModal() {
           {/* Left Side: Poster Image */}
           <div 
             onClick={() => setIsLightboxOpen(true)}
-            className="relative w-full md:w-5/12 bg-gradient-to-b from-[#00382E] to-[#004D40] shrink-0 aspect-[682/1024] md:aspect-auto md:min-h-[460px] cursor-pointer group overflow-hidden"
+            className="relative w-full md:w-5/12 bg-gradient-to-b from-[#14532D] to-[#166534] shrink-0 aspect-[682/1024] md:aspect-auto md:min-h-[460px] cursor-pointer group overflow-hidden"
             title="সম্পূর্ণ পোস্টার বড় করে দেখতে ক্লিক করুন"
           >
             <Image
@@ -167,13 +167,13 @@ export default function OfferPopupModal() {
           <div className="w-full md:w-7/12 p-4 sm:p-6 md:p-7 flex flex-col justify-between space-y-4 md:overflow-y-auto">
             <div className="space-y-3">
               {/* Badge for Desktop */}
-              <div className="hidden md:inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#006B5B]/10 text-[#006B5B] text-xs font-semibold">
+              <div className="hidden md:inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#29B34F]/10 text-[#29B34F] text-xs font-semibold">
                 <Gift className="w-3.5 h-3.5 text-[#D4A017]" />
                 <span>{config.badge}</span>
               </div>
 
               {/* Title */}
-              <h3 className="text-lg sm:text-xl font-extrabold text-[#004D40] leading-snug">
+              <h3 className="text-lg sm:text-xl font-extrabold text-[#166534] leading-snug">
                 {config.title}
               </h3>
 
@@ -182,7 +182,7 @@ export default function OfferPopupModal() {
               </p>
 
               {/* Price & Offer Highlight Card */}
-              <div className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-br from-emerald-50 via-white to-amber-50/40 border border-[#006B5B]/20 shadow-xs space-y-2.5">
+              <div className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-br from-emerald-50 via-white to-amber-50/40 border border-[#29B34F]/20 shadow-xs space-y-2.5">
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-gray-500 font-medium">পরামর্শ ও সেশন ফি:</span>
                   <div className="flex items-center gap-2">
@@ -197,7 +197,7 @@ export default function OfferPopupModal() {
 
                 <div className="pt-2 border-t border-gray-200/80 grid grid-cols-2 gap-2 text-xs">
                   <div className="flex items-center gap-1.5 text-gray-700">
-                    <Clock className="w-3.5 h-3.5 text-[#006B5B] shrink-0" />
+                    <Clock className="w-3.5 h-3.5 text-[#29B34F] shrink-0" />
                     <span className="font-medium truncate">{config.timeText}</span>
                   </div>
                   <div className="flex items-center gap-1.5 text-gray-700">
@@ -209,7 +209,7 @@ export default function OfferPopupModal() {
 
               {/* Instruction */}
               <div className="flex items-start gap-2 text-xs text-gray-600 bg-white p-2.5 rounded-xl border border-gray-100">
-                <CheckCircle2 className="w-4 h-4 text-[#006B5B] shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-4 h-4 text-[#29B34F] shrink-0 mt-0.5" />
                 <span>সিরিয়াল নিশ্চিত করতে এখনই আপনার নাম ও মোবাইল নম্বর পাঠিয়ে দিন।</span>
               </div>
             </div>
@@ -233,7 +233,7 @@ export default function OfferPopupModal() {
                   href={`tel:${config.phone}`}
                   className="flex-1 py-2 rounded-xl bg-white hover:bg-gray-100 text-gray-800 border border-gray-200 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors"
                 >
-                  <PhoneCall className="w-3.5 h-3.5 text-[#006B5B]" />
+                  <PhoneCall className="w-3.5 h-3.5 text-[#29B34F]" />
                   <span>কল: {config.phone}</span>
                 </a>
 

@@ -62,11 +62,11 @@ export default function KnowledgePage() {
     <div className="py-8 md:py-12 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
       {/* Header */}
       <div className="text-center space-y-3 max-w-2xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#006B5B]/10 text-[#006B5B] text-xs font-semibold">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#29B34F]/10 text-[#29B34F] text-xs font-semibold">
           <BookOpen className="w-3.5 h-3.5 text-[#D4A017]" />
           <span>ইসলামিক বিশুদ্ধ জ্ঞান</span>
         </div>
-        <h1 className="text-3xl md:text-4xl font-extrabold text-[#004D40] tracking-tight">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-[#166534] tracking-tight">
           রুকইয়াহ কী ও এর শারঈ নীতিমালা
         </h1>
         <p className="text-sm md:text-base text-gray-600 leading-relaxed">
@@ -75,22 +75,22 @@ export default function KnowledgePage() {
       </div>
 
       {/* 1. What is Ruqyah */}
-      <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
-        <h2 className="text-xl md:text-2xl font-bold text-[#004D40] flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-[#006B5B]" />
+      <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#29B34F]/15 shadow-xs space-y-4">
+        <h2 className="text-xl md:text-2xl font-bold text-[#166534] flex items-center gap-2">
+          <Sparkles className="w-5 h-5 text-[#29B34F]" />
           রুকইয়াহ কী? (What is Ruqyah)
         </h2>
         <p className="text-sm md:text-base text-gray-700 leading-relaxed">
           'রুকইয়াহ' (الرقية) একটি আরবি শব্দ, যার অর্থ ঝাড়ফুঁক বা আশ্রয় প্রার্থনা করা। ইসলামিক পরিভাষায়—কুরআনুল কারীমের আয়াত, আল্লাহর আসমাউল হুসনা (সুন্দর নামসমূহ) ও গুণাবলী এবং রাসুলুল্লাহ (ﷺ) বর্ণিত সহীহ দোয়াসমূহ পাঠ করে অসুস্থ ব্যক্তির জন্য আরোগ্য ও অনিষ্ট থেকে সুরক্ষা প্রার্থনা করাই হলো <strong>রুকইয়াহ শারইয়্যাহ</strong>।
         </p>
-        <div className="p-4 rounded-2xl bg-[#FAFAF7] border border-[#006B5B]/15 text-xs md:text-sm text-emerald-950 leading-relaxed">
+        <div className="p-4 rounded-2xl bg-[#FAFAF7] border border-[#29B34F]/15 text-xs md:text-sm text-emerald-950 leading-relaxed">
           হাদীস শরীফে এসেছে: হযরত আউফ ইবনে মালিক (রা.) বলেন, আমরা জাহেলী যুগে ঝাড়ফুঁক করতাম। আমরা রাসুলুল্লাহ (ﷺ)-কে জিজ্ঞেস করলাম, এ ব্যাপারে আপনার হুকুম কী? তিনি বললেন: <em>“তোমাদের ঝাড়ফুঁক আমার কাছে পেশ করো। যে ঝাড়ফুঁকে কোনো শিরক নেই, তাতে কোনো অসুবিধা নেই।”</em> (সহীহ মুসলিম: ২২০০)
         </div>
       </div>
 
       {/* 2. Three Conditions of Shariah Ruqyah */}
       <div className="space-y-4">
-        <h2 className="text-xl md:text-2xl font-bold text-[#004D40]">
+        <h2 className="text-xl md:text-2xl font-bold text-[#166534]">
           শারঈ রুকইয়াহর ৩টি আবশ্যক শর্ত
         </h2>
         <p className="text-xs md:text-sm text-gray-500">
@@ -100,10 +100,10 @@ export default function KnowledgePage() {
           {threeConditions.map((cond) => (
             <div
               key={cond.num}
-              className="p-5 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-2 flex flex-col justify-between"
+              className="p-5 rounded-3xl bg-white border border-[#29B34F]/15 shadow-xs space-y-2 flex flex-col justify-between"
             >
               <div>
-                <span className="w-8 h-8 rounded-full bg-[#006B5B] text-white font-bold text-sm flex items-center justify-center mb-3">
+                <span className="w-8 h-8 rounded-full bg-[#29B34F] text-white font-bold text-sm flex items-center justify-center mb-3">
                   {cond.num}
                 </span>
                 <h3 className="text-base font-bold text-gray-900 mb-1">
@@ -141,9 +141,9 @@ export default function KnowledgePage() {
       </div>
 
       {/* 4. Who can perform Ruqyah */}
-      <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#006B5B]/15 shadow-xs space-y-4">
-        <h2 className="text-xl md:text-2xl font-bold text-[#004D40] flex items-center gap-2">
-          <UserCheck className="w-5 h-5 text-[#006B5B]" />
+      <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#29B34F]/15 shadow-xs space-y-4">
+        <h2 className="text-xl md:text-2xl font-bold text-[#166534] flex items-center gap-2">
+          <UserCheck className="w-5 h-5 text-[#29B34F]" />
           কারা রুকইয়াহ করতে পারেন?
         </h2>
         <p className="text-sm md:text-base text-gray-700 leading-relaxed">
@@ -166,8 +166,8 @@ export default function KnowledgePage() {
       </div>
 
       {/* CTA */}
-      <div className="p-6 md:p-8 rounded-3xl bg-radial from-emerald-50 to-white border border-[#006B5B]/20 text-center space-y-4">
-        <h3 className="text-lg md:text-xl font-bold text-[#004D40]">
+      <div className="p-6 md:p-8 rounded-3xl bg-radial from-emerald-50 to-white border border-[#29B34F]/20 text-center space-y-4">
+        <h3 className="text-lg md:text-xl font-bold text-[#166534]">
           নিজেই নিজের রুকইয়াহ শুরু করতে চান?
         </h3>
         <p className="text-xs md:text-sm text-gray-600 max-w-xl mx-auto">
@@ -175,7 +175,7 @@ export default function KnowledgePage() {
         </p>
         <Link
           href="/self-ruqyah"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#006B5B] text-white font-bold text-xs md:text-sm hover:bg-[#004D40] transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#29B34F] text-white font-bold text-xs md:text-sm hover:bg-[#166534] transition-colors"
         >
           <span>সেলফ-রুকইয়াহ গাইড পড়ুন</span>
           <ArrowRight className="w-4 h-4" />
