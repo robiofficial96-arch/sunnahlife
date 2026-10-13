@@ -46,7 +46,7 @@ export default function BottomNav() {
   ];
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#FAFAF7]/95 backdrop-blur-lg border-t border-[#29B34F]/15 shadow-[0_-4px_20px_rgba(0,107,91,0.08)]">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#FAFAF7]/95 backdrop-blur-lg border-t border-[#3379BE]/15 shadow-[0_-4px_20px_rgba(0,107,91,0.08)]">
       <nav className="flex items-center justify-around h-16 max-w-lg mx-auto px-1 safe-area-pb">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
@@ -58,8 +58,8 @@ export default function BottomNav() {
               href={item.href}
               className={`relative flex flex-col items-center justify-center flex-1 h-full py-1 text-center transition-all ${
                 isActive
-                  ? "text-[#29B34F] font-bold"
-                  : "text-gray-500 hover:text-[#29B34F]"
+                  ? "text-[#3379BE] font-bold"
+                  : "text-gray-500 hover:text-[#3379BE]"
               }`}
             >
               {/* Highlight pill for assessment / active tab */}
@@ -67,8 +67,8 @@ export default function BottomNav() {
                 <div
                   className={`p-1.5 rounded-2xl transition-all ${
                     isActive
-                      ? "bg-[#29B34F] text-white shadow-md shadow-[#29B34F]/30 scale-105"
-                      : "bg-[#29B34F]/10 text-[#29B34F]"
+                      ? "bg-[#3379BE] text-white shadow-md shadow-[#3379BE]/30 scale-105"
+                      : "bg-[#3379BE]/10 text-[#3379BE]"
                   }`}
                 >
                   <IconComponent className="w-5 h-5" />
@@ -77,7 +77,7 @@ export default function BottomNav() {
                 <div>
                   <IconComponent
                     className={`w-5 h-5 transition-transform ${
-                      isActive ? "scale-110 text-[#29B34F]" : "text-gray-500"
+                      isActive ? "scale-110 text-[#3379BE]" : "text-gray-500"
                     }`}
                   />
                 </div>
@@ -85,7 +85,7 @@ export default function BottomNav() {
 
               <span
                 className={`text-[10px] sm:text-[11px] mt-0.5 tracking-tight whitespace-nowrap ${
-                  isActive ? "text-[#29B34F] font-semibold" : "text-gray-600 font-normal"
+                  isActive ? "text-[#3379BE] font-semibold" : "text-gray-600 font-normal"
                 }`}
               >
                 {item.label}

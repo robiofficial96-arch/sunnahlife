@@ -40,13 +40,13 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-[#FAFAF7] border-t border-[#29B34F]/15 pt-12 pb-16 md:pb-12 text-gray-600">
+    <footer className="bg-[#FAFAF7] border-t border-[#3379BE]/15 pt-12 pb-16 md:pb-12 text-gray-600">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Core Trust / Principle Badges: Only visible on Home page */}
         {pathname === "/" && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-10 border-b border-gray-200/70">
-            <div className="flex items-start gap-3.5 p-4 rounded-xl bg-white border border-[#29B34F]/15 shadow-2xs">
-              <div className="p-2.5 rounded-lg bg-[#29B34F]/10 text-[#29B34F] shrink-0">
+            <div className="flex items-start gap-3.5 p-4 rounded-xl bg-white border border-[#3379BE]/15 shadow-2xs">
+              <div className="p-2.5 rounded-lg bg-[#3379BE]/10 text-[#3379BE] shrink-0">
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <div>
@@ -57,7 +57,7 @@ export default function Footer() {
               </div>
             </div>
 
-            <div className="flex items-start gap-3.5 p-4 rounded-xl bg-white border border-[#29B34F]/15 shadow-2xs">
+            <div className="flex items-start gap-3.5 p-4 rounded-xl bg-white border border-[#3379BE]/15 shadow-2xs">
               <div className="p-2.5 rounded-lg bg-[#D4A017]/15 text-[#D4A017] shrink-0">
                 <CheckCircle2 className="w-5 h-5" />
               </div>
@@ -69,7 +69,7 @@ export default function Footer() {
               </div>
             </div>
 
-            <div className="flex items-start gap-3.5 p-4 rounded-xl bg-white border border-[#29B34F]/15 shadow-2xs">
+            <div className="flex items-start gap-3.5 p-4 rounded-xl bg-white border border-[#3379BE]/15 shadow-2xs">
               <div className="p-2.5 rounded-lg bg-emerald-100 text-emerald-800 shrink-0">
                 <HeartPulse className="w-5 h-5" />
               </div>
@@ -115,14 +115,14 @@ export default function Footer() {
             {/* Direct Contact & Social Links */}
             <div className="space-y-2 pt-1 text-xs">
               <div className="flex items-center gap-2 text-gray-700">
-                <Phone className="w-4 h-4 text-[#29B34F]" />
+                <Phone className="w-4 h-4 text-[#3379BE]" />
                 <a href={`tel:${SITE_CONFIG.helplinePhone}`} className="hover:underline font-semibold font-mono">
                   {SITE_CONFIG.helplinePhone}
                 </a>
               </div>
 
               <div className="flex items-start gap-2 text-gray-700">
-                <MapPin className="w-4 h-4 text-[#29B34F] shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-[#3379BE] shrink-0 mt-0.5" />
                 <div className="leading-snug">
                   <p className="text-gray-700 font-medium">
                     কামরাঙ্গীরচর রনি মার্কেট কাঠপট্রি জমজম টাওয়ারের ২য় তলায় ঢাকা।
@@ -131,7 +131,7 @@ export default function Footer() {
                     href={SITE_CONFIG.googleMapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#29B34F] hover:underline text-[11px] inline-flex items-center gap-1 font-semibold mt-0.5"
+                    className="text-[#3379BE] hover:underline text-[11px] inline-flex items-center gap-1 font-semibold mt-0.5"
                   >
                     গুগল ম্যাপে লোকেশন দেখুন ↗
                   </a>
@@ -195,67 +195,67 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold text-sm text-gray-900 mb-3 border-b border-[#29B34F]/15 pb-1">
+            <h4 className="font-semibold text-sm text-gray-900 mb-3 border-b border-[#3379BE]/15 pb-1">
               প্রয়োজনীয় বিভাগ
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link href="/shop" className="hover:text-[#29B34F] transition-colors flex items-center gap-1.5 font-semibold text-emerald-800">
-                  <span className="w-1 h-1 rounded-full bg-[#29B34F]" />
+                <Link href="/shop" className="hover:text-[#3379BE] transition-colors flex items-center gap-1.5 font-semibold text-emerald-800">
+                  <span className="w-1 h-1 rounded-full bg-[#3379BE]" />
                   সুন্নাহ স্টোর (রুকইয়াহ সামগ্রী)
                 </Link>
               </li>
               <li>
-                <Link href="/assessment" className="hover:text-[#29B34F] transition-colors flex items-center gap-1.5">
-                  <span className="w-1 h-1 rounded-full bg-[#29B34F]" />
+                <Link href="/assessment" className="hover:text-[#3379BE] transition-colors flex items-center gap-1.5">
+                  <span className="w-1 h-1 rounded-full bg-[#3379BE]" />
                   লক্ষণ ও সমস্যা যাচাই (Diagnosis)
                 </Link>
               </li>
               <li>
-                <Link href="/self-ruqyah" className="hover:text-[#29B34F] transition-colors flex items-center gap-1.5">
-                  <span className="w-1 h-1 rounded-full bg-[#29B34F]" />
+                <Link href="/self-ruqyah" className="hover:text-[#3379BE] transition-colors flex items-center gap-1.5">
+                  <span className="w-1 h-1 rounded-full bg-[#3379BE]" />
                   সেলফ-রুকইয়াহ ৭ ধাপের গাইড
                 </Link>
               </li>
               <li>
-                <Link href="/ayat" className="hover:text-[#29B34F] transition-colors flex items-center gap-1.5">
-                  <span className="w-1 h-1 rounded-full bg-[#29B34F]" />
+                <Link href="/ayat" className="hover:text-[#3379BE] transition-colors flex items-center gap-1.5">
+                  <span className="w-1 h-1 rounded-full bg-[#3379BE]" />
                   রুকইয়াহ শারইয়্যাহ আয়াতসমূহ
                 </Link>
               </li>
               <li>
-                <Link href="/audio" className="hover:text-[#29B34F] transition-colors flex items-center gap-1.5">
-                  <span className="w-1 h-1 rounded-full bg-[#29B34F]" />
+                <Link href="/audio" className="hover:text-[#3379BE] transition-colors flex items-center gap-1.5">
+                  <span className="w-1 h-1 rounded-full bg-[#3379BE]" />
                   রুকইয়াহ অডিও লাইব্রেরি
                 </Link>
               </li>
               <li>
-                <Link href="/duas" className="hover:text-[#29B34F] transition-colors flex items-center gap-1.5">
-                  <span className="w-1 h-1 rounded-full bg-[#29B34F]" />
+                <Link href="/duas" className="hover:text-[#3379BE] transition-colors flex items-center gap-1.5">
+                  <span className="w-1 h-1 rounded-full bg-[#3379BE]" />
                   মাসনুন দোয়া ও হিফযের আযকার
                 </Link>
               </li>
               <li>
-                <Link href="/routine" className="hover:text-[#29B34F] transition-colors flex items-center gap-1.5">
-                  <span className="w-1 h-1 rounded-full bg-[#29B34F]" />
+                <Link href="/routine" className="hover:text-[#3379BE] transition-colors flex items-center gap-1.5">
+                  <span className="w-1 h-1 rounded-full bg-[#3379BE]" />
                   দৈনন্দিন আমল ট্র্যাকার
                 </Link>
               </li>
               <li>
-                <Link href="/resources" className="hover:text-[#29B34F] transition-colors flex items-center gap-1.5">
-                  <span className="w-1 h-1 rounded-full bg-[#29B34F]" />
+                <Link href="/resources" className="hover:text-[#3379BE] transition-colors flex items-center gap-1.5">
+                  <span className="w-1 h-1 rounded-full bg-[#3379BE]" />
                   পিডিএফ ও প্রিন্ট রিসোর্স
                 </Link>
               </li>
               <li>
-                <Link href="/articles" className="hover:text-[#29B34F] transition-colors flex items-center gap-1.5">
-                  <span className="w-1 h-1 rounded-full bg-[#29B34F]" />
+                <Link href="/articles" className="hover:text-[#3379BE] transition-colors flex items-center gap-1.5">
+                  <span className="w-1 h-1 rounded-full bg-[#3379BE]" />
                   ইসলামিক আর্টিকেলস ভান্ডার
                 </Link>
               </li>
               <li>
-                <Link href="/appointment" className="hover:text-[#29B34F] transition-colors flex items-center gap-1.5">
-                  <span className="w-1 h-1 rounded-full bg-[#29B34F]" />
+                <Link href="/appointment" className="hover:text-[#3379BE] transition-colors flex items-center gap-1.5">
+                  <span className="w-1 h-1 rounded-full bg-[#3379BE]" />
                   রাক্বী অ্যাপয়েন্টমেন্ট বুকিং
                 </Link>
               </li>
@@ -264,61 +264,61 @@ export default function Footer() {
 
           {/* Topics & Resources */}
           <div>
-            <h4 className="font-semibold text-sm text-gray-900 mb-3 border-b border-[#29B34F]/15 pb-1">
+            <h4 className="font-semibold text-sm text-gray-900 mb-3 border-b border-[#3379BE]/15 pb-1">
               বিষয়ভিত্তিক আলোচনা
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link href="/topics/evil-eye" className="hover:text-[#29B34F] transition-colors">
+                <Link href="/topics/evil-eye" className="hover:text-[#3379BE] transition-colors">
                   বদনজর ও হিংসা (Evil Eye)
                 </Link>
               </li>
               <li>
-                <Link href="/topics/sihr" className="hover:text-[#29B34F] transition-colors">
+                <Link href="/topics/sihr" className="hover:text-[#3379BE] transition-colors">
                   সিহর ও জাদুর প্রতিকার
                 </Link>
               </li>
               <li>
-                <Link href="/topics/jinn-fear" className="hover:text-[#29B34F] transition-colors">
+                <Link href="/topics/jinn-fear" className="hover:text-[#3379BE] transition-colors">
                   ভয়-ভীতি ও দুঃস্বপ্ন নিবারণ
                 </Link>
               </li>
               <li>
-                <Link href="/topics/waswasah" className="hover:text-[#29B34F] transition-colors">
+                <Link href="/topics/waswasah" className="hover:text-[#3379BE] transition-colors">
                   ওয়াসওয়াসা ও মানসিক অস্থিরতা
                 </Link>
               </li>
               <li>
-                <Link href="/faq" className="hover:text-[#29B34F] transition-colors">
+                <Link href="/faq" className="hover:text-[#3379BE] transition-colors">
                   সাধারণ জিজ্ঞাসা (FAQ)
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="hover:text-[#29B34F] transition-colors flex items-center gap-1.5">
-                  <span className="w-1 h-1 rounded-full bg-[#29B34F]" />
+                <Link href="/services" className="hover:text-[#3379BE] transition-colors flex items-center gap-1.5">
+                  <span className="w-1 h-1 rounded-full bg-[#3379BE]" />
                   আমাদের শারঈ সেবাসমূহ
                 </Link>
               </li>
               <li>
-                <Link href="/knowledge" className="hover:text-[#29B34F] transition-colors flex items-center gap-1.5">
-                  <span className="w-1 h-1 rounded-full bg-[#29B34F]" />
+                <Link href="/knowledge" className="hover:text-[#3379BE] transition-colors flex items-center gap-1.5">
+                  <span className="w-1 h-1 rounded-full bg-[#3379BE]" />
                   রুকইয়াহ জ্ঞান ও নীতিমালা
                 </Link>
               </li>
               <li>
-                <Link href="/practitioners" className="hover:text-[#29B34F] transition-colors flex items-center gap-1.5">
-                  <span className="w-1 h-1 rounded-full bg-[#29B34F]" />
+                <Link href="/practitioners" className="hover:text-[#3379BE] transition-colors flex items-center gap-1.5">
+                  <span className="w-1 h-1 rounded-full bg-[#3379BE]" />
                   অনুমোদিত রাক্বী ডিরেক্টরি
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-[#29B34F] transition-colors flex items-center gap-1.5">
-                  <span className="w-1 h-1 rounded-full bg-[#29B34F]" />
+                <Link href="/contact" className="hover:text-[#3379BE] transition-colors flex items-center gap-1.5">
+                  <span className="w-1 h-1 rounded-full bg-[#3379BE]" />
                   যোগাযোগ ও চেম্বার
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-[#29B34F] transition-colors">
+                <Link href="/about" className="hover:text-[#3379BE] transition-colors">
                   আমাদের সম্পর্কে ও নীতিমালা
                 </Link>
               </li>
@@ -329,7 +329,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/admin" className="text-gray-500 hover:text-[#29B34F] transition-colors flex items-center gap-1.5 text-xs">
+                <Link href="/admin" className="text-gray-500 hover:text-[#3379BE] transition-colors flex items-center gap-1.5 text-xs">
                   <Lock className="w-3 h-3 text-gray-400" />
                   প্রশাসনিক লগইন (Admin)
                 </Link>
@@ -339,7 +339,7 @@ export default function Footer() {
 
           {/* Shariah Disclaimer */}
           <div>
-            <h4 className="font-semibold text-sm text-gray-900 mb-3 border-b border-[#29B34F]/15 pb-1">
+            <h4 className="font-semibold text-sm text-gray-900 mb-3 border-b border-[#3379BE]/15 pb-1">
               গুরুত্বপূর্ণ শারঈ সতর্কতা
             </h4>
             <p className="text-xs text-gray-500 leading-relaxed">
@@ -357,7 +357,7 @@ export default function Footer() {
               href={`https://wa.me/8801969343158?text=${encodeURIComponent("আসসালামু আলাইকুম। ওয়েবসাইট ডিজাইন ও ডেভেলপমেন্ট সংক্রান্ত বিষয়ে যোগাযোগ করতে চাই।")}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#29B34F] hover:text-[#166534] font-semibold underline inline-flex items-center gap-1 hover:opacity-90 transition-opacity"
+              className="text-[#3379BE] hover:text-[#1E4E79] font-semibold underline inline-flex items-center gap-1 hover:opacity-90 transition-opacity"
             >
               <span>CodeHive Studio</span>
             </a>

@@ -100,8 +100,8 @@ export default function YouTubeRuqyahSection() {
             onClick={() => setSelectedCategory(cat.id)}
             className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
               selectedCategory === cat.id
-                ? "bg-[#29B34F] text-white shadow-xs"
-                : "bg-white border border-gray-200 text-gray-700 hover:border-[#29B34F]/40 hover:text-[#29B34F]"
+                ? "bg-[#3379BE] text-white shadow-xs"
+                : "bg-white border border-gray-200 text-gray-700 hover:border-[#3379BE]/40 hover:text-[#3379BE]"
             }`}
           >
             {cat.label}
@@ -114,7 +114,7 @@ export default function YouTubeRuqyahSection() {
         {filteredVideos.map((video) => (
           <div
             key={video.id}
-            className="group bg-white rounded-3xl border border-gray-200 hover:border-[#29B34F]/30 shadow-xs hover:shadow-md transition-all overflow-hidden flex flex-col justify-between"
+            className="group bg-white rounded-3xl border border-gray-200 hover:border-[#3379BE]/30 shadow-xs hover:shadow-md transition-all overflow-hidden flex flex-col justify-between"
           >
             {/* Thumbnail Box */}
             <div className="relative aspect-video bg-gray-900 overflow-hidden cursor-pointer" onClick={() => setActiveModalVideo(video)}>
@@ -141,7 +141,7 @@ export default function YouTubeRuqyahSection() {
             <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-xs text-gray-500">
-                  <span className="font-semibold text-[#29B34F]">{video.speaker}</span>
+                  <span className="font-semibold text-[#3379BE]">{video.speaker}</span>
                   <span className="flex items-center gap-1 text-[11px] text-red-600 font-bold">
                     <YoutubeIcon className="w-3 h-3 fill-red-600" />
                     YouTube HD
@@ -150,7 +150,7 @@ export default function YouTubeRuqyahSection() {
 
                 <h3 
                   onClick={() => setActiveModalVideo(video)}
-                  className="text-base font-bold text-[#166534] hover:text-[#29B34F] transition-colors line-clamp-2 cursor-pointer leading-snug"
+                  className="text-base font-bold text-[#1E4E79] hover:text-[#3379BE] transition-colors line-clamp-2 cursor-pointer leading-snug"
                 >
                   {video.title}
                 </h3>
@@ -163,7 +163,7 @@ export default function YouTubeRuqyahSection() {
                 <div className="pt-2 border-t border-gray-100 space-y-1">
                   {video.keyPoints.slice(0, 2).map((point, idx) => (
                     <div key={idx} className="flex items-start gap-1.5 text-[11px] text-gray-600">
-                      <CheckCircle2 className="w-3 h-3 text-[#29B34F] shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-3 h-3 text-[#3379BE] shrink-0 mt-0.5" />
                       <span className="line-clamp-1">{point}</span>
                     </div>
                   ))}
@@ -174,7 +174,7 @@ export default function YouTubeRuqyahSection() {
               <div className="pt-3 border-t border-gray-100 flex items-center gap-2">
                 <button
                   onClick={() => setActiveModalVideo(video)}
-                  className="flex-1 py-2 rounded-xl bg-[#29B34F] hover:bg-[#166534] text-white font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  className="flex-1 py-2 rounded-xl bg-[#3379BE] hover:bg-[#1E4E79] text-white font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
                   <Play className="w-3.5 h-3.5 fill-current" />
                   <span>ভিডিও দেখুন</span>
@@ -200,7 +200,7 @@ export default function YouTubeRuqyahSection() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-xs p-4 animate-in fade-in duration-200">
           <div className="relative w-full max-w-4xl bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
             {/* Modal Header */}
-            <div className="px-5 py-4 bg-[#166534] text-white flex items-center justify-between">
+            <div className="px-5 py-4 bg-[#1E4E79] text-white flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <YoutubeIcon className="w-5 h-5 text-red-400 fill-red-400" />
                 <h4 className="text-sm md:text-base font-bold truncate max-w-md sm:max-w-xl">
@@ -231,7 +231,7 @@ export default function YouTubeRuqyahSection() {
             {/* Modal Footer / Description */}
             <div className="p-5 overflow-y-auto space-y-3 bg-[#FAFAF7]">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="text-xs font-semibold text-[#29B34F] px-2.5 py-1 rounded-md bg-emerald-100">
+                <span className="text-xs font-semibold text-[#3379BE] px-2.5 py-1 rounded-md bg-emerald-100">
                   {activeModalVideo.categoryLabel} • {activeModalVideo.speaker}
                 </span>
 
@@ -251,14 +251,14 @@ export default function YouTubeRuqyahSection() {
               </p>
 
               <div className="bg-white p-3.5 rounded-xl border border-gray-200">
-                <h5 className="text-xs font-bold text-[#166534] mb-2 flex items-center gap-1.5">
+                <h5 className="text-xs font-bold text-[#1E4E79] mb-2 flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-[#D4A017]" />
                   <span>আমলের বিশেষ দিকনির্দেশনা:</span>
                 </h5>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-600">
                   {activeModalVideo.keyPoints.map((point, idx) => (
                     <li key={idx} className="flex items-start gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#29B34F] shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#3379BE] shrink-0 mt-0.5" />
                       <span>{point}</span>
                     </li>
                   ))}

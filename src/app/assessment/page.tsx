@@ -12,11 +12,11 @@ export default function AssessmentPage() {
     <div className="py-8 md:py-12 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
       {/* Header Banner */}
       <div className="text-center space-y-2.5 max-w-xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#29B34F]/10 text-[#29B34F] text-xs font-semibold">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3379BE]/10 text-[#3379BE] text-xs font-semibold">
           <Stethoscope className="w-3.5 h-3.5 text-[#D4A017]" />
           <span>শারঈ স্ব-নিরীক্ষণ</span>
         </div>
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#166534] tracking-tight">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1E4E79] tracking-tight">
           লক্ষণ ও সমস্যা স্ব-নিরীক্ষণ
         </h1>
         <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
@@ -26,15 +26,15 @@ export default function AssessmentPage() {
 
       {/* Guidelines Box: Compact 3-col badges */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div className="p-3.5 rounded-2xl bg-white border border-[#29B34F]/15 shadow-2xs flex items-center gap-3">
-          <CheckCircle2 className="w-5 h-5 text-[#29B34F] shrink-0" />
+        <div className="p-3.5 rounded-2xl bg-white border border-[#3379BE]/15 shadow-2xs flex items-center gap-3">
+          <CheckCircle2 className="w-5 h-5 text-[#3379BE] shrink-0" />
           <div className="text-xs text-gray-700">
             <strong className="text-gray-900 block font-bold">সঠিক নির্বাচন</strong>
             শুধু নিয়মিত সমস্যাগুলোতেই টিক দিন
           </div>
         </div>
 
-        <div className="p-3.5 rounded-2xl bg-white border border-[#29B34F]/15 shadow-2xs flex items-center gap-3">
+        <div className="p-3.5 rounded-2xl bg-white border border-[#3379BE]/15 shadow-2xs flex items-center gap-3">
           <MessageCircle className="w-5 h-5 text-[#D4A017] shrink-0" />
           <div className="text-xs text-gray-700">
             <strong className="text-gray-900 block font-bold">১-ক্লিকে WhatsApp</strong>
@@ -42,7 +42,7 @@ export default function AssessmentPage() {
           </div>
         </div>
 
-        <div className="p-3.5 rounded-2xl bg-white border border-[#29B34F]/15 shadow-2xs flex items-center gap-3">
+        <div className="p-3.5 rounded-2xl bg-white border border-[#3379BE]/15 shadow-2xs flex items-center gap-3">
           <HeartPulse className="w-5 h-5 text-emerald-600 shrink-0" />
           <div className="text-xs text-gray-700">
             <strong className="text-gray-900 block font-bold">মেডিকেল টেস্ট</strong>

@@ -219,11 +219,11 @@ export default function AppointmentPage() {
     <div className="py-8 md:py-12 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
       {/* Header */}
       <div className="text-center space-y-3 max-w-2xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#29B34F]/10 text-[#29B34F] text-xs font-semibold">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#3379BE]/10 text-[#3379BE] text-xs font-semibold">
           <Calendar className="w-3.5 h-3.5 text-[#D4A017]" />
           <span>শারঈ রাক্বী অ্যাপয়েন্টমেন্ট ও সেশন বুকিং</span>
         </div>
-        <h1 className="text-3xl md:text-4xl font-extrabold text-[#166534] tracking-tight">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-[#1E4E79] tracking-tight">
           রুকইয়াহ ও ডায়াগনোসিস অ্যাপয়েন্টমেন্ট
         </h1>
         <p className="text-sm md:text-base text-gray-600 leading-relaxed">
@@ -232,19 +232,19 @@ export default function AppointmentPage() {
       </div>
 
       {/* Shariah Advice Banner from Official Flyer */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-emerald-50 via-[#29B34F]/5 to-amber-50 border border-[#29B34F]/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+      <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-emerald-50 via-[#3379BE]/5 to-amber-50 border border-[#3379BE]/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
         <div className="flex items-start sm:items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-[#29B34F] text-white shrink-0 mt-0.5 sm:mt-0">
+          <div className="p-2.5 rounded-xl bg-[#3379BE] text-white shrink-0 mt-0.5 sm:mt-0">
             <Lightbulb className="w-5 h-5 text-[#F2C94C]" />
           </div>
           <div className="text-xs sm:text-sm text-gray-800 leading-relaxed">
-            <strong className="text-[#166534] block font-bold">বিশেষ শারঈ পরামর্শ:</strong>
+            <strong className="text-[#1E4E79] block font-bold">বিশেষ শারঈ পরামর্শ:</strong>
             <span>"আপনি ট্রিটমেন্ট খরচ ভাবার আগে, শুধু ডায়াগনোসিস করে দেখে নিন। যদি সমস্যা না থাকে, তাহলে আর কোনো চিকিৎসার খরচ নেই, ইনশাআল্লাহ।"</span>
           </div>
         </div>
         <Link
           href="/services"
-          className="text-xs text-[#29B34F] font-bold hover:underline shrink-0 whitespace-nowrap self-end sm:self-center flex items-center gap-1"
+          className="text-xs text-[#3379BE] font-bold hover:underline shrink-0 whitespace-nowrap self-end sm:self-center flex items-center gap-1"
         >
           <span>ফি ও কার্যপ্রণালী</span>
           <span>→</span>
@@ -255,14 +255,14 @@ export default function AppointmentPage() {
       {isSubmitted && submittedData ? (
         <div className="p-6 md:p-10 rounded-3xl bg-white border border-emerald-500/30 shadow-lg space-y-6 text-center animate-in fade-in duration-300">
           <div className="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto shadow-inner">
-            <CheckCircle2 className="w-10 h-10 text-[#29B34F]" />
+            <CheckCircle2 className="w-10 h-10 text-[#3379BE]" />
           </div>
 
           <div className="space-y-2 max-w-lg mx-auto">
             <span className="inline-block px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold">
               আবেদন রেফারেন্স: #{submittedId ? submittedId.slice(-6).toUpperCase() : "SL-CONFIRMED"}
             </span>
-            <h2 className="text-2xl md:text-3xl font-extrabold text-[#166534]">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-[#1E4E79]">
               আলহামদুলিল্লাহ! আপনার বুকিং সফলভাবে জমা হয়েছে
             </h2>
             <p className="text-sm text-gray-600 leading-relaxed">
@@ -282,7 +282,7 @@ export default function AppointmentPage() {
             </div>
             <div className="flex justify-between border-b border-gray-200/60 pb-2">
               <span className="text-gray-500">নির্বাচিত সেবা:</span>
-              <span className="font-bold text-[#29B34F]">{submittedData.serviceName}</span>
+              <span className="font-bold text-[#3379BE]">{submittedData.serviceName}</span>
             </div>
             <div className="flex justify-between border-b border-gray-200/60 pb-2">
               <span className="text-gray-500">নির্ধারিত ফি:</span>
@@ -310,7 +310,7 @@ export default function AppointmentPage() {
                 setSubmittedData(null);
                 setSubmittedId("");
               }}
-              className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#29B34F] text-white font-semibold text-xs md:text-sm hover:bg-[#166534] transition-colors cursor-pointer"
+              className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#3379BE] text-white font-semibold text-xs md:text-sm hover:bg-[#1E4E79] transition-colors cursor-pointer"
             >
               নতুন আরেকটি বুকিং করুন
             </button>
@@ -328,11 +328,11 @@ export default function AppointmentPage() {
           </div>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="p-6 md:p-10 rounded-3xl bg-white border border-[#29B34F]/15 shadow-sm space-y-8">
+        <form onSubmit={handleSubmit} className="p-6 md:p-10 rounded-3xl bg-white border border-[#3379BE]/15 shadow-sm space-y-8">
           {/* 1. Service Selection */}
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <label className="block text-sm font-bold text-[#166534]">
+              <label className="block text-sm font-bold text-[#1E4E79]">
                 ১. কাঙ্ক্ষিত সেবার ধরন বেছে নিন:
               </label>
               <span className="text-[11px] text-gray-500">
@@ -347,8 +347,8 @@ export default function AppointmentPage() {
                 onClick={() => setServiceCategory("all")}
                 className={`flex-1 min-w-[100px] py-2 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                   serviceCategory === "all"
-                    ? "bg-[#29B34F] text-white shadow-xs"
-                    : "text-gray-600 hover:text-[#29B34F] hover:bg-gray-100"
+                    ? "bg-[#3379BE] text-white shadow-xs"
+                    : "text-gray-600 hover:text-[#3379BE] hover:bg-gray-100"
                 }`}
               >
                 সব সেবা ({services.length})
@@ -392,17 +392,17 @@ export default function AppointmentPage() {
                       isChosen
                         ? srv.category === "hijama"
                           ? "bg-rose-50/40 border-rose-600 shadow-xs ring-1 ring-rose-600"
-                          : "bg-[#29B34F]/5 border-[#29B34F] shadow-xs ring-1 ring-[#29B34F]"
-                        : "bg-[#FAFAF7] border-gray-200 hover:border-[#29B34F]/40"
+                          : "bg-[#3379BE]/5 border-[#3379BE] shadow-xs ring-1 ring-[#3379BE]"
+                        : "bg-[#FAFAF7] border-gray-200 hover:border-[#3379BE]/40"
                     }`}
                   >
                     <div>
                       <div className="flex items-start justify-between gap-2 mb-1.5">
-                        <h4 className={`text-sm font-bold leading-snug ${isChosen ? (srv.category === "hijama" ? "text-rose-800" : "text-[#29B34F]") : "text-gray-900"}`}>
+                        <h4 className={`text-sm font-bold leading-snug ${isChosen ? (srv.category === "hijama" ? "text-rose-800" : "text-[#3379BE]") : "text-gray-900"}`}>
                           {srv.title}
                         </h4>
                         {isChosen ? (
-                          <CheckCircle2 className={`w-4 h-4 shrink-0 mt-0.5 ${srv.category === "hijama" ? "text-rose-600" : "text-[#29B34F]"}`} />
+                          <CheckCircle2 className={`w-4 h-4 shrink-0 mt-0.5 ${srv.category === "hijama" ? "text-rose-600" : "text-[#3379BE]"}`} />
                         ) : (
                           <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md shrink-0 ${
                             srv.category === "hijama"
@@ -421,7 +421,7 @@ export default function AppointmentPage() {
                     </div>
 
                     <div className="mt-3 pt-2.5 border-t border-gray-200/70 flex items-center justify-between text-[11px]">
-                      <span className={`font-bold ${srv.category === "hijama" ? "text-rose-700" : "text-[#29B34F]"}`}>
+                      <span className={`font-bold ${srv.category === "hijama" ? "text-rose-700" : "text-[#3379BE]"}`}>
                         ফি: {srv.fee}
                       </span>
                       <span className="text-gray-500 font-medium">
@@ -436,7 +436,7 @@ export default function AppointmentPage() {
 
           {/* 2. Personal Info */}
           <div className="space-y-4">
-            <label className="block text-sm font-bold text-[#166534]">
+            <label className="block text-sm font-bold text-[#1E4E79]">
               ২. আপনার ব্যক্তিগত তথ্য:
             </label>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -450,7 +450,7 @@ export default function AppointmentPage() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="আপনার নাম"
-                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#29B34F] text-sm bg-white"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#3379BE] text-sm bg-white"
                   />
                 </div>
               </div>
@@ -465,7 +465,7 @@ export default function AppointmentPage() {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="০১৭xxxxxxxx"
-                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#29B34F] text-sm bg-white"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#3379BE] text-sm bg-white"
                   />
                 </div>
               </div>
@@ -479,7 +479,7 @@ export default function AppointmentPage() {
                     value={district}
                     onChange={(e) => setDistrict(e.target.value)}
                     placeholder="যেমন: ঢাকা, চট্টগ্রাম..."
-                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#29B34F] text-sm bg-white"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#3379BE] text-sm bg-white"
                   />
                 </div>
               </div>
@@ -488,7 +488,7 @@ export default function AppointmentPage() {
 
           {/* 3. Date & Time Selection */}
           <div className="space-y-4">
-            <label className="block text-sm font-bold text-[#166534]">
+            <label className="block text-sm font-bold text-[#1E4E79]">
               ৩. পছন্দের তারিখ ও সুবিধাজনক সময়:
             </label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -498,7 +498,7 @@ export default function AppointmentPage() {
                   type="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="w-full p-2.5 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#29B34F] text-sm bg-white"
+                  className="w-full p-2.5 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#3379BE] text-sm bg-white"
                 />
               </div>
 
@@ -507,7 +507,7 @@ export default function AppointmentPage() {
                 <select
                   value={timeSlot}
                   onChange={(e) => setTimeSlot(e.target.value)}
-                  className="w-full p-2.5 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#29B34F] text-sm bg-white"
+                  className="w-full p-2.5 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#3379BE] text-sm bg-white"
                 >
                   {timeSlots.map((slot, idx) => (
                     <option key={idx} value={slot}>
@@ -521,7 +521,7 @@ export default function AppointmentPage() {
 
           {/* 4. Problem Description */}
           <div className="space-y-1.5">
-            <label className="block text-sm font-bold text-[#166534]">
+            <label className="block text-sm font-bold text-[#1E4E79]">
               ৪. সমস্যার সংক্ষিপ্ত বিবরণ (ঐচ্ছিক):
             </label>
             <textarea
@@ -529,7 +529,7 @@ export default function AppointmentPage() {
               value={problemDescription}
               onChange={(e) => setProblemDescription(e.target.value)}
               placeholder="আপনার প্রধান লক্ষণসমূহ বা কতদিন ধরে সমস্যা তা সংক্ষেপে উল্লেখ করতে পারেন..."
-              className="w-full p-3 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#29B34F] text-sm bg-white"
+              className="w-full p-3 rounded-xl border border-gray-200 focus:outline-hidden focus:border-[#3379BE] text-sm bg-white"
             />
           </div>
 
@@ -537,13 +537,13 @@ export default function AppointmentPage() {
           {selectedServiceObj && (
             <div className="p-4 rounded-2xl bg-emerald-50/60 border border-emerald-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
               <div className="flex items-center gap-2 text-emerald-950 font-semibold">
-                <CheckCircle2 className="w-4 h-4 text-[#29B34F] shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[#3379BE] shrink-0" />
                 <span>
                   নির্বাচিত সেবা: <strong>{selectedServiceObj.title}</strong>
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="px-3 py-1 rounded-lg bg-white border border-emerald-300 font-bold text-[#29B34F]">
+                <span className="px-3 py-1 rounded-lg bg-white border border-emerald-300 font-bold text-[#3379BE]">
                   ফি: {selectedServiceObj.fee}
                 </span>
                 <span className="text-gray-600">
@@ -558,7 +558,7 @@ export default function AppointmentPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-4 rounded-2xl bg-[#29B34F] hover:bg-[#166534] disabled:bg-gray-400 text-white font-bold text-base shadow-md shadow-[#29B34F]/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
+              className="w-full py-4 rounded-2xl bg-[#3379BE] hover:bg-[#1E4E79] disabled:bg-gray-400 text-white font-bold text-base shadow-md shadow-[#3379BE]/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
             >
               {isSubmitting ? (
                 <>

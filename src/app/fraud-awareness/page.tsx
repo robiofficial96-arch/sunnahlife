@@ -29,7 +29,7 @@ export default function FraudAwarenessPage() {
           <AlertTriangle className="w-3.5 h-3.5 text-rose-600" />
           <span>ঈমান ও নিরাপত্তা রক্ষা</span>
         </div>
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#166534] tracking-tight">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1E4E79] tracking-tight">
           ভণ্ড কবিরাজ ও প্রতারক চেনার ১০টি লক্ষণ
         </h1>
         <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
@@ -60,7 +60,7 @@ export default function FraudAwarenessPage() {
       </div>
 
       {/* Quick Comparison Box */}
-      <div className="p-5 sm:p-6 rounded-3xl bg-white border border-[#29B34F]/15 shadow-2xs grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="p-5 sm:p-6 rounded-3xl bg-white border border-[#3379BE]/15 shadow-2xs grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="p-4 rounded-2xl bg-rose-50/70 border border-rose-200/80 space-y-2">
           <h4 className="text-xs sm:text-sm font-bold text-rose-800 flex items-center gap-1.5">
             <XCircle className="w-4 h-4 text-rose-600 shrink-0" />
@@ -75,8 +75,8 @@ export default function FraudAwarenessPage() {
         </div>
 
         <div className="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200/80 space-y-2">
-          <h4 className="text-xs sm:text-sm font-bold text-[#29B34F] flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-[#29B34F] shrink-0" />
+          <h4 className="text-xs sm:text-sm font-bold text-[#3379BE] flex items-center gap-1.5">
+            <CheckCircle2 className="w-4 h-4 text-[#3379BE] shrink-0" />
             বিশুদ্ধ শারঈ রাক্বী
           </h4>
           <ul className="space-y-1 text-xs text-emerald-950">
@@ -92,7 +92,7 @@ export default function FraudAwarenessPage() {
       <div className="text-center pt-2">
         <Link
           href="/assessment"
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#29B34F] text-white font-bold text-xs sm:text-sm hover:bg-[#166534] shadow-xs transition-all"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#3379BE] text-white font-bold text-xs sm:text-sm hover:bg-[#1E4E79] shadow-xs transition-all"
         >
           <span>নিজের লক্ষণগুলো সঠিক নিয়মে যাচাই করুন</span>
           <ArrowRight className="w-3.5 h-3.5" />

@@ -17,10 +17,10 @@
 }
 
 @theme {
-  --color-primary: #29B34F;
-  --color-primary-dark: #166534;
-  --color-gold: #3379BE;
-  --color-gold-light: #5B9BD5;
+  --color-primary: #3379BE;
+  --color-primary-dark: #1E4E79;
+  --color-gold: #29B34F;
+  --color-gold-light: #4CD975;
   --color-ivory: #FAFAF7;
 
   --font-sans: 'SolaimanLipi', var(--font-hind-siliguri), 'Hind Siliguri', system-ui, -apple-system, sans-serif;
@@ -28,10 +28,10 @@
 }
 
 :root {
-  --primary: #29B34F;
-  --primary-dark: #166534;
-  --gold: #3379BE;
-  --gold-light: #5B9BD5;
+  --primary: #3379BE;
+  --primary-dark: #1E4E79;
+  --gold: #29B34F;
+  --gold-light: #4CD975;
   --ivory: #FAFAF7;
 }
 
@@ -54,13 +54,13 @@ html, body {
 /* Custom Islamic pattern background and subtle aesthetics */
 .bg-islamic-pattern {
   background-color: #FAFAF7;
-  background-image: radial-gradient(#29B34F 0.75px, transparent 0.75px), radial-gradient(#3379BE 0.75px, #FAFAF7 0.75px);
+  background-image: radial-gradient(#3379BE 0.75px, transparent 0.75px), radial-gradient(#29B34F 0.75px, #FAFAF7 0.75px);
   background-size: 30px 30px;
   background-position: 0 0, 15px 15px;
 }
 
 .gold-border-gradient {
-  border-image: linear-gradient(to right, transparent, #3379BE, transparent) 1;
+  border-image: linear-gradient(to right, transparent, #29B34F, transparent) 1;
 }
 
 /* Custom scrollbar */
@@ -72,11 +72,11 @@ html, body {
   background: #FAFAF7;
 }
 ::-webkit-scrollbar-thumb {
-  background: #29B34F55;
+  background: #3379BE55;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #29B34F;
+  background: #3379BE;
 }
 
 /* Google Translate Clean Overrides */
