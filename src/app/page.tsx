@@ -36,8 +36,13 @@ export default function Home() {
               <span>কুরআন ও সহীহ সুন্নাহর আলোকে পরিচালিত</span>
             </div>
             <div className="flex flex-col items-center justify-center gap-3">
-              <div className="relative w-64 sm:w-80 md:w-96 h-24 sm:h-28 md:h-32 mx-auto">
-                <Image src="/sunnahlife_logo.svg" alt="সুন্নাহলাইফ" fill priority sizes="(max-width: 768px) 256px, 384px" className="object-contain" />
+              <div className="flex flex-col items-center justify-center gap-2 mx-auto">
+                <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24">
+                  <Image src="/sunnahlife_applogo.svg" alt="সুন্নাহলাইফ আইকন" fill priority sizes="96px" className="object-contain" />
+                </div>
+                <div className="relative w-60 sm:w-72 md:w-80 h-16 sm:h-20 md:h-24">
+                  <Image src="/sunnahlife_logo.svg" alt="সুন্নাহলাইফ" fill priority sizes="(max-width: 768px) 240px, 320px" className="object-contain" />
+                </div>
               </div>
               <div className="space-y-2 max-w-xl mx-auto pt-1">
                 <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#004D40] leading-snug tracking-tight">

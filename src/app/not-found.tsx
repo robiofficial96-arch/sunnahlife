@@ -6,15 +6,27 @@ export default function NotFound() {
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4 py-16">
       <div className="max-w-md w-full text-center space-y-6">
-        <div className="relative w-40 h-24 mx-auto">
-          <Image
-            src="/sunnahlife_logo.svg"
-            alt="সুন্নাহলাইফ"
-            fill
-            sizes="160px"
-            className="object-contain"
-            priority
-          />
+        <div className="flex flex-col items-center justify-center gap-2 mx-auto">
+          <div className="relative w-16 h-16">
+            <Image
+              src="/sunnahlife_applogo.svg"
+              alt="সুন্নাহলাইফ আইকন"
+              fill
+              sizes="64px"
+              className="object-contain"
+              priority
+            />
+          </div>
+          <div className="relative w-44 h-12">
+            <Image
+              src="/sunnahlife_logo.svg"
+              alt="সুন্নাহলাইফ"
+              fill
+              sizes="176px"
+              className="object-contain"
+              priority
+            />
+          </div>
         </div>
 
         <div className="space-y-2">

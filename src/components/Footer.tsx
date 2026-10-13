@@ -87,13 +87,22 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 py-10">
           {/* Brand Col */}
           <div className="md:col-span-1 space-y-4">
-            <Link href="/" className="inline-block">
-              <div className="relative h-14 w-44">
+            <Link href="/" className="inline-flex items-center gap-2.5">
+              <div className="relative h-11 w-11 shrink-0">
+                <Image
+                  src="/sunnahlife_applogo.svg"
+                  alt="সুন্নাহলাইফ আইকন"
+                  fill
+                  sizes="44px"
+                  className="object-contain"
+                />
+              </div>
+              <div className="relative h-11 w-40">
                 <Image
                   src="/sunnahlife_logo.svg"
                   alt="সুন্নাহলাইফ"
                   fill
-                  sizes="176px"
+                  sizes="160px"
                   className="object-contain object-left"
                 />
               </div>

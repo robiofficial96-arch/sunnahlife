@@ -1827,14 +1827,25 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
     return (
       <div className="min-h-screen bg-[#FAFAF7] flex flex-col items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-3xl border border-[#006B5B]/20 p-6 md:p-8 shadow-sm space-y-6 text-center">
-          <div className="relative h-12 w-44 mx-auto">
-            <Image
-              src="/sunnahlife_logo.svg"
-              alt="সুন্নাহলাইফ"
-              fill
-              className="object-contain"
-              priority
-            />
+          <div className="flex flex-col items-center justify-center gap-2 mx-auto">
+            <div className="relative h-12 w-12">
+              <Image
+                src="/sunnahlife_applogo.svg"
+                alt="সুন্নাহলাইফ আইকন"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+            <div className="relative h-10 w-44">
+              <Image
+                src="/sunnahlife_logo.svg"
+                alt="সুন্নাহলাইফ"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
           </div>
 
           <div className="w-14 h-14 mx-auto rounded-2xl bg-[#006B5B]/10 text-[#006B5B] flex items-center justify-center">
@@ -1904,7 +1915,16 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
             {/* Left: Logo & Admin Badge */}
             <div className="flex items-center gap-3">
               <Link href="/admin" className="flex items-center gap-2 group">
-                <div className="relative h-10 sm:h-12 w-32 sm:w-40">
+                <div className="relative h-8 w-8 sm:h-9 sm:w-9 shrink-0">
+                  <Image
+                    src="/sunnahlife_applogo.svg"
+                    alt="সুন্নাহলাইফ আইকন"
+                    fill
+                    className="object-contain"
+                    priority
+                  />
+                </div>
+                <div className="relative h-8 sm:h-9 w-28 sm:w-36">
                   <Image
                     src="/sunnahlife_logo.svg"
                     alt="সুন্নাহলাইফ"
