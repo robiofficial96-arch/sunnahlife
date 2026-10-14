@@ -12,7 +12,6 @@ import {
   Phone,
   MapPin,
   Users,
-  Lock,
 } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 
@@ -326,12 +325,6 @@ export default function Footer() {
                 <Link href="/fraud-awareness" className="text-amber-700 hover:text-amber-900 font-medium transition-colors flex items-center gap-1">
                   <AlertTriangle className="w-3 h-3 text-amber-600" />
                   ভণ্ড কবিরাজ চেনার ১০ লক্ষণ
-                </Link>
-              </li>
-              <li>
-                <Link href="/admin" className="text-gray-500 hover:text-[#3379BE] transition-colors flex items-center gap-1.5 text-xs">
-                  <Lock className="w-3 h-3 text-gray-400" />
-                  প্রশাসনিক লগইন (Admin)
                 </Link>
               </li>
             </ul>
