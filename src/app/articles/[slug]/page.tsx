@@ -78,18 +78,18 @@ export default async function ArticleDetailPage({ params }: Props) {
 
       {/* Breadcrumb & Back */}
       <div className="flex items-center justify-between text-xs text-gray-500">
-        <Link href="/articles" className="inline-flex items-center gap-1.5 text-[#3379BE] hover:underline font-medium">
+        <Link href="/articles" className="inline-flex items-center gap-1.5 text-[#0050BF] hover:underline font-medium">
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>সকল আর্টিকেলে ফিরে যান</span>
         </Link>
-        <span className="text-xs bg-[#3379BE]/10 text-[#3379BE] px-3 py-1 rounded-full font-semibold">
+        <span className="text-xs bg-[#0050BF]/10 text-[#0050BF] px-3 py-1 rounded-full font-semibold">
           {article.categoryLabel}
         </span>
       </div>
 
       {/* Article Title Header */}
       <div className="space-y-4 border-b border-gray-100 pb-6">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1E4E79] leading-snug">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#002E7A] leading-snug">
           {article.title}
         </h1>
 
@@ -109,7 +109,7 @@ export default async function ArticleDetailPage({ params }: Props) {
         </div>
 
         {/* Scholarly review badge */}
-        <div className="p-3 rounded-xl bg-[#FAFAF7] border border-[#3379BE]/15 text-xs text-[#3379BE] flex items-center gap-2">
+        <div className="p-3 rounded-xl bg-[#FAFAF7] border border-[#0050BF]/15 text-xs text-[#0050BF] flex items-center gap-2">
           <ShieldCheck className="w-4 h-4 text-[#D4A017] shrink-0" />
           <span><strong>শারঈ পর্যালোচনা:</strong> {article.reviewedBy}</span>
         </div>
@@ -125,8 +125,8 @@ export default async function ArticleDetailPage({ params }: Props) {
       </div>
 
       {/* Article Footer & Consultation Call */}
-      <div className="mt-10 pt-6 border-t border-gray-100 p-6 rounded-3xl bg-[#FAFAF7] border border-[#3379BE]/15 space-y-4">
-        <h3 className="text-base font-bold text-[#1E4E79]">
+      <div className="mt-10 pt-6 border-t border-gray-100 p-6 rounded-3xl bg-[#FAFAF7] border border-[#0050BF]/15 space-y-4">
+        <h3 className="text-base font-bold text-[#002E7A]">
           আপনার কি রুকইয়াহ বা আত্মরক্ষা সংক্রান্ত কোনো প্রশ্ন আছে?
         </h3>
         <p className="text-xs text-gray-600">
@@ -135,13 +135,13 @@ export default async function ArticleDetailPage({ params }: Props) {
         <div className="flex flex-wrap gap-3">
           <Link
             href="/assessment"
-            className="px-5 py-2.5 rounded-xl bg-[#3379BE] text-white text-xs font-semibold hover:bg-[#1E4E79]"
+            className="px-5 py-2.5 rounded-xl bg-[#0050BF] text-white text-xs font-semibold hover:bg-[#002E7A]"
           >
             লক্ষণ পরীক্ষা করুন
           </Link>
           <Link
             href="/appointment"
-            className="px-5 py-2.5 rounded-xl border border-[#3379BE] text-[#3379BE] text-xs font-semibold hover:bg-[#3379BE]/5"
+            className="px-5 py-2.5 rounded-xl border border-[#0050BF] text-[#0050BF] text-xs font-semibold hover:bg-[#0050BF]/5"
           >
             অ্যাপয়েন্টমেন্ট বুকিং
           </Link>

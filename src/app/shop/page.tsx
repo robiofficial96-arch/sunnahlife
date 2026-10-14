@@ -87,7 +87,7 @@ export default function ShopPage() {
   return (
     <div className="py-8 md:py-12 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
       {/* Header Banner */}
-      <div className="rounded-3xl bg-gradient-to-r from-[#1E4E79] via-[#3379BE] to-[#1E4E79] text-white p-6 md:p-10 shadow-lg relative overflow-hidden text-center md:text-left">
+      <div className="rounded-3xl bg-gradient-to-r from-[#002E7A] via-[#0050BF] to-[#002E7A] text-white p-6 md:p-10 shadow-lg relative overflow-hidden text-center md:text-left">
         <div className="relative z-10 max-w-2xl space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 text-[#F2C94C] text-xs font-semibold backdrop-blur-xs">
             <ShoppingBag className="w-3.5 h-3.5" />
@@ -127,8 +127,8 @@ export default function ShopPage() {
             onClick={() => setSelectedCategory(cat.id)}
             className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
               selectedCategory === cat.id
-                ? "bg-[#3379BE] text-white shadow-xs"
-                : "bg-white border border-gray-200 text-gray-700 hover:border-[#3379BE]/40 hover:text-[#3379BE]"
+                ? "bg-[#0050BF] text-white shadow-xs"
+                : "bg-white border border-gray-200 text-gray-700 hover:border-[#0050BF]/40 hover:text-[#0050BF]"
             }`}
           >
             {cat.label}
@@ -141,11 +141,11 @@ export default function ShopPage() {
         {filteredProducts.map((product) => (
           <div
             key={product.id}
-            className="group bg-white rounded-3xl border border-gray-200 hover:border-[#3379BE]/30 shadow-xs hover:shadow-md transition-all overflow-hidden flex flex-col justify-between"
+            className="group bg-white rounded-3xl border border-gray-200 hover:border-[#0050BF]/30 shadow-xs hover:shadow-md transition-all overflow-hidden flex flex-col justify-between"
           >
             {/* Image Box */}
             <div 
-              className="relative aspect-[4/3] bg-[#1E4E79]/5 overflow-hidden cursor-pointer flex items-center justify-center p-4 border-b border-gray-100"
+              className="relative aspect-[4/3] bg-[#002E7A]/5 overflow-hidden cursor-pointer flex items-center justify-center p-4 border-b border-gray-100"
               onClick={() => {
                 setActiveModalProduct(product);
                 setOrderQuantity(1);
@@ -162,7 +162,7 @@ export default function ShopPage() {
               {/* Category & Badge */}
               <div className="absolute top-2.5 left-2.5 flex flex-col gap-1">
                 {product.badge && (
-                  <span className="px-2.5 py-0.5 rounded-md bg-[#3379BE] text-white text-[10px] font-bold shadow-xs">
+                  <span className="px-2.5 py-0.5 rounded-md bg-[#0050BF] text-white text-[10px] font-bold shadow-xs">
                     {product.badge}
                   </span>
                 )}
@@ -179,7 +179,7 @@ export default function ShopPage() {
             {/* Product Body */}
             <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
               <div className="space-y-1.5">
-                <span className="text-[11px] font-medium text-[#3379BE]">
+                <span className="text-[11px] font-medium text-[#0050BF]">
                   {product.categoryLabel}
                 </span>
 
@@ -188,7 +188,7 @@ export default function ShopPage() {
                     setActiveModalProduct(product);
                     setOrderQuantity(1);
                   }}
-                  className="font-bold text-sm md:text-base text-gray-900 hover:text-[#3379BE] transition-colors line-clamp-1 cursor-pointer"
+                  className="font-bold text-sm md:text-base text-gray-900 hover:text-[#0050BF] transition-colors line-clamp-1 cursor-pointer"
                 >
                   {product.banglaName}
                 </h3>
@@ -201,7 +201,7 @@ export default function ShopPage() {
                 <div className="pt-1.5 space-y-1 text-[11px] text-gray-600">
                   {product.benefits.slice(0, 1).map((b, i) => (
                     <div key={i} className="flex items-start gap-1 line-clamp-1">
-                      <CheckCircle2 className="w-3 h-3 text-[#3379BE] shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-3 h-3 text-[#0050BF] shrink-0 mt-0.5" />
                       <span>{b}</span>
                     </div>
                   ))}
@@ -212,7 +212,7 @@ export default function ShopPage() {
               <div className="pt-3 border-t border-gray-100 space-y-2">
                 <div className="flex items-baseline justify-between">
                   <div className="flex items-baseline gap-1.5">
-                    <span className="text-lg font-extrabold text-[#1E4E79]">
+                    <span className="text-lg font-extrabold text-[#002E7A]">
                       ৳{product.price}
                     </span>
                     {product.regularPrice && (
@@ -227,7 +227,7 @@ export default function ShopPage() {
                       setActiveModalProduct(product);
                       setOrderQuantity(1);
                     }}
-                    className="text-[11px] text-[#3379BE] hover:underline font-semibold flex items-center gap-0.5"
+                    className="text-[11px] text-[#0050BF] hover:underline font-semibold flex items-center gap-0.5"
                   >
                     <span>ব্যবহার বিধি</span>
                     <ArrowRight className="w-3 h-3" />
@@ -254,7 +254,7 @@ export default function ShopPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-xs p-3 sm:p-5 animate-in fade-in duration-200">
           <div className="relative w-full max-w-2xl bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
             {/* Modal Header */}
-            <div className="px-5 py-4 bg-[#1E4E79] text-white flex items-center justify-between">
+            <div className="px-5 py-4 bg-[#002E7A] text-white flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <ShoppingBag className="w-4 h-4 text-[#F2C94C]" />
                 <h4 className="text-sm md:text-base font-bold truncate">
@@ -275,7 +275,7 @@ export default function ShopPage() {
               {/* Product Overview Header */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-gray-200">
                 <div>
-                  <span className="text-xs font-semibold text-[#3379BE] px-2.5 py-0.5 rounded-md bg-emerald-50">
+                  <span className="text-xs font-semibold text-[#0050BF] px-2.5 py-0.5 rounded-md bg-emerald-50">
                     {activeModalProduct.categoryLabel} • {activeModalProduct.weightOrQuantity}
                   </span>
                   <h3 className="text-lg font-bold text-gray-900 mt-1">
@@ -285,7 +285,7 @@ export default function ShopPage() {
                 </div>
 
                 <div className="text-left sm:text-right">
-                  <div className="text-xl font-extrabold text-[#1E4E79]">
+                  <div className="text-xl font-extrabold text-[#002E7A]">
                     ৳{activeModalProduct.price}
                   </div>
                   {activeModalProduct.regularPrice && (
@@ -298,7 +298,7 @@ export default function ShopPage() {
 
               {/* Description */}
               <div className="space-y-1.5">
-                <h5 className="text-xs font-bold text-[#1E4E79] uppercase tracking-wider">
+                <h5 className="text-xs font-bold text-[#002E7A] uppercase tracking-wider">
                   পণ্যের বিবরণ ও গুরুত্ব
                 </h5>
                 <p className="text-xs md:text-sm text-gray-700 leading-relaxed bg-white p-3.5 rounded-xl border border-gray-200">
@@ -308,7 +308,7 @@ export default function ShopPage() {
 
               {/* Key Benefits */}
               <div className="space-y-2">
-                <h5 className="text-xs font-bold text-[#1E4E79] uppercase tracking-wider">
+                <h5 className="text-xs font-bold text-[#002E7A] uppercase tracking-wider">
                   সুন্নাহ নির্দেশিত উপকারিতা ও বৈশিষ্ট্য
                 </h5>
                 <div className="grid grid-cols-1 gap-2">
@@ -333,8 +333,8 @@ export default function ShopPage() {
               </div>
 
               {/* Order Form on WhatsApp */}
-              <div className="p-4 rounded-2xl bg-white border border-[#3379BE]/20 shadow-xs space-y-3">
-                <h5 className="text-xs font-bold text-[#1E4E79] flex items-center gap-1.5">
+              <div className="p-4 rounded-2xl bg-white border border-[#0050BF]/20 shadow-xs space-y-3">
+                <h5 className="text-xs font-bold text-[#002E7A] flex items-center gap-1.5">
                   <WhatsAppIcon className="w-4 h-4 text-[#25D366]" />
                   <span>WhatsApp-এ সরাসরি অর্ডার করুন</span>
                 </h5>
@@ -367,7 +367,7 @@ export default function ShopPage() {
                       placeholder="মুহাম্মদ..."
                       value={customerName}
                       onChange={(e) => setCustomerName(e.target.value)}
-                      className="w-full p-2 rounded-xl border border-gray-200 outline-none focus:border-[#3379BE]"
+                      className="w-full p-2 rounded-xl border border-gray-200 outline-none focus:border-[#0050BF]"
                     />
                   </div>
                   <div>
@@ -377,7 +377,7 @@ export default function ShopPage() {
                       placeholder="017xxxxxxxx"
                       value={customerPhone}
                       onChange={(e) => setCustomerPhone(e.target.value)}
-                      className="w-full p-2 rounded-xl border border-gray-200 outline-none focus:border-[#3379BE]"
+                      className="w-full p-2 rounded-xl border border-gray-200 outline-none focus:border-[#0050BF]"
                     />
                   </div>
                 </div>
@@ -389,7 +389,7 @@ export default function ShopPage() {
                     placeholder="থানা, জেলা..."
                     value={customerAddress}
                     onChange={(e) => setCustomerAddress(e.target.value)}
-                    className="w-full p-2 rounded-xl border border-gray-200 outline-none focus:border-[#3379BE] text-xs"
+                    className="w-full p-2 rounded-xl border border-gray-200 outline-none focus:border-[#0050BF] text-xs"
                   />
                 </div>
 

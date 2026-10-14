@@ -25,11 +25,11 @@ export default function AudioPage() {
     <div className="py-8 md:py-12 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10">
       {/* Header */}
       <div className="text-center space-y-2.5 max-w-xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3379BE]/10 text-[#3379BE] text-xs font-semibold">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0050BF]/10 text-[#0050BF] text-xs font-semibold">
           <Headphones className="w-3.5 h-3.5 text-[#D4A017]" />
           <span>রুকইয়াহ অডিও ও ভিডিও</span>
         </div>
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1E4E79] tracking-tight">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#002E7A] tracking-tight">
           রুকইয়াহ মাল্টিমিডিয়া লাইব্রেরি
         </h1>
         <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
@@ -47,9 +47,9 @@ export default function AudioPage() {
           </a>
           <a
             href="#audio-player"
-            className="px-3.5 py-1.5 rounded-xl bg-[#3379BE]/10 text-[#3379BE] hover:bg-[#3379BE]/20 font-semibold text-xs flex items-center gap-1.5 transition-colors border border-[#3379BE]/20"
+            className="px-3.5 py-1.5 rounded-xl bg-[#0050BF]/10 text-[#0050BF] hover:bg-[#0050BF]/20 font-semibold text-xs flex items-center gap-1.5 transition-colors border border-[#0050BF]/20"
           >
-            <Headphones className="w-3.5 h-3.5 text-[#3379BE]" />
+            <Headphones className="w-3.5 h-3.5 text-[#0050BF]" />
             <span>অডিও প্লেয়ার</span>
           </a>
         </div>
@@ -66,7 +66,7 @@ export default function AudioPage() {
               <YoutubeIcon className="w-3.5 h-3.5 fill-red-600" />
               SunnahLife Care Official YouTube
             </span>
-            <h2 className="text-lg sm:text-xl font-bold text-[#1E4E79]">
+            <h2 className="text-lg sm:text-xl font-bold text-[#002E7A]">
               ইউটিউব ভিডিও রুকইয়াহ ও প্রামাণ্য আমল
             </h2>
           </div>
@@ -88,11 +88,11 @@ export default function AudioPage() {
       <section id="audio-player" className="space-y-4 pt-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-gray-200">
           <div>
-            <span className="text-[11px] font-bold text-[#3379BE] uppercase tracking-wider flex items-center gap-1.5">
+            <span className="text-[11px] font-bold text-[#0050BF] uppercase tracking-wider flex items-center gap-1.5">
               <Headphones className="w-3.5 h-3.5 text-[#D4A017]" />
               In-Browser Audio Player
             </span>
-            <h2 className="text-lg sm:text-xl font-bold text-[#1E4E79]">
+            <h2 className="text-lg sm:text-xl font-bold text-[#002E7A]">
               অনলাইন রুকইয়াহ অডিও লাইব্রেরি
             </h2>
           </div>

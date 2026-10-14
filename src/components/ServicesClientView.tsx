@@ -98,7 +98,7 @@ const SERVICES_LIST: ServiceItem[] = [
     duration: "১ - ২ ঘণ্টা",
     accentColor: "border-emerald-200 hover:border-emerald-500",
     badgeBg: "bg-emerald-50 text-emerald-800 border-emerald-200",
-    iconBg: "bg-emerald-100/80 text-[#3379BE]",
+    iconBg: "bg-emerald-100/80 text-[#0050BF]",
     summary: "বিচ্ছেদ, বিবাহে বাধা বা দীর্ঘ শারীরিক জটিলতা সৃষ্টির কুফরি জাদুটোনা স্থায়ী ধ্বংসের রুকইয়াহ।",
     highlights: [
       "কুফরি বাঁধন ছিন্নকারী বিশেষ 'আয়াতুস সিহর' দ্বারা দম",
@@ -153,12 +153,12 @@ export default function ServicesPage() {
 
       {/* 1. HERO HEADER */}
       <div className="text-center space-y-4 max-w-2xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#3379BE]/10 border border-[#3379BE]/20 text-[#3379BE] text-xs font-semibold shadow-2xs">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0050BF]/10 border border-[#0050BF]/20 text-[#0050BF] text-xs font-semibold shadow-2xs">
           <ShieldCheck className="w-3.5 h-3.5 text-[#D4A017]" />
           <span>সুন্নাহসম্মত নির্ভরযোগ্য সেবা ও ফি কাঠামো</span>
         </div>
 
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1E4E79] tracking-tight leading-tight">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#002E7A] tracking-tight leading-tight">
           শারঈ রুকইয়াহ সেবাসমূহ ও সেশন ফি
         </h1>
 
@@ -169,7 +169,7 @@ export default function ServicesPage() {
         {/* Quick Trust Pills */}
         <div className="flex flex-wrap items-center justify-center gap-2 pt-1 text-[11px] sm:text-xs text-gray-600">
           <span className="px-3 py-1 rounded-full bg-white border border-gray-200 shadow-2xs flex items-center gap-1.5">
-            <CheckCircle2 className="w-3.5 h-3.5 text-[#3379BE]" />
+            <CheckCircle2 className="w-3.5 h-3.5 text-[#0050BF]" />
             ১০০% কুরআন ও সুন্নাহ
           </span>
           <span className="px-3 py-1 rounded-full bg-white border border-gray-200 shadow-2xs flex items-center gap-1.5">
@@ -184,21 +184,21 @@ export default function ServicesPage() {
       </div>
 
       {/* 2. DIAGNOSIS CARD */}
-      <div className="rounded-3xl bg-gradient-to-br from-white via-emerald-50/30 to-[#FAFAF7] border-2 border-[#3379BE] p-6 sm:p-8 shadow-sm relative overflow-hidden">
+      <div className="rounded-3xl bg-gradient-to-br from-white via-emerald-50/30 to-[#FAFAF7] border-2 border-[#0050BF] p-6 sm:p-8 shadow-sm relative overflow-hidden">
         <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#D4A017]/10 rounded-full blur-2xl pointer-events-none" />
 
         <div className="relative z-10 space-y-6">
           {/* Top Banner Row */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#3379BE]/15 pb-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#0050BF]/15 pb-5">
             <div className="flex items-center gap-3.5">
-              <div className="w-12 h-12 rounded-2xl bg-[#3379BE] text-white flex items-center justify-center shadow-xs shrink-0">
+              <div className="w-12 h-12 rounded-2xl bg-[#0050BF] text-white flex items-center justify-center shadow-xs shrink-0">
                 <Stethoscope className="w-6 h-6 text-[#F2C94C]" />
               </div>
               <div>
                 <span className="text-xs text-[#D4A017] font-bold uppercase tracking-wider block">
                   প্রাথমিক চেকআপ
                 </span>
-                <h2 className="text-xl sm:text-2xl font-bold text-[#1E4E79] mt-0.5">
+                <h2 className="text-xl sm:text-2xl font-bold text-[#002E7A] mt-0.5">
                   ডায়াগনোসিস ফি
                 </h2>
               </div>
@@ -206,9 +206,9 @@ export default function ServicesPage() {
 
             {/* Price Tags */}
             <div className="flex items-center gap-2.5 shrink-0">
-              <div className="p-2.5 sm:px-4 sm:py-2 rounded-2xl bg-white border border-[#3379BE]/20 text-center shadow-2xs">
+              <div className="p-2.5 sm:px-4 sm:py-2 rounded-2xl bg-white border border-[#0050BF]/20 text-center shadow-2xs">
                 <span className="text-[10px] text-gray-500 block font-medium">একক রোগী</span>
-                <span className="text-lg sm:text-xl font-black text-[#3379BE] font-mono">১,০০০/=</span>
+                <span className="text-lg sm:text-xl font-black text-[#0050BF] font-mono">১,০০০/=</span>
               </div>
               <div className="p-2.5 sm:px-4 sm:py-2 rounded-2xl bg-white border border-amber-300 text-center shadow-2xs">
                 <span className="text-[10px] text-gray-500 block font-medium">ফুল ফ্যামিলি</span>
@@ -219,8 +219,8 @@ export default function ServicesPage() {
 
           {/* Reassuring Shariah Advice & Booking */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-            <div className="md:col-span-8 p-3.5 sm:p-4 rounded-2xl bg-white border border-[#3379BE]/15 space-y-1.5">
-              <div className="flex items-center gap-2 text-xs font-bold text-[#1E4E79]">
+            <div className="md:col-span-8 p-3.5 sm:p-4 rounded-2xl bg-white border border-[#0050BF]/15 space-y-1.5">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#002E7A]">
                 <ThumbsUp className="w-4 h-4 text-[#D4A017] shrink-0" />
                 <span>শারঈ পরামর্শ ও উপদেশ:</span>
               </div>
@@ -236,7 +236,7 @@ export default function ServicesPage() {
             <div className="md:col-span-4 flex flex-col gap-2">
               <Link
                 href="/appointment?service=diagnosis_single"
-                className="w-full py-3 px-4 rounded-2xl bg-[#3379BE] hover:bg-[#1E4E79] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition-all transform active:scale-95"
+                className="w-full py-3 px-4 rounded-2xl bg-[#0050BF] hover:bg-[#002E7A] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition-all transform active:scale-95"
               >
                 <Calendar className="w-4 h-4 text-[#F2C94C]" />
                 <span>ডায়াগনোসিস বুকিং করুন</span>
@@ -245,7 +245,7 @@ export default function ServicesPage() {
                 href={`https://wa.me/${SITE_CONFIG.raqiWhatsAppNumber}?text=${encodeURIComponent("আসসালামু আলাইকুম। আমি ডায়াগনোসিস সেশন সম্পর্কে জানতে চাচ্ছি।")}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-2 px-3 rounded-2xl bg-white hover:bg-emerald-50 border border-emerald-600/30 text-[#3379BE] font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors text-center"
+                className="w-full py-2 px-3 rounded-2xl bg-white hover:bg-emerald-50 border border-emerald-600/30 text-[#0050BF] font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors text-center"
               >
                 <MessageCircle className="w-3.5 h-3.5" />
                 <span>WhatsApp পরামর্শ</span>
@@ -259,7 +259,7 @@ export default function ServicesPage() {
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-1 px-1">
           <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-[#1E4E79]">
+            <h2 className="text-xl sm:text-2xl font-bold text-[#002E7A]">
               সমস্যাভিত্তিক পূর্ণাঙ্গ চিকিৎসা সেশন
             </h2>
             <p className="text-xs text-gray-500">
@@ -280,7 +280,7 @@ export default function ServicesPage() {
               <div
                 key={srv.id}
                 className={`rounded-3xl bg-white border-2 transition-all duration-300 shadow-xs hover:shadow-md flex flex-col justify-between overflow-hidden ${
-                  isExpanded ? "border-[#3379BE] ring-2 ring-[#3379BE]/10" : srv.accentColor
+                  isExpanded ? "border-[#0050BF] ring-2 ring-[#0050BF]/10" : srv.accentColor
                 }`}
               >
                 <div className="p-5 sm:p-6 space-y-4">
@@ -308,7 +308,7 @@ export default function ServicesPage() {
                   <div className="p-3 rounded-2xl bg-[#FAFAF7] border border-gray-200/70 flex items-center justify-between">
                     <div>
                       <span className="text-[10px] text-gray-400 font-medium block">সেশন ফি</span>
-                      <span className="text-base sm:text-lg font-black text-[#3379BE] font-mono">
+                      <span className="text-base sm:text-lg font-black text-[#0050BF] font-mono">
                         {srv.fee}
                       </span>
                     </div>
@@ -330,7 +330,7 @@ export default function ServicesPage() {
                   <ul className="space-y-1.5 text-xs text-gray-700 pt-1 border-t border-gray-100">
                     {srv.highlights.map((point, pIdx) => (
                       <li key={pIdx} className="flex items-start gap-2">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#3379BE] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#0050BF] shrink-0 mt-0.5" />
                         <span>{point}</span>
                       </li>
                     ))}
@@ -349,7 +349,7 @@ export default function ServicesPage() {
                         <ul className="space-y-1 text-gray-600">
                           {srv.process.map((step, sIdx) => (
                             <li key={sIdx} className="flex items-start gap-1.5">
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#3379BE] mt-1.5 shrink-0" />
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#0050BF] mt-1.5 shrink-0" />
                               <span>{step}</span>
                             </li>
                           ))}
@@ -364,7 +364,7 @@ export default function ServicesPage() {
                   <div className="flex items-center justify-between gap-2 pt-2 border-t border-gray-100">
                     <button
                       onClick={() => toggleExpand(srv.id)}
-                      className="text-xs font-semibold text-[#3379BE] hover:text-[#1E4E79] flex items-center gap-1 py-1 px-2 rounded-lg hover:bg-emerald-50 transition-colors"
+                      className="text-xs font-semibold text-[#0050BF] hover:text-[#002E7A] flex items-center gap-1 py-1 px-2 rounded-lg hover:bg-emerald-50 transition-colors"
                     >
                       <span>{isExpanded ? "কার্যপ্রণালী সংক্ষেপ" : "কার্যপ্রণালী ও নিয়ম দেখুন"}</span>
                       {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
@@ -374,7 +374,7 @@ export default function ServicesPage() {
                       href={`https://wa.me/${SITE_CONFIG.raqiWhatsAppNumber}?text=${encodeURIComponent(`আসসালামু আলাইকুম। আমি "${srv.title}" সেবাটির বিষয়ে জানতে চাচ্ছি।`)}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs text-gray-500 hover:text-[#3379BE] flex items-center gap-1 font-medium transition-colors"
+                      className="text-xs text-gray-500 hover:text-[#0050BF] flex items-center gap-1 font-medium transition-colors"
                     >
                       <MessageCircle className="w-3.5 h-3.5 text-[#25D366]" />
                       <span>জিজ্ঞাসা</span>
@@ -383,7 +383,7 @@ export default function ServicesPage() {
 
                   <Link
                     href={`/appointment?service=${srv.bookingId}`}
-                    className="w-full py-2.5 rounded-xl bg-[#3379BE] hover:bg-[#1E4E79] text-white text-center font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-xs transition-all active:scale-98"
+                    className="w-full py-2.5 rounded-xl bg-[#0050BF] hover:bg-[#002E7A] text-white text-center font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-xs transition-all active:scale-98"
                   >
                     <Calendar className="w-3.5 h-3.5 text-[#F2C94C]" />
                     <span>অ্যাপয়েন্টমেন্ট বুকিং</span>
@@ -396,7 +396,7 @@ export default function ServicesPage() {
       </div>
 
       {/* 4. BOTTOM CONFIDENCE / FAQ BANNER */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#1E4E79] via-[#005B4D] to-[#153A5B] text-white shadow-md border border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#002E7A] via-[#005B4D] to-[#001D4D] text-white shadow-md border border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="space-y-1.5 text-center md:text-left">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-emerald-200 text-xs font-semibold">
             <HeartHandshake className="w-3.5 h-3.5 text-[#F2C94C]" />
@@ -422,9 +422,9 @@ export default function ServicesPage() {
             href={`https://wa.me/${SITE_CONFIG.raqiWhatsAppNumber}?text=${encodeURIComponent("আসসালামু আলাইকুম। আমি রুকইয়াহ সেবা নেওয়ার জন্য রাক্বীর পরামর্শ চাই।")}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#D4A017] hover:bg-[#F2C94C] text-[#153A5B] font-bold text-xs sm:text-sm shadow-md transition-transform active:scale-95 text-center flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#D4A017] hover:bg-[#F2C94C] text-[#001D4D] font-bold text-xs sm:text-sm shadow-md transition-transform active:scale-95 text-center flex items-center justify-center gap-2"
           >
-            <MessageCircle className="w-4 h-4 text-[#153A5B]" />
+            <MessageCircle className="w-4 h-4 text-[#001D4D]" />
             <span>WhatsApp পরামর্শ</span>
           </a>
         </div>

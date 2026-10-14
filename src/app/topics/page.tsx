@@ -13,11 +13,11 @@ export default function TopicsPage() {
     <div className="py-8 md:py-12 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
       {/* Header */}
       <div className="text-center space-y-3 max-w-2xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#3379BE]/10 text-[#3379BE] text-xs font-semibold">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0050BF]/10 text-[#0050BF] text-xs font-semibold">
           <BookOpen className="w-3.5 h-3.5 text-[#D4A017]" />
           <span>বিষয়ভিত্তিক শারঈ সমাধান</span>
         </div>
-        <h1 className="text-3xl md:text-4xl font-extrabold text-[#1E4E79] tracking-tight">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-[#002E7A] tracking-tight">
           সমস্যা ও আধ্যাত্মিক বিষয়ভিত্তিক লাইব্রেরি
         </h1>
         <p className="text-sm md:text-base text-gray-600 leading-relaxed">
@@ -31,16 +31,16 @@ export default function TopicsPage() {
           <Link
             key={topic.slug}
             href={`/topics/${topic.slug}`}
-            className="group p-6 md:p-8 rounded-3xl bg-white border border-[#3379BE]/15 hover:border-[#3379BE] shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+            className="group p-6 md:p-8 rounded-3xl bg-white border border-[#0050BF]/15 hover:border-[#0050BF] shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
           >
             <div>
               <span className="text-xs font-bold text-[#D4A017] bg-[#D4A017]/10 px-3 py-1 rounded-full inline-block mb-3">
                 শারঈ আলোচনা
               </span>
-              <h2 className="text-xl font-bold text-gray-900 group-hover:text-[#3379BE] transition-colors mb-2">
+              <h2 className="text-xl font-bold text-gray-900 group-hover:text-[#0050BF] transition-colors mb-2">
                 {topic.title}
               </h2>
-              <p className="text-xs md:text-sm text-[#1E4E79] font-medium mb-3">
+              <p className="text-xs md:text-sm text-[#002E7A] font-medium mb-3">
                 {topic.subtitle}
               </p>
               <p className="text-xs md:text-sm text-gray-600 leading-relaxed line-clamp-3">
@@ -48,7 +48,7 @@ export default function TopicsPage() {
               </p>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs md:text-sm font-semibold text-[#3379BE]">
+            <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs md:text-sm font-semibold text-[#0050BF]">
               <span>সম্পূর্ণ সমাধান পড়ুন</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
             </div>
@@ -57,8 +57,8 @@ export default function TopicsPage() {
       </div>
 
       {/* Cross link to Assessment */}
-      <div className="p-6 md:p-8 rounded-3xl bg-radial from-emerald-50 to-white border border-[#3379BE]/20 text-center space-y-3">
-        <h3 className="text-lg md:text-xl font-bold text-[#1E4E79]">
+      <div className="p-6 md:p-8 rounded-3xl bg-radial from-emerald-50 to-white border border-[#0050BF]/20 text-center space-y-3">
+        <h3 className="text-lg md:text-xl font-bold text-[#002E7A]">
           আপনার নির্দিষ্ট সমস্যার লক্ষণ মেলাতে চান?
         </h3>
         <p className="text-xs md:text-sm text-gray-600 max-w-xl mx-auto">
@@ -66,7 +66,7 @@ export default function TopicsPage() {
         </p>
         <Link
           href="/assessment"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#3379BE] text-white font-bold text-sm hover:bg-[#1E4E79] transition-colors shadow-sm"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#0050BF] text-white font-bold text-sm hover:bg-[#002E7A] transition-colors shadow-sm"
         >
           <span>লক্ষণ পরীক্ষা শুরু করুন</span>
           <ChevronRight className="w-4 h-4" />

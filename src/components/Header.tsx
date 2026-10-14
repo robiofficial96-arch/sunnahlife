@@ -70,16 +70,16 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-[#FAFAF7]/95 backdrop-blur-md border-b border-[#3379BE]/10 shadow-xs transition-all">
+    <header className="sticky top-0 z-40 bg-[#FAFAF7]/95 backdrop-blur-md border-b border-[#0050BF]/10 shadow-xs transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo + Mobile Quick Tools (Search & Translate directly beside Logo) */}
             <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-              {/* Full Logo Vector */}
+              {/* Full Logo Vector / Crisp HD Logo */}
             <Link href="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0" title="সুন্নাহলাইফ - সুস্থতা হোক সুন্নাহর পথে">
               <div className="relative h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 shrink-0">
                 <Image
-                  src="/sunnah-icon-logo.svg"
+                  src="/sunnah-icon.png"
                   alt="সুন্নাহলাইফ আইকন"
                   fill
                   sizes="44px"
@@ -89,7 +89,7 @@ export default function Header() {
               </div>
               <div className="relative h-9 sm:h-10 md:h-11 w-32 sm:w-36 md:w-44">
                 <Image
-                  src="/sunnah-logo.svg"
+                  src="/sunnah-text.png"
                   alt="সুন্নাহলাইফ - সুস্থতা হোক সুন্নাহর পথে"
                   fill
                   sizes="(max-width: 768px) 130px, 176px"
@@ -110,8 +110,8 @@ export default function Header() {
                     href={link.href}
                     className={`relative px-2.5 py-1.5 rounded-lg text-xs md:text-sm font-medium transition-all flex items-center gap-1.5 ${
                       isActive
-                        ? "text-[#3379BE] bg-[#3379BE]/10 font-semibold"
-                        : "text-gray-700 hover:text-[#3379BE] hover:bg-[#FAFAF7]"
+                        ? "text-[#0050BF] bg-[#0050BF]/10 font-semibold"
+                        : "text-gray-700 hover:text-[#0050BF] hover:bg-[#FAFAF7]"
                     }`}
                   >
                     {link.label}
@@ -129,17 +129,17 @@ export default function Header() {
             <div className="hidden xl:flex items-center gap-2.5">
               <Link
                 href="/appointment"
-                className="px-4 py-2 text-xs md:text-sm font-semibold rounded-xl bg-[#3379BE] text-white hover:bg-[#1E4E79] shadow-2xs transition-all flex items-center gap-1.5"
+                className="px-4 py-2 text-xs md:text-sm font-semibold rounded-xl bg-[#0050BF] text-white hover:bg-[#002E7A] shadow-2xs transition-all flex items-center gap-1.5"
               >
                 <Calendar className="w-4 h-4 text-[#F2C94C]" />
                 <span>অ্যাপয়েন্টমেন্ট</span>
               </Link>
               <Link
                 href="/admin"
-                className="px-3 py-2 text-xs md:text-sm font-medium rounded-xl text-gray-700 hover:text-[#3379BE] hover:bg-[#3379BE]/10 border border-gray-200/80 transition-all flex items-center gap-1.5"
+                className="px-3 py-2 text-xs md:text-sm font-medium rounded-xl text-gray-700 hover:text-[#0050BF] hover:bg-[#0050BF]/10 border border-gray-200/80 transition-all flex items-center gap-1.5"
                 title="অ্যাডমিন ড্যাশবোর্ড লগইন"
               >
-                <Lock className="w-3.5 h-3.5 text-[#3379BE]" />
+                <Lock className="w-3.5 h-3.5 text-[#0050BF]" />
                 <span>লগইন</span>
               </Link>
             </div>
@@ -149,20 +149,20 @@ export default function Header() {
               {/* Search Button (Prominent & open icon) */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="p-2 text-gray-700 hover:text-[#3379BE] transition-colors cursor-pointer"
+                className="p-2 text-gray-700 hover:text-[#0050BF] transition-colors cursor-pointer"
                 aria-label="সার্চ করুন"
                 title="সার্চ করুন"
               >
-                <Search className="w-6 h-6 text-[#3379BE]" />
+                <Search className="w-6 h-6 text-[#0050BF]" />
               </button>
 
               {/* Burger Menu Toggle */}
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-2 text-gray-700 hover:text-[#3379BE] hover:bg-[#FAFAF7] rounded-xl transition-colors cursor-pointer"
+                className="p-2 text-gray-700 hover:text-[#0050BF] hover:bg-[#FAFAF7] rounded-xl transition-colors cursor-pointer"
                 aria-label="Toggle Menu"
               >
-                {isOpen ? <X className="w-6 h-6 text-[#3379BE]" /> : <Menu className="w-6 h-6" />}
+                {isOpen ? <X className="w-6 h-6 text-[#0050BF]" /> : <Menu className="w-6 h-6" />}
               </button>
             </div>
           </div>
@@ -180,12 +180,12 @@ export default function Header() {
                   onClick={() => setIsOpen(false)}
                   className={`flex items-center justify-between px-3.5 py-2.5 rounded-lg text-sm font-medium ${
                     isActive
-                      ? "bg-[#3379BE]/10 text-[#3379BE] font-semibold"
+                      ? "bg-[#0050BF]/10 text-[#0050BF] font-semibold"
                       : "text-gray-700 hover:bg-gray-50"
                   }`}
                 >
                   <span className="flex items-center gap-2">
-                    {link.icon && <link.icon className="w-4 h-4 text-[#3379BE]" />}
+                    {link.icon && <link.icon className="w-4 h-4 text-[#0050BF]" />}
                     {link.label}
                   </span>
                   {link.badge && (
@@ -207,15 +207,15 @@ export default function Header() {
               <Link
                 href="/assessment"
                 onClick={() => setIsOpen(false)}
-                className="w-full py-2.5 px-3 text-center text-xs font-semibold rounded-xl bg-[#3379BE]/10 text-[#3379BE] border border-[#3379BE]/20 flex items-center justify-center gap-2"
+                className="w-full py-2.5 px-3 text-center text-xs font-semibold rounded-xl bg-[#0050BF]/10 text-[#0050BF] border border-[#0050BF]/20 flex items-center justify-center gap-2"
               >
-                <Stethoscope className="w-4 h-4 text-[#3379BE]" />
+                <Stethoscope className="w-4 h-4 text-[#0050BF]" />
                 <span>নিজের বা পরিবারের লক্ষণ পরীক্ষা করুন</span>
               </Link>
               <Link
                 href="/appointment"
                 onClick={() => setIsOpen(false)}
-                className="w-full py-2.5 px-3 text-center text-xs font-semibold rounded-xl bg-[#3379BE] text-white flex items-center justify-center gap-2"
+                className="w-full py-2.5 px-3 text-center text-xs font-semibold rounded-xl bg-[#0050BF] text-white flex items-center justify-center gap-2"
               >
                 <Calendar className="w-4 h-4 text-[#F2C94C]" />
                 <span>অ্যাপয়েন্টমেন্ট বুকিং করুন</span>
@@ -233,9 +233,9 @@ export default function Header() {
               <Link
                 href="/admin"
                 onClick={() => setIsOpen(false)}
-                className="w-full py-2.5 px-3 text-center text-xs font-semibold rounded-xl bg-emerald-50/80 hover:bg-emerald-100 text-[#3379BE] border border-emerald-200/80 flex items-center justify-center gap-2 transition-colors mt-1"
+                className="w-full py-2.5 px-3 text-center text-xs font-semibold rounded-xl bg-emerald-50/80 hover:bg-emerald-100 text-[#0050BF] border border-emerald-200/80 flex items-center justify-center gap-2 transition-colors mt-1"
               >
-                <Lock className="w-4 h-4 text-[#3379BE]" />
+                <Lock className="w-4 h-4 text-[#0050BF]" />
                 <span>অ্যাডমিন ড্যাশবোর্ড / লগইন</span>
               </Link>
             </div>

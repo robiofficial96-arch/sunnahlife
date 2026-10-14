@@ -74,11 +74,11 @@ export default function PractitionersPage() {
     <div className="py-8 md:py-12 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
       {/* Header */}
       <div className="text-center space-y-3 max-w-2xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#3379BE]/10 text-[#3379BE] text-xs font-semibold">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0050BF]/10 text-[#0050BF] text-xs font-semibold">
           <UserCheck className="w-3.5 h-3.5 text-[#D4A017]" />
           <span>ভেরিফাইড শারঈ প্র্যাকটিশনার</span>
         </div>
-        <h1 className="text-3xl md:text-4xl font-extrabold text-[#1E4E79] tracking-tight">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-[#002E7A] tracking-tight">
           অনুমোদিত শারঈ রাক্বী ডিরেক্টরি
         </h1>
         <p className="text-sm md:text-base text-gray-600 leading-relaxed">
@@ -87,10 +87,10 @@ export default function PractitionersPage() {
       </div>
 
       {/* Verification Standards Notice */}
-      <div className="p-5 rounded-2xl bg-emerald-50 border border-[#3379BE]/20 text-xs text-emerald-950 flex items-start gap-3">
-        <ShieldCheck className="w-5 h-5 text-[#3379BE] shrink-0 mt-0.5" />
+      <div className="p-5 rounded-2xl bg-emerald-50 border border-[#0050BF]/20 text-xs text-emerald-950 flex items-start gap-3">
+        <ShieldCheck className="w-5 h-5 text-[#0050BF] shrink-0 mt-0.5" />
         <div className="leading-relaxed">
-          <strong className="font-semibold text-[#3379BE]">যাচাইকরণ মানদণ্ড:</strong> এই তালিকায় শুধুমাত্র তাঁদেরকেই যুক্ত করা হয় যাঁরা কোনো প্রকার তাবীজ, গণকবিদ্যা বা শিরকি প্রক্রিয়ায় জড়িত নন এবং ইসলামিক শরিয়তের পর্দা ও আমানতদারিতা কঠোরভাবে মেনে চলেন।
+          <strong className="font-semibold text-[#0050BF]">যাচাইকরণ মানদণ্ড:</strong> এই তালিকায় শুধুমাত্র তাঁদেরকেই যুক্ত করা হয় যাঁরা কোনো প্রকার তাবীজ, গণকবিদ্যা বা শিরকি প্রক্রিয়ায় জড়িত নন এবং ইসলামিক শরিয়তের পর্দা ও আমানতদারিতা কঠোরভাবে মেনে চলেন।
         </div>
       </div>
 
@@ -99,7 +99,7 @@ export default function PractitionersPage() {
         {PRACTITIONERS.map((p) => (
           <div
             key={p.id}
-            className="p-6 rounded-3xl bg-white border border-[#3379BE]/15 shadow-xs flex flex-col justify-between space-y-5"
+            className="p-6 rounded-3xl bg-white border border-[#0050BF]/15 shadow-xs flex flex-col justify-between space-y-5"
           >
             <div className="space-y-3">
               {/* Header */}
@@ -108,12 +108,12 @@ export default function PractitionersPage() {
                   <h3 className="text-base md:text-lg font-bold text-gray-900 leading-snug">
                     {p.name}
                   </h3>
-                  <p className="text-xs text-[#3379BE] font-medium mt-0.5">
+                  <p className="text-xs text-[#0050BF] font-medium mt-0.5">
                     {p.title}
                   </p>
                 </div>
                 {p.isVerified && (
-                  <span className="p-1 rounded-full bg-[#3379BE]/10 text-[#3379BE]" title="যাচাইকৃত">
+                  <span className="p-1 rounded-full bg-[#0050BF]/10 text-[#0050BF]" title="যাচাইকৃত">
                     <CheckCircle2 className="w-4 h-4 fill-emerald-600 text-white" />
                   </span>
                 )}
@@ -126,7 +126,7 @@ export default function PractitionersPage() {
                   <span>{p.qualification}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <MapPin className="w-4 h-4 text-[#3379BE] shrink-0" />
+                  <MapPin className="w-4 h-4 text-[#0050BF] shrink-0" />
                   <span className="font-semibold text-gray-800">{p.location}</span>
                 </div>
                 <div className="text-[11px] text-gray-400 pl-5">
@@ -151,7 +151,7 @@ export default function PractitionersPage() {
             <div className="pt-3 border-t border-gray-100 flex flex-col gap-2">
               <Link
                 href="/appointment"
-                className="w-full py-2.5 rounded-xl bg-[#3379BE] hover:bg-[#1E4E79] text-white text-xs font-semibold text-center flex items-center justify-center gap-1.5 transition-colors"
+                className="w-full py-2.5 rounded-xl bg-[#0050BF] hover:bg-[#002E7A] text-white text-xs font-semibold text-center flex items-center justify-center gap-1.5 transition-colors"
               >
                 <Calendar className="w-3.5 h-3.5 text-[#F2C94C]" />
                 <span>অ্যাপয়েন্টমেন্ট নিন</span>
@@ -162,7 +162,7 @@ export default function PractitionersPage() {
                 rel="noopener noreferrer"
                 className="w-full py-2 rounded-xl border border-gray-200 text-gray-700 text-xs font-semibold text-center hover:bg-gray-50 flex items-center justify-center gap-1.5 transition-colors"
               >
-                <MessageCircle className="w-3.5 h-3.5 text-[#3379BE]" />
+                <MessageCircle className="w-3.5 h-3.5 text-[#0050BF]" />
                 <span>WhatsApp মেসেজ</span>
               </a>
             </div>

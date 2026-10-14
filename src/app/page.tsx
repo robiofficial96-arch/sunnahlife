@@ -28,36 +28,36 @@ export default function Home() {
 
       {/* 1. HERO */}
       <section className="relative overflow-hidden pt-6 pb-1 md:pt-8 md:pb-1 bg-[#FAFAF7]">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-80 bg-gradient-to-b from-[#3379BE]/5 to-transparent rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-80 bg-gradient-to-b from-[#0050BF]/5 to-transparent rounded-full blur-3xl pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center max-w-3xl mx-auto space-y-6">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#3379BE]/10 border border-[#3379BE]/20 text-[#3379BE] text-xs md:text-sm font-semibold shadow-2xs">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0050BF]/10 border border-[#0050BF]/20 text-[#0050BF] text-xs md:text-sm font-semibold shadow-2xs">
               <Sparkles className="w-3.5 h-3.5 text-[#D4A017]" />
               <span>কুরআন ও সহীহ সুন্নাহর আলোকে পরিচালিত</span>
             </div>
             <div className="flex flex-col items-center justify-center gap-3">
               <div className="flex flex-col items-center justify-center gap-2 mx-auto">
                 <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24">
-                  <Image src="/sunnah-icon-logo.svg" alt="সুন্নাহলাইফ আইকন" fill priority sizes="96px" className="object-contain" />
+                  <Image src="/sunnah-icon.png" alt="সুন্নাহলাইফ আইকন" fill priority sizes="96px" className="object-contain" />
                 </div>
                 <div className="relative w-60 sm:w-72 md:w-80 h-16 sm:h-20 md:h-24">
-                  <Image src="/sunnah-logo.svg" alt="সুন্নাহলাইফ" fill priority sizes="(max-width: 768px) 240px, 320px" className="object-contain" />
+                  <Image src="/sunnah-text.png" alt="সুন্নাহলাইফ" fill priority sizes="(max-width: 768px) 240px, 320px" className="object-contain" />
                 </div>
               </div>
               <div className="space-y-2 max-w-xl mx-auto pt-1">
-                <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#1E4E79] leading-snug tracking-tight">
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#002E7A] leading-snug tracking-tight">
                   কুরআন ও সহীহ সুন্নাহর আলোকে<br />নির্ভরযোগ্য রুকইয়াহ ও সেলফ-রুকইয়াহ সেবা
                 </h1>
                 <p className="text-xs sm:text-sm text-gray-600 font-medium flex items-center justify-center gap-2 pt-0.5">
-                  <span>লক্ষণ যাচাই</span><span className="text-[#3379BE] font-bold">•</span>
-                  <span>পরামর্শ</span><span className="text-[#3379BE] font-bold">•</span>
+                  <span>লক্ষণ যাচাই</span><span className="text-[#0050BF] font-bold">•</span>
+                  <span>পরামর্শ</span><span className="text-[#0050BF] font-bold">•</span>
                   <span>সেলফ-রুকইয়াহ গাইড</span>
                 </p>
               </div>
             </div>
             <div className="w-full max-w-md md:max-w-3xl mx-auto space-y-3.5 pt-2">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-3.5">
-                <Link href="/assessment" className="w-full p-2.5 sm:p-3 rounded-full bg-[#1E4E79] hover:bg-[#153A5B] text-white shadow-md shadow-[#1E4E79]/20 transition-all flex items-center justify-between gap-2.5 group active:scale-98">
+                <Link href="/assessment" className="w-full p-2.5 sm:p-3 rounded-full bg-[#002E7A] hover:bg-[#001D4D] text-white shadow-md shadow-[#002E7A]/20 transition-all flex items-center justify-between gap-2.5 group active:scale-98">
                   <div className="flex items-center gap-2.5 text-left pl-1">
                     <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/10 flex items-center justify-center shrink-0 border border-white/20">
                       <Stethoscope className="w-5 h-5 sm:w-6 sm:h-6 text-[#F2C94C]" />
@@ -71,17 +71,17 @@ export default function Home() {
                     <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-0.5 transition-transform" />
                   </div>
                 </Link>
-                <Link href="/self-ruqyah" className="w-full p-2.5 sm:p-3 rounded-full bg-white hover:bg-emerald-50/40 border-2 border-[#3379BE] text-gray-900 shadow-xs hover:shadow-md transition-all flex items-center justify-between gap-2.5 group active:scale-98">
+                <Link href="/self-ruqyah" className="w-full p-2.5 sm:p-3 rounded-full bg-white hover:bg-emerald-50/40 border-2 border-[#0050BF] text-gray-900 shadow-xs hover:shadow-md transition-all flex items-center justify-between gap-2.5 group active:scale-98">
                   <div className="flex items-center gap-2.5 text-left pl-1">
-                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#3379BE] flex items-center justify-center shrink-0 text-white shadow-xs">
+                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#0050BF] flex items-center justify-center shrink-0 text-white shadow-xs">
                       <BookOpen className="w-5 h-5 text-white" />
                     </div>
                     <div className="min-w-0">
-                      <div className="text-sm sm:text-base font-bold text-[#1E4E79] leading-tight">সেলফ-রুকইয়াহ গাইড</div>
+                      <div className="text-sm sm:text-base font-bold text-[#002E7A] leading-tight">সেলফ-রুকইয়াহ গাইড</div>
                       <div className="text-[11px] sm:text-xs text-gray-600 font-normal mt-0.5 truncate">নিজে রুকইয়াহ করার সঠিক পদ্ধতি জানুন</div>
                     </div>
                   </div>
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gray-100 group-hover:bg-[#3379BE]/10 flex items-center justify-center shrink-0 text-[#3379BE] transition-colors mr-0.5">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gray-100 group-hover:bg-[#0050BF]/10 flex items-center justify-center shrink-0 text-[#0050BF] transition-colors mr-0.5">
                     <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-0.5 transition-transform" />
                   </div>
                 </Link>
@@ -97,7 +97,7 @@ export default function Home() {
                   </div>
                   <div className="h-6 w-px bg-gray-300/80 shrink-0" />
                   <div className="min-w-0">
-                    <div className="text-sm sm:text-base font-bold text-[#1E4E79] leading-tight truncate">WhatsApp-এ পরামর্শ নিন</div>
+                    <div className="text-sm sm:text-base font-bold text-[#002E7A] leading-tight truncate">WhatsApp-এ পরামর্শ নিন</div>
                     <div className="text-[11px] sm:text-xs text-gray-600 font-normal mt-0.5 truncate">প্রয়োজনে রাক্বীর সাথে যোগাযোগ করুন</div>
                   </div>
                 </div>
@@ -113,50 +113,50 @@ export default function Home() {
       {/* 2. QUICK CARDS */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 !mt-0 md:!-mt-1">
         <div className="text-center mb-3 sm:mb-4">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#1E4E79]">কোথা থেকে শুরু করবেন?</h2>
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#002E7A]">কোথা থেকে শুরু করবেন?</h2>
           <p className="text-xs md:text-sm text-gray-500 mt-0.5">আপনার প্রয়োজন অনুযায়ী সঠিক সেবাটি বেছে নিন</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <Link href="/assessment" className="group flex flex-col bg-white border-2 border-[#3379BE]/20 hover:border-[#3379BE] rounded-3xl shadow-xs hover:shadow-md transition-all overflow-hidden relative">
+          <Link href="/assessment" className="group flex flex-col bg-white border-2 border-[#0050BF]/20 hover:border-[#0050BF] rounded-3xl shadow-xs hover:shadow-md transition-all overflow-hidden relative">
             <div className="absolute top-3 right-3 bg-[#D4A017] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full">★ জনপ্রিয়</div>
             <div className="flex items-center gap-4 p-5 pb-3">
               <div className="w-14 h-14 rounded-2xl bg-[#D4A017]/15 text-[#D4A017] flex items-center justify-center shrink-0 group-hover:bg-[#D4A017] group-hover:text-white transition-colors">
                 <Stethoscope className="w-7 h-7" />
               </div>
               <div className="min-w-0 flex-1">
-                <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-[#3379BE] transition-colors leading-snug">লক্ষণ পরীক্ষা ও ডায়াগনেসিস</h3>
+                <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-[#0050BF] transition-colors leading-snug">লক্ষণ পরীক্ষা ও ডায়াগনেসিস</h3>
                 <p className="text-[11px] sm:text-xs text-gray-500 mt-1 leading-relaxed">১৫টি প্রশ্নে আপনার সমস্যা রুকইয়াহ-উপযোগী কিনা জানুন।</p>
               </div>
             </div>
-            <div className="px-5 pb-4 pt-1 border-t border-gray-100 flex items-center text-xs font-semibold text-[#3379BE]">
+            <div className="px-5 pb-4 pt-1 border-t border-gray-100 flex items-center text-xs font-semibold text-[#0050BF]">
               <span>প্রশ্ন শুরু করুন</span><ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
             </div>
           </Link>
-          <Link href="/quran" className="group flex flex-col bg-white border-2 border-[#3379BE]/20 hover:border-[#3379BE] rounded-3xl shadow-xs hover:shadow-md transition-all overflow-hidden">
+          <Link href="/quran" className="group flex flex-col bg-white border-2 border-[#0050BF]/20 hover:border-[#0050BF] rounded-3xl shadow-xs hover:shadow-md transition-all overflow-hidden">
             <div className="flex items-center gap-4 p-5 pb-3">
-              <div className="w-14 h-14 rounded-2xl bg-[#3379BE]/10 text-[#3379BE] flex items-center justify-center shrink-0 group-hover:bg-[#3379BE] group-hover:text-white transition-colors">
+              <div className="w-14 h-14 rounded-2xl bg-[#0050BF]/10 text-[#0050BF] flex items-center justify-center shrink-0 group-hover:bg-[#0050BF] group-hover:text-white transition-colors">
                 <BookOpen className="w-7 h-7" />
               </div>
               <div className="min-w-0 flex-1">
-                <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-[#3379BE] transition-colors leading-snug">আল-কুরআনুল কারীম</h3>
+                <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-[#0050BF] transition-colors leading-snug">আল-কুরআনুল কারীম</h3>
                 <p className="text-[11px] sm:text-xs text-gray-500 mt-1 leading-relaxed">১১৪টি সূরা, বাংলা অর্থ, অনুবাদ ও সহজে পড়ার সুবিধা।</p>
               </div>
             </div>
-            <div className="px-5 pb-4 pt-1 border-t border-gray-100 flex items-center text-xs font-semibold text-[#3379BE]">
+            <div className="px-5 pb-4 pt-1 border-t border-gray-100 flex items-center text-xs font-semibold text-[#0050BF]">
               <span>কুরআন পড়ুন ও শিখুন</span><ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
             </div>
           </Link>
-          <Link href="/audio" className="group flex flex-col bg-white border-2 border-[#3379BE]/20 hover:border-[#3379BE] rounded-3xl shadow-xs hover:shadow-md transition-all overflow-hidden">
+          <Link href="/audio" className="group flex flex-col bg-white border-2 border-[#0050BF]/20 hover:border-[#0050BF] rounded-3xl shadow-xs hover:shadow-md transition-all overflow-hidden">
             <div className="flex items-center gap-4 p-5 pb-3">
-              <div className="w-14 h-14 rounded-2xl bg-[#3379BE]/10 text-[#3379BE] flex items-center justify-center shrink-0 group-hover:bg-[#3379BE] group-hover:text-white transition-colors">
+              <div className="w-14 h-14 rounded-2xl bg-[#0050BF]/10 text-[#0050BF] flex items-center justify-center shrink-0 group-hover:bg-[#0050BF] group-hover:text-white transition-colors">
                 <Headphones className="w-7 h-7" />
               </div>
               <div className="min-w-0 flex-1">
-                <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-[#3379BE] transition-colors leading-snug">রুকইয়াহ ভিডিও লাইব্রেরি</h3>
+                <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-[#0050BF] transition-colors leading-snug">রুকইয়াহ ভিডিও লাইব্রেরি</h3>
                 <p className="text-[11px] sm:text-xs text-gray-500 mt-1 leading-relaxed">রুকইয়াহ অডিও, দোয়া, আমল ও ইসলামিক পরামর্শের ভিডিও।</p>
               </div>
             </div>
-            <div className="px-5 pb-4 pt-1 border-t border-gray-100 flex items-center text-xs font-semibold text-[#3379BE]">
+            <div className="px-5 pb-4 pt-1 border-t border-gray-100 flex items-center text-xs font-semibold text-[#0050BF]">
               <span>ভিডিও দেখুন</span><ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
             </div>
           </Link>
@@ -166,19 +166,19 @@ export default function Home() {
       {/* 3. SERVICES GRID */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-6">
-          <h2 className="text-xl md:text-2xl font-bold text-[#1E4E79]">আমাদের সকল সেবা</h2>
+          <h2 className="text-xl md:text-2xl font-bold text-[#002E7A]">আমাদের সকল সেবা</h2>
           <p className="text-xs sm:text-sm text-gray-500 mt-1">আপনার প্রয়োজনীয় সেবাটি বেছে নিন</p>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {([
             { href: "/assessment",  icon: "stethoscope", label: "লক্ষণ যাচাই",       color: "bg-[#D4A017]/10 text-[#D4A017] group-hover:bg-[#D4A017] group-hover:text-white" },
-            { href: "/self-ruqyah",icon: "shield",       label: "সেলফ-রুকইয়াহ",    color: "bg-[#3379BE]/10 text-[#3379BE] group-hover:bg-[#3379BE] group-hover:text-white" },
-            { href: "/quran",       icon: "book",        label: "আল-কুরআন",         color: "bg-[#3379BE]/10 text-[#3379BE] group-hover:bg-[#3379BE] group-hover:text-white" },
-            { href: "/audio",       icon: "headphones",  label: "রুকইয়াহ অডিও",    color: "bg-[#3379BE]/10 text-[#3379BE] group-hover:bg-[#3379BE] group-hover:text-white" },
-            { href: "/duas",        icon: "sparkles",    label: "মাসনুন দোয়া",      color: "bg-[#3379BE]/10 text-[#3379BE] group-hover:bg-[#3379BE] group-hover:text-white" },
+            { href: "/self-ruqyah",icon: "shield",       label: "সেলফ-রুকইয়াহ",    color: "bg-[#0050BF]/10 text-[#0050BF] group-hover:bg-[#0050BF] group-hover:text-white" },
+            { href: "/quran",       icon: "book",        label: "আল-কুরআন",         color: "bg-[#0050BF]/10 text-[#0050BF] group-hover:bg-[#0050BF] group-hover:text-white" },
+            { href: "/audio",       icon: "headphones",  label: "রুকইয়াহ অডিও",    color: "bg-[#0050BF]/10 text-[#0050BF] group-hover:bg-[#0050BF] group-hover:text-white" },
+            { href: "/duas",        icon: "sparkles",    label: "মাসনুন দোয়া",      color: "bg-[#0050BF]/10 text-[#0050BF] group-hover:bg-[#0050BF] group-hover:text-white" },
             { href: "/appointment", icon: "calendar",    label: "অ্যাপয়েন্টমেন্ট", color: "bg-emerald-600/10 text-emerald-700 group-hover:bg-emerald-600 group-hover:text-white" },
           ] as const).map((item) => (
-            <Link key={item.href} href={item.href} className="group flex flex-col items-center gap-2.5 p-4 rounded-2xl bg-white border border-[#3379BE]/15 hover:border-[#3379BE] shadow-xs hover:shadow-md transition-all text-center">
+            <Link key={item.href} href={item.href} className="group flex flex-col items-center gap-2.5 p-4 rounded-2xl bg-white border border-[#0050BF]/15 hover:border-[#0050BF] shadow-xs hover:shadow-md transition-all text-center">
               <div className={`w-11 h-11 rounded-xl flex items-center justify-center transition-colors ${item.color}`}>
                 {item.icon === "stethoscope" && <Stethoscope className="w-5 h-5" />}
                 {item.icon === "shield"       && <ShieldCheck className="w-5 h-5" />}
@@ -187,7 +187,7 @@ export default function Home() {
                 {item.icon === "sparkles"     && <Sparkles className="w-5 h-5" />}
                 {item.icon === "calendar"     && <Calendar className="w-5 h-5" />}
               </div>
-              <span className="text-xs font-semibold text-gray-800 group-hover:text-[#3379BE] transition-colors leading-snug">{item.label}</span>
+              <span className="text-xs font-semibold text-gray-800 group-hover:text-[#0050BF] transition-colors leading-snug">{item.label}</span>
             </Link>
           ))}
         </div>
@@ -197,7 +197,7 @@ export default function Home() {
 
       {/* 6. APPOINTMENT BANNER */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="p-8 md:p-10 rounded-3xl bg-radial from-[#3379BE] to-[#1E4E79] text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
+        <div className="p-8 md:p-10 rounded-3xl bg-radial from-[#0050BF] to-[#002E7A] text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
           <div className="space-y-2 text-center md:text-left">
             <span className="text-xs text-[#F2C94C] font-semibold tracking-wider uppercase">সরাসরি রাক্বীর সেবা</span>
             <h2 className="text-xl md:text-2xl font-bold">অনলাইন বা সরাসরি রুকইয়াহ অ্যাপয়েন্টমেন্ট?</h2>
@@ -205,7 +205,7 @@ export default function Home() {
           </div>
           <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full md:w-auto">
             <Link href="/services" className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm border border-white/20 transition-all text-center">সেবা ও ফি তালিকা</Link>
-            <Link href="/appointment" className="w-full sm:w-auto px-7 py-3 rounded-2xl bg-[#D4A017] hover:bg-[#F2C94C] text-[#1E4E79] font-bold text-sm shadow-lg transition-transform active:scale-95 text-center">অ্যাপয়েন্টমেন্ট বুকিং করুন</Link>
+            <Link href="/appointment" className="w-full sm:w-auto px-7 py-3 rounded-2xl bg-[#D4A017] hover:bg-[#F2C94C] text-[#002E7A] font-bold text-sm shadow-lg transition-transform active:scale-95 text-center">অ্যাপয়েন্টমেন্ট বুকিং করুন</Link>
           </div>
         </div>
       </section>
