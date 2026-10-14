@@ -75,11 +75,11 @@ export default function Header() {
           <div className="flex items-center justify-between h-20">
             {/* Logo + Mobile Quick Tools (Search & Translate directly beside Logo) */}
             <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-              {/* Full Logo Vector / Crisp HD Logo */}
+              {/* Full Logo Vector */}
             <Link href="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0" title="সুন্নাহলাইফ - সুস্থতা হোক সুন্নাহর পথে">
               <div className="relative h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 shrink-0">
                 <Image
-                  src="/sunnah-icon.png"
+                  src="/sunnah-icon-logo.svg"
                   alt="সুন্নাহলাইফ আইকন"
                   fill
                   sizes="44px"
@@ -89,7 +89,7 @@ export default function Header() {
               </div>
               <div className="relative h-9 sm:h-10 md:h-11 w-32 sm:w-36 md:w-44">
                 <Image
-                  src="/sunnah-text.png"
+                  src="/sunnah-logo.svg"
                   alt="সুন্নাহলাইফ - সুস্থতা হোক সুন্নাহর পথে"
                   fill
                   sizes="(max-width: 768px) 130px, 176px"
