@@ -56,11 +56,11 @@ export default function FAQPage() {
 
       {/* Header */}
       <div className="text-center space-y-3 max-w-2xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0050BF]/10 text-[#0050BF] text-xs font-semibold">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0B63CE]/10 text-[#0B63CE] text-xs font-semibold">
           <HelpCircle className="w-3.5 h-3.5 text-[#D4A017]" />
           <span>সাধারণ জিজ্ঞাসা ও উত্তর</span>
         </div>
-        <h1 className="text-3xl md:text-4xl font-extrabold text-[#002E7A] tracking-tight">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-[#084896] tracking-tight">
           সচরাচর জিজ্ঞাসিত প্রশ্নাবলী (FAQ)
         </h1>
         <p className="text-sm md:text-base text-gray-600 leading-relaxed">
@@ -76,7 +76,7 @@ export default function FAQPage() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="প্রশ্ন বা বিষয় লিখে খুঁজুন (যেমন: তাবীজ, পানি, সেলফ রুকইয়াহ)..."
-          className="w-full pl-10 pr-4 py-3 rounded-2xl border border-gray-200 focus:outline-hidden focus:border-[#0050BF] text-sm bg-white shadow-2xs"
+          className="w-full pl-10 pr-4 py-3 rounded-2xl border border-gray-200 focus:outline-hidden focus:border-[#0B63CE] text-sm bg-white shadow-2xs"
         />
       </div>
 
@@ -88,7 +88,7 @@ export default function FAQPage() {
             onClick={() => setActiveCategory(cat.id)}
             className={`px-4 py-2 rounded-xl text-xs md:text-sm font-medium whitespace-nowrap transition-all ${
               activeCategory === cat.id
-                ? "bg-[#0050BF] text-white shadow-xs"
+                ? "bg-[#0B63CE] text-white shadow-xs"
                 : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-200"
             }`}
           >
@@ -105,15 +105,15 @@ export default function FAQPage() {
             return (
               <div
                 key={faq.id}
-                className="rounded-2xl border border-[#0050BF]/15 bg-white shadow-2xs overflow-hidden transition-all"
+                className="rounded-2xl border border-[#0B63CE]/15 bg-white shadow-2xs overflow-hidden transition-all"
               >
                 <button
                   onClick={() => toggleAccordion(faq.id)}
-                  className="w-full p-5 text-left flex items-center justify-between gap-4 font-semibold text-gray-900 hover:text-[#0050BF] transition-colors"
+                  className="w-full p-5 text-left flex items-center justify-between gap-4 font-semibold text-gray-900 hover:text-[#0B63CE] transition-colors"
                 >
                   <span className="text-sm md:text-base">{faq.question}</span>
                   {isOpen ? (
-                    <ChevronUp className="w-5 h-5 text-[#0050BF] shrink-0" />
+                    <ChevronUp className="w-5 h-5 text-[#0B63CE] shrink-0" />
                   ) : (
                     <ChevronDown className="w-5 h-5 text-gray-400 shrink-0" />
                   )}
@@ -135,8 +135,8 @@ export default function FAQPage() {
       </div>
 
       {/* Ask Question / WhatsApp CTA */}
-      <div className="p-6 md:p-8 rounded-3xl bg-radial from-white to-[#FAFAF7] border border-[#0050BF]/20 text-center space-y-3">
-        <h3 className="text-base md:text-lg font-bold text-[#002E7A]">
+      <div className="p-6 md:p-8 rounded-3xl bg-radial from-white to-[#FAFAF7] border border-[#0B63CE]/20 text-center space-y-3">
+        <h3 className="text-base md:text-lg font-bold text-[#084896]">
           আপনার কাঙ্ক্ষিত প্রশ্নের উত্তর খুঁজে পাননি?
         </h3>
         <p className="text-xs text-gray-500 max-w-md mx-auto">
@@ -146,7 +146,7 @@ export default function FAQPage() {
           href={`https://wa.me/${SITE_CONFIG.raqiWhatsAppNumber}?text=${encodeURIComponent("আসসালামু আলাইকুম। রুকইয়াহ সম্পর্কে আমার একটি প্রশ্ন ছিলো...")}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0050BF] text-white font-bold text-xs hover:bg-[#002E7A] transition-colors"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0B63CE] text-white font-bold text-xs hover:bg-[#084896] transition-colors"
         >
           <MessageCircle className="w-4 h-4 text-[#F2C94C]" />
           <span>WhatsApp-এ সরাসরি প্রশ্ন করুন</span>

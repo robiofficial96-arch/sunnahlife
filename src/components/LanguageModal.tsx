@@ -149,11 +149,11 @@ export default function LanguageModal({ isOpen, onClose }: Props) {
         {/* Modal Header */}
         <div className="flex items-center justify-between p-5 border-b border-gray-100">
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-[#0050BF]/10 text-[#0050BF] flex items-center justify-center">
+            <div className="w-10 h-10 rounded-2xl bg-[#0B63CE]/10 text-[#0B63CE] flex items-center justify-center">
               <Languages className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-[#002E7A]">ভাষা পরিবর্তন (Language)</h3>
+              <h3 className="text-base font-bold text-[#084896]">ভাষা পরিবর্তন (Language)</h3>
               <p className="text-xs text-gray-500">আপনার পছন্দের ভাষা নির্বাচন করুন</p>
             </div>
           </div>
@@ -177,15 +177,15 @@ export default function LanguageModal({ isOpen, onClose }: Props) {
                 disabled={isTranslating}
                 className={`w-full p-3.5 rounded-2xl border transition-all text-left flex items-start justify-between group cursor-pointer ${
                   isSelected
-                    ? "bg-[#0050BF]/5 border-[#0050BF] shadow-2xs ring-1 ring-[#0050BF]/20"
-                    : "bg-white border-gray-200 hover:border-[#0050BF]/30 hover:bg-[#FAFAF7]"
+                    ? "bg-[#0B63CE]/5 border-[#0B63CE] shadow-2xs ring-1 ring-[#0B63CE]/20"
+                    : "bg-white border-gray-200 hover:border-[#0B63CE]/30 hover:bg-[#FAFAF7]"
                 }`}
               >
                 <div className="flex items-start gap-3">
                   <span className="text-2xl mt-0.5">{lang.flag}</span>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h4 className={`text-sm font-bold ${isSelected ? "text-[#002E7A]" : "text-gray-800"}`}>
+                      <h4 className={`text-sm font-bold ${isSelected ? "text-[#084896]" : "text-gray-800"}`}>
                         {lang.name}
                       </h4>
                       <span className="text-[10px] text-gray-500 font-medium">
@@ -200,11 +200,11 @@ export default function LanguageModal({ isOpen, onClose }: Props) {
 
                 <div className="mt-1">
                   {isSelected ? (
-                    <div className="w-5 h-5 rounded-full bg-[#0050BF] text-white flex items-center justify-center shadow-xs">
+                    <div className="w-5 h-5 rounded-full bg-[#0B63CE] text-white flex items-center justify-center shadow-xs">
                       <Check className="w-3 h-3 stroke-[3]" />
                     </div>
                   ) : (
-                    <div className="w-5 h-5 rounded-full border border-gray-300 group-hover:border-[#0050BF]" />
+                    <div className="w-5 h-5 rounded-full border border-gray-300 group-hover:border-[#0B63CE]" />
                   )}
                 </div>
               </button>
@@ -214,7 +214,7 @@ export default function LanguageModal({ isOpen, onClose }: Props) {
 
         {/* Notice Info Box */}
         <div className="p-4 bg-emerald-50/50 border-t border-emerald-100 flex items-start gap-2.5 text-xs text-emerald-950">
-          <Info className="w-4 h-4 text-[#0050BF] shrink-0 mt-0.5" />
+          <Info className="w-4 h-4 text-[#0B63CE] shrink-0 mt-0.5" />
           <span>
             ওয়েবসাইটটির মূল কপি বাংলায় রচিত। ইংরেজি বা আরবি সিলেক্ট করলে গুগল অটোমেটিক ট্রান্সলেশনের মাধ্যমে তাৎক্ষণিক অনুবাদ প্রদর্শিত হবে।
           </span>

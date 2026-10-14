@@ -13,11 +13,11 @@ export default function ArticlesPage() {
     <div className="py-8 md:py-12 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
       {/* Header */}
       <div className="text-center space-y-3 max-w-2xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0050BF]/10 text-[#0050BF] text-xs font-semibold">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0B63CE]/10 text-[#0B63CE] text-xs font-semibold">
           <BookOpen className="w-3.5 h-3.5 text-[#D4A017]" />
           <span>ইসলামিক জ্ঞান ও সচেতনতা</span>
         </div>
-        <h1 className="text-3xl md:text-4xl font-extrabold text-[#002E7A] tracking-tight">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-[#084896] tracking-tight">
           রুকইয়াহ ও সুন্নাহ জ্ঞান ভান্ডার
         </h1>
         <p className="text-sm md:text-base text-gray-600 leading-relaxed">
@@ -30,11 +30,11 @@ export default function ArticlesPage() {
         {ARTICLES_LIST.map((art) => (
           <article
             key={art.slug}
-            className="p-6 md:p-8 rounded-3xl bg-white border border-[#0050BF]/15 hover:border-[#0050BF] shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
+            className="p-6 md:p-8 rounded-3xl bg-white border border-[#0B63CE]/15 hover:border-[#0B63CE] shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-3">
-                <span className="text-xs font-bold text-[#0050BF] bg-[#0050BF]/10 px-3 py-1 rounded-full">
+                <span className="text-xs font-bold text-[#0B63CE] bg-[#0B63CE]/10 px-3 py-1 rounded-full">
                   {art.categoryLabel}
                 </span>
                 <span className="text-xs text-gray-400 flex items-center gap-1">
@@ -43,7 +43,7 @@ export default function ArticlesPage() {
                 </span>
               </div>
 
-              <h2 className="text-lg md:text-xl font-bold text-gray-900 group-hover:text-[#0050BF] transition-colors mb-2.5 leading-snug">
+              <h2 className="text-lg md:text-xl font-bold text-gray-900 group-hover:text-[#0B63CE] transition-colors mb-2.5 leading-snug">
                 <Link href={`/articles/${art.slug}`}>{art.title}</Link>
               </h2>
 
@@ -60,7 +60,7 @@ export default function ArticlesPage() {
 
               <Link
                 href={`/articles/${art.slug}`}
-                className="font-semibold text-[#0050BF] flex items-center gap-1 group-hover:translate-x-1 transition-transform"
+                className="font-semibold text-[#0B63CE] flex items-center gap-1 group-hover:translate-x-1 transition-transform"
               >
                 <span>পড়ুন</span>
                 <ArrowRight className="w-3.5 h-3.5" />

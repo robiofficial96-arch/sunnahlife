@@ -113,20 +113,20 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
   const isCurrentQuestionAnswered = answers[currentQ.id] !== undefined;
 
   return (
-    <div className="w-full bg-white rounded-3xl border border-[#0050BF]/15 shadow-sm p-4 sm:p-6 md:p-8">
+    <div className="w-full bg-white rounded-3xl border border-[#0B63CE]/15 shadow-sm p-4 sm:p-6 md:p-8">
       {/* Top Banner / Disclaimer */}
       <div className="mb-6 bg-[#FAFAF7] border border-[#D4A017]/30 rounded-2xl p-4 flex items-start gap-3 text-xs md:text-sm text-gray-700">
-        <Info className="w-5 h-5 text-[#0050BF] shrink-0 mt-0.5" />
+        <Info className="w-5 h-5 text-[#0B63CE] shrink-0 mt-0.5" />
         <div className="leading-relaxed">
-          <strong className="text-[#0050BF] font-semibold">কুরআন ও সুন্নাহ ভিত্তিক বহুস্তরীয় স্ব-নিরীক্ষণ:</strong>{" "}
+          <strong className="text-[#0B63CE] font-semibold">কুরআন ও সুন্নাহ ভিত্তিক বহুস্তরীয় স্ব-নিরীক্ষণ:</strong>{" "}
           প্রতিটি প্রশ্ন মনোযোগ দিয়ে পড়ে আপনার ক্ষেত্রে যা প্রযোজ্য তা নির্বাচন করুন। একটি একটি করে ১৫টি প্রশ্নের সঠিক উত্তর দিলে সিস্টেম আপনার সমস্যা নিখুঁতভাবে বিশ্লেষণ করবে।
         </div>
       </div>
 
       {!result ? (
         isAnalyzing ? (
-          <div className="py-16 sm:py-24 text-center rounded-3xl bg-[#FAFAF7] border border-[#0050BF]/15 space-y-4 animate-in fade-in zoom-in-95 duration-200">
-            <div className="w-16 h-16 mx-auto rounded-2xl bg-[#0050BF]/10 text-[#0050BF] flex items-center justify-center shadow-inner">
+          <div className="py-16 sm:py-24 text-center rounded-3xl bg-[#FAFAF7] border border-[#0B63CE]/15 space-y-4 animate-in fade-in zoom-in-95 duration-200">
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-[#0B63CE]/10 text-[#0B63CE] flex items-center justify-center shadow-inner">
               <Loader2 className="w-8 h-8 animate-spin" />
             </div>
             <div className="space-y-1.5 px-4">
@@ -143,12 +143,12 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
             {/* Progress Header */}
             <div className="space-y-3 pb-4 border-b border-gray-100">
               <div className="flex flex-wrap items-center justify-between gap-2 text-xs md:text-sm">
-                <span className="font-bold text-[#002E7A] flex items-center gap-1.5">
+                <span className="font-bold text-[#084896] flex items-center gap-1.5">
                   <Sparkles className="w-4 h-4 text-[#D4A017]" />
                   {currentQ.categoryTitle}
                 </span>
               <span className="text-gray-500 text-xs font-medium">
-                প্রশ্ন <strong className="text-[#0050BF] text-sm">{currentQuestionIndex + 1}</strong> / {totalQuestions}
+                প্রশ্ন <strong className="text-[#0B63CE] text-sm">{currentQuestionIndex + 1}</strong> / {totalQuestions}
                 <span className="ml-2 font-mono text-gray-400">({progressPercent}% সম্পন্ন)</span>
               </span>
             </div>
@@ -156,7 +156,7 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
             {/* Progress Bar */}
             <div className="w-full bg-gray-100 h-2.5 rounded-full overflow-hidden">
               <div
-                className="bg-gradient-to-r from-[#0050BF] to-[#D4A017] h-full rounded-full transition-all duration-300"
+                className="bg-gradient-to-r from-[#0B63CE] to-[#D4A017] h-full rounded-full transition-all duration-300"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
@@ -173,7 +173,7 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
                     onClick={() => setCurrentQuestionIndex(idx)}
                     className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg text-[10px] sm:text-xs font-bold flex items-center justify-center transition-all cursor-pointer shrink-0 ${
                       isCurrent
-                        ? "bg-[#0050BF] text-white shadow-sm ring-2 ring-[#0050BF]/30 scale-110"
+                        ? "bg-[#0B63CE] text-white shadow-sm ring-2 ring-[#0B63CE]/30 scale-110"
                         : isAnswered
                         ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
                         : "bg-gray-100 text-gray-400 hover:bg-gray-200"
@@ -190,11 +190,11 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
           {/* SINGLE QUESTION CARD (One by One) */}
           <div 
             key={currentQ.id}
-            className="p-5 sm:p-7 md:p-8 rounded-3xl bg-[#FAFAF7] border border-[#0050BF]/15 shadow-xs space-y-6 animate-in fade-in zoom-in-95 duration-200"
+            className="p-5 sm:p-7 md:p-8 rounded-3xl bg-[#FAFAF7] border border-[#0B63CE]/15 shadow-xs space-y-6 animate-in fade-in zoom-in-95 duration-200"
           >
             {/* Question Title & Subtitle */}
             <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0050BF]/10 text-[#0050BF] text-xs font-bold">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0B63CE]/10 text-[#0B63CE] text-xs font-bold">
                 <span>প্রশ্ন {currentQuestionIndex + 1}</span>
                 <span>•</span>
                 <span>ধাপ {currentQ.step}</span>
@@ -230,7 +230,7 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
                           : isModerate
                           ? "bg-amber-50/80 border-amber-400 shadow-xs text-amber-950 ring-2 ring-amber-300"
                           : "bg-emerald-50/80 border-emerald-500 shadow-xs text-emerald-950 ring-2 ring-emerald-300"
-                        : "bg-white border-gray-200 text-gray-700 hover:border-[#0050BF]/40 hover:bg-[#FAFAF7]"
+                        : "bg-white border-gray-200 text-gray-700 hover:border-[#0B63CE]/40 hover:bg-[#FAFAF7]"
                     }`}
                   >
                     <div className="flex items-center gap-3.5">
@@ -242,7 +242,7 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
                               ? "bg-rose-600 border-rose-600 text-white"
                               : isModerate
                               ? "bg-[#D4A017] border-[#D4A017] text-white"
-                              : "bg-[#0050BF] border-[#0050BF] text-white"
+                              : "bg-[#0B63CE] border-[#0B63CE] text-white"
                             : "border-gray-300 bg-white"
                         }`}
                       >
@@ -283,7 +283,7 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
                   value={userNote}
                   onChange={(e) => setUserNote(e.target.value)}
                   placeholder="যেমন: কতদিন ধরে এই সমস্যা, পূর্বে তাবীজ নেওয়া হয়েছিল কিনা বা ডাক্তার কী বলেছেন..."
-                  className="w-full p-3 rounded-2xl border border-gray-200 focus:outline-hidden focus:border-[#0050BF] text-xs bg-white"
+                  className="w-full p-3 rounded-2xl border border-gray-200 focus:outline-hidden focus:border-[#0B63CE] text-xs bg-white"
                 />
               </div>
             )}
@@ -313,7 +313,7 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
                 disabled={!isCurrentQuestionAnswered}
                 className={`px-5 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-1.5 shadow-xs transition-all cursor-pointer ${
                   isCurrentQuestionAnswered
-                    ? "bg-[#0050BF] text-white hover:bg-[#002E7A]"
+                    ? "bg-[#0B63CE] text-white hover:bg-[#084896]"
                     : "bg-gray-200 text-gray-400 cursor-not-allowed"
                 }`}
               >
@@ -327,7 +327,7 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
                 disabled={!isCurrentQuestionAnswered || isAnalyzing}
                 className={`px-6 sm:px-8 py-3 rounded-2xl text-xs sm:text-sm font-bold flex items-center gap-2 shadow-md transition-all cursor-pointer ${
                   isCurrentQuestionAnswered && !isAnalyzing
-                    ? "bg-gradient-to-r from-[#0050BF] to-[#002E7A] text-white hover:opacity-95"
+                    ? "bg-gradient-to-r from-[#0B63CE] to-[#084896] text-white hover:opacity-95"
                     : "bg-gray-200 text-gray-400 cursor-not-allowed"
                 }`}
               >
@@ -399,8 +399,8 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
           {/* 4 Multi-Factor Probability Meters */}
           <div className="p-6 md:p-8 rounded-3xl bg-white border border-gray-200 space-y-6">
             <div>
-              <h3 className="text-base md:text-lg font-bold text-[#002E7A] flex items-center gap-2">
-                <Activity className="w-5 h-5 text-[#0050BF]" />
+              <h3 className="text-base md:text-lg font-bold text-[#084896] flex items-center gap-2">
+                <Activity className="w-5 h-5 text-[#0B63CE]" />
                 ৪টি ক্যাটাগরির সম্ভাব্যতার বিশ্লেষণ (Probability Meters)
               </h3>
               <p className="text-xs text-gray-500 mt-1">
@@ -480,16 +480,16 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
           </div>
 
           {/* Actionable Prescriptions & Amol */}
-          <div className="p-6 md:p-8 rounded-3xl bg-[#FAFAF7] border border-[#0050BF]/15 space-y-4">
-            <h3 className="text-base md:text-lg font-bold text-[#002E7A] flex items-center gap-2">
-              <ShieldCheck className="w-5 h-5 text-[#0050BF]" />
+          <div className="p-6 md:p-8 rounded-3xl bg-[#FAFAF7] border border-[#0B63CE]/15 space-y-4">
+            <h3 className="text-base md:text-lg font-bold text-[#084896] flex items-center gap-2">
+              <ShieldCheck className="w-5 h-5 text-[#0B63CE]" />
               আপনার জন্য সুনির্দিষ্ট প্রাথমিক প্রেসক্রিপশন ও আমল
             </h3>
 
             <ul className="space-y-2.5">
               {result.actionSteps.map((action, i) => (
                 <li key={i} className="flex items-start gap-3 text-xs md:text-sm text-gray-700 leading-relaxed">
-                  <span className="w-5 h-5 rounded-full bg-emerald-100 text-[#0050BF] flex items-center justify-center shrink-0 font-bold text-xs mt-0.5">
+                  <span className="w-5 h-5 rounded-full bg-emerald-100 text-[#0B63CE] flex items-center justify-center shrink-0 font-bold text-xs mt-0.5">
                     {i + 1}
                   </span>
                   <span>{action}</span>
@@ -499,7 +499,7 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
           </div>
 
           {/* WhatsApp Direct Action & Copy Section */}
-          <div className="p-6 md:p-8 rounded-3xl bg-radial from-[#0050BF] to-[#002E7A] text-white shadow-lg space-y-5 text-center sm:text-left">
+          <div className="p-6 md:p-8 rounded-3xl bg-radial from-[#0B63CE] to-[#084896] text-white shadow-lg space-y-5 text-center sm:text-left">
             <div className="space-y-2">
               <span className="text-[11px] font-semibold tracking-wider uppercase text-[#F2C94C] flex items-center justify-center sm:justify-start gap-1.5">
                 <Sparkles className="w-3.5 h-3.5" />
@@ -518,7 +518,7 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
                 href={`https://wa.me/${SITE_CONFIG.raqiWhatsAppNumber}?text=${result.whatsappMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-[#D4A017] text-[#002E7A] font-bold text-xs md:text-sm hover:bg-[#F2C94C] shadow-md flex items-center justify-center gap-2 transition-transform active:scale-95 cursor-pointer"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-[#D4A017] text-[#084896] font-bold text-xs md:text-sm hover:bg-[#F2C94C] shadow-md flex items-center justify-center gap-2 transition-transform active:scale-95 cursor-pointer"
               >
                 <MessageCircle className="w-4 h-4 fill-current" />
                 <span>WhatsApp-এ রাক্বীকে রিপোর্ট পাঠান</span>
