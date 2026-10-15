@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Large static audio assets (hosted on external CDN to preserve Vercel storage)
+public/audio/

@@ -13,11 +13,14 @@ export interface RuqyahAudioItem {
   instructions: string;
 }
 
+// Offloaded to high-availability global CDN to save 150+ MB from every Vercel build snapshot
+const CDN_AUDIO_BASE = "https://raw.githubusercontent.com/robiofficial96-arch/sunnahlife/9968555/public/audio";
+
 export const RUQYAH_AUDIO_LIST: RuqyahAudioItem[] = [
   {
     id: "sihr-renewal-ruqyah",
     youtubeId: "gobLhOl2wXY",
-    audioUrl: "/audio/sihr-renewal.mp3",
+    audioUrl: `${CDN_AUDIO_BASE}/sihr-renewal.mp3`,
     title: "জাদু নবায়ন করা ও শয়তান ধ্বংসের শক্তিশালী রুকইয়াহ",
     category: "sihr_renewal",
     categoryLabel: "জাদু নবায়ন রোধ ও শয়তান ধ্বংস",
@@ -31,7 +34,7 @@ export const RUQYAH_AUDIO_LIST: RuqyahAudioItem[] = [
   {
     id: "evil-eye-hasad-ruqyah",
     youtubeId: "9LIuxl4WXFY",
-    audioUrl: "/audio/evil-eye-hasad.mp3",
+    audioUrl: `${CDN_AUDIO_BASE}/evil-eye-hasad.mp3`,
     title: "শয়তানের বদনজর হাসাদ নষ্টের শক্তিশালী রুকইয়াহ",
     category: "evil_eye",
     categoryLabel: "শয়তানের বদনজর ও তীব্র হাসাদ",
@@ -45,7 +48,7 @@ export const RUQYAH_AUDIO_LIST: RuqyahAudioItem[] = [
   {
     id: "tawheed-shaitan-destroy",
     youtubeId: "pjjSZ_5WoHI",
-    audioUrl: "/audio/tawheed-shaitan.mp3",
+    audioUrl: `${CDN_AUDIO_BASE}/tawheed-shaitan.mp3`,
     title: "তাওহীদের আয়াতের মাধ্যমে বদনজর হাসাদ জাদুর শয়তানকে ধ্বংস করার শক্তিশালী রুকইয়াহ",
     category: "tawheed",
     categoryLabel: "তাওহীদের আয়াত ও শয়তান ধ্বংস",
@@ -59,7 +62,7 @@ export const RUQYAH_AUDIO_LIST: RuqyahAudioItem[] = [
   {
     id: "burning-shaitan-ruqyah",
     youtubeId: "uO93QW02GrM",
-    audioUrl: "/audio/burning-shaitan.mp3",
+    audioUrl: `${CDN_AUDIO_BASE}/burning-shaitan.mp3`,
     title: "শয়তানকে জ্বালানোর শক্তিশালী রুকইয়াহ",
     category: "jinn_burn",
     categoryLabel: "মাহরাকাতুশ শায়াতীন (শয়তান দাহ্যকরণ)",
@@ -73,7 +76,7 @@ export const RUQYAH_AUDIO_LIST: RuqyahAudioItem[] = [
   {
     id: "eaten-magic-ruqyah",
     youtubeId: "YVpAz_XNuIk",
-    audioUrl: "/audio/eaten-magic.mp3",
+    audioUrl: `${CDN_AUDIO_BASE}/eaten-magic.mp3`,
     title: "খাওয়ানো জাদুর শক্তিশালী রুকইয়াহ",
     category: "sihr_eaten",
     categoryLabel: "খাওয়ানো জাদু ও পেটের সিহর",
@@ -87,7 +90,7 @@ export const RUQYAH_AUDIO_LIST: RuqyahAudioItem[] = [
   {
     id: "surah-baqarah-ruqyah",
     youtubeId: "LRq-B2NFwsU",
-    audioUrl: "/audio/surah-baqarah.mp3",
+    audioUrl: `${CDN_AUDIO_BASE}/surah-baqarah.mp3`,
     title: "সূরা আল-বাকারা (বাড়ি ও পরিবারের সার্বিক নিরাপত্তা)",
     category: "baqarah",
     categoryLabel: "সূরা আল-বাকারা",
@@ -101,7 +104,7 @@ export const RUQYAH_AUDIO_LIST: RuqyahAudioItem[] = [
   {
     id: "surah-qaf-ruqyah",
     youtubeId: "roNkq-wyEMc",
-    audioUrl: "/audio/surah-qaf.mp3",
+    audioUrl: `${CDN_AUDIO_BASE}/surah-qaf.mp3`,
     title: "সূরা ক্বাফ (অন্তরের ঈমানী শক্তি ও শয়তানি ওয়াসওয়াসা দমন)",
     category: "qaf",
     categoryLabel: "সূরা ক্বাফ",
@@ -115,7 +118,7 @@ export const RUQYAH_AUDIO_LIST: RuqyahAudioItem[] = [
   {
     id: "surah-mulk-ruqyah",
     youtubeId: "70DM-GZlvDI",
-    audioUrl: "/audio/surah-mulk.mp3",
+    audioUrl: `${CDN_AUDIO_BASE}/surah-mulk.mp3`,
     title: "সূরা আল-মুলক (কবরের আযাব ও সার্বিক অনিষ্ট থেকে মুক্তি)",
     category: "mulk",
     categoryLabel: "সূরা আল-মুলক",

@@ -86,9 +86,16 @@ export default function SurahReaderView({ surah, prevSurah, nextSurah }: Props) 
         // Ignore cache parse error
       }
 
-      // Fetch from AlQuran Cloud API
+      // Fetch from AlQuran Cloud API with AbortController timeout protection
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+
       try {
-        const res = await fetch(`https://api.alquran.cloud/v1/surah/${surah.number}/editions/quran-uthmani,bn.bengali`);
+        const res = await fetch(
+          `https://api.alquran.cloud/v1/surah/${surah.number}/editions/quran-uthmani,bn.bengali`,
+          { signal: controller.signal }
+        );
+        clearTimeout(timeoutId);
         if (!res.ok) throw new Error("নেটওয়ার্ক সংযোগ ত্রুটি");
         const json = await res.json();
         if (json.code === 200 && json.data && json.data.length >= 2) {
@@ -116,8 +123,14 @@ export default function SurahReaderView({ surah, prevSurah, nextSurah }: Props) 
           throw new Error("আয়াত লোড করা সম্ভব হয়নি");
         }
       } catch (err: any) {
+        clearTimeout(timeoutId);
         if (isMounted) {
-          setError(err.message || "কুরআনের আয়াত লোড হতে সমস্যা হয়েছে। অনুগ্রহ করে ইন্টারনেট সংযোগ চেক করুন।");
+          const isTimeout = err.name === "AbortError";
+          setError(
+            isTimeout
+              ? "সার্ভার রেসপন্স করতে অতিরিক্ত সময় নিয়েছে। অনুগ্রহ করে 'পুনরায় চেষ্টা করুন' বাটনে ক্লিক করুন।"
+              : (err.message || "কুরআনের আয়াত লোড হতে সমস্যা হয়েছে। অনুগ্রহ করে ইন্টারনেট সংযোগ চেক করুন।")
+          );
           setIsLoadingAyahs(false);
         }
       }

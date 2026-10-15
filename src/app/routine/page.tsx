@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { CheckSquare, Square, RotateCcw, Sparkles, Sun, Sunset, Moon, Clock, Award } from "lucide-react";
+import { safeStorage } from "@/lib/safeStorage";
 
 interface RoutineTask {
   id: string;
@@ -124,13 +125,9 @@ export default function RoutinePage() {
   const [activeFilter, setActiveFilter] = useState<string>("all");
 
   useEffect(() => {
-    const saved = localStorage.getItem("sunnahlife_daily_routine");
-    if (saved) {
-      try {
-        setCompletedIds(JSON.parse(saved));
-      } catch (e) {
-        // ignore
-      }
+    const saved = safeStorage.get<string[]>("sunnahlife_daily_routine", []);
+    if (saved && Array.isArray(saved)) {
+      setCompletedIds(saved);
     }
   }, []);
 
@@ -139,7 +136,7 @@ export default function RoutinePage() {
       const updated = prev.includes(id)
         ? prev.filter((item) => item !== id)
         : [...prev, id];
-      localStorage.setItem("sunnahlife_daily_routine", JSON.stringify(updated));
+      safeStorage.set("sunnahlife_daily_routine", updated);
       return updated;
     });
   };
@@ -147,7 +144,7 @@ export default function RoutinePage() {
   const handleReset = () => {
     if (confirm("আপনি কি আজকের সমস্ত আমলের ট্র্যাকার রিসেট করতে চান?")) {
       setCompletedIds([]);
-      localStorage.removeItem("sunnahlife_daily_routine");
+      safeStorage.remove("sunnahlife_daily_routine");
     }
   };
 

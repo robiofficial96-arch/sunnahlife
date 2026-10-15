@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 import { saveOnlineAppointment, OnlineAppointment } from "@/lib/firebase";
+import { safeStorage } from "@/lib/safeStorage";
 
 export default function AppointmentPage() {
   const [service, setService] = useState("diagnosis_single");
@@ -195,19 +196,17 @@ export default function AppointmentPage() {
     } catch (err: any) {
       console.error("Firebase booking save error:", err);
       // Fallback to local storage if offline or permissions issue
-      try {
-        const local = JSON.parse(localStorage.getItem("sunnahlife_pending_appointments") || "[]");
-        const fallbackId = "offline_" + Date.now();
-        local.unshift({
-          ...payload,
-          id: fallbackId,
-          status: "pending",
-          createdAt: Date.now(),
-          createdAtFormatted: new Date().toLocaleString("bn-BD"),
-        });
-        localStorage.setItem("sunnahlife_pending_appointments", JSON.stringify(local));
-        setSubmittedId(fallbackId);
-      } catch {}
+      const local = safeStorage.get<any[]>("sunnahlife_pending_appointments", []);
+      const fallbackId = "offline_" + Date.now();
+      local.unshift({
+        ...payload,
+        id: fallbackId,
+        status: "pending",
+        createdAt: Date.now(),
+        createdAtFormatted: new Date().toLocaleString("bn-BD"),
+      });
+      safeStorage.set("sunnahlife_pending_appointments", local);
+      setSubmittedId(fallbackId);
       setSubmittedData(payload);
       setIsSubmitted(true);
     } finally {
