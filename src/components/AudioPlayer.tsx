@@ -71,7 +71,7 @@ export default function AudioPlayer() {
         artwork: [
           { src: "/icon-192.png", sizes: "192x192", type: "image/png" },
           { src: "/icon-512.png", sizes: "512x512", type: "image/png" },
-          { src: "/og-image.png", sizes: "1200x630", type: "image/png" },
+          { src: "/sunnah-og-image.jpg", sizes: "1200x630", type: "image/jpeg" },
         ],
       });
 
