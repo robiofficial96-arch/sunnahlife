@@ -79,14 +79,16 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/sunnah-icon-logo-v2.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" },
       { url: "/favicon.png", sizes: "48x48", type: "image/png" },
+      { url: "/icon-96.png", sizes: "96x96", type: "image/png" },
       { url: "/icon-192-v2.png", sizes: "192x192", type: "image/png" },
+      { url: "/sunnah-icon-logo-v2.svg", type: "image/svg+xml" },
     ],
     apple: [
       { url: "/apple-touch-icon-v2.png", sizes: "180x180", type: "image/png" },
     ],
-    shortcut: "/sunnah-icon-logo-v2.svg",
+    shortcut: "/favicon.ico",
   },
   openGraph: {
     type: "website",
@@ -130,7 +132,7 @@ const organizationSchema = {
   name: "সুন্নাহলাইফ (Sunnah Life Care)",
   alternateName: ["Sunnah Life Care", "সুন্নাহলাইফ কেয়ার"],
   url: SITE_CONFIG.url,
-  logo: `${SITE_CONFIG.url}/sunnahlife_logo.svg`,
+  logo: `${SITE_CONFIG.url}/sunnah-logo-v2.svg`,
   description:
     "কুরআন ও সহীহ সুন্নাহর আলোকে রুকইয়াহ শারইয়্যাহ, আত্মরক্ষা, সেলফ-রুকইয়াহ গাইড, মাসনুন দোয়া ও যিকির এবং নির্ভরযোগ্য শারঈ দিকনির্দেশনা প্ল্যাটফর্ম।",
   telephone: "+8801676820060",
@@ -173,8 +175,8 @@ const medicalBusinessSchema = {
   name: "সুন্নাহলাইফ রুকইয়াহ শারইয়্যাহ সেন্টার",
   alternateName: "Sunnah Life Care Ruqyah Center",
   url: SITE_CONFIG.url,
-  logo: `${SITE_CONFIG.url}/sunnahlife_logo.svg`,
-  image: `${SITE_CONFIG.url}/sunnahlife_logo.svg`,
+  logo: `${SITE_CONFIG.url}/sunnah-logo-v2.svg`,
+  image: `${SITE_CONFIG.url}/sunnah-logo-v2.svg`,
   telephone: "+8801676820060",
   address: {
     "@type": "PostalAddress",
@@ -214,6 +216,10 @@ export default function RootLayout({
           type="font/woff2"
           crossOrigin="anonymous"
         />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.png" type="image/png" sizes="48x48" />
+        <link rel="icon" href="/icon-96.png" type="image/png" sizes="96x96" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon-v2.png" />
         {/* Structured Data (JSON-LD) for Search & AI Answer Engines */}
         <script
           type="application/ld+json"
