@@ -86,11 +86,11 @@ export const metadata: Metadata = {
       { url: "/favicon.ico", sizes: "any" },
       { url: "/favicon.png", sizes: "48x48", type: "image/png" },
       { url: "/icon-96.png", sizes: "96x96", type: "image/png" },
-      { url: "/icon-192-v2.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-192-v3.png", sizes: "192x192", type: "image/png" },
       { url: "/sunnah-icon-logo-v2.svg", type: "image/svg+xml" },
     ],
     apple: [
-      { url: "/apple-touch-icon-v2.png", sizes: "180x180", type: "image/png" },
+      { url: "/apple-touch-icon-v3.png", sizes: "180x180", type: "image/png" },
     ],
     shortcut: "/favicon.ico",
   },
@@ -223,7 +223,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon.png" type="image/png" sizes="48x48" />
         <link rel="icon" href="/icon-96.png" type="image/png" sizes="96x96" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon-v2.png" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon-v3.png" />
         {/* Structured Data (JSON-LD) for Search & AI Answer Engines */}
         <script
           type="application/ld+json"
