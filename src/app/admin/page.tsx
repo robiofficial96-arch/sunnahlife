@@ -569,19 +569,15 @@ export default function AdminDashboardPage() {
           const data = await res.json();
           if (data.authenticated) {
             setIsAuthenticated(true);
-            localStorage.setItem("sunnahlife_admin_cached_auth", "true");
+          } else {
+            setIsAuthenticated(false);
           }
         } else {
-          // If offline or fetch failed, fallback to cached auth
-          if (typeof window !== "undefined" && !navigator.onLine && localStorage.getItem("sunnahlife_admin_cached_auth") === "true") {
-            setIsAuthenticated(true);
-          }
+          setIsAuthenticated(false);
         }
       } catch (err) {
-        console.warn("Session verification network error (checking offline cached session):", err);
-        if (typeof window !== "undefined" && localStorage.getItem("sunnahlife_admin_cached_auth") === "true") {
-          setIsAuthenticated(true);
-        }
+        console.warn("Session verification error:", err);
+        setIsAuthenticated(false);
       } finally {
         setIsLoaded(true);
       }
@@ -903,9 +899,6 @@ export default function AdminDashboardPage() {
       const data = await res.json();
       if (res.ok && data.success) {
         setIsAuthenticated(true);
-        if (typeof window !== "undefined") {
-          localStorage.setItem("sunnahlife_admin_cached_auth", "true");
-        }
         setPasscode("");
         setError("");
       } else {
@@ -923,9 +916,6 @@ export default function AdminDashboardPage() {
       await fetch("/api/admin/logout", { method: "POST" });
     } catch (err) {
       console.error("Logout error:", err);
-    }
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("sunnahlife_admin_cached_auth");
     }
     setIsAuthenticated(false);
     setPasscode("");

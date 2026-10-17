@@ -7,66 +7,74 @@ export default function AutoCloudSyncManager() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
+    let isSyncing = false;
+
     const performSync = async () => {
       if (typeof navigator !== "undefined" && !navigator.onLine) {
         return;
       }
+      if (isSyncing) return;
+      isSyncing = true;
 
-      // 1. Automatically sync unsynced patient records from localStorage to Firebase Cloud
       try {
-        const localPatientsStr = localStorage.getItem("sunnahlife_patients_records");
-        if (localPatientsStr) {
-          const patients = JSON.parse(localPatientsStr);
-          if (Array.isArray(patients) && patients.length > 0) {
-            const syncedIdsStr = localStorage.getItem("sunnahlife_synced_patient_ids") || "[]";
-            let syncedIds: Set<string>;
-            try {
-              syncedIds = new Set<string>(JSON.parse(syncedIdsStr));
-            } catch {
-              syncedIds = new Set<string>();
-            }
+        // 1. Automatically sync unsynced patient records from localStorage to Firebase Cloud
+        try {
+          const localPatientsStr = localStorage.getItem("sunnahlife_patients_records");
+          if (localPatientsStr) {
+            const patients = JSON.parse(localPatientsStr);
+            if (Array.isArray(patients) && patients.length > 0) {
+              const syncedIdsStr = localStorage.getItem("sunnahlife_synced_patient_ids") || "[]";
+              let syncedIds: Set<string>;
+              try {
+                syncedIds = new Set<string>(JSON.parse(syncedIdsStr));
+              } catch {
+                syncedIds = new Set<string>();
+              }
 
-            for (const p of patients) {
-              if (p?.id && !syncedIds.has(p.id)) {
-                try {
-                  await savePatientToFirestore(p);
-                  syncedIds.add(p.id);
-                } catch (err) {
-                  console.error("Auto sync single patient error:", err);
+              for (const p of patients) {
+                if (p?.id && !syncedIds.has(p.id)) {
+                  try {
+                    await savePatientToFirestore(p);
+                    syncedIds.add(p.id);
+                  } catch (err) {
+                    console.error("Auto sync single patient error:", err);
+                  }
                 }
               }
+              localStorage.setItem("sunnahlife_synced_patient_ids", JSON.stringify(Array.from(syncedIds)));
             }
-            localStorage.setItem("sunnahlife_synced_patient_ids", JSON.stringify(Array.from(syncedIds)));
           }
+        } catch (err) {
+          console.error("Auto patient cloud sync error:", err);
         }
-      } catch (err) {
-        console.error("Auto patient cloud sync error:", err);
-      }
 
-      // 2. Automatically sync any offline pending appointments
-      try {
-        const localAptsStr = localStorage.getItem("sunnahlife_pending_appointments");
-        if (localAptsStr) {
-          const apts = JSON.parse(localAptsStr);
-          if (Array.isArray(apts) && apts.length > 0) {
-            const remaining: any[] = [];
-            for (const apt of apts) {
-              if (apt?.id && (apt.id.startsWith("offline_") || apt.id.startsWith("local_"))) {
-                try {
-                  const { id, ...dataToSave } = apt;
-                  await saveOnlineAppointment(dataToSave);
-                } catch {
+        // 2. Automatically sync any offline pending appointments
+        try {
+          const localAptsStr = localStorage.getItem("sunnahlife_pending_appointments");
+          if (localAptsStr) {
+            const apts = JSON.parse(localAptsStr);
+            if (Array.isArray(apts) && apts.length > 0) {
+              const remaining: any[] = [];
+              for (const apt of apts) {
+                if (apt?.id && (apt.id.startsWith("offline_") || apt.id.startsWith("local_"))) {
+                  try {
+                    const { id, ...dataToSave } = apt;
+                    await saveOnlineAppointment(dataToSave);
+                  } catch {
+                    remaining.push(apt);
+                  }
+                } else {
                   remaining.push(apt);
                 }
-              } else {
-                remaining.push(apt);
               }
+              localStorage.setItem("sunnahlife_pending_appointments", JSON.stringify(remaining));
             }
-            localStorage.setItem("sunnahlife_pending_appointments", JSON.stringify(remaining));
           }
+        } catch (err) {
+          console.error("Auto appointment cloud sync error:", err);
         }
-      } catch (err) {
-        console.error("Auto appointment cloud sync error:", err);
+      } finally {
+        isSyncing = false;
       }
     };
 

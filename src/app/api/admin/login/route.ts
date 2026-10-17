@@ -43,8 +43,8 @@ export async function POST(request: NextRequest) {
 
     if (!isValid) {
       recordFailedAttempt(ip);
-      // Small artificial delay to slow down automated scripts
-      await new Promise((r) => setTimeout(r, 600));
+      // Increased artificial delay (1.2s) to severely throttle automated brute-force scripts
+      await new Promise((r) => setTimeout(r, 1200));
       return NextResponse.json(
         { success: false, error: "ভুল পিন কোড! অনুগ্রহ করে সঠিক অ্যাডমিন পিন দিন।" },
         { status: 401 }

@@ -110,6 +110,16 @@ export default function AudioPlayer() {
     } catch (e) {
       console.warn("MediaSession API setup error:", e);
     }
+
+    return () => {
+      if (typeof window !== "undefined" && "mediaSession" in navigator) {
+        ["play", "pause", "previoustrack", "nexttrack", "seekbackward", "seekforward", "seekto"].forEach((action) => {
+          try {
+            navigator.mediaSession.setActionHandler(action as MediaSessionAction, null);
+          } catch {}
+        });
+      }
+    };
   }, [currentTrack]);
 
   // Update MediaSession playback state

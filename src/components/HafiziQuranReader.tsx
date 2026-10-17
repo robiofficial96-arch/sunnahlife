@@ -162,10 +162,7 @@ export default function HafiziQuranReader({
       const url = getHafiziPageImageUrl(p, edition);
       if (!preloadedUrls.current.has(url)) {
         preloadedUrls.current.add(url);
-        // Preload in memory
-        const img = new window.Image();
-        img.src = url;
-        // Also persist in Cache API for offline / instant reload
+        // Persist in Cache API for instant subsequent page flips and offline reading
         if (typeof window !== "undefined" && "caches" in window) {
           caches.open(CACHE_NAME).then((cache) => {
             cache.match(url).then((matched) => {
@@ -178,6 +175,10 @@ export default function HafiziQuranReader({
               }
             });
           }).catch(() => {});
+        } else if (typeof window !== "undefined") {
+          // Fallback memory preload for environments without Cache API
+          const img = new (window as any).Image();
+          img.src = url;
         }
       }
     });

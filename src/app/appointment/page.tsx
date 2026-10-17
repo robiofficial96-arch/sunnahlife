@@ -168,8 +168,10 @@ export default function AppointmentPage() {
       alert("অনুগ্রহ করে আপনার নাম লিখুন।");
       return;
     }
-    if (!phone.trim()) {
-      alert("অনুগ্রহ করে আপনার মোবাইল নম্বরটি প্রদান করুন।");
+    const cleanedPhone = phone.trim().replace(/[\s\-\(\)]/g, "");
+    const bdPhoneRegex = /^(?:(?:\+|00)88|88)?01[3-9]\d{8}$/;
+    if (!bdPhoneRegex.test(cleanedPhone)) {
+      alert("অনুগ্রহ করে একটি সঠিক ১১ ডিজিটের বাংলাদেশি মোবাইল নম্বর প্রদান করুন (যেমন: 017xxxxxxxx)।");
       return;
     }
 
@@ -177,7 +179,7 @@ export default function AppointmentPage() {
 
     const payload: Omit<OnlineAppointment, "id" | "createdAt" | "status"> = {
       name: name.trim(),
-      phone: phone.trim(),
+      phone: cleanedPhone,
       district: district.trim() || "উল্লেখ নেই",
       serviceId: service,
       serviceName: selectedServiceObj?.title || service,
