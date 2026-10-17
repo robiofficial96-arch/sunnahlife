@@ -26,7 +26,7 @@ const amiri = Amiri({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#0B63CE",
+  themeColor: "#0047B1",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -80,6 +80,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/sunnah-icon-logo.svg", type: "image/svg+xml" },
+      { url: "/favicon.png", sizes: "48x48", type: "image/png" },
       { url: "/icon-192-v2.png", sizes: "192x192", type: "image/png" },
     ],
     apple: [
@@ -242,7 +243,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="notranslate min-h-screen flex flex-col bg-[#FAFAF7] text-[#1f2937] antialiased pb-20 md:pb-0 selection:bg-[#0B63CE] selection:text-white">
+      <body className="notranslate min-h-screen flex flex-col bg-[#FAFAF7] text-[#1f2937] antialiased pb-20 md:pb-0 selection:bg-[#0047B1] selection:text-white">
         <Header />
         <main className="flex-1 bg-[#FAFAF7]">{children}</main>
         <Footer />

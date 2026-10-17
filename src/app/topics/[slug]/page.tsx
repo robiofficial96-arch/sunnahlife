@@ -79,11 +79,11 @@ export default async function TopicDetailPage({ params }: Props) {
 
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-xs text-gray-500">
-        <Link href="/" className="hover:text-[#0B63CE]">হোম</Link>
+        <Link href="/" className="hover:text-[#0047B1]">হোম</Link>
         <ChevronRight className="w-3.5 h-3.5" />
-        <Link href="/topics" className="hover:text-[#0B63CE]">বিষয়ভিত্তিক লাইব্রেরি</Link>
+        <Link href="/topics" className="hover:text-[#0047B1]">বিষয়ভিত্তিক লাইব্রেরি</Link>
         <ChevronRight className="w-3.5 h-3.5" />
-        <span className="text-[#0B63CE] font-semibold">{topic.title}</span>
+        <span className="text-[#0047B1] font-semibold">{topic.title}</span>
       </div>
 
       {/* Header */}
@@ -91,7 +91,7 @@ export default async function TopicDetailPage({ params }: Props) {
         <span className="text-xs font-bold text-[#D4A017] bg-[#D4A017]/10 px-3 py-1 rounded-full inline-block">
           কুরআন ও সুন্নাহ নির্দেশিত জ্ঞান
         </span>
-        <h1 className="text-2xl md:text-4xl font-extrabold text-[#084896] leading-tight">
+        <h1 className="text-2xl md:text-4xl font-extrabold text-[#003687] leading-tight">
           {topic.title}
         </h1>
         <p className="text-sm md:text-base text-gray-600 font-medium">
@@ -100,23 +100,23 @@ export default async function TopicDetailPage({ params }: Props) {
       </div>
 
       {/* What is it */}
-      <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#0B63CE]/15 shadow-xs space-y-4">
-        <h2 className="text-lg md:text-xl font-bold text-[#084896] flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-[#0B63CE]" />
+      <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#0047B1]/15 shadow-xs space-y-4">
+        <h2 className="text-lg md:text-xl font-bold text-[#003687] flex items-center gap-2">
+          <BookOpen className="w-5 h-5 text-[#0047B1]" />
           বিষয়টি কী ও এর ইসলামিক প্রেক্ষাপট
         </h2>
         <p className="text-sm md:text-base text-gray-700 leading-relaxed">
           {topic.whatIsIt}
         </p>
-        <div className="p-4 rounded-2xl bg-[#FAFAF7] border border-[#0B63CE]/15 text-xs md:text-sm text-emerald-900 leading-relaxed font-medium flex items-start gap-2">
-          <BookOpen className="w-4 h-4 text-[#0B63CE] shrink-0 mt-0.5" />
+        <div className="p-4 rounded-2xl bg-[#FAFAF7] border border-[#0047B1]/15 text-xs md:text-sm text-emerald-900 leading-relaxed font-medium flex items-start gap-2">
+          <BookOpen className="w-4 h-4 text-[#0047B1] shrink-0 mt-0.5" />
           <div><strong>হাদিসের দলিল:</strong> {topic.hadithEvidence}</div>
         </div>
       </div>
 
       {/* Common Signs */}
-      <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#0B63CE]/15 shadow-xs space-y-4">
-        <h2 className="text-lg md:text-xl font-bold text-[#084896] flex items-center gap-2">
+      <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#0047B1]/15 shadow-xs space-y-4">
+        <h2 className="text-lg md:text-xl font-bold text-[#003687] flex items-center gap-2">
           <AlertCircle className="w-5 h-5 text-[#D4A017]" />
           সাধারণ লক্ষণ ও আলামতসমূহ
         </h2>
@@ -126,7 +126,7 @@ export default async function TopicDetailPage({ params }: Props) {
         <div className="space-y-2.5">
           {topic.commonSigns.map((sign, idx) => (
             <div key={idx} className="flex items-start gap-3 p-3 rounded-xl bg-[#FAFAF7] border border-gray-100">
-              <span className="w-6 h-6 rounded-full bg-[#0B63CE]/10 text-[#0B63CE] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+              <span className="w-6 h-6 rounded-full bg-[#0047B1]/10 text-[#0047B1] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                 {idx + 1}
               </span>
               <span className="text-xs md:text-sm text-gray-800">{sign}</span>
@@ -145,15 +145,15 @@ export default async function TopicDetailPage({ params }: Props) {
       </div>
 
       {/* Ruqyah Treatment */}
-      <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#0B63CE]/15 shadow-xs space-y-4">
-        <h2 className="text-lg md:text-xl font-bold text-[#084896] flex items-center gap-2">
-          <ShieldCheck className="w-5 h-5 text-[#0B63CE]" />
+      <div className="p-6 md:p-8 rounded-3xl bg-white border border-[#0047B1]/15 shadow-xs space-y-4">
+        <h2 className="text-lg md:text-xl font-bold text-[#003687] flex items-center gap-2">
+          <ShieldCheck className="w-5 h-5 text-[#0047B1]" />
           কুরআন ও সুন্নাহ মোতাবেক প্রতিকার ও আমল
         </h2>
         <div className="space-y-3">
           {topic.ruqyahTreatment.map((step, idx) => (
             <div key={idx} className="flex items-start gap-3">
-              <CheckCircle2 className="w-5 h-5 text-[#0B63CE] shrink-0 mt-0.5" />
+              <CheckCircle2 className="w-5 h-5 text-[#0047B1] shrink-0 mt-0.5" />
               <span className="text-xs md:text-sm text-gray-700">{step}</span>
             </div>
           ))}
@@ -162,29 +162,29 @@ export default async function TopicDetailPage({ params }: Props) {
 
       {/* Recommended Ayat & Dua */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div className="p-6 rounded-3xl bg-white border border-[#0B63CE]/15 shadow-xs space-y-3">
-          <h3 className="text-base font-bold text-[#0B63CE] flex items-center gap-2">
+        <div className="p-6 rounded-3xl bg-white border border-[#0047B1]/15 shadow-xs space-y-3">
+          <h3 className="text-base font-bold text-[#0047B1] flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-[#D4A017]" />
             প্রয়োজনীয় আয়াতসমূহ:
           </h3>
           <ul className="space-y-2 text-xs md:text-sm text-gray-700">
             {topic.recommendedAyat.map((ayah, i) => (
               <li key={i} className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#0B63CE]" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#0047B1]" />
                 {ayah}
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="p-6 rounded-3xl bg-white border border-[#0B63CE]/15 shadow-xs space-y-3">
-          <h3 className="text-base font-bold text-[#0B63CE] flex items-center gap-2">
+        <div className="p-6 rounded-3xl bg-white border border-[#0047B1]/15 shadow-xs space-y-3">
+          <h3 className="text-base font-bold text-[#0047B1] flex items-center gap-2">
             <HeartHandshake className="w-4 h-4 text-[#D4A017]" />
             প্রয়োজনীয় মাসনুন দোয়াসমূহ:
           </h3>
           <div className="space-y-2">
             {topic.recommendedDuas.map((d, i) => (
-              <p key={i} className="text-xs font-arabic text-emerald-950 bg-[#FAFAF7] p-3 rounded-xl border border-[#0B63CE]/10 leading-loose text-right">
+              <p key={i} className="text-xs font-arabic text-emerald-950 bg-[#FAFAF7] p-3 rounded-xl border border-[#0047B1]/10 leading-loose text-right">
                 {d}
               </p>
             ))}
@@ -202,9 +202,9 @@ export default async function TopicDetailPage({ params }: Props) {
       </div>
 
       {/* CTAs */}
-      <div className="p-6 md:p-8 rounded-3xl bg-radial from-white to-[#FAFAF7] border-2 border-[#0B63CE] flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="p-6 md:p-8 rounded-3xl bg-radial from-white to-[#FAFAF7] border-2 border-[#0047B1] flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
-          <h3 className="text-base md:text-lg font-bold text-[#084896]">
+          <h3 className="text-base md:text-lg font-bold text-[#003687]">
             এই লক্ষণগুলো মিলিয়ে পরীক্ষা করতে চান?
           </h3>
           <p className="text-xs text-gray-500 mt-0.5">
@@ -215,7 +215,7 @@ export default async function TopicDetailPage({ params }: Props) {
         <div className="flex items-center gap-3 w-full sm:w-auto shrink-0">
           <Link
             href="/assessment"
-            className="flex-1 sm:flex-none px-5 py-3 rounded-xl bg-[#0B63CE] text-white font-bold text-xs md:text-sm hover:bg-[#084896] text-center"
+            className="flex-1 sm:flex-none px-5 py-3 rounded-xl bg-[#0047B1] text-white font-bold text-xs md:text-sm hover:bg-[#003687] text-center"
           >
             লক্ষণ পরীক্ষা করুন
           </Link>
@@ -223,7 +223,7 @@ export default async function TopicDetailPage({ params }: Props) {
             href={`https://wa.me/${SITE_CONFIG.raqiWhatsAppNumber}?text=${defaultWhatsAppText}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 sm:flex-none px-4 py-3 rounded-xl border border-emerald-600 text-[#0B63CE] font-bold text-xs md:text-sm hover:bg-emerald-50 flex items-center justify-center gap-1.5"
+            className="flex-1 sm:flex-none px-4 py-3 rounded-xl border border-emerald-600 text-[#0047B1] font-bold text-xs md:text-sm hover:bg-emerald-50 flex items-center justify-center gap-1.5"
           >
             <MessageCircle className="w-4 h-4" />
             WhatsApp

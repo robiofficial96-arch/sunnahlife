@@ -161,11 +161,11 @@ export default function RoutinePage() {
     <div className="py-8 md:py-12 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
       {/* Header */}
       <div className="text-center space-y-2.5 max-w-xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0B63CE]/10 text-[#0B63CE] text-xs font-semibold">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0047B1]/10 text-[#0047B1] text-xs font-semibold">
           <Sparkles className="w-3.5 h-3.5 text-[#D4A017]" />
           <span>দৈনন্দিন সুন্নাহ হিফয ট্র্যাকার</span>
         </div>
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#084896] tracking-tight">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#003687] tracking-tight">
           দৈনন্দিন রুটিন ও আমল ট্র্যাকার
         </h1>
         <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
@@ -174,20 +174,20 @@ export default function RoutinePage() {
       </div>
 
       {/* Progress Bar Card */}
-      <div className="p-6 rounded-3xl bg-white border border-[#0B63CE]/15 shadow-xs space-y-4">
+      <div className="p-6 rounded-3xl bg-white border border-[#0047B1]/15 shadow-xs space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Award className="w-5 h-5 text-[#D4A017]" />
             <span className="text-sm font-bold text-gray-900">আজকের আমলের অগ্রগতি:</span>
           </div>
-          <span className="text-sm font-extrabold text-[#0B63CE]">
+          <span className="text-sm font-extrabold text-[#0047B1]">
             {progressPercent}% সম্পন্ন ({completedCount}/{totalTasks})
           </span>
         </div>
 
         <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-[#0B63CE] to-[#D4A017] transition-all duration-500 rounded-full"
+            className="h-full bg-gradient-to-r from-[#0047B1] to-[#D4A017] transition-all duration-500 rounded-full"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
@@ -223,7 +223,7 @@ export default function RoutinePage() {
               onClick={() => setActiveFilter(tab.id)}
               className={`px-3.5 py-2 rounded-xl text-xs md:text-sm font-medium transition-all flex items-center gap-1.5 whitespace-nowrap ${
                 isSelected
-                  ? "bg-[#0B63CE] text-white shadow-xs"
+                  ? "bg-[#0047B1] text-white shadow-xs"
                   : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-200"
               }`}
             >
@@ -244,13 +244,13 @@ export default function RoutinePage() {
               onClick={() => toggleTask(task.id)}
               className={`p-4 md:p-5 rounded-2xl border transition-all cursor-pointer flex items-start gap-4 select-none ${
                 isDone
-                  ? "bg-[#0B63CE]/5 border-[#0B63CE] opacity-90 shadow-2xs"
-                  : "bg-white border-gray-200 hover:border-[#0B63CE]/40 hover:bg-[#FAFAF7]"
+                  ? "bg-[#0047B1]/5 border-[#0047B1] opacity-90 shadow-2xs"
+                  : "bg-white border-gray-200 hover:border-[#0047B1]/40 hover:bg-[#FAFAF7]"
               }`}
             >
               <div className="mt-0.5 shrink-0">
                 {isDone ? (
-                  <CheckSquare className="w-5 h-5 text-[#0B63CE]" />
+                  <CheckSquare className="w-5 h-5 text-[#0047B1]" />
                 ) : (
                   <Square className="w-5 h-5 text-gray-300" />
                 )}

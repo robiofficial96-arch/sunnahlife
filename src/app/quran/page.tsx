@@ -156,14 +156,14 @@ function QuranPortalContent() {
 
       {/* Top Header Mode Switcher Bar (when in hafizi or digital mode) */}
       {mode !== "gateway" && (
-        <div className="flex items-center justify-between bg-white border border-[#0B63CE]/15 rounded-2xl p-2 sm:p-2.5 shadow-2xs">
+        <div className="flex items-center justify-between bg-white border border-[#0047B1]/15 rounded-2xl p-2 sm:p-2.5 shadow-2xs">
           <div className="flex items-center gap-1.5 sm:gap-2">
             <button
               onClick={() => switchMode("hafizi")}
               className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer ${
                 mode === "hafizi"
-                  ? "bg-[#0B63CE] text-white shadow-xs"
-                  : "text-gray-600 hover:text-[#0B63CE] hover:bg-[#0B63CE]/5"
+                  ? "bg-[#0047B1] text-white shadow-xs"
+                  : "text-gray-600 hover:text-[#0047B1] hover:bg-[#0047B1]/5"
               }`}
             >
               <BookOpen className="w-4 h-4" />
@@ -174,8 +174,8 @@ function QuranPortalContent() {
               onClick={() => switchMode("digital")}
               className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer ${
                 mode === "digital"
-                  ? "bg-[#0B63CE] text-white shadow-xs"
-                  : "text-gray-600 hover:text-[#0B63CE] hover:bg-[#0B63CE]/5"
+                  ? "bg-[#0047B1] text-white shadow-xs"
+                  : "text-gray-600 hover:text-[#0047B1] hover:bg-[#0047B1]/5"
               }`}
             >
               <Headphones className="w-4 h-4" />
@@ -185,7 +185,7 @@ function QuranPortalContent() {
 
           <button
             onClick={() => switchMode("gateway")}
-            className="px-3 py-1.5 rounded-xl border border-gray-200 text-xs font-medium text-gray-600 hover:text-[#0B63CE] hover:border-[#0B63CE] transition-colors flex items-center gap-1.5 cursor-pointer"
+            className="px-3 py-1.5 rounded-xl border border-gray-200 text-xs font-medium text-gray-600 hover:text-[#0047B1] hover:border-[#0047B1] transition-colors flex items-center gap-1.5 cursor-pointer"
             title="উভয় অপশন দেখুন"
           >
             <Compass className="w-3.5 h-3.5 text-[#D4A017]" />
@@ -201,12 +201,12 @@ function QuranPortalContent() {
         <div className="space-y-8 md:space-y-12">
           {/* Gateway Header Banner */}
           <div className="text-center space-y-4 max-w-3xl mx-auto pt-2">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0B63CE]/10 text-[#0B63CE] text-xs font-semibold">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0047B1]/10 text-[#0047B1] text-xs font-semibold">
               <BookOpen className="w-3.5 h-3.5 text-[#D4A017]" />
               <span>পবিত্র মহাগ্রন্থ আল-কুরআনুল কারীম</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#084896] tracking-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#003687] tracking-tight">
               কুরআন তিলাওয়াত মাধ্যম বেছে নিন
             </h1>
 
@@ -224,22 +224,22 @@ function QuranPortalContent() {
             {/* OPTION 1: 15-Line Bangladeshi Hafizi Quran */}
             <div
               onClick={() => switchMode("hafizi")}
-              className="group relative bg-white rounded-3xl border-2 border-[#0B63CE]/20 hover:border-[#0B63CE] p-6 sm:p-8 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between cursor-pointer overflow-hidden hover:-translate-y-1"
+              className="group relative bg-white rounded-3xl border-2 border-[#0047B1]/20 hover:border-[#0047B1] p-6 sm:p-8 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between cursor-pointer overflow-hidden hover:-translate-y-1"
             >
               <div className="space-y-5">
                 {/* Top Badge & Icon */}
                 <div className="flex items-start justify-between">
-                  <div className="w-14 h-14 rounded-2xl bg-[#0B63CE]/10 group-hover:bg-[#0B63CE] text-[#0B63CE] group-hover:text-white flex items-center justify-center transition-colors shadow-xs">
+                  <div className="w-14 h-14 rounded-2xl bg-[#0047B1]/10 group-hover:bg-[#0047B1] text-[#0047B1] group-hover:text-white flex items-center justify-center transition-colors shadow-xs">
                     <BookOpen className="w-7 h-7" />
                   </div>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#0B63CE]/10 text-[#0B63CE]">
+                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#0047B1]/10 text-[#0047B1]">
                     হিফজ ও তিলাওয়াত
                   </span>
                 </div>
 
                 {/* Title & Description */}
                 <div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-[#084896] group-hover:text-[#0B63CE] transition-colors">
+                  <h3 className="text-xl sm:text-2xl font-bold text-[#003687] group-hover:text-[#0047B1] transition-colors">
                     বাংলাদেশী ১৫ লাইনের হাফেজী কুরআন
                   </h3>
                   <p className="font-arabic text-base text-emerald-800/80 mt-0.5">
@@ -253,19 +253,19 @@ function QuranPortalContent() {
                 {/* Feature Checkpoints */}
                 <div className="space-y-2 pt-1 border-t border-gray-100 text-xs sm:text-sm text-gray-700">
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[#0B63CE] shrink-0" />
+                    <CheckCircle2 className="w-4 h-4 text-[#0047B1] shrink-0" />
                     <span>৩০ পারা ও ১১৪ সূরার নির্ভুল পৃষ্ঠাভিত্তিক ইনডেক্স</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[#0B63CE] shrink-0" />
+                    <CheckCircle2 className="w-4 h-4 text-[#0047B1] shrink-0" />
                     <span>কালার কোডেড তাজবীদ (মাদ, গুন্নাহ, কলকলাহ ইত্যাদি)</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[#0B63CE] shrink-0" />
+                    <CheckCircle2 className="w-4 h-4 text-[#0047B1] shrink-0" />
                     <span>জুম ইন/আউট, বুকমার্ক এবং ফুলস্ক্রিন রিডিং মোড</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[#0B63CE] shrink-0" />
+                    <CheckCircle2 className="w-4 h-4 text-[#0047B1] shrink-0" />
                     <span>মোবাইল ও ট্যাবলেটে স্মুথ পেজ সোয়াইপ অভিজ্ঞতা</span>
                   </div>
                 </div>
@@ -275,7 +275,7 @@ function QuranPortalContent() {
               <div className="pt-6 mt-6 border-t border-gray-100">
                 <button
                   type="button"
-                  className="w-full py-3.5 px-4 rounded-2xl bg-[#0B63CE] group-hover:bg-[#005245] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all shadow-md group-hover:shadow-lg"
+                  className="w-full py-3.5 px-4 rounded-2xl bg-[#0047B1] group-hover:bg-[#005245] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all shadow-md group-hover:shadow-lg"
                 >
                   <span>১৫ লাইনের হাফেজী কুরআন পড়ুন</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -304,7 +304,7 @@ function QuranPortalContent() {
 
                 {/* Title & Description */}
                 <div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-[#084896] group-hover:text-amber-900 transition-colors">
+                  <h3 className="text-xl sm:text-2xl font-bold text-[#003687] group-hover:text-amber-900 transition-colors">
                     ডিজিটাল কুরআন (বাংলা অর্থ ও অডিও)
                   </h3>
                   <p className="font-arabic text-base text-emerald-800/80 mt-0.5">
@@ -371,12 +371,12 @@ function QuranPortalContent() {
         <div className="space-y-8">
           {/* Header Banner */}
           <div className="text-center space-y-4 max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0B63CE]/10 text-[#0B63CE] text-xs font-semibold">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0047B1]/10 text-[#0047B1] text-xs font-semibold">
               <Headphones className="w-3.5 h-3.5 text-[#D4A017]" />
               <span>ডিজিটাল কুরআন ও অডিও তিলাওয়াত</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#084896] tracking-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#003687] tracking-tight">
               আল-কুরআনুল কারীম
             </h1>
 
@@ -390,13 +390,13 @@ function QuranPortalContent() {
 
             {/* Quick Stats Pill */}
             <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-xs font-medium text-gray-600 pt-2">
-              <span className="px-3 py-1 rounded-full bg-[#FAFAF7] border border-[#0B63CE]/15 text-[#0B63CE] font-semibold">
+              <span className="px-3 py-1 rounded-full bg-[#FAFAF7] border border-[#0047B1]/15 text-[#0047B1] font-semibold">
                 ১১৪টি সূরা
               </span>
-              <span className="px-3 py-1 rounded-full bg-[#FAFAF7] border border-[#0B63CE]/15">
+              <span className="px-3 py-1 rounded-full bg-[#FAFAF7] border border-[#0047B1]/15">
                 ৬,২৩৬টি আয়াত
               </span>
-              <span className="px-3 py-1 rounded-full bg-[#FAFAF7] border border-[#0B63CE]/15">
+              <span className="px-3 py-1 rounded-full bg-[#FAFAF7] border border-[#0047B1]/15">
                 ৮৬টি মাক্কী • ২৮টি মাদানী
               </span>
               <span className="px-3 py-1 rounded-full bg-[#D4A017]/15 border border-[#D4A017]/30 text-amber-900 font-semibold flex items-center gap-1">
@@ -409,14 +409,14 @@ function QuranPortalContent() {
           {/* Switch to Hafizi Quran Banner */}
           <div className="bg-emerald-50/60 border border-emerald-200/70 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm text-emerald-950">
             <div className="flex items-center gap-3">
-              <BookOpen className="w-5 h-5 text-[#0B63CE] shrink-0" />
+              <BookOpen className="w-5 h-5 text-[#0047B1] shrink-0" />
               <span>
                 আপনি কি চিরাচরিত <strong>১৫ লাইনের কালার কোডেড হাফেজী কুরআন</strong> পড়তে চান?
               </span>
             </div>
             <button
               onClick={() => switchMode("hafizi")}
-              className="px-4 py-2 rounded-xl bg-[#0B63CE] text-white font-semibold hover:bg-[#005245] transition-colors shrink-0 flex items-center gap-1.5 cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-[#0047B1] text-white font-semibold hover:bg-[#005245] transition-colors shrink-0 flex items-center gap-1.5 cursor-pointer"
             >
               <span>১৫ লাইনের হাফেজী কুরআনে যান</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -424,7 +424,7 @@ function QuranPortalContent() {
           </div>
 
           {/* Search & Filter Bar */}
-          <div className="bg-white p-4 sm:p-6 rounded-3xl border border-[#0B63CE]/15 shadow-xs space-y-4">
+          <div className="bg-white p-4 sm:p-6 rounded-3xl border border-[#0047B1]/15 shadow-xs space-y-4">
             <div className="flex flex-col md:flex-row gap-3 items-center justify-between">
               {/* Search Input */}
               <div className="relative w-full md:w-96">
@@ -434,7 +434,7 @@ function QuranPortalContent() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="সূরার নাম (বাংলা/ইংরেজি/আরবি) বা নম্বর খুঁজুন..."
-                  className="w-full pl-10 pr-9 py-2.5 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0B63CE]/20 focus:border-[#0B63CE] text-sm"
+                  className="w-full pl-10 pr-9 py-2.5 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0047B1]/20 focus:border-[#0047B1] text-sm"
                 />
                 {searchQuery && (
                   <button
@@ -452,7 +452,7 @@ function QuranPortalContent() {
                   onClick={() => setSelectedFilter("all")}
                   className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                     selectedFilter === "all"
-                      ? "bg-[#0B63CE] text-white shadow-xs"
+                      ? "bg-[#0047B1] text-white shadow-xs"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
                 >
@@ -473,7 +473,7 @@ function QuranPortalContent() {
                   onClick={() => setSelectedFilter("makki")}
                   className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                     selectedFilter === "makki"
-                      ? "bg-[#0B63CE] text-white shadow-xs"
+                      ? "bg-[#0047B1] text-white shadow-xs"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
                 >
@@ -483,7 +483,7 @@ function QuranPortalContent() {
                   onClick={() => setSelectedFilter("madani")}
                   className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                     selectedFilter === "madani"
-                      ? "bg-[#0B63CE] text-white shadow-xs"
+                      ? "bg-[#0047B1] text-white shadow-xs"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
                 >
@@ -509,8 +509,8 @@ function QuranPortalContent() {
                   key={surah.number}
                   className={`relative bg-white rounded-2xl border p-4 sm:p-5 transition-all flex flex-col justify-between group ${
                     isCurrentActive
-                      ? "border-[#0B63CE] shadow-md ring-2 ring-[#0B63CE]/15 bg-emerald-50/20"
-                      : "border-[#0B63CE]/15 hover:border-[#0B63CE]/40 hover:shadow-md hover:-translate-y-0.5"
+                      ? "border-[#0047B1] shadow-md ring-2 ring-[#0047B1]/15 bg-emerald-50/20"
+                      : "border-[#0047B1]/15 hover:border-[#0047B1]/40 hover:shadow-md hover:-translate-y-0.5"
                   }`}
                 >
                   <div>
@@ -520,14 +520,14 @@ function QuranPortalContent() {
                         <div
                           className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 transition-colors ${
                             isCurrentActive
-                              ? "bg-[#0B63CE] text-white"
-                              : "bg-[#0B63CE]/10 text-[#0B63CE] group-hover:bg-[#0B63CE] group-hover:text-white"
+                              ? "bg-[#0047B1] text-white"
+                              : "bg-[#0047B1]/10 text-[#0047B1] group-hover:bg-[#0047B1] group-hover:text-white"
                           }`}
                         >
                           {surah.number}
                         </div>
                         <div>
-                          <h3 className="text-base font-bold text-[#084896] group-hover:text-[#0B63CE] transition-colors">
+                          <h3 className="text-base font-bold text-[#003687] group-hover:text-[#0047B1] transition-colors">
                             {surah.nameBangla}
                           </h3>
                           <p className="text-[11px] text-gray-400 font-mono">
@@ -564,7 +564,7 @@ function QuranPortalContent() {
                     {/* Ruqyah Significance note if applicable */}
                     {surah.ruqyahBenefit && (
                       <div className="mb-4 p-2.5 rounded-xl bg-amber-50/70 border border-amber-200/50 text-[11px] text-amber-950 leading-relaxed">
-                        <span className="font-semibold text-[#0B63CE]">ফযীলত: </span>
+                        <span className="font-semibold text-[#0047B1]">ফযীলত: </span>
                         {surah.ruqyahBenefit}
                       </div>
                     )}
@@ -578,8 +578,8 @@ function QuranPortalContent() {
                         isCurrentActive && isPlaying
                           ? "bg-[#D4A017] text-white shadow-xs"
                           : isCurrentActive
-                          ? "bg-[#0B63CE] text-white"
-                          : "bg-[#0B63CE]/10 text-[#0B63CE] hover:bg-[#0B63CE] hover:text-white"
+                          ? "bg-[#0047B1] text-white"
+                          : "bg-[#0047B1]/10 text-[#0047B1] hover:bg-[#0047B1] hover:text-white"
                       }`}
                       title="অডিও শুনুন"
                     >
@@ -598,7 +598,7 @@ function QuranPortalContent() {
 
                     <Link
                       href={`/quran/${surah.number}`}
-                      className="px-3 py-1.5 rounded-xl text-xs font-medium text-gray-600 hover:text-[#0B63CE] hover:bg-gray-50 flex items-center gap-1 transition-colors"
+                      className="px-3 py-1.5 rounded-xl text-xs font-medium text-gray-600 hover:text-[#0047B1] hover:bg-gray-50 flex items-center gap-1 transition-colors"
                     >
                       <span>পড়ুন ও অর্থ</span>
                       <ArrowRight className="w-3 h-3" />
@@ -613,7 +613,7 @@ function QuranPortalContent() {
 
       {/* Floating Bottom Audio Player Bar when a Surah is playing in Digital Quran mode */}
       {activeSurah && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#084896] text-white shadow-2xl border-t border-white/10 px-4 py-3">
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#003687] text-white shadow-2xl border-t border-white/10 px-4 py-3">
           <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
             {/* Surah Info */}
             <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
@@ -646,7 +646,7 @@ function QuranPortalContent() {
             <div className="flex items-center gap-4 w-full sm:w-1/2">
               <button
                 onClick={() => setIsPlaying(!isPlaying)}
-                className="w-10 h-10 rounded-full bg-[#D4A017] text-white flex items-center justify-center hover:bg-[#F2C94C] hover:text-[#084896] transition-colors shrink-0 shadow-md cursor-pointer"
+                className="w-10 h-10 rounded-full bg-[#D4A017] text-white flex items-center justify-center hover:bg-[#F2C94C] hover:text-[#003687] transition-colors shrink-0 shadow-md cursor-pointer"
               >
                 {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
               </button>
@@ -719,8 +719,8 @@ export default function QuranPortalPage() {
     <Suspense
       fallback={
         <div className="py-24 text-center">
-          <div className="w-10 h-10 border-3 border-[#0B63CE]/20 border-t-[#0B63CE] rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-sm font-semibold text-[#084896]">কুরআন লোড হচ্ছে...</p>
+          <div className="w-10 h-10 border-3 border-[#0047B1]/20 border-t-[#0047B1] rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-sm font-semibold text-[#003687]">কুরআন লোড হচ্ছে...</p>
         </div>
       }
     >

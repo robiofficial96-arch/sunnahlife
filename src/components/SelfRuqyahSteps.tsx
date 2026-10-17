@@ -35,7 +35,7 @@ export default function SelfRuqyahSteps() {
         </span>
         <button
           onClick={toggleAll}
-          className="text-xs font-bold text-[#0B63CE] hover:text-[#084896] flex items-center gap-1 py-1 px-2.5 rounded-lg hover:bg-[#0B63CE]/5 transition-colors"
+          className="text-xs font-bold text-[#0047B1] hover:text-[#003687] flex items-center gap-1 py-1 px-2.5 rounded-lg hover:bg-[#0047B1]/5 transition-colors"
         >
           <Layers className="w-3.5 h-3.5" />
           <span>{isAllOpen ? "সবগুলো সংক্ষেপ করুন" : "সবগুলো একসাথে দেখুন"}</span>
@@ -51,8 +51,8 @@ export default function SelfRuqyahSteps() {
               key={step.stepNumber}
               className={`rounded-2xl bg-white border transition-all duration-200 overflow-hidden ${
                 isOpen
-                  ? "border-[#0B63CE] shadow-sm ring-1 ring-[#0B63CE]/10"
-                  : "border-gray-200 hover:border-[#0B63CE]/40 shadow-2xs hover:shadow-xs"
+                  ? "border-[#0047B1] shadow-sm ring-1 ring-[#0047B1]/10"
+                  : "border-gray-200 hover:border-[#0047B1]/40 shadow-2xs hover:shadow-xs"
               }`}
             >
               {/* Clickable Header */}
@@ -65,8 +65,8 @@ export default function SelfRuqyahSteps() {
                   <div
                     className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl font-bold text-sm sm:text-base flex items-center justify-center shrink-0 transition-colors ${
                       isOpen
-                        ? "bg-[#0B63CE] text-white shadow-xs"
-                        : "bg-emerald-50 text-[#0B63CE] border border-[#0B63CE]/20"
+                        ? "bg-[#0047B1] text-white shadow-xs"
+                        : "bg-emerald-50 text-[#0047B1] border border-[#0047B1]/20"
                     }`}
                   >
                     ০{step.stepNumber}
@@ -89,12 +89,12 @@ export default function SelfRuqyahSteps() {
                 </div>
 
                 <div className="flex items-center gap-1.5 shrink-0 pl-2">
-                  <span className="text-xs font-semibold text-[#0B63CE] hidden sm:inline">
+                  <span className="text-xs font-semibold text-[#0047B1] hidden sm:inline">
                     {isOpen ? "সংক্ষেপ করুন" : "বিস্তারিত"}
                   </span>
                   <div
                     className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${
-                      isOpen ? "bg-[#0B63CE] text-white" : "bg-gray-100 text-gray-600"
+                      isOpen ? "bg-[#0047B1] text-white" : "bg-gray-100 text-gray-600"
                     }`}
                   >
                     {isOpen ? (
@@ -120,7 +120,7 @@ export default function SelfRuqyahSteps() {
                   </p>
 
                   {step.ayatOrDua && (
-                    <div className="p-3 rounded-xl bg-[#FAFAF7] border border-[#0B63CE]/15 text-xs sm:text-sm text-[#0B63CE] font-semibold flex items-center gap-2">
+                    <div className="p-3 rounded-xl bg-[#FAFAF7] border border-[#0047B1]/15 text-xs sm:text-sm text-[#0047B1] font-semibold flex items-center gap-2">
                       <Sparkles className="w-4 h-4 text-[#D4A017] shrink-0" />
                       <span>পাঠের নিয়ম: {step.ayatOrDua}</span>
                     </div>
@@ -128,13 +128,13 @@ export default function SelfRuqyahSteps() {
 
                   <div className="pt-2 border-t border-gray-100">
                     <h4 className="text-xs font-bold text-gray-900 mb-2 flex items-center gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#0B63CE]" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#0047B1]" />
                       জরুরি দিকনির্দেশনা:
                     </h4>
                     <ul className="space-y-1.5 text-xs text-gray-600">
                       {step.tips.map((tip, i) => (
                         <li key={i} className="flex items-start gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#0B63CE] mt-1.5 shrink-0" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#0047B1] mt-1.5 shrink-0" />
                           <span>{tip}</span>
                         </li>
                       ))}

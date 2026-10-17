@@ -17,9 +17,9 @@
 }
 
 @theme {
-  --color-primary: #0B63CE;
-  --color-primary-dark: #084896;
-  --color-gold: #16A34A;
+  --color-primary: #0047B1;
+  --color-primary-dark: #003687;
+  --color-gold: #0E9C22;
   --color-gold-light: #4CD975;
   --color-ivory: #FAFAF7;
 
@@ -28,9 +28,9 @@
 }
 
 :root {
-  --primary: #0B63CE;
-  --primary-dark: #084896;
-  --gold: #16A34A;
+  --primary: #0047B1;
+  --primary-dark: #003687;
+  --gold: #0E9C22;
   --gold-light: #4CD975;
   --ivory: #FAFAF7;
 }
@@ -54,13 +54,13 @@ html, body {
 /* Custom Islamic pattern background and subtle aesthetics */
 .bg-islamic-pattern {
   background-color: #FAFAF7;
-  background-image: radial-gradient(#0B63CE 0.75px, transparent 0.75px), radial-gradient(#16A34A 0.75px, #FAFAF7 0.75px);
+  background-image: radial-gradient(#0047B1 0.75px, transparent 0.75px), radial-gradient(#0E9C22 0.75px, #FAFAF7 0.75px);
   background-size: 30px 30px;
   background-position: 0 0, 15px 15px;
 }
 
 .gold-border-gradient {
-  border-image: linear-gradient(to right, transparent, #16A34A, transparent) 1;
+  border-image: linear-gradient(to right, transparent, #0E9C22, transparent) 1;
 }
 
 /* Custom scrollbar */
@@ -72,11 +72,11 @@ html, body {
   background: #FAFAF7;
 }
 ::-webkit-scrollbar-thumb {
-  background: #0B63CE55;
+  background: #0047B155;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #0B63CE;
+  background: #0047B1;
 }
 
 /* Google Translate Clean Overrides */

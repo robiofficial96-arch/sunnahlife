@@ -47,18 +47,18 @@ export default function AboutPage() {
           />
         </div>
 
-        <h1 className="text-3xl md:text-4xl font-extrabold text-[#084896] tracking-tight">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-[#003687] tracking-tight">
           পরিচিতি ও মূল দর্শন
         </h1>
 
         <p className="text-sm md:text-base text-gray-600 leading-relaxed">
-          <strong className="text-[#0B63CE]">সুন্নাহলাইফ (Sunnah Life Care)</strong> বাংলাদেশের মুসলিমদের জন্য কুরআন ও সহীহ সুন্নাহভিত্তিক রুকইয়াহ শারইয়্যাহ, আত্মরক্ষা, সেলফ-রুকইয়াহ শিক্ষা ও নির্ভরযোগ্য শারঈ দিকনির্দেশনার একটি অলাভজনক ও সচেতনতামূলক ডিজিটাল প্ল্যাটফর্ম।
+          <strong className="text-[#0047B1]">সুন্নাহলাইফ (Sunnah Life Care)</strong> বাংলাদেশের মুসলিমদের জন্য কুরআন ও সহীহ সুন্নাহভিত্তিক রুকইয়াহ শারইয়্যাহ, আত্মরক্ষা, সেলফ-রুকইয়াহ শিক্ষা ও নির্ভরযোগ্য শারঈ দিকনির্দেশনার একটি অলাভজনক ও সচেতনতামূলক ডিজিটাল প্ল্যাটফর্ম।
         </p>
       </div>
 
       {/* Core Principles */}
       <div className="space-y-4">
-        <h2 className="text-xl md:text-2xl font-bold text-[#084896] text-center mb-6">
+        <h2 className="text-xl md:text-2xl font-bold text-[#003687] text-center mb-6">
           আমাদের মূল নীতিমালা ও বিশ্বাস
         </h2>
 
@@ -66,10 +66,10 @@ export default function AboutPage() {
           {principles.map((pr, idx) => (
             <div
               key={idx}
-              className="p-6 rounded-3xl bg-white border border-[#0B63CE]/15 shadow-2xs space-y-2"
+              className="p-6 rounded-3xl bg-white border border-[#0047B1]/15 shadow-2xs space-y-2"
             >
               <div className="flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-[#0B63CE] text-white text-xs font-bold flex items-center justify-center shrink-0">
+                <span className="w-6 h-6 rounded-full bg-[#0047B1] text-white text-xs font-bold flex items-center justify-center shrink-0">
                   {idx + 1}
                 </span>
                 <h3 className="text-base font-bold text-gray-900">{pr.title}</h3>
@@ -84,7 +84,7 @@ export default function AboutPage() {
 
       {/* Medical Safety Disclaimer Callout */}
       <div className="p-6 md:p-8 rounded-3xl bg-emerald-50/70 border-2 border-emerald-600 space-y-3">
-        <div className="flex items-center gap-2.5 text-[#0B63CE] font-bold text-base md:text-lg">
+        <div className="flex items-center gap-2.5 text-[#0047B1] font-bold text-base md:text-lg">
           <HeartPulse className="w-6 h-6 text-emerald-700" />
           <span>চিকিৎসা ও মানসিক স্বাস্থ্য সংক্রান্ত সুস্পষ্ট অবস্থান</span>
         </div>
@@ -97,7 +97,7 @@ export default function AboutPage() {
       <div className="text-center pt-2">
         <Link
           href="/assessment"
-          className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-[#0B63CE] text-white font-bold text-sm hover:bg-[#084896] shadow-md shadow-[#0B63CE]/20 transition-all"
+          className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-[#0047B1] text-white font-bold text-sm hover:bg-[#003687] shadow-md shadow-[#0047B1]/20 transition-all"
         >
           <span>আপনার লক্ষণ যাচাই করুন</span>
           <ArrowRight className="w-4 h-4" />

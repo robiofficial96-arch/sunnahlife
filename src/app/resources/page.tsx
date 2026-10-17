@@ -74,11 +74,11 @@ export default function ResourcesPage() {
     <div className="py-8 md:py-12 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
       {/* Header */}
       <div className="text-center space-y-3 max-w-2xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0B63CE]/10 text-[#0B63CE] text-xs font-semibold">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0047B1]/10 text-[#0047B1] text-xs font-semibold">
           <FileText className="w-3.5 h-3.5 text-[#D4A017]" />
           <span>ডাউনলোডযোগ্য ও প্রিন্টযোগ্য রিসোর্স</span>
         </div>
-        <h1 className="text-3xl md:text-4xl font-extrabold text-[#084896] tracking-tight">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-[#003687] tracking-tight">
           পিডিএফ ও প্রিন্ট রিসোর্স লাইব্রেরি
         </h1>
         <p className="text-sm md:text-base text-gray-600 leading-relaxed">
@@ -87,7 +87,7 @@ export default function ResourcesPage() {
       </div>
 
       {/* Featured 1-Click Official Azkar PDF */}
-      <div className="bg-gradient-to-br from-[#084896] via-[#005B4D] to-[#053166] text-white p-6 sm:p-8 rounded-3xl shadow-xl border border-white/10 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+      <div className="bg-gradient-to-br from-[#003687] via-[#005B4D] to-[#002761] text-white p-6 sm:p-8 rounded-3xl shadow-xl border border-white/10 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="absolute -right-16 -top-16 w-56 h-56 bg-emerald-400/10 rounded-full blur-2xl pointer-events-none" />
         <div className="space-y-3 text-center md:text-left relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D4A017]/20 text-[#F2C94C] text-xs font-bold border border-[#D4A017]/30">
@@ -120,9 +120,9 @@ export default function ResourcesPage() {
           <a
             href="/downloads/azkar-masnun-hifz.pdf"
             download="আযকার_ও_মাসনুন_আমল_সুন্নাহলাইফ.pdf"
-            className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-[#D4A017] hover:bg-[#F2C94C] text-[#053166] font-bold text-sm flex items-center justify-center gap-2.5 shadow-xl transition-all transform active:scale-95 cursor-pointer"
+            className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-[#D4A017] hover:bg-[#F2C94C] text-[#002761] font-bold text-sm flex items-center justify-center gap-2.5 shadow-xl transition-all transform active:scale-95 cursor-pointer"
           >
-            <Download className="w-5 h-5 text-[#053166]" />
+            <Download className="w-5 h-5 text-[#002761]" />
             <span>১-ক্লিকে PDF ডাউনলোড</span>
           </a>
           <a
@@ -142,11 +142,11 @@ export default function ResourcesPage() {
         {GUIDES.map((guide) => (
           <div
             key={guide.id}
-            className="p-6 rounded-3xl bg-white border border-[#0B63CE]/15 shadow-xs flex flex-col justify-between"
+            className="p-6 rounded-3xl bg-white border border-[#0047B1]/15 shadow-xs flex flex-col justify-between"
           >
             <div>
               <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] font-bold text-[#0B63CE] bg-[#0B63CE]/10 px-2.5 py-0.5 rounded-full">
+                <span className="text-[11px] font-bold text-[#0047B1] bg-[#0047B1]/10 px-2.5 py-0.5 rounded-full">
                   {guide.category}
                 </span>
                 <span className="text-[11px] text-gray-400">{guide.pages}</span>
@@ -161,7 +161,7 @@ export default function ResourcesPage() {
 
             <button
               onClick={() => handlePrint(guide)}
-              className="w-full py-2.5 rounded-xl bg-[#0B63CE] hover:bg-[#084896] text-white text-xs font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
+              className="w-full py-2.5 rounded-xl bg-[#0047B1] hover:bg-[#003687] text-white text-xs font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
               <Printer className="w-4 h-4 text-[#F2C94C]" />
               <span>প্রিন্ট / PDF সংরক্ষণ করুন</span>
@@ -171,15 +171,15 @@ export default function ResourcesPage() {
       </div>
 
       {/* Printable Area preview */}
-      <div className="p-8 rounded-3xl bg-white border border-[#0B63CE]/20 shadow-sm space-y-6">
+      <div className="p-8 rounded-3xl bg-white border border-[#0047B1]/20 shadow-sm space-y-6">
         <div className="flex items-center justify-between border-b border-gray-100 pb-4">
           <div>
             <span className="text-xs text-[#D4A017] font-semibold">প্রিভিউ ও প্রিন্ট শিট</span>
-            <h2 className="text-xl font-bold text-[#084896]">{selectedGuide.title}</h2>
+            <h2 className="text-xl font-bold text-[#003687]">{selectedGuide.title}</h2>
           </div>
           <button
             onClick={() => handlePrint(selectedGuide)}
-            className="px-4 py-2 rounded-xl border border-[#0B63CE] text-[#0B63CE] hover:bg-[#0B63CE]/5 text-xs font-semibold flex items-center gap-1.5"
+            className="px-4 py-2 rounded-xl border border-[#0047B1] text-[#0047B1] hover:bg-[#0047B1]/5 text-xs font-semibold flex items-center gap-1.5"
           >
             <Printer className="w-4 h-4" />
             <span>প্রিন্ট করুন</span>
@@ -189,7 +189,7 @@ export default function ResourcesPage() {
         <div className="space-y-3">
           {selectedGuide.contentLines.map((line, idx) => (
             <div key={idx} className="flex items-start gap-3 p-3 rounded-xl bg-[#FAFAF7] border border-gray-100">
-              <CheckCircle2 className="w-4 h-4 text-[#0B63CE] shrink-0 mt-0.5" />
+              <CheckCircle2 className="w-4 h-4 text-[#0047B1] shrink-0 mt-0.5" />
               <span className="text-xs md:text-sm text-gray-800 leading-relaxed">{line}</span>
             </div>
           ))}
@@ -201,7 +201,7 @@ export default function ResourcesPage() {
       </div>
 
       {/* Multimedia Ruqyah Banner */}
-      <div className="rounded-3xl bg-gradient-to-r from-[#084896] to-[#0B63CE] text-white p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
+      <div className="rounded-3xl bg-gradient-to-r from-[#003687] to-[#0047B1] text-white p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
         <div className="space-y-2 text-center md:text-left">
           <span className="text-xs font-semibold text-[#F2C94C] uppercase tracking-wider">মাল্টিমিডিয়া রিসোর্স</span>
           <h3 className="text-xl md:text-2xl font-bold">রুকইয়াহ অডিও ও অফিসিয়াল ভিডিও শুনুন</h3>
@@ -213,9 +213,9 @@ export default function ResourcesPage() {
         <div className="flex flex-wrap items-center gap-3 shrink-0">
           <Link
             href="/audio"
-            className="px-5 py-2.5 rounded-xl bg-white text-[#084896] hover:bg-emerald-50 font-bold text-xs transition-colors shadow-xs flex items-center gap-2"
+            className="px-5 py-2.5 rounded-xl bg-white text-[#003687] hover:bg-emerald-50 font-bold text-xs transition-colors shadow-xs flex items-center gap-2"
           >
-            <Headphones className="w-4 h-4 text-[#0B63CE]" />
+            <Headphones className="w-4 h-4 text-[#0047B1]" />
             <span>শক্তিশালী রুকইয়াহ অডিও শুনুন</span>
           </Link>
         </div>
