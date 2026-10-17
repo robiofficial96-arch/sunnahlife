@@ -36,15 +36,26 @@ export default function AboutPage() {
     <div className="py-8 md:py-12 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
       {/* Brand Hero */}
       <div className="text-center space-y-4 max-w-2xl mx-auto">
-        <div className="relative w-56 sm:w-64 h-20 sm:h-24 mx-auto">
-          <Image
-            src="/sunnahlife_logo.svg"
-            alt="সুন্নাহলাইফ"
-            fill
-            sizes="256px"
-            className="object-contain"
-            priority
-          />
+        <div className="flex flex-col items-center justify-center gap-2 mx-auto">
+          <div className="relative w-16 h-16 sm:w-20 sm:h-20">
+            <Image
+              src="/sunnah-icon-logo-v2.svg"
+              alt="সুন্নাহলাইফ আইকন"
+              fill
+              sizes="80px"
+              className="object-contain"
+            />
+          </div>
+          <div className="relative w-60 sm:w-72 h-16 sm:h-20">
+            <Image
+              src="/sunnah-logo-v2.svg"
+              alt="সুন্নাহলাইফ"
+              fill
+              sizes="288px"
+              className="object-contain"
+              priority
+            />
+          </div>
         </div>
 
         <h1 className="text-3xl md:text-4xl font-extrabold text-[#003687] tracking-tight">

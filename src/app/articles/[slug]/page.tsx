@@ -57,7 +57,7 @@ export default async function ArticleDetailPage({ params }: Props) {
       name: "সুন্নাহলাইফ",
       logo: {
         "@type": "ImageObject",
-        url: `${SITE_CONFIG.url}/sunnahlife_logo.svg`,
+        url: `${SITE_CONFIG.url}/sunnah-logo-v2.svg`,
       },
     },
     datePublished: "2026-09-01",
