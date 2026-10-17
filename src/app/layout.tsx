@@ -11,18 +11,22 @@ const OfferPopupModal = dynamic(() => import("@/components/OfferPopupModal"));
 const AutoCloudSyncManager = dynamic(() => import("@/components/AutoCloudSyncManager"));
 import { SITE_CONFIG } from "@/config/site";
 
+import Script from "next/script";
+
 const hindSiliguri = Hind_Siliguri({
-  weight: ["300", "400", "500", "600", "700"],
-  subsets: ["bengali", "latin"],
+  weight: ["400", "700"],
+  subsets: ["bengali"],
   variable: "--font-hind-siliguri",
   display: "swap",
+  preload: false,
 });
 
 const amiri = Amiri({
   weight: ["400", "700"],
-  subsets: ["arabic", "latin"],
+  subsets: ["arabic"],
   variable: "--font-amiri",
   display: "swap",
+  preload: false,
 });
 
 export const viewport: Viewport = {
@@ -234,20 +238,18 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalBusinessSchema) }}
         />
         {/* Google tag (gtag.js) */}
-        <script
-          async
+        <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-F6KVLCT911"
+          strategy="afterInteractive"
         />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-F6KVLCT911');
-            `,
-          }}
-        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-F6KVLCT911');
+          `}
+        </Script>
       </head>
       <body className="notranslate min-h-screen flex flex-col bg-[#FAFAF7] text-[#1f2937] antialiased pb-20 md:pb-0 selection:bg-[#0047B1] selection:text-white">
         <Header />
