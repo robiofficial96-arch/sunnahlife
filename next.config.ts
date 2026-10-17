@@ -28,7 +28,7 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: "/(favicon.ico|favicon.png)",
+        source: "/(favicon.ico|favicon.png|manifest.webmanifest|manifest.json)",
         headers: [
           {
             key: "Cache-Control",

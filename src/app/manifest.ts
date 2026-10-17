@@ -6,6 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: "সুন্নাহলাইফ",
     description: "কুরআন ও সহীহ সুন্নাহ ভিত্তিক রুকইয়াহ শারইয়্যাহ ও সেলফ-রুকইয়াহ প্ল্যাটফর্ম",
     start_url: "/",
+    id: "/?pwa=sunnahlife-v2",
     display: "standalone",
     background_color: "#FFFFFF",
     theme_color: "#0047B1",
@@ -23,7 +24,7 @@ export default function manifest(): MetadataRoute.Manifest {
         purpose: "any",
       },
       {
-        src: "/icon-maskable-512.png",
+        src: "/icon-maskable-v2.png",
         sizes: "512x512",
         type: "image/png",
         purpose: "maskable",
