@@ -294,7 +294,8 @@ export default function AudioPlayer() {
   };
 
   const categories = [
-    { id: "all", label: "সকল শক্তিশালী অডিও (৮টি)" },
+    { id: "all", label: `সকল শক্তিশালী অডিও (${RUQYAH_AUDIO_LIST.length}টি)` },
+    { id: "sihr_destroy", label: "শক্তিশালী জাদু ও সিহর বিনষ্ট" },
     { id: "sihr_renewal", label: "জাদু নবায়ন রোধ ও শয়তান ধ্বংস" },
     { id: "evil_eye", label: "বদনজর ও তীব্র হাসাদ" },
     { id: "tawheed", label: "তাওহীদের আয়াত ও শয়তান ধ্বংস" },
@@ -566,7 +567,7 @@ export default function AudioPlayer() {
         <div className="space-y-3">
           {filteredTracks.map((track, idx) => {
             const isCurrent = currentTrack.id === track.id;
-            const bngIndex = ["০১", "০২", "০৩", "০৪", "০৫", "০৬", "০৭", "০৮"][idx] || `০${idx + 1}`;
+            const bngIndex = ["০১", "০২", "০৩", "০৪", "০৫", "০৬", "০৭", "০৮", "০৯", "১০"][idx] || `০${idx + 1}`;
 
             return (
               <div

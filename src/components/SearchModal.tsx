@@ -215,7 +215,7 @@ export default function SearchModal({ isOpen, onClose }: Props) {
                   <Headphones className="w-4 h-4 text-[#D4A017] shrink-0" />
                   <div>
                     <div className="text-xs font-bold text-amber-950">রুকইয়াহ অডিও</div>
-                    <div className="text-[10px] text-gray-500">৮টি মূল তিলাওয়াত</div>
+                    <div className="text-[10px] text-gray-500">৯টি মূল তিলাওয়াত</div>
                   </div>
                 </button>
 

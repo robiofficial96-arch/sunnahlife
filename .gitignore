@@ -40,5 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Large static audio assets (hosted on external CDN to preserve Vercel storage)
-public/audio/
+# Large static audio assets (legacy tracks hosted on external CDN)
+public/audio/*
+!public/audio/strong-sihr.mp3

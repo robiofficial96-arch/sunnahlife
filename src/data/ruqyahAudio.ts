@@ -3,7 +3,7 @@ export interface RuqyahAudioItem {
   youtubeId: string;
   audioUrl: string;
   title: string;
-  category: "sihr_eaten" | "sihr_renewal" | "jinn_burn" | "evil_eye" | "baqarah" | "tawheed" | "mulk" | "qaf";
+  category: "sihr_destroy" | "sihr_eaten" | "sihr_renewal" | "jinn_burn" | "evil_eye" | "baqarah" | "tawheed" | "mulk" | "qaf";
   categoryLabel: string;
   reciter: string;
   duration: string;
@@ -17,6 +17,20 @@ export interface RuqyahAudioItem {
 const CDN_AUDIO_BASE = "https://raw.githubusercontent.com/robiofficial96-arch/sunnahlife/9968555/public/audio";
 
 export const RUQYAH_AUDIO_LIST: RuqyahAudioItem[] = [
+  {
+    id: "strong-sihr-ruqyah",
+    youtubeId: "nryko31kQpQ",
+    audioUrl: "/audio/strong-sihr.mp3",
+    title: "শক্তিশালী জাদুর রুকইয়াহ (জাদু নষ্টের কুরআন ও সুন্নাহভিত্তিক রুকইয়াহ)",
+    category: "sihr_destroy",
+    categoryLabel: "শক্তিশালী জাদু ও সিহর বিনষ্ট",
+    reciter: "শায়খ মাহমুদ আল-হাসানী",
+    duration: "47:01",
+    durationSeconds: 2821,
+    youtubeUrl: "https://www.youtube.com/watch?v=nryko31kQpQ",
+    description: "জাদু (সিহর), অস্বাভাবিক বাধা, অকারণ শারীরিক-মানসিক অসুস্থতা ও অজানা সমস্যা দূরীকরণে কুরআনের আয়াত ও সহীহ সুন্নাহর দোয়ার সমন্বয়ে প্রস্তুতকৃত তেজোদৃপ্ত রুকইয়াহ।",
+    instructions: "সম্ভব হলে অযু অবস্থায় নিরিবিলি পরিবেশে একাগ্রতার সাথে হেডফোনে শুনুন। আল্লাহর ওপর পূর্ণ তাওয়াক্কুল রাখুন ও শিফার নিয়ত করুন। কোনো অস্বাভাবিক অনুভূতি হলে ভয় না পেয়ে রুকইয়াহ সমাপ্ত করুন।",
+  },
   {
     id: "sihr-renewal-ruqyah",
     youtubeId: "gobLhOl2wXY",

@@ -1,4 +1,4 @@
-﻿import { Metadata } from "next";
+import { Metadata } from "next";
 import AudioPlayer from "@/components/AudioPlayer";
 import YouTubeRuqyahSection from "@/components/YouTubeRuqyahSection";
 import { Headphones, ArrowRight } from "lucide-react";
@@ -17,7 +17,7 @@ function YoutubeIcon({ className = "w-4 h-4" }: { className?: string }) {
 
 export const metadata: Metadata = {
   title: "রুকইয়াহ অডিও ও ভিডিও লাইব্রেরি | সুন্নাহলাইফ কেয়ার",
-  description: "শাইখ মাহমুদ হুসাইনীর অফিসিয়াল ইউটিউব রুকইয়াহ ভিডিও এবং ৮টি শক্তিশালী কুরআনী রুকইয়াহ অডিও শুনুন।",
+  description: "শাইখ মাহমুদ হুসাইনীর অফিসিয়াল ইউটিউব রুকইয়াহ ভিডিও এবং ৯টি শক্তিশালী কুরআনী রুকইয়াহ অডিও শুনুন।",
 };
 
 export default function AudioPage() {
@@ -97,7 +97,7 @@ export default function AudioPage() {
             </h2>
           </div>
           <span className="text-xs text-gray-500 font-medium">
-            ৮টি নির্বাচিত অডিও • ফ্রি স্ট্রিমিং
+            ৯টি নির্বাচিত অডিও • ফ্রি স্ট্রিমিং
           </span>
         </div>
 
