@@ -7,7 +7,7 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "কুরআন ও সহীহ সুন্নাহ ভিত্তিক রুকইয়াহ শারইয়্যাহ ও সেলফ-রুকইয়াহ প্ল্যাটফর্ম",
     start_url: "/",
     display: "standalone",
-    background_color: "#FAFAF7",
+    background_color: "#FFFFFF",
     theme_color: "#0047B1",
     icons: [
       {
@@ -27,11 +27,6 @@ export default function manifest(): MetadataRoute.Manifest {
         sizes: "512x512",
         type: "image/png",
         purpose: "maskable",
-      },
-      {
-        src: "/sunnah-icon-logo-v2.svg",
-        sizes: "any",
-        type: "image/svg+xml",
       },
     ],
   };
