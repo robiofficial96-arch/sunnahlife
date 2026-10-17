@@ -79,14 +79,14 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/sunnah-icon-logo.svg", type: "image/svg+xml" },
+      { url: "/sunnah-icon-logo-v2.svg", type: "image/svg+xml" },
       { url: "/favicon.png", sizes: "48x48", type: "image/png" },
       { url: "/icon-192-v2.png", sizes: "192x192", type: "image/png" },
     ],
     apple: [
       { url: "/apple-touch-icon-v2.png", sizes: "180x180", type: "image/png" },
     ],
-    shortcut: "/sunnah-icon-logo.svg",
+    shortcut: "/sunnah-icon-logo-v2.svg",
   },
   openGraph: {
     type: "website",

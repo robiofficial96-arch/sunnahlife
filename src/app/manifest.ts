@@ -29,7 +29,7 @@ export default function manifest(): MetadataRoute.Manifest {
         purpose: "maskable",
       },
       {
-        src: "/sunnah-icon-logo.svg",
+        src: "/sunnah-icon-logo-v2.svg",
         sizes: "any",
         type: "image/svg+xml",
       },

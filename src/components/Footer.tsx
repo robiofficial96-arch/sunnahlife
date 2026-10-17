@@ -89,7 +89,7 @@ export default function Footer() {
             <Link href="/" className="inline-flex items-center gap-2.5">
               <div className="relative h-11 w-11 shrink-0">
                 <Image
-                  src="/sunnah-icon-logo.svg"
+                  src="/sunnah-icon-logo-v2.svg"
                   alt="সুন্নাহলাইফ আইকন"
                   fill
                   sizes="44px"
@@ -98,7 +98,7 @@ export default function Footer() {
               </div>
               <div className="relative h-11 w-40">
                 <Image
-                  src="/sunnah-logo.svg"
+                  src="/sunnah-logo-v2.svg"
                   alt="সুন্নাহলাইফ"
                   fill
                   sizes="160px"
