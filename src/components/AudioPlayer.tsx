@@ -311,7 +311,7 @@ export default function AudioPlayer() {
     : RUQYAH_AUDIO_LIST.filter(t => t.category === selectedCategory);
 
   return (
-    <div className="w-full bg-white rounded-3xl border border-[#0047B1]/15 shadow-sm p-4 sm:p-6 md:p-8 space-y-6">
+    <div className="w-full bg-white rounded-3xl border border-[#20A9DF]/15 shadow-sm p-4 sm:p-6 md:p-8 space-y-6">
       {/* Hidden Native HTML5 Audio Element with Native Background Playback */}
       <audio
         ref={audioRef}
@@ -327,15 +327,15 @@ export default function AudioPlayer() {
       />
 
       {/* Main Islamic Audio Console */}
-      <div className="bg-gradient-to-br from-[#003687] via-[#005B4D] to-[#002761] text-white rounded-3xl p-5 sm:p-7 md:p-8 shadow-xl relative overflow-hidden border border-white/10">
+      <div className="bg-gradient-to-br from-[#0796D2] via-[#005B4D] to-[#057aa9] text-white rounded-3xl p-5 sm:p-7 md:p-8 shadow-xl relative overflow-hidden border border-white/10">
         {/* Glow ambient background circles */}
         <div className="absolute -right-16 -top-16 w-56 h-56 bg-emerald-400/10 rounded-full blur-2xl pointer-events-none" />
-        <div className="absolute -left-16 -bottom-16 w-56 h-56 bg-[#D4A017]/10 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute -left-16 -bottom-16 w-56 h-56 bg-[#70BF44]/10 rounded-full blur-2xl pointer-events-none" />
 
         {/* Top Header info */}
         <div className="flex flex-wrap items-center justify-between gap-3 mb-6 relative z-10 border-b border-white/10 pb-4">
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#D4A017]/20 text-[#F2C94C] text-xs font-semibold border border-[#D4A017]/30">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#70BF44]/20 text-[#70BF44] text-xs font-semibold border border-[#70BF44]/30">
               <Sparkles className="w-3.5 h-3.5" />
               <span>{currentTrack.categoryLabel}</span>
             </span>
@@ -369,7 +369,7 @@ export default function AudioPlayer() {
               onClick={handleCopyShare}
               className="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-emerald-100 hover:text-white flex items-center gap-1.5 transition-colors text-xs font-medium cursor-pointer"
             >
-              <Share2 className="w-3.5 h-3.5 text-[#F2C94C]" />
+              <Share2 className="w-3.5 h-3.5 text-[#70BF44]" />
               <span>{copiedLink ? "কপি হয়েছে!" : "শেয়ার"}</span>
             </button>
           </div>
@@ -379,12 +379,12 @@ export default function AudioPlayer() {
         <div className="space-y-6 relative z-10">
           <div className="flex items-start sm:items-center gap-4">
             {/* Equalizer Sound-Wave Icon Badge */}
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center text-[#F2C94C] shrink-0 shadow-inner">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center text-[#70BF44] shrink-0 shadow-inner">
               {isPlaying ? (
                 <div className="flex items-end gap-1 px-1.5">
-                  <span className="w-1.5 h-5 bg-[#D4A017] rounded-full animate-bounce [animation-delay:-0.3s]" />
-                  <span className="w-1.5 h-8 bg-[#F2C94C] rounded-full animate-bounce [animation-delay:-0.15s]" />
-                  <span className="w-1.5 h-6 bg-[#D4A017] rounded-full animate-bounce [animation-delay:-0.45s]" />
+                  <span className="w-1.5 h-5 bg-[#70BF44] rounded-full animate-bounce [animation-delay:-0.3s]" />
+                  <span className="w-1.5 h-8 bg-[#70BF44] rounded-full animate-bounce [animation-delay:-0.15s]" />
+                  <span className="w-1.5 h-6 bg-[#70BF44] rounded-full animate-bounce [animation-delay:-0.45s]" />
                   <span className="w-1.5 h-4 bg-emerald-300 rounded-full animate-bounce" />
                 </div>
               ) : (
@@ -410,7 +410,7 @@ export default function AudioPlayer() {
               max={duration || currentTrack.durationSeconds || 100}
               value={currentTime}
               onChange={handleSeek}
-              className="w-full h-2.5 bg-white/20 hover:bg-white/30 rounded-lg appearance-none cursor-pointer accent-[#D4A017] transition-all"
+              className="w-full h-2.5 bg-white/20 hover:bg-white/30 rounded-lg appearance-none cursor-pointer accent-[#70BF44] transition-all"
             />
             <div className="flex justify-between text-xs text-emerald-200 font-mono font-medium">
               <span>{formatTime(currentTime)}</span>
@@ -444,11 +444,11 @@ export default function AudioPlayer() {
               {/* Big Main Play/Pause Button */}
               <button
                 onClick={togglePlay}
-                className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#D4A017] text-[#002761] flex items-center justify-center hover:bg-[#F2C94C] transition-all transform active:scale-95 shadow-xl cursor-pointer shrink-0 font-bold"
+                className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#70BF44] text-[#057aa9] flex items-center justify-center hover:bg-[#70BF44] transition-all transform active:scale-95 shadow-xl cursor-pointer shrink-0 font-bold"
                 title={isPlaying ? "বিরতি" : "প্লে করুন"}
               >
                 {isLoading ? (
-                  <Loader2 className="w-7 h-7 animate-spin text-[#002761]" />
+                  <Loader2 className="w-7 h-7 animate-spin text-[#057aa9]" />
                 ) : isPlaying ? (
                   <Pause className="w-7 h-7 fill-current" />
                 ) : (
@@ -482,7 +482,7 @@ export default function AudioPlayer() {
                 onClick={toggleLoop}
                 className={`p-2.5 sm:px-3 sm:py-2.5 rounded-xl border transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-semibold ${
                   isLooping
-                    ? "bg-[#D4A017] text-[#002761] border-[#D4A017] shadow-sm"
+                    ? "bg-[#70BF44] text-[#057aa9] border-[#70BF44] shadow-sm"
                     : "bg-white/10 hover:bg-white/20 text-white border-white/15"
                 }`}
                 title={isLooping ? "রিপিট মোড চালু আছে" : "রিপিট / লুপ মোড চালু করুন (ঘুমের সময় কার্যকরী)"}
@@ -519,10 +519,10 @@ export default function AudioPlayer() {
             className="flex items-center justify-between w-full text-left text-emerald-200 hover:text-white transition-colors"
           >
             <span className="flex items-center gap-1.5 font-semibold text-[11px] sm:text-xs">
-              <Headphones className="w-3.5 h-3.5 text-[#F2C94C]" />
+              <Headphones className="w-3.5 h-3.5 text-[#70BF44]" />
               আমল ও শোনার নিয়ম
             </span>
-            <span className="text-[11px] text-[#F2C94C] font-semibold flex items-center gap-0.5">
+            <span className="text-[11px] text-[#70BF44] font-semibold flex items-center gap-0.5">
               {showInstructions ? "সংক্ষেপ" : "দেখুন"}
               {showInstructions ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
             </span>
@@ -543,8 +543,8 @@ export default function AudioPlayer() {
             onClick={() => setSelectedCategory(cat.id)}
             className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
               selectedCategory === cat.id
-                ? "bg-[#0047B1] text-white shadow-xs"
-                : "bg-[#FAFAF7] text-gray-700 hover:bg-gray-100 hover:text-[#0047B1] border border-gray-200/80"
+                ? "bg-[#20A9DF] text-white shadow-xs"
+                : "bg-[#DDF5FF] text-gray-700 hover:bg-gray-100 hover:text-[#20A9DF] border border-gray-200/80"
             }`}
           >
             {cat.label}
@@ -555,8 +555,8 @@ export default function AudioPlayer() {
       {/* Ruqyah Playlist Section */}
       <div className="space-y-3">
         <div className="flex items-center justify-between pb-1">
-          <h4 className="text-base sm:text-lg font-bold text-[#003687] flex items-center gap-2">
-            <Headphones className="w-5 h-5 text-[#0047B1]" />
+          <h4 className="text-base sm:text-lg font-bold text-[#0796D2] flex items-center gap-2">
+            <Headphones className="w-5 h-5 text-[#20A9DF]" />
             <span>নির্বাচিত শক্তিশালী রুকইয়াহ অডিও তালিকা ({filteredTracks.length}টি)</span>
           </h4>
           <span className="text-xs text-gray-500 font-medium hidden sm:inline">
@@ -575,8 +575,8 @@ export default function AudioPlayer() {
                 onClick={() => handleSelectTrack(track)}
                 className={`p-4 sm:p-5 rounded-2xl border transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
                   isCurrent
-                    ? "bg-[#0047B1]/5 border-[#0047B1] shadow-sm ring-1 ring-[#0047B1]/30"
-                    : "bg-white border-gray-200 hover:border-[#0047B1]/40 hover:bg-[#FAFAF7]"
+                    ? "bg-[#20A9DF]/5 border-[#20A9DF] shadow-sm ring-1 ring-[#20A9DF]/30"
+                    : "bg-white border-gray-200 hover:border-[#20A9DF]/40 hover:bg-[#DDF5FF]"
                 }`}
               >
                 <div className="flex items-center gap-3.5 min-w-0">
@@ -584,10 +584,10 @@ export default function AudioPlayer() {
                   <div
                     className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-all ${
                       isCurrent && isPlaying
-                        ? "bg-[#0047B1] text-white shadow-md animate-pulse"
+                        ? "bg-[#20A9DF] text-white shadow-md animate-pulse"
                         : isCurrent
-                        ? "bg-[#0047B1] text-white shadow-xs"
-                        : "bg-[#FAFAF7] text-[#0047B1] border border-[#0047B1]/20"
+                        ? "bg-[#20A9DF] text-white shadow-xs"
+                        : "bg-[#DDF5FF] text-[#20A9DF] border border-[#20A9DF]/20"
                     }`}
                   >
                     {isCurrent && isPlaying ? (
@@ -602,10 +602,10 @@ export default function AudioPlayer() {
                       <span className="text-xs font-mono font-bold text-gray-400">
                         {bngIndex}.
                       </span>
-                      <h5 className={`text-base font-bold truncate ${isCurrent ? "text-[#003687]" : "text-gray-900"}`}>
+                      <h5 className={`text-base font-bold truncate ${isCurrent ? "text-[#0796D2]" : "text-gray-900"}`}>
                         {track.title}
                       </h5>
-                      <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#0047B1] font-semibold border border-emerald-200/60">
+                      <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#20A9DF] font-semibold border border-emerald-200/60">
                         {track.categoryLabel}
                       </span>
                     </div>
@@ -633,10 +633,10 @@ export default function AudioPlayer() {
                     type="button"
                     className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-colors ${
                       isCurrent && isPlaying
-                        ? "bg-[#003687] text-white"
+                        ? "bg-[#0796D2] text-white"
                         : isCurrent
-                        ? "bg-[#0047B1] text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-[#0047B1] hover:text-white"
+                        ? "bg-[#20A9DF] text-white"
+                        : "bg-gray-100 text-gray-700 hover:bg-[#20A9DF] hover:text-white"
                     }`}
                   >
                     {isCurrent && isPlaying ? "বাজছে..." : isCurrent ? "চালু করুন" : "প্লে করুন"}

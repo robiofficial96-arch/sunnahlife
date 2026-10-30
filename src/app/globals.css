@@ -41,22 +41,30 @@
 }
 
 @theme {
-  --color-primary: #0047B1;
-  --color-primary-dark: #003687;
-  --color-gold: #0E9C22;
-  --color-gold-light: #4CD975;
-  --color-ivory: #FAFAF7;
+  --color-primary: #20A9DF;
+  --color-primary-dark: #0796D2;
+  --color-gold: #70BF44;
+  --color-gold-light: #8ED168;
+  --color-ivory: #DDF5FF;
+  --color-sunnah-blue: #20A9DF;
+  --color-life-green: #70BF44;
+  --color-text-deep: #0796D2;
+  --color-bg-light: #DDF5FF;
 
   --font-sans: 'SolaimanLipi', var(--font-hind-siliguri), 'Hind Siliguri', system-ui, -apple-system, sans-serif;
   --font-arabic: var(--font-amiri), "Amiri", serif;
 }
 
 :root {
-  --primary: #0047B1;
-  --primary-dark: #003687;
-  --gold: #0E9C22;
-  --gold-light: #4CD975;
-  --ivory: #FAFAF7;
+  --primary: #20A9DF;
+  --primary-dark: #0796D2;
+  --gold: #70BF44;
+  --gold-light: #8ED168;
+  --ivory: #DDF5FF;
+  --sunnah-blue: #20A9DF;
+  --life-green: #70BF44;
+  --text-deep: #0796D2;
+  --bg-light: #DDF5FF;
 }
 
 /* Force SolaimanLipi as the primary font for all Bengali text across full website */
@@ -65,8 +73,8 @@ html, body, button, input, textarea, select {
 }
 
 html, body {
-  background-color: #FAFAF7 !important;
-  color: #1a2e26;
+  background-color: #DDF5FF !important;
+  color: #0A3547;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -77,14 +85,14 @@ html, body {
 
 /* Custom Islamic pattern background and subtle aesthetics */
 .bg-islamic-pattern {
-  background-color: #FAFAF7;
-  background-image: radial-gradient(#0047B1 0.75px, transparent 0.75px), radial-gradient(#0E9C22 0.75px, #FAFAF7 0.75px);
+  background-color: #DDF5FF;
+  background-image: radial-gradient(#20A9DF 0.75px, transparent 0.75px), radial-gradient(#70BF44 0.75px, #DDF5FF 0.75px);
   background-size: 30px 30px;
   background-position: 0 0, 15px 15px;
 }
 
 .gold-border-gradient {
-  border-image: linear-gradient(to right, transparent, #0E9C22, transparent) 1;
+  border-image: linear-gradient(to right, transparent, #70BF44, transparent) 1;
 }
 
 /* Custom scrollbar */
@@ -93,14 +101,14 @@ html, body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #FAFAF7;
+  background: #DDF5FF;
 }
 ::-webkit-scrollbar-thumb {
-  background: #0047B155;
+  background: #20A9DF88;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #0047B1;
+  background: #0796D2;
 }
 
 /* Google Translate Clean Overrides */
@@ -128,4 +136,3 @@ body {
 .goog-te-gadget {
   display: none !important;
 }
-

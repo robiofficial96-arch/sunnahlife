@@ -30,7 +30,7 @@ export default function NotFound() {
         </div>
 
         <div className="space-y-2">
-          <span className="text-4xl font-extrabold text-[#0047B1]">৪০৪</span>
+          <span className="text-4xl font-extrabold text-[#20A9DF]">৪০৪</span>
           <h1 className="text-xl md:text-2xl font-bold text-gray-900">
             পৃষ্ঠাটি খুঁজে পাওয়া যায়নি
           </h1>
@@ -42,7 +42,7 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
           <Link
             href="/"
-            className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#0047B1] text-white text-xs font-semibold hover:bg-[#003687] flex items-center justify-center gap-1.5 shadow-sm transition-colors"
+            className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#20A9DF] text-white text-xs font-semibold hover:bg-[#0796D2] flex items-center justify-center gap-1.5 shadow-sm transition-colors"
           >
             <Home className="w-4 h-4" />
             <span>হোমপেজে ফিরে যান</span>
@@ -50,7 +50,7 @@ export default function NotFound() {
 
           <Link
             href="/assessment"
-            className="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-[#0047B1] text-[#0047B1] text-xs font-semibold hover:bg-[#0047B1]/5 flex items-center justify-center gap-1.5 transition-colors"
+            className="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-[#20A9DF] text-[#20A9DF] text-xs font-semibold hover:bg-[#20A9DF]/5 flex items-center justify-center gap-1.5 transition-colors"
           >
             <Stethoscope className="w-4 h-4" />
             <span>লক্ষণ পরীক্ষা করুন</span>

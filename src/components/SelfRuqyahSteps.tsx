@@ -35,7 +35,7 @@ export default function SelfRuqyahSteps() {
         </span>
         <button
           onClick={toggleAll}
-          className="text-xs font-bold text-[#0047B1] hover:text-[#003687] flex items-center gap-1 py-1 px-2.5 rounded-lg hover:bg-[#0047B1]/5 transition-colors"
+          className="text-xs font-bold text-[#20A9DF] hover:text-[#0796D2] flex items-center gap-1 py-1 px-2.5 rounded-lg hover:bg-[#20A9DF]/5 transition-colors"
         >
           <Layers className="w-3.5 h-3.5" />
           <span>{isAllOpen ? "সবগুলো সংক্ষেপ করুন" : "সবগুলো একসাথে দেখুন"}</span>
@@ -51,8 +51,8 @@ export default function SelfRuqyahSteps() {
               key={step.stepNumber}
               className={`rounded-2xl bg-white border transition-all duration-200 overflow-hidden ${
                 isOpen
-                  ? "border-[#0047B1] shadow-sm ring-1 ring-[#0047B1]/10"
-                  : "border-gray-200 hover:border-[#0047B1]/40 shadow-2xs hover:shadow-xs"
+                  ? "border-[#20A9DF] shadow-sm ring-1 ring-[#20A9DF]/10"
+                  : "border-gray-200 hover:border-[#20A9DF]/40 shadow-2xs hover:shadow-xs"
               }`}
             >
               {/* Clickable Header */}
@@ -65,8 +65,8 @@ export default function SelfRuqyahSteps() {
                   <div
                     className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl font-bold text-sm sm:text-base flex items-center justify-center shrink-0 transition-colors ${
                       isOpen
-                        ? "bg-[#0047B1] text-white shadow-xs"
-                        : "bg-emerald-50 text-[#0047B1] border border-[#0047B1]/20"
+                        ? "bg-[#20A9DF] text-white shadow-xs"
+                        : "bg-emerald-50 text-[#20A9DF] border border-[#20A9DF]/20"
                     }`}
                   >
                     ০{step.stepNumber}
@@ -76,7 +76,7 @@ export default function SelfRuqyahSteps() {
                       <h3 className="text-base sm:text-lg font-bold text-gray-900 leading-tight">
                         {step.title}
                       </h3>
-                      <span className="text-[11px] font-semibold text-[#D4A017] bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200/60 hidden sm:inline-block">
+                      <span className="text-[11px] font-semibold text-[#70BF44] bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200/60 hidden sm:inline-block">
                         {step.subtitle}
                       </span>
                     </div>
@@ -89,12 +89,12 @@ export default function SelfRuqyahSteps() {
                 </div>
 
                 <div className="flex items-center gap-1.5 shrink-0 pl-2">
-                  <span className="text-xs font-semibold text-[#0047B1] hidden sm:inline">
+                  <span className="text-xs font-semibold text-[#20A9DF] hidden sm:inline">
                     {isOpen ? "সংক্ষেপ করুন" : "বিস্তারিত"}
                   </span>
                   <div
                     className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${
-                      isOpen ? "bg-[#0047B1] text-white" : "bg-gray-100 text-gray-600"
+                      isOpen ? "bg-[#20A9DF] text-white" : "bg-gray-100 text-gray-600"
                     }`}
                   >
                     {isOpen ? (
@@ -110,7 +110,7 @@ export default function SelfRuqyahSteps() {
               {isOpen && (
                 <div className="px-4 pb-5 sm:px-5 sm:pb-6 pt-1 border-t border-gray-100 space-y-3.5 bg-gradient-to-b from-emerald-50/15 to-white animate-in fade-in-50 duration-200">
                   <div className="sm:hidden pt-1">
-                    <span className="text-[11px] font-semibold text-[#D4A017] bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200/60">
+                    <span className="text-[11px] font-semibold text-[#70BF44] bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200/60">
                       {step.subtitle}
                     </span>
                   </div>
@@ -120,21 +120,21 @@ export default function SelfRuqyahSteps() {
                   </p>
 
                   {step.ayatOrDua && (
-                    <div className="p-3 rounded-xl bg-[#FAFAF7] border border-[#0047B1]/15 text-xs sm:text-sm text-[#0047B1] font-semibold flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-[#D4A017] shrink-0" />
+                    <div className="p-3 rounded-xl bg-[#DDF5FF] border border-[#20A9DF]/15 text-xs sm:text-sm text-[#20A9DF] font-semibold flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-[#70BF44] shrink-0" />
                       <span>পাঠের নিয়ম: {step.ayatOrDua}</span>
                     </div>
                   )}
 
                   <div className="pt-2 border-t border-gray-100">
                     <h4 className="text-xs font-bold text-gray-900 mb-2 flex items-center gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#0047B1]" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#20A9DF]" />
                       জরুরি দিকনির্দেশনা:
                     </h4>
                     <ul className="space-y-1.5 text-xs text-gray-600">
                       {step.tips.map((tip, i) => (
                         <li key={i} className="flex items-start gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#0047B1] mt-1.5 shrink-0" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#20A9DF] mt-1.5 shrink-0" />
                           <span>{tip}</span>
                         </li>
                       ))}

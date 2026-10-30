@@ -388,7 +388,7 @@ export default function HafiziQuranReader({
       {isFullscreen ? (
         <div className="flex flex-col h-full w-full justify-between">
           {/* Top Compact Floating Toolbar */}
-          <div className="bg-[#0B1E17]/95 backdrop-blur-md border-b border-[#0047B1]/30 px-3 py-2 sm:px-6 sm:py-2.5 flex items-center justify-between gap-2 z-20 shrink-0">
+          <div className="bg-[#0B1E17]/95 backdrop-blur-md border-b border-[#20A9DF]/30 px-3 py-2 sm:px-6 sm:py-2.5 flex items-center justify-between gap-2 z-20 shrink-0">
             <div className="flex items-center gap-2 min-w-0">
               <button
                 onClick={toggleFullscreen}
@@ -415,7 +415,7 @@ export default function HafiziQuranReader({
                 onClick={() => handleEditionChange("emdadia")}
                 className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
                   edition === "emdadia"
-                    ? "bg-[#0047B1] text-white font-bold shadow-xs"
+                    ? "bg-[#20A9DF] text-white font-bold shadow-xs"
                     : "text-gray-300 hover:text-white"
                 }`}
               >
@@ -425,7 +425,7 @@ export default function HafiziQuranReader({
                 onClick={() => handleEditionChange("tajweed")}
                 className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
                   edition === "tajweed"
-                    ? "bg-[#0047B1] text-white font-bold shadow-xs"
+                    ? "bg-[#20A9DF] text-white font-bold shadow-xs"
                     : "text-gray-300 hover:text-white"
                 }`}
               >
@@ -459,7 +459,7 @@ export default function HafiziQuranReader({
                   </>
                 ) : (
                   <>
-                    <DownloadCloud className="w-3.5 h-3.5 text-[#F2C94C]" />
+                    <DownloadCloud className="w-3.5 h-3.5 text-[#70BF44]" />
                     <span className="hidden sm:inline">পারা {currentPara.number} অফলাইন</span>
                   </>
                 )}
@@ -493,7 +493,7 @@ export default function HafiziQuranReader({
                 onClick={toggleBookmark}
                 className={`p-1.5 rounded-lg text-xs cursor-pointer ${
                   bookmarkPage === currentPage
-                    ? "bg-[#D4A017] text-white"
+                    ? "bg-[#70BF44] text-white"
                     : "bg-white/10 text-emerald-200 hover:bg-white/20"
                 }`}
               >
@@ -527,7 +527,7 @@ export default function HafiziQuranReader({
                     setImageError(false);
                     setUseFallback(true);
                   }}
-                  className="px-4 py-2 rounded-xl bg-[#0047B1] text-white text-xs font-semibold cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-[#20A9DF] text-white text-xs font-semibold cursor-pointer"
                 >
                   বিকল্প সার্ভারে চেষ্টা করুন
                 </button>
@@ -572,11 +572,11 @@ export default function HafiziQuranReader({
           </div>
 
           {/* Bottom Compact Controller */}
-          <div className="bg-[#0B1E17]/95 backdrop-blur-md border-t border-[#0047B1]/30 px-3 py-2 sm:px-6 sm:py-2.5 flex items-center justify-between gap-3 shrink-0 z-20">
+          <div className="bg-[#0B1E17]/95 backdrop-blur-md border-t border-[#20A9DF]/30 px-3 py-2 sm:px-6 sm:py-2.5 flex items-center justify-between gap-3 shrink-0 z-20">
             <button
               onClick={handlePrevPage}
               disabled={currentPage <= MIN_HAFIZI_PAGE}
-              className="px-3.5 sm:px-4 py-2 rounded-xl bg-[#0047B1] hover:bg-[#008975] disabled:opacity-30 text-white text-xs font-bold flex items-center gap-1 cursor-pointer transition-all shadow-md active:scale-95"
+              className="px-3.5 sm:px-4 py-2 rounded-xl bg-[#20A9DF] hover:bg-[#008975] disabled:opacity-30 text-white text-xs font-bold flex items-center gap-1 cursor-pointer transition-all shadow-md active:scale-95"
             >
               <ChevronLeft className="w-4 h-4" />
               <span>পূর্ববর্তী</span>
@@ -602,7 +602,7 @@ export default function HafiziQuranReader({
             <button
               onClick={handleNextPage}
               disabled={currentPage >= MAX_HAFIZI_PAGE}
-              className="px-3.5 sm:px-4 py-2 rounded-xl bg-[#0047B1] hover:bg-[#008975] disabled:opacity-30 text-white text-xs font-bold flex items-center gap-1 cursor-pointer transition-all shadow-md active:scale-95"
+              className="px-3.5 sm:px-4 py-2 rounded-xl bg-[#20A9DF] hover:bg-[#008975] disabled:opacity-30 text-white text-xs font-bold flex items-center gap-1 cursor-pointer transition-all shadow-md active:scale-95"
             >
               <span>পরবর্তী</span>
               <ChevronRight className="w-4 h-4" />
@@ -615,16 +615,16 @@ export default function HafiziQuranReader({
            ========================================================================= */
         <>
           {/* Top Controls & Navigation Bar */}
-          <div className="bg-white rounded-3xl border border-[#0047B1]/15 shadow-xs p-4 sm:p-5 space-y-4">
+          <div className="bg-white rounded-3xl border border-[#20A9DF]/15 shadow-xs p-4 sm:p-5 space-y-4">
             {/* Row 1: Para, Surah Info and Quick Jump */}
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-10 h-10 rounded-2xl bg-[#0047B1]/10 text-[#0047B1] flex items-center justify-center font-bold">
-                  <BookOpen className="w-5 h-5 text-[#0047B1]" />
+                <div className="w-10 h-10 rounded-2xl bg-[#20A9DF]/10 text-[#20A9DF] flex items-center justify-center font-bold">
+                  <BookOpen className="w-5 h-5 text-[#20A9DF]" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h2 className="text-base sm:text-lg font-bold text-[#003687]">
+                    <h2 className="text-base sm:text-lg font-bold text-[#0796D2]">
                       পারা {currentPara.number}: {currentPara.nameBangla}
                     </h2>
                     <span className="font-arabic text-emerald-800 text-sm font-semibold">
@@ -646,13 +646,13 @@ export default function HafiziQuranReader({
                   className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
                     isParaCached
                       ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                      : "bg-[#0047B1]/5 hover:bg-[#0047B1]/10 text-[#0047B1] border border-[#0047B1]/20"
+                      : "bg-[#20A9DF]/5 hover:bg-[#20A9DF]/10 text-[#20A9DF] border border-[#20A9DF]/20"
                   }`}
                   title="চলমান পারার সব পেজ অফলাইনে সেভ করুন"
                 >
                   {isDownloadingPara ? (
                     <>
-                      <div className="w-3.5 h-3.5 border-2 border-[#0047B1]/30 border-t-[#0047B1] rounded-full animate-spin" />
+                      <div className="w-3.5 h-3.5 border-2 border-[#20A9DF]/30 border-t-[#20A9DF] rounded-full animate-spin" />
                       <span>{downloadProgress ? `সংরক্ষণ হচ্ছে: ${downloadProgress.current}/${downloadProgress.total}` : "ডাউনলোড..."}</span>
                     </>
                   ) : isParaCached ? (
@@ -662,7 +662,7 @@ export default function HafiziQuranReader({
                     </>
                   ) : (
                     <>
-                      <DownloadCloud className="w-3.5 h-3.5 text-[#D4A017]" />
+                      <DownloadCloud className="w-3.5 h-3.5 text-[#70BF44]" />
                       <span>পারা {currentPara.number} অফলাইনে সেভ করুন</span>
                     </>
                   )}
@@ -670,17 +670,17 @@ export default function HafiziQuranReader({
 
                 <button
                   onClick={() => setShowParaModal(true)}
-                  className="px-3 py-1.5 rounded-xl border border-gray-200 text-xs font-semibold text-gray-700 hover:border-[#0047B1] hover:text-[#0047B1] hover:bg-[#0047B1]/5 transition-all flex items-center gap-1.5 cursor-pointer"
+                  className="px-3 py-1.5 rounded-xl border border-gray-200 text-xs font-semibold text-gray-700 hover:border-[#20A9DF] hover:text-[#20A9DF] hover:bg-[#20A9DF]/5 transition-all flex items-center gap-1.5 cursor-pointer"
                 >
-                  <Layers className="w-3.5 h-3.5 text-[#D4A017]" />
+                  <Layers className="w-3.5 h-3.5 text-[#70BF44]" />
                   <span>পারা সূচি (৩০)</span>
                 </button>
 
                 <button
                   onClick={() => setShowSurahModal(true)}
-                  className="px-3 py-1.5 rounded-xl border border-gray-200 text-xs font-semibold text-gray-700 hover:border-[#0047B1] hover:text-[#0047B1] hover:bg-[#0047B1]/5 transition-all flex items-center gap-1.5 cursor-pointer"
+                  className="px-3 py-1.5 rounded-xl border border-gray-200 text-xs font-semibold text-gray-700 hover:border-[#20A9DF] hover:text-[#20A9DF] hover:bg-[#20A9DF]/5 transition-all flex items-center gap-1.5 cursor-pointer"
                 >
-                  <List className="w-3.5 h-3.5 text-[#0047B1]" />
+                  <List className="w-3.5 h-3.5 text-[#20A9DF]" />
                   <span>সূরা সূচি (১১৪)</span>
                 </button>
 
@@ -689,7 +689,7 @@ export default function HafiziQuranReader({
                   onClick={toggleBookmark}
                   className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
                     bookmarkPage === currentPage
-                      ? "bg-[#D4A017] text-white shadow-xs"
+                      ? "bg-[#70BF44] text-white shadow-xs"
                       : "border border-gray-200 text-gray-700 hover:bg-gray-50"
                   }`}
                 >
@@ -709,9 +709,9 @@ export default function HafiziQuranReader({
             </div>
 
             {/* Row 2: Edition Selector Bar */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-2xl bg-gradient-to-r from-emerald-50/60 via-[#FAFAF7] to-amber-50/40 border border-emerald-100">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-2xl bg-gradient-to-r from-emerald-50/60 via-[#DDF5FF] to-amber-50/40 border border-emerald-100">
               <div className="space-y-0.5">
-                <span className="text-[11px] font-bold text-[#0047B1] uppercase tracking-wider block">
+                <span className="text-[11px] font-bold text-[#20A9DF] uppercase tracking-wider block">
                   ছাপার সংস্করণ (মুসহাফ ধরন)
                 </span>
                 <p className="text-xs text-gray-600">
@@ -726,7 +726,7 @@ export default function HafiziQuranReader({
                   onClick={() => handleEditionChange("emdadia")}
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                     edition === "emdadia"
-                      ? "bg-[#0047B1] text-white shadow-xs"
+                      ? "bg-[#20A9DF] text-white shadow-xs"
                       : "text-gray-700 hover:bg-gray-100"
                   }`}
                 >
@@ -737,7 +737,7 @@ export default function HafiziQuranReader({
                   onClick={() => handleEditionChange("tajweed")}
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                     edition === "tajweed"
-                      ? "bg-[#0047B1] text-white shadow-xs"
+                      ? "bg-[#20A9DF] text-white shadow-xs"
                       : "text-gray-700 hover:bg-gray-100"
                   }`}
                 >
@@ -753,7 +753,7 @@ export default function HafiziQuranReader({
                 <button
                   onClick={handlePrevPage}
                   disabled={currentPage <= MIN_HAFIZI_PAGE}
-                  className="px-3 py-2 rounded-xl bg-[#FAFAF7] border border-gray-200 text-xs font-semibold text-gray-700 hover:bg-[#0047B1] hover:text-white disabled:opacity-40 disabled:hover:bg-[#FAFAF7] disabled:hover:text-gray-700 transition-all flex items-center gap-1 cursor-pointer"
+                  className="px-3 py-2 rounded-xl bg-[#DDF5FF] border border-gray-200 text-xs font-semibold text-gray-700 hover:bg-[#20A9DF] hover:text-white disabled:opacity-40 disabled:hover:bg-[#DDF5FF] disabled:hover:text-gray-700 transition-all flex items-center gap-1 cursor-pointer"
                   title="পূর্ববর্তী পৃষ্ঠা"
                 >
                   <ChevronLeft className="w-4 h-4" />
@@ -769,12 +769,12 @@ export default function HafiziQuranReader({
                     max={MAX_HAFIZI_PAGE}
                     value={pageInput}
                     onChange={(e) => setPageInput(e.target.value)}
-                    className="w-16 sm:w-20 px-2 py-1.5 text-center text-xs font-bold rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0047B1]/30 focus:border-[#0047B1]"
+                    className="w-16 sm:w-20 px-2 py-1.5 text-center text-xs font-bold rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#20A9DF]/30 focus:border-[#20A9DF]"
                   />
                   <span className="text-xs text-gray-400">/ {MAX_HAFIZI_PAGE}</span>
                   <button
                     type="submit"
-                    className="px-2.5 py-1.5 rounded-xl bg-[#0047B1] text-white text-xs font-semibold hover:bg-[#005245] transition-all cursor-pointer"
+                    className="px-2.5 py-1.5 rounded-xl bg-[#20A9DF] text-white text-xs font-semibold hover:bg-[#005245] transition-all cursor-pointer"
                   >
                     যান
                   </button>
@@ -783,7 +783,7 @@ export default function HafiziQuranReader({
                 <button
                   onClick={handleNextPage}
                   disabled={currentPage >= MAX_HAFIZI_PAGE}
-                  className="px-3 py-2 rounded-xl bg-[#FAFAF7] border border-gray-200 text-xs font-semibold text-gray-700 hover:bg-[#0047B1] hover:text-white disabled:opacity-40 disabled:hover:bg-[#FAFAF7] disabled:hover:text-gray-700 transition-all flex items-center gap-1 cursor-pointer"
+                  className="px-3 py-2 rounded-xl bg-[#DDF5FF] border border-gray-200 text-xs font-semibold text-gray-700 hover:bg-[#20A9DF] hover:text-white disabled:opacity-40 disabled:hover:bg-[#DDF5FF] disabled:hover:text-gray-700 transition-all flex items-center gap-1 cursor-pointer"
                   title="পরবর্তী পৃষ্ঠা"
                 >
                   <span className="hidden sm:inline">পরবর্তী</span>
@@ -796,10 +796,10 @@ export default function HafiziQuranReader({
                 {/* Mobile Fullscreen Prominent Button */}
                 <button
                   onClick={toggleFullscreen}
-                  className="px-3 py-2 rounded-xl bg-gradient-to-r from-[#0047B1] to-[#003687] text-white text-xs font-bold shadow-xs hover:shadow-md transition-all flex items-center gap-1.5 cursor-pointer active:scale-95"
+                  className="px-3 py-2 rounded-xl bg-gradient-to-r from-[#20A9DF] to-[#0796D2] text-white text-xs font-bold shadow-xs hover:shadow-md transition-all flex items-center gap-1.5 cursor-pointer active:scale-95"
                   title="ফোনে ফুলস্ক্রিনে পড়ার মোড খুলুন"
                 >
-                  <Smartphone className="w-4 h-4 text-[#F2C94C]" />
+                  <Smartphone className="w-4 h-4 text-[#70BF44]" />
                   <span>ফুলস্ক্রিন মোড</span>
                 </button>
 
@@ -840,7 +840,7 @@ export default function HafiziQuranReader({
                         : "border-gray-200 text-gray-600 hover:bg-gray-50"
                     }`}
                   >
-                    <Sparkles className="w-3.5 h-3.5 text-[#D4A017]" />
+                    <Sparkles className="w-3.5 h-3.5 text-[#70BF44]" />
                     <span className="hidden md:inline">তাজবীদ</span>
                   </button>
                 )}
@@ -868,7 +868,7 @@ export default function HafiziQuranReader({
                 max={MAX_HAFIZI_PAGE}
                 value={currentPage}
                 onChange={(e) => goToPage(Number(e.target.value))}
-                className="w-full h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer accent-[#0047B1]"
+                className="w-full h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer accent-[#20A9DF]"
               />
               <span className="text-[11px] font-mono text-gray-400 shrink-0">পৃষ্ঠা ৬১১</span>
             </div>
@@ -877,14 +877,14 @@ export default function HafiziQuranReader({
             {bookmarkPage && bookmarkPage !== currentPage && (
               <div className="flex items-center justify-between bg-amber-50/80 border border-amber-200/70 rounded-2xl p-2.5 sm:px-4 text-xs text-amber-900">
                 <div className="flex items-center gap-2">
-                  <Bookmark className="w-4 h-4 text-[#D4A017] fill-amber-400 shrink-0" />
+                  <Bookmark className="w-4 h-4 text-[#70BF44] fill-amber-400 shrink-0" />
                   <span>
                     আপনার সংরক্ষিত বুকমার্ক: <strong>পৃষ্ঠা {bookmarkPage}</strong> (পারা {getParaByPage(bookmarkPage).number} - সূরা {getSurahByPage(bookmarkPage).nameBangla})
                   </span>
                 </div>
                 <button
                   onClick={() => goToPage(bookmarkPage)}
-                  className="px-3 py-1 rounded-xl bg-[#D4A017] text-white font-semibold text-xs hover:bg-amber-600 transition-colors shrink-0 ml-2 cursor-pointer"
+                  className="px-3 py-1 rounded-xl bg-[#70BF44] text-white font-semibold text-xs hover:bg-amber-600 transition-colors shrink-0 ml-2 cursor-pointer"
                 >
                   যান
                 </button>
@@ -893,10 +893,10 @@ export default function HafiziQuranReader({
 
             {/* Tajweed Legend Drawer */}
             {showTajweedLegend && edition === "tajweed" && (
-              <div className="bg-[#FAFAF7] border border-amber-200/80 rounded-2xl p-3.5 text-xs text-gray-700 space-y-2">
-                <div className="flex items-center justify-between font-bold text-[#003687] text-xs">
+              <div className="bg-[#DDF5FF] border border-amber-200/80 rounded-2xl p-3.5 text-xs text-gray-700 space-y-2">
+                <div className="flex items-center justify-between font-bold text-[#0796D2] text-xs">
                   <span className="flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-[#D4A017]" />
+                    <Sparkles className="w-3.5 h-3.5 text-[#70BF44]" />
                     কালার কোডেড তাজবীদ সহায়িকা
                   </span>
                   <button
@@ -941,12 +941,12 @@ export default function HafiziQuranReader({
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
-            className="relative flex items-center justify-center min-h-[480px] md:min-h-[750px] overflow-hidden rounded-3xl transition-all bg-[#1B362E]/5 border border-[#0047B1]/15 shadow-md p-2 sm:p-6"
+            className="relative flex items-center justify-center min-h-[480px] md:min-h-[750px] overflow-hidden rounded-3xl transition-all bg-[#1B362E]/5 border border-[#20A9DF]/15 shadow-md p-2 sm:p-6"
           >
             {/* Non-intrusive corner loading badge if first time */}
             {!imageLoaded && !imageError && (
-              <div className="absolute top-4 right-4 z-20 flex items-center gap-2 px-3 py-1 rounded-full bg-white/90 shadow-sm border border-emerald-200 text-xs font-semibold text-[#003687]">
-                <div className="w-3 h-3 border-2 border-[#0047B1]/30 border-t-[#0047B1] rounded-full animate-spin" />
+              <div className="absolute top-4 right-4 z-20 flex items-center gap-2 px-3 py-1 rounded-full bg-white/90 shadow-sm border border-emerald-200 text-xs font-semibold text-[#0796D2]">
+                <div className="w-3 h-3 border-2 border-[#20A9DF]/30 border-t-[#20A9DF] rounded-full animate-spin" />
                 <span>পৃষ্ঠা {currentPage} ক্যাশ হচ্ছে...</span>
               </div>
             )}
@@ -961,7 +961,7 @@ export default function HafiziQuranReader({
                     setImageError(false);
                     setUseFallback(true);
                   }}
-                  className="px-4 py-2 rounded-xl bg-[#0047B1] text-white text-xs font-semibold cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-[#20A9DF] text-white text-xs font-semibold cursor-pointer"
                 >
                   পুনরায় চেষ্টা করুন (বিকল্প সার্ভার)
                 </button>
@@ -973,7 +973,7 @@ export default function HafiziQuranReader({
               style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: "top center" }}
               className="transition-transform duration-150 ease-out max-w-full flex justify-center"
             >
-              <div className="relative shadow-2xl rounded-2xl overflow-hidden border-2 sm:border-4 border-[#D4A017]/30 bg-white">
+              <div className="relative shadow-2xl rounded-2xl overflow-hidden border-2 sm:border-4 border-[#70BF44]/30 bg-white">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   key={`std-${edition}-${currentPage}`}
@@ -997,7 +997,7 @@ export default function HafiziQuranReader({
             <button
               onClick={handlePrevPage}
               disabled={currentPage <= MIN_HAFIZI_PAGE}
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/40 hover:bg-[#0047B1] text-white flex items-center justify-center transition-all disabled:opacity-0 cursor-pointer shadow-lg backdrop-blur-xs"
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/40 hover:bg-[#20A9DF] text-white flex items-center justify-center transition-all disabled:opacity-0 cursor-pointer shadow-lg backdrop-blur-xs"
               title="পূর্ববর্তী পৃষ্ঠা (কীবোর্ড Left Arrow)"
             >
               <ChevronLeft className="w-6 h-6" />
@@ -1006,7 +1006,7 @@ export default function HafiziQuranReader({
             <button
               onClick={handleNextPage}
               disabled={currentPage >= MAX_HAFIZI_PAGE}
-              className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/40 hover:bg-[#0047B1] text-white flex items-center justify-center transition-all disabled:opacity-0 cursor-pointer shadow-lg backdrop-blur-xs"
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/40 hover:bg-[#20A9DF] text-white flex items-center justify-center transition-all disabled:opacity-0 cursor-pointer shadow-lg backdrop-blur-xs"
               title="পরবর্তী পৃষ্ঠা (কীবোর্ড Right Arrow)"
             >
               <ChevronRight className="w-6 h-6" />
@@ -1016,7 +1016,7 @@ export default function HafiziQuranReader({
           {/* Bottom Information & Tip Bar */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500 bg-white p-3.5 sm:px-5 rounded-2xl border border-gray-100 shadow-2xs">
             <div className="flex items-center gap-2">
-              <Info className="w-4 h-4 text-[#0047B1] shrink-0" />
+              <Info className="w-4 h-4 text-[#20A9DF] shrink-0" />
               <span>
                 টিপস: নিরবচ্ছিন্ন অফলাইন পড়ার জন্য উপরে <strong>&quot;পারা অফলাইনে সেভ করুন&quot;</strong> বাটনে চাপ দিন।
               </span>
@@ -1025,7 +1025,7 @@ export default function HafiziQuranReader({
             {onSwitchToDigital && (
               <button
                 onClick={onSwitchToDigital}
-                className="text-[#0047B1] font-semibold hover:underline flex items-center gap-1 shrink-0 cursor-pointer"
+                className="text-[#20A9DF] font-semibold hover:underline flex items-center gap-1 shrink-0 cursor-pointer"
               >
                 <span>ডিজিটাল কুরআন (বাংলা অর্থ ও অডিও) দেখুন</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -1039,9 +1039,9 @@ export default function HafiziQuranReader({
       {showParaModal && (
         <div className="fixed inset-0 z-[110] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden border border-gray-100 text-gray-900">
-            <div className="p-4 sm:p-5 border-b border-gray-100 flex items-center justify-between bg-[#0047B1] text-white">
+            <div className="p-4 sm:p-5 border-b border-gray-100 flex items-center justify-between bg-[#20A9DF] text-white">
               <div className="flex items-center gap-2">
-                <Layers className="w-5 h-5 text-[#F2C94C]" />
+                <Layers className="w-5 h-5 text-[#70BF44]" />
                 <h3 className="font-bold text-base sm:text-lg">পবিত্র কুরআনের ৩০ পারা সূচি</h3>
               </div>
               <button
@@ -1064,14 +1064,14 @@ export default function HafiziQuranReader({
                     }}
                     className={`p-3 rounded-2xl border text-left transition-all flex items-center justify-between cursor-pointer ${
                       isSelected
-                        ? "bg-[#0047B1] text-white border-[#0047B1] shadow-xs"
-                        : "border-gray-200 hover:border-[#0047B1] hover:bg-[#0047B1]/5 text-gray-800"
+                        ? "bg-[#20A9DF] text-white border-[#20A9DF] shadow-xs"
+                        : "border-gray-200 hover:border-[#20A9DF] hover:bg-[#20A9DF]/5 text-gray-800"
                     }`}
                   >
                     <div className="flex items-center gap-3">
                       <div
                         className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 ${
-                          isSelected ? "bg-white text-[#0047B1]" : "bg-[#0047B1]/10 text-[#0047B1]"
+                          isSelected ? "bg-white text-[#20A9DF]" : "bg-[#20A9DF]/10 text-[#20A9DF]"
                         }`}
                       >
                         {para.number}
@@ -1086,7 +1086,7 @@ export default function HafiziQuranReader({
 
                     <span
                       className={`font-arabic text-sm font-semibold ${
-                        isSelected ? "text-[#F2C94C]" : "text-emerald-900"
+                        isSelected ? "text-[#70BF44]" : "text-emerald-900"
                       }`}
                     >
                       {para.nameArabic}
@@ -1103,9 +1103,9 @@ export default function HafiziQuranReader({
       {showSurahModal && (
         <div className="fixed inset-0 z-[110] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden border border-gray-100 text-gray-900">
-            <div className="p-4 sm:p-5 border-b border-gray-100 flex items-center justify-between bg-[#0047B1] text-white">
+            <div className="p-4 sm:p-5 border-b border-gray-100 flex items-center justify-between bg-[#20A9DF] text-white">
               <div className="flex items-center gap-2">
-                <List className="w-5 h-5 text-[#F2C94C]" />
+                <List className="w-5 h-5 text-[#70BF44]" />
                 <h3 className="font-bold text-base sm:text-lg">পবিত্র কুরআনের ১১৪ সূরা সূচি</h3>
               </div>
               <button
@@ -1128,14 +1128,14 @@ export default function HafiziQuranReader({
                     }}
                     className={`p-2.5 sm:p-3 rounded-2xl border text-left transition-all flex items-center justify-between cursor-pointer ${
                       isSelected
-                        ? "bg-[#0047B1] text-white border-[#0047B1] shadow-xs"
-                        : "border-gray-200 hover:border-[#0047B1] hover:bg-[#0047B1]/5 text-gray-800"
+                        ? "bg-[#20A9DF] text-white border-[#20A9DF] shadow-xs"
+                        : "border-gray-200 hover:border-[#20A9DF] hover:bg-[#20A9DF]/5 text-gray-800"
                     }`}
                   >
                     <div className="flex items-center gap-2.5">
                       <div
                         className={`w-7 h-7 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 ${
-                          isSelected ? "bg-white text-[#0047B1]" : "bg-[#0047B1]/10 text-[#0047B1]"
+                          isSelected ? "bg-white text-[#20A9DF]" : "bg-[#20A9DF]/10 text-[#20A9DF]"
                         }`}
                       >
                         {surah.number}
@@ -1150,7 +1150,7 @@ export default function HafiziQuranReader({
 
                     <span
                       className={`font-arabic text-sm font-semibold ${
-                        isSelected ? "text-[#F2C94C]" : "text-emerald-900"
+                        isSelected ? "text-[#70BF44]" : "text-emerald-900"
                       }`}
                     >
                       {surah.nameArabic}

@@ -30,7 +30,7 @@ const amiri = Amiri({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#0047B1",
+  themeColor: "#20A9DF",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -201,7 +201,7 @@ export default function RootLayout({
     <html
       lang="bn"
       translate="no"
-      className={`${hindSiliguri.variable} ${amiri.variable} bg-[#FAFAF7] notranslate`}
+      className={`${hindSiliguri.variable} ${amiri.variable} bg-[#DDF5FF] notranslate`}
     >
       <head>
         <meta name="google" content="notranslate" />
@@ -251,9 +251,9 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className="notranslate min-h-screen flex flex-col bg-[#FAFAF7] text-[#1f2937] antialiased pb-20 md:pb-0 selection:bg-[#0047B1] selection:text-white">
+      <body className="notranslate min-h-screen flex flex-col bg-[#DDF5FF] text-[#1f2937] antialiased pb-20 md:pb-0 selection:bg-[#20A9DF] selection:text-white">
         <Header />
-        <main className="flex-1 bg-[#FAFAF7]">{children}</main>
+        <main className="flex-1 bg-[#DDF5FF]">{children}</main>
         <Footer />
         <BottomNav />
         <FloatingWhatsApp />

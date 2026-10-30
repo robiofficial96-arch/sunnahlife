@@ -78,24 +78,24 @@ export default async function ArticleDetailPage({ params }: Props) {
 
       {/* Breadcrumb & Back */}
       <div className="flex items-center justify-between text-xs text-gray-500">
-        <Link href="/articles" className="inline-flex items-center gap-1.5 text-[#0047B1] hover:underline font-medium">
+        <Link href="/articles" className="inline-flex items-center gap-1.5 text-[#20A9DF] hover:underline font-medium">
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>সকল আর্টিকেলে ফিরে যান</span>
         </Link>
-        <span className="text-xs bg-[#0047B1]/10 text-[#0047B1] px-3 py-1 rounded-full font-semibold">
+        <span className="text-xs bg-[#20A9DF]/10 text-[#20A9DF] px-3 py-1 rounded-full font-semibold">
           {article.categoryLabel}
         </span>
       </div>
 
       {/* Article Title Header */}
       <div className="space-y-4 border-b border-gray-100 pb-6">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#003687] leading-snug">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0796D2] leading-snug">
           {article.title}
         </h1>
 
         <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500">
           <span className="flex items-center gap-1.5 text-gray-700">
-            <UserCheck className="w-4 h-4 text-[#D4A017]" />
+            <UserCheck className="w-4 h-4 text-[#70BF44]" />
             লেখক: {article.author}
           </span>
           <span className="flex items-center gap-1.5">
@@ -109,8 +109,8 @@ export default async function ArticleDetailPage({ params }: Props) {
         </div>
 
         {/* Scholarly review badge */}
-        <div className="p-3 rounded-xl bg-[#FAFAF7] border border-[#0047B1]/15 text-xs text-[#0047B1] flex items-center gap-2">
-          <ShieldCheck className="w-4 h-4 text-[#D4A017] shrink-0" />
+        <div className="p-3 rounded-xl bg-[#DDF5FF] border border-[#20A9DF]/15 text-xs text-[#20A9DF] flex items-center gap-2">
+          <ShieldCheck className="w-4 h-4 text-[#70BF44] shrink-0" />
           <span><strong>শারঈ পর্যালোচনা:</strong> {article.reviewedBy}</span>
         </div>
       </div>
@@ -125,8 +125,8 @@ export default async function ArticleDetailPage({ params }: Props) {
       </div>
 
       {/* Article Footer & Consultation Call */}
-      <div className="mt-10 pt-6 border-t border-gray-100 p-6 rounded-3xl bg-[#FAFAF7] border border-[#0047B1]/15 space-y-4">
-        <h3 className="text-base font-bold text-[#003687]">
+      <div className="mt-10 pt-6 border-t border-gray-100 p-6 rounded-3xl bg-[#DDF5FF] border border-[#20A9DF]/15 space-y-4">
+        <h3 className="text-base font-bold text-[#0796D2]">
           আপনার কি রুকইয়াহ বা আত্মরক্ষা সংক্রান্ত কোনো প্রশ্ন আছে?
         </h3>
         <p className="text-xs text-gray-600">
@@ -135,13 +135,13 @@ export default async function ArticleDetailPage({ params }: Props) {
         <div className="flex flex-wrap gap-3">
           <Link
             href="/assessment"
-            className="px-5 py-2.5 rounded-xl bg-[#0047B1] text-white text-xs font-semibold hover:bg-[#003687]"
+            className="px-5 py-2.5 rounded-xl bg-[#20A9DF] text-white text-xs font-semibold hover:bg-[#0796D2]"
           >
             লক্ষণ পরীক্ষা করুন
           </Link>
           <Link
             href="/appointment"
-            className="px-5 py-2.5 rounded-xl border border-[#0047B1] text-[#0047B1] text-xs font-semibold hover:bg-[#0047B1]/5"
+            className="px-5 py-2.5 rounded-xl border border-[#20A9DF] text-[#20A9DF] text-xs font-semibold hover:bg-[#20A9DF]/5"
           >
             অ্যাপয়েন্টমেন্ট বুকিং
           </Link>

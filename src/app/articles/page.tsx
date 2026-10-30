@@ -13,11 +13,11 @@ export default function ArticlesPage() {
     <div className="py-8 md:py-12 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
       {/* Header */}
       <div className="text-center space-y-3 max-w-2xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0047B1]/10 text-[#0047B1] text-xs font-semibold">
-          <BookOpen className="w-3.5 h-3.5 text-[#D4A017]" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#20A9DF]/10 text-[#20A9DF] text-xs font-semibold">
+          <BookOpen className="w-3.5 h-3.5 text-[#70BF44]" />
           <span>ইসলামিক জ্ঞান ও সচেতনতা</span>
         </div>
-        <h1 className="text-3xl md:text-4xl font-extrabold text-[#003687] tracking-tight">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-[#0796D2] tracking-tight">
           রুকইয়াহ ও সুন্নাহ জ্ঞান ভান্ডার
         </h1>
         <p className="text-sm md:text-base text-gray-600 leading-relaxed">
@@ -30,11 +30,11 @@ export default function ArticlesPage() {
         {ARTICLES_LIST.map((art) => (
           <article
             key={art.slug}
-            className="p-6 md:p-8 rounded-3xl bg-white border border-[#0047B1]/15 hover:border-[#0047B1] shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
+            className="p-6 md:p-8 rounded-3xl bg-white border border-[#20A9DF]/15 hover:border-[#20A9DF] shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-3">
-                <span className="text-xs font-bold text-[#0047B1] bg-[#0047B1]/10 px-3 py-1 rounded-full">
+                <span className="text-xs font-bold text-[#20A9DF] bg-[#20A9DF]/10 px-3 py-1 rounded-full">
                   {art.categoryLabel}
                 </span>
                 <span className="text-xs text-gray-400 flex items-center gap-1">
@@ -43,7 +43,7 @@ export default function ArticlesPage() {
                 </span>
               </div>
 
-              <h2 className="text-lg md:text-xl font-bold text-gray-900 group-hover:text-[#0047B1] transition-colors mb-2.5 leading-snug">
+              <h2 className="text-lg md:text-xl font-bold text-gray-900 group-hover:text-[#20A9DF] transition-colors mb-2.5 leading-snug">
                 <Link href={`/articles/${art.slug}`}>{art.title}</Link>
               </h2>
 
@@ -54,13 +54,13 @@ export default function ArticlesPage() {
 
             <div className="pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
               <span className="flex items-center gap-1.5 text-gray-600">
-                <UserCheck className="w-3.5 h-3.5 text-[#D4A017]" />
+                <UserCheck className="w-3.5 h-3.5 text-[#70BF44]" />
                 {art.author}
               </span>
 
               <Link
                 href={`/articles/${art.slug}`}
-                className="font-semibold text-[#0047B1] flex items-center gap-1 group-hover:translate-x-1 transition-transform"
+                className="font-semibold text-[#20A9DF] flex items-center gap-1 group-hover:translate-x-1 transition-transform"
               >
                 <span>পড়ুন</span>
                 <ArrowRight className="w-3.5 h-3.5" />
