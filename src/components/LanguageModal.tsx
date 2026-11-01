@@ -178,7 +178,7 @@ export default function LanguageModal({ isOpen, onClose }: Props) {
                 className={`w-full p-3.5 rounded-2xl border transition-all text-left flex items-start justify-between group cursor-pointer ${
                   isSelected
                     ? "bg-[#20A9DF]/5 border-[#20A9DF] shadow-2xs ring-1 ring-[#20A9DF]/20"
-                    : "bg-white border-gray-200 hover:border-[#20A9DF]/30 hover:bg-[#DDF5FF]"
+                    : "bg-white border-gray-200 hover:border-[#20A9DF]/30 hover:bg-[#F4FAFD]"
                 }`}
               >
                 <div className="flex items-start gap-3">

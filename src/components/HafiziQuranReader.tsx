@@ -709,7 +709,7 @@ export default function HafiziQuranReader({
             </div>
 
             {/* Row 2: Edition Selector Bar */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-2xl bg-gradient-to-r from-emerald-50/60 via-[#DDF5FF] to-amber-50/40 border border-emerald-100">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-2xl bg-gradient-to-r from-emerald-50/60 via-[#F4FAFD] to-amber-50/40 border border-emerald-100">
               <div className="space-y-0.5">
                 <span className="text-[11px] font-bold text-[#20A9DF] uppercase tracking-wider block">
                   ছাপার সংস্করণ (মুসহাফ ধরন)
@@ -753,7 +753,7 @@ export default function HafiziQuranReader({
                 <button
                   onClick={handlePrevPage}
                   disabled={currentPage <= MIN_HAFIZI_PAGE}
-                  className="px-3 py-2 rounded-xl bg-[#DDF5FF] border border-gray-200 text-xs font-semibold text-gray-700 hover:bg-[#20A9DF] hover:text-white disabled:opacity-40 disabled:hover:bg-[#DDF5FF] disabled:hover:text-gray-700 transition-all flex items-center gap-1 cursor-pointer"
+                  className="px-3 py-2 rounded-xl bg-[#F4FAFD] border border-gray-200 text-xs font-semibold text-gray-700 hover:bg-[#20A9DF] hover:text-white disabled:opacity-40 disabled:hover:bg-[#F4FAFD] disabled:hover:text-gray-700 transition-all flex items-center gap-1 cursor-pointer"
                   title="পূর্ববর্তী পৃষ্ঠা"
                 >
                   <ChevronLeft className="w-4 h-4" />
@@ -783,7 +783,7 @@ export default function HafiziQuranReader({
                 <button
                   onClick={handleNextPage}
                   disabled={currentPage >= MAX_HAFIZI_PAGE}
-                  className="px-3 py-2 rounded-xl bg-[#DDF5FF] border border-gray-200 text-xs font-semibold text-gray-700 hover:bg-[#20A9DF] hover:text-white disabled:opacity-40 disabled:hover:bg-[#DDF5FF] disabled:hover:text-gray-700 transition-all flex items-center gap-1 cursor-pointer"
+                  className="px-3 py-2 rounded-xl bg-[#F4FAFD] border border-gray-200 text-xs font-semibold text-gray-700 hover:bg-[#20A9DF] hover:text-white disabled:opacity-40 disabled:hover:bg-[#F4FAFD] disabled:hover:text-gray-700 transition-all flex items-center gap-1 cursor-pointer"
                   title="পরবর্তী পৃষ্ঠা"
                 >
                   <span className="hidden sm:inline">পরবর্তী</span>
@@ -893,7 +893,7 @@ export default function HafiziQuranReader({
 
             {/* Tajweed Legend Drawer */}
             {showTajweedLegend && edition === "tajweed" && (
-              <div className="bg-[#DDF5FF] border border-amber-200/80 rounded-2xl p-3.5 text-xs text-gray-700 space-y-2">
+              <div className="bg-[#F4FAFD] border border-amber-200/80 rounded-2xl p-3.5 text-xs text-gray-700 space-y-2">
                 <div className="flex items-center justify-between font-bold text-[#0796D2] text-xs">
                   <span className="flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 text-[#70BF44]" />

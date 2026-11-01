@@ -70,7 +70,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-[#DDF5FF]/95 backdrop-blur-md border-b border-[#20A9DF]/10 shadow-xs transition-all">
+    <header className="sticky top-0 z-40 bg-[#F4FAFD]/95 backdrop-blur-md border-b border-[#20A9DF]/10 shadow-xs transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo + Mobile Quick Tools (Search & Translate directly beside Logo) */}
@@ -111,7 +111,7 @@ export default function Header() {
                     className={`relative px-2.5 py-1.5 rounded-lg text-xs md:text-sm font-medium transition-all flex items-center gap-1.5 ${
                       isActive
                         ? "text-[#20A9DF] bg-[#20A9DF]/10 font-semibold"
-                        : "text-gray-700 hover:text-[#20A9DF] hover:bg-[#DDF5FF]"
+                        : "text-gray-700 hover:text-[#20A9DF] hover:bg-[#F4FAFD]"
                     }`}
                   >
                     {link.label}
@@ -159,7 +159,7 @@ export default function Header() {
               {/* Burger Menu Toggle */}
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-2 text-gray-700 hover:text-[#20A9DF] hover:bg-[#DDF5FF] rounded-xl transition-colors cursor-pointer"
+                className="p-2 text-gray-700 hover:text-[#20A9DF] hover:bg-[#F4FAFD] rounded-xl transition-colors cursor-pointer"
                 aria-label="Toggle Menu"
               >
                 {isOpen ? <X className="w-6 h-6 text-[#20A9DF]" /> : <Menu className="w-6 h-6" />}
@@ -170,7 +170,7 @@ export default function Header() {
 
         {/* Mobile Drawer */}
         {isOpen && (
-          <div className="xl:hidden bg-[#DDF5FF] border-b border-gray-200 px-4 pt-3 pb-6 space-y-1 shadow-lg max-h-[80vh] overflow-y-auto animate-in slide-in-from-top duration-200">
+          <div className="xl:hidden bg-[#F4FAFD] border-b border-gray-200 px-4 pt-3 pb-6 space-y-1 shadow-lg max-h-[80vh] overflow-y-auto animate-in slide-in-from-top duration-200">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (

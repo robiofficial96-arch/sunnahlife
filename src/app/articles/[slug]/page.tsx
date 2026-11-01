@@ -109,7 +109,7 @@ export default async function ArticleDetailPage({ params }: Props) {
         </div>
 
         {/* Scholarly review badge */}
-        <div className="p-3 rounded-xl bg-[#DDF5FF] border border-[#20A9DF]/15 text-xs text-[#20A9DF] flex items-center gap-2">
+        <div className="p-3 rounded-xl bg-[#F4FAFD] border border-[#20A9DF]/15 text-xs text-[#20A9DF] flex items-center gap-2">
           <ShieldCheck className="w-4 h-4 text-[#70BF44] shrink-0" />
           <span><strong>শারঈ পর্যালোচনা:</strong> {article.reviewedBy}</span>
         </div>
@@ -125,7 +125,7 @@ export default async function ArticleDetailPage({ params }: Props) {
       </div>
 
       {/* Article Footer & Consultation Call */}
-      <div className="mt-10 pt-6 border-t border-gray-100 p-6 rounded-3xl bg-[#DDF5FF] border border-[#20A9DF]/15 space-y-4">
+      <div className="mt-10 pt-6 border-t border-gray-100 p-6 rounded-3xl bg-[#F4FAFD] border border-[#20A9DF]/15 space-y-4">
         <h3 className="text-base font-bold text-[#0796D2]">
           আপনার কি রুকইয়াহ বা আত্মরক্ষা সংক্রান্ত কোনো প্রশ্ন আছে?
         </h3>

@@ -272,7 +272,7 @@ export default function AppointmentPage() {
           </div>
 
           {/* Booking Summary Box */}
-          <div className="max-w-md mx-auto p-5 rounded-2xl bg-[#DDF5FF] border border-gray-200/80 text-left space-y-3 text-xs md:text-sm">
+          <div className="max-w-md mx-auto p-5 rounded-2xl bg-[#F4FAFD] border border-gray-200/80 text-left space-y-3 text-xs md:text-sm">
             <div className="flex justify-between border-b border-gray-200/60 pb-2">
               <span className="text-gray-500">রোগীর নাম:</span>
               <span className="font-bold text-gray-900">{submittedData.name}</span>
@@ -342,7 +342,7 @@ export default function AppointmentPage() {
             </div>
 
             {/* Service Category Switcher Tabs */}
-            <div className="flex flex-wrap items-center gap-1.5 p-1.5 rounded-2xl bg-[#DDF5FF] border border-gray-200">
+            <div className="flex flex-wrap items-center gap-1.5 p-1.5 rounded-2xl bg-[#F4FAFD] border border-gray-200">
               <button
                 type="button"
                 onClick={() => setServiceCategory("all")}
@@ -394,7 +394,7 @@ export default function AppointmentPage() {
                         ? srv.category === "hijama"
                           ? "bg-rose-50/40 border-rose-600 shadow-xs ring-1 ring-rose-600"
                           : "bg-[#20A9DF]/5 border-[#20A9DF] shadow-xs ring-1 ring-[#20A9DF]"
-                        : "bg-[#DDF5FF] border-gray-200 hover:border-[#20A9DF]/40"
+                        : "bg-[#F4FAFD] border-gray-200 hover:border-[#20A9DF]/40"
                     }`}
                   >
                     <div>

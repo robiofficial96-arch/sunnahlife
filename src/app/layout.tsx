@@ -201,7 +201,7 @@ export default function RootLayout({
     <html
       lang="bn"
       translate="no"
-      className={`${hindSiliguri.variable} ${amiri.variable} bg-[#DDF5FF] notranslate`}
+      className={`${hindSiliguri.variable} ${amiri.variable} bg-[#F4FAFD] notranslate`}
     >
       <head>
         <meta name="google" content="notranslate" />
@@ -251,9 +251,9 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className="notranslate min-h-screen flex flex-col bg-[#DDF5FF] text-[#1f2937] antialiased pb-20 md:pb-0 selection:bg-[#20A9DF] selection:text-white">
+      <body className="notranslate min-h-screen flex flex-col bg-[#F4FAFD] text-[#1f2937] antialiased pb-20 md:pb-0 selection:bg-[#20A9DF] selection:text-white">
         <Header />
-        <main className="flex-1 bg-[#DDF5FF]">{children}</main>
+        <main className="flex-1 bg-[#F4FAFD]">{children}</main>
         <Footer />
         <BottomNav />
         <FloatingWhatsApp />

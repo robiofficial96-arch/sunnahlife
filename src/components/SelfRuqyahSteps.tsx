@@ -120,7 +120,7 @@ export default function SelfRuqyahSteps() {
                   </p>
 
                   {step.ayatOrDua && (
-                    <div className="p-3 rounded-xl bg-[#DDF5FF] border border-[#20A9DF]/15 text-xs sm:text-sm text-[#20A9DF] font-semibold flex items-center gap-2">
+                    <div className="p-3 rounded-xl bg-[#F4FAFD] border border-[#20A9DF]/15 text-xs sm:text-sm text-[#20A9DF] font-semibold flex items-center gap-2">
                       <Sparkles className="w-4 h-4 text-[#70BF44] shrink-0" />
                       <span>পাঠের নিয়ম: {step.ayatOrDua}</span>
                     </div>

@@ -120,7 +120,7 @@ export default function FAQPage() {
                 </button>
 
                 {isOpen && (
-                  <div className="px-5 pb-5 pt-1 text-xs md:text-sm text-gray-600 leading-relaxed border-t border-gray-50 bg-[#DDF5FF]/50">
+                  <div className="px-5 pb-5 pt-1 text-xs md:text-sm text-gray-600 leading-relaxed border-t border-gray-50 bg-[#F4FAFD]/50">
                     {faq.answer}
                   </div>
                 )}
@@ -135,7 +135,7 @@ export default function FAQPage() {
       </div>
 
       {/* Ask Question / WhatsApp CTA */}
-      <div className="p-6 md:p-8 rounded-3xl bg-radial from-white to-[#DDF5FF] border border-[#20A9DF]/20 text-center space-y-3">
+      <div className="p-6 md:p-8 rounded-3xl bg-radial from-white to-[#F4FAFD] border border-[#20A9DF]/20 text-center space-y-3">
         <h3 className="text-base md:text-lg font-bold text-[#0796D2]">
           আপনার কাঙ্ক্ষিত প্রশ্নের উত্তর খুঁজে পাননি?
         </h3>

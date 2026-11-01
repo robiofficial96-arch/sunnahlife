@@ -271,7 +271,7 @@ export default function ShopPage() {
             </div>
 
             {/* Modal Scroll Content */}
-            <div className="p-5 sm:p-6 overflow-y-auto space-y-5 bg-[#DDF5FF]">
+            <div className="p-5 sm:p-6 overflow-y-auto space-y-5 bg-[#F4FAFD]">
               {/* Product Overview Header */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-gray-200">
                 <div>

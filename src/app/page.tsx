@@ -27,7 +27,7 @@ export default function Home() {
     <div className="space-y-8 md:space-y-12">
 
       {/* 1. HERO */}
-      <section className="relative overflow-hidden pt-6 pb-1 md:pt-8 md:pb-1 bg-[#DDF5FF]">
+      <section className="relative overflow-hidden pt-6 pb-1 md:pt-8 md:pb-1 bg-[#F4FAFD]">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-80 bg-gradient-to-b from-[#20A9DF]/5 to-transparent rounded-full blur-3xl pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center max-w-3xl mx-auto space-y-6">

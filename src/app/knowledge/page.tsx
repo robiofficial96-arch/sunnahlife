@@ -83,7 +83,7 @@ export default function KnowledgePage() {
         <p className="text-sm md:text-base text-gray-700 leading-relaxed">
           'রুকইয়াহ' (الرقية) একটি আরবি শব্দ, যার অর্থ ঝাড়ফুঁক বা আশ্রয় প্রার্থনা করা। ইসলামিক পরিভাষায়—কুরআনুল কারীমের আয়াত, আল্লাহর আসমাউল হুসনা (সুন্দর নামসমূহ) ও গুণাবলী এবং রাসুলুল্লাহ (ﷺ) বর্ণিত সহীহ দোয়াসমূহ পাঠ করে অসুস্থ ব্যক্তির জন্য আরোগ্য ও অনিষ্ট থেকে সুরক্ষা প্রার্থনা করাই হলো <strong>রুকইয়াহ শারইয়্যাহ</strong>।
         </p>
-        <div className="p-4 rounded-2xl bg-[#DDF5FF] border border-[#20A9DF]/15 text-xs md:text-sm text-emerald-950 leading-relaxed">
+        <div className="p-4 rounded-2xl bg-[#F4FAFD] border border-[#20A9DF]/15 text-xs md:text-sm text-emerald-950 leading-relaxed">
           হাদীস শরীফে এসেছে: হযরত আউফ ইবনে মালিক (রা.) বলেন, আমরা জাহেলী যুগে ঝাড়ফুঁক করতাম। আমরা রাসুলুল্লাহ (ﷺ)-কে জিজ্ঞেস করলাম, এ ব্যাপারে আপনার হুকুম কী? তিনি বললেন: <em>“তোমাদের ঝাড়ফুঁক আমার কাছে পেশ করো। যে ঝাড়ফুঁকে কোনো শিরক নেই, তাতে কোনো অসুবিধা নেই।”</em> (সহীহ মুসলিম: ২২০০)
         </div>
       </div>
@@ -150,13 +150,13 @@ export default function KnowledgePage() {
           রুকইয়াহ কোনো বিশেষ পেশা বা বংশগত অলৌকিক ক্ষমতা নয়। <strong>প্রত্যেক সচেতন মুসলিম নিজেই নিজের ওপর এবং পরিবারের ওপর রুকইয়াহ করতে পারেন।</strong>
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-          <div className="p-4 rounded-2xl bg-[#DDF5FF] border border-gray-200">
+          <div className="p-4 rounded-2xl bg-[#F4FAFD] border border-gray-200">
             <h3 className="font-bold text-sm text-gray-900 mb-1">১. সাধারণ সেলফ-রুকইয়াহ:</h3>
             <p className="text-xs text-gray-600 leading-relaxed">
               ঈমানদার যেকেউ সহীহ নিয়ত, অযু ও তাওবাহর মাধ্যমে সূরা ফাতিহা, আয়াতুল কুরসী ও ৩ কুল পড়ে নিজের গায়ে ফুঁ দিতে পারেন।
             </p>
           </div>
-          <div className="p-4 rounded-2xl bg-[#DDF5FF] border border-gray-200">
+          <div className="p-4 rounded-2xl bg-[#F4FAFD] border border-gray-200">
             <h3 className="font-bold text-sm text-gray-900 mb-1">২. শারঈ রাক্বী (চিকিৎসক):</h3>
             <p className="text-xs text-gray-600 leading-relaxed">
               জটিল পরিস্থিতিতে অভিজ্ঞ আলেম বা শারঈ রাক্বী সাহায্য করতে পারেন যিনি দ্বীনদার, মুত্তাকী এবং কুরআনের সহীহ জ্ঞানসম্পন্ন।

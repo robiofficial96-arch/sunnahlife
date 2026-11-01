@@ -1815,7 +1815,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#DDF5FF] flex flex-col items-center justify-center p-4">
+      <div className="min-h-screen bg-[#F4FAFD] flex flex-col items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-3xl border border-[#20A9DF]/20 p-6 md:p-8 shadow-sm space-y-6 text-center">
           <div className="flex flex-col items-center justify-center gap-2 mx-auto">
             <div className="relative h-12 w-12">
@@ -1897,7 +1897,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
   }
 
   return (
-    <div className="min-h-screen bg-[#DDF5FF] flex flex-col">
+    <div className="min-h-screen bg-[#F4FAFD] flex flex-col">
       {/* Dedicated Admin Sticky Header */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#20A9DF]/15 shadow-2xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1963,7 +1963,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
         </div>
 
         {/* Admin Navigation Tabs Sub-bar (Desktop & Tablet) */}
-        <div className="hidden md:block border-t border-gray-100 bg-[#DDF5FF]">
+        <div className="hidden md:block border-t border-gray-100 bg-[#F4FAFD]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-1.5 overflow-x-auto py-2.5 scrollbar-none">
               <button
@@ -2175,7 +2175,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
             <div className="space-y-3">
               {patientsList.slice(0, 4).map((p) => (
-                <div key={p.id} className="p-3 rounded-2xl bg-[#DDF5FF] border border-gray-100 flex items-center justify-between gap-3">
+                <div key={p.id} className="p-3 rounded-2xl bg-[#F4FAFD] border border-gray-100 flex items-center justify-between gap-3">
                   <div className="space-y-0.5">
                     <div className="flex items-center gap-2">
                       <h4 className="text-xs font-bold text-gray-900">{p.name}</h4>
@@ -2567,7 +2567,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                       </div>
 
                       {/* Service Info Box */}
-                      <div className="p-3 rounded-2xl bg-[#DDF5FF] border border-gray-200/70 space-y-1.5 text-xs">
+                      <div className="p-3 rounded-2xl bg-[#F4FAFD] border border-gray-200/70 space-y-1.5 text-xs">
                         <div className="flex items-center justify-between gap-2 flex-wrap">
                           <div className="flex items-center gap-2">
                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md shrink-0 ${
@@ -2955,7 +2955,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   value={patientSearch}
                   onChange={(e) => setPatientSearch(e.target.value)}
                   placeholder="নাম, ফোন, এলাকা বা সমস্যা দিয়ে খুঁজুন..."
-                  className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200 text-xs outline-none focus:border-[#20A9DF] bg-[#DDF5FF]"
+                  className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200 text-xs outline-none focus:border-[#20A9DF] bg-[#F4FAFD]"
                 />
               </div>
             </div>
@@ -3063,7 +3063,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                           togglePatientExpand(p.id);
                         }
                       }}
-                      className="p-3.5 sm:p-4 cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3 select-none hover:bg-[#DDF5FF]/80 transition-colors"
+                      className="p-3.5 sm:p-4 cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3 select-none hover:bg-[#F4FAFD]/80 transition-colors"
                     >
                       {/* Left: ID, Name, Type, Problem, Status */}
                       <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 min-w-0">
@@ -3260,7 +3260,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
                     {/* Inline Accordion Expandable Section */}
                     {isExpanded && (
-                      <div className="p-4 sm:p-5 bg-[#DDF5FF] border-t border-gray-100 space-y-4 animate-in fade-in slide-in-from-top-1 duration-200">
+                      <div className="p-4 sm:p-5 bg-[#F4FAFD] border-t border-gray-100 space-y-4 animate-in fade-in slide-in-from-top-1 duration-200">
                         {/* Status dropdown & Visit slot */}
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3 rounded-xl border border-gray-100">
                           <div className="flex items-center gap-2">
@@ -3587,7 +3587,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 {/* Drawer Scrollable Body Content */}
                 <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-5 text-xs text-gray-700">
                   {/* Badges & Status Selector */}
-                  <div className="p-4 rounded-2xl bg-[#DDF5FF] border border-gray-200/80 space-y-3">
+                  <div className="p-4 rounded-2xl bg-[#F4FAFD] border border-gray-200/80 space-y-3">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div className="flex flex-wrap items-center gap-2">
                         {/* Treatment Type Badge in Drawer */}
@@ -3771,7 +3771,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     const due = selectedPatientForDrawer.due !== undefined ? Number(selectedPatientForDrawer.due) : Math.max(fee - paid, 0);
 
                     return (
-                      <div className="p-4 rounded-2xl bg-[#DDF5FF] border border-gray-200 space-y-3 shadow-2xs">
+                      <div className="p-4 rounded-2xl bg-[#F4FAFD] border border-gray-200 space-y-3 shadow-2xs">
                         <div className="flex items-center justify-between">
                           <span className="text-[11px] font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1.5">
                             <Coins className="w-3.5 h-3.5 text-[#20A9DF]" />
@@ -4038,7 +4038,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 {/* Year & Month Dropdowns */}
                 <div className="flex flex-wrap items-center gap-2.5">
                   {/* Year selector */}
-                  <div className="flex items-center gap-1.5 bg-[#DDF5FF] border border-gray-200 px-3 py-1.5 rounded-xl text-xs font-semibold">
+                  <div className="flex items-center gap-1.5 bg-[#F4FAFD] border border-gray-200 px-3 py-1.5 rounded-xl text-xs font-semibold">
                     <Calendar className="w-3.5 h-3.5 text-[#20A9DF]" />
                     <span className="text-gray-500">বছর:</span>
                     <select
@@ -4056,7 +4056,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                   </div>
 
                   {/* Month selector */}
-                  <div className="flex items-center gap-1.5 bg-[#DDF5FF] border border-gray-200 px-3 py-1.5 rounded-xl text-xs font-semibold">
+                  <div className="flex items-center gap-1.5 bg-[#F4FAFD] border border-gray-200 px-3 py-1.5 rounded-xl text-xs font-semibold">
                     <Clock className="w-3.5 h-3.5 text-[#20A9DF]" />
                     <span className="text-gray-500">মাস:</span>
                     <select
@@ -4165,7 +4165,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                     value={accountingSearch}
                     onChange={(e) => setAccountingSearch(e.target.value)}
                     placeholder="হিসাবে নাম, মোবাইল দিয়ে খুঁজুন..."
-                    className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200 text-xs outline-none focus:border-[#20A9DF] bg-[#DDF5FF]"
+                    className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200 text-xs outline-none focus:border-[#20A9DF] bg-[#F4FAFD]"
                   />
                 </div>
               </div>
@@ -4184,7 +4184,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
 
             {/* KPI Summary 4 Cards for Selected Period */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 pt-2">
-              <div className="p-5 rounded-2xl bg-[#DDF5FF] border border-gray-200 shadow-2xs space-y-1.5">
+              <div className="p-5 rounded-2xl bg-[#F4FAFD] border border-gray-200 shadow-2xs space-y-1.5">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-gray-600">মোট আগত রোগী</span>
                   <div className="p-1.5 rounded-lg bg-emerald-100/70 text-[#20A9DF]">
@@ -4199,7 +4199,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
                 </div>
               </div>
 
-              <div className="p-5 rounded-2xl bg-[#DDF5FF] border border-gray-200 shadow-2xs space-y-1.5">
+              <div className="p-5 rounded-2xl bg-[#F4FAFD] border border-gray-200 shadow-2xs space-y-1.5">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-gray-600">ধার্যকৃত মোট ফি</span>
                   <div className="p-1.5 rounded-lg bg-teal-100/70 text-teal-800">
@@ -4239,7 +4239,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               </div>
 
               <div className={`p-5 rounded-2xl border shadow-2xs space-y-1.5 ${
-                periodTotalDue > 0 ? "bg-amber-50/80 border-amber-300" : "bg-[#DDF5FF] border-gray-200"
+                periodTotalDue > 0 ? "bg-amber-50/80 border-amber-300" : "bg-[#F4FAFD] border-gray-200"
               }`}>
                 <div className="flex items-center justify-between">
                   <span className={`text-xs font-semibold ${periodTotalDue > 0 ? "text-amber-900 font-bold" : "text-gray-600"}`}>
@@ -4477,7 +4477,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
             </div>
 
             {accountingFilteredPatients.length === 0 ? (
-              <div className="p-12 text-center rounded-2xl bg-[#DDF5FF] border border-dashed border-gray-200 space-y-2">
+              <div className="p-12 text-center rounded-2xl bg-[#F4FAFD] border border-dashed border-gray-200 space-y-2">
                 <AlertCircle className="w-8 h-8 text-gray-400 mx-auto" />
                 <p className="font-bold text-gray-600 text-sm">এই সময়ের কোনো রোগীর রেকর্ড পাওয়া যায়নি</p>
                 <p className="text-xs text-gray-400">
@@ -4765,7 +4765,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               </div>
 
               {/* Mini Preview Card */}
-              <div className="rounded-2xl border border-gray-200 overflow-hidden bg-[#DDF5FF] shadow-sm">
+              <div className="rounded-2xl border border-gray-200 overflow-hidden bg-[#F4FAFD] shadow-sm">
                 <div className="relative aspect-[682/1024] max-h-80 bg-[#057aa9] mx-auto">
                   <Image
                     src={popupConfig.image}
@@ -5787,7 +5787,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               </div>
 
               {/* Fee & Payment Accounting Form Section */}
-              <div className="p-4 rounded-2xl bg-[#DDF5FF] border border-gray-200/90 space-y-3">
+              <div className="p-4 rounded-2xl bg-[#F4FAFD] border border-gray-200/90 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5">
                     <Coins className="w-4 h-4 text-[#20A9DF]" />
@@ -6020,7 +6020,7 @@ ${p.prescription || p.notes || "সকাল-সন্ধ্যার মাস�
               const due = paymentModalPatient.due !== undefined ? Number(paymentModalPatient.due) : Math.max(fee - paid, 0);
 
               return (
-                <div className="p-3.5 rounded-2xl bg-[#DDF5FF] border border-gray-200 grid grid-cols-3 gap-2 text-center text-xs">
+                <div className="p-3.5 rounded-2xl bg-[#F4FAFD] border border-gray-200 grid grid-cols-3 gap-2 text-center text-xs">
                   <div className="bg-white p-2 rounded-xl border border-gray-200">
                     <span className="text-[10px] text-gray-500 block">মোট ধার্য ফি</span>
                     <span className="font-bold text-gray-900">৳{fee.toLocaleString("bn-BD")}</span>

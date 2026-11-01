@@ -115,7 +115,7 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
   return (
     <div className="w-full bg-white rounded-3xl border border-[#20A9DF]/15 shadow-sm p-4 sm:p-6 md:p-8">
       {/* Top Banner / Disclaimer */}
-      <div className="mb-6 bg-[#DDF5FF] border border-[#70BF44]/30 rounded-2xl p-4 flex items-start gap-3 text-xs md:text-sm text-gray-700">
+      <div className="mb-6 bg-[#F4FAFD] border border-[#70BF44]/30 rounded-2xl p-4 flex items-start gap-3 text-xs md:text-sm text-gray-700">
         <Info className="w-5 h-5 text-[#20A9DF] shrink-0 mt-0.5" />
         <div className="leading-relaxed">
           <strong className="text-[#20A9DF] font-semibold">কুরআন ও সুন্নাহ ভিত্তিক বহুস্তরীয় স্ব-নিরীক্ষণ:</strong>{" "}
@@ -125,7 +125,7 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
 
       {!result ? (
         isAnalyzing ? (
-          <div className="py-16 sm:py-24 text-center rounded-3xl bg-[#DDF5FF] border border-[#20A9DF]/15 space-y-4 animate-in fade-in zoom-in-95 duration-200">
+          <div className="py-16 sm:py-24 text-center rounded-3xl bg-[#F4FAFD] border border-[#20A9DF]/15 space-y-4 animate-in fade-in zoom-in-95 duration-200">
             <div className="w-16 h-16 mx-auto rounded-2xl bg-[#20A9DF]/10 text-[#20A9DF] flex items-center justify-center shadow-inner">
               <Loader2 className="w-8 h-8 animate-spin" />
             </div>
@@ -190,7 +190,7 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
           {/* SINGLE QUESTION CARD (One by One) */}
           <div 
             key={currentQ.id}
-            className="p-5 sm:p-7 md:p-8 rounded-3xl bg-[#DDF5FF] border border-[#20A9DF]/15 shadow-xs space-y-6 animate-in fade-in zoom-in-95 duration-200"
+            className="p-5 sm:p-7 md:p-8 rounded-3xl bg-[#F4FAFD] border border-[#20A9DF]/15 shadow-xs space-y-6 animate-in fade-in zoom-in-95 duration-200"
           >
             {/* Question Title & Subtitle */}
             <div className="space-y-2">
@@ -230,7 +230,7 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
                           : isModerate
                           ? "bg-amber-50/80 border-amber-400 shadow-xs text-amber-950 ring-2 ring-amber-300"
                           : "bg-emerald-50/80 border-emerald-500 shadow-xs text-emerald-950 ring-2 ring-emerald-300"
-                        : "bg-white border-gray-200 text-gray-700 hover:border-[#20A9DF]/40 hover:bg-[#DDF5FF]"
+                        : "bg-white border-gray-200 text-gray-700 hover:border-[#20A9DF]/40 hover:bg-[#F4FAFD]"
                     }`}
                   >
                     <div className="flex items-center gap-3.5">
@@ -480,7 +480,7 @@ export default function SymptomChecker({ isCompact = false }: SymptomCheckerProp
           </div>
 
           {/* Actionable Prescriptions & Amol */}
-          <div className="p-6 md:p-8 rounded-3xl bg-[#DDF5FF] border border-[#20A9DF]/15 space-y-4">
+          <div className="p-6 md:p-8 rounded-3xl bg-[#F4FAFD] border border-[#20A9DF]/15 space-y-4">
             <h3 className="text-base md:text-lg font-bold text-[#0796D2] flex items-center gap-2">
               <ShieldCheck className="w-5 h-5 text-[#20A9DF]" />
               আপনার জন্য সুনির্দিষ্ট প্রাথমিক প্রেসক্রিপশন ও আমল

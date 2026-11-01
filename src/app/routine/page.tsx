@@ -245,7 +245,7 @@ export default function RoutinePage() {
               className={`p-4 md:p-5 rounded-2xl border transition-all cursor-pointer flex items-start gap-4 select-none ${
                 isDone
                   ? "bg-[#20A9DF]/5 border-[#20A9DF] opacity-90 shadow-2xs"
-                  : "bg-white border-gray-200 hover:border-[#20A9DF]/40 hover:bg-[#DDF5FF]"
+                  : "bg-white border-gray-200 hover:border-[#20A9DF]/40 hover:bg-[#F4FAFD]"
               }`}
             >
               <div className="mt-0.5 shrink-0">

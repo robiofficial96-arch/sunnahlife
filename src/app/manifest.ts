@@ -8,7 +8,7 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/",
     id: "/?pwa=sunnahlife-v4",
     display: "standalone",
-    background_color: "#DDF5FF",
+    background_color: "#F4FAFD",
     theme_color: "#20A9DF",
     icons: [
       {

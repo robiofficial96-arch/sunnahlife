@@ -516,7 +516,7 @@ export default function SurahReaderView({ surah, prevSurah, nextSurah }: Props) 
                 </div>
 
                 {/* Arabic Text */}
-                <div className="bg-[#DDF5FF] p-5 sm:p-7 rounded-2xl border border-[#20A9DF]/10 mb-4">
+                <div className="bg-[#F4FAFD] p-5 sm:p-7 rounded-2xl border border-[#20A9DF]/10 mb-4">
                   <p className={`font-arabic text-emerald-950 text-right font-medium tracking-wide ${arabicSizeClass}`}>
                     {ayah.textArabic}
                   </p>

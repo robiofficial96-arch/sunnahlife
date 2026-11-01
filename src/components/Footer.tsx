@@ -39,7 +39,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-[#DDF5FF] border-t border-[#20A9DF]/15 pt-12 pb-16 md:pb-12 text-gray-600">
+    <footer className="bg-[#F4FAFD] border-t border-[#20A9DF]/15 pt-12 pb-16 md:pb-12 text-gray-600">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Core Trust / Principle Badges: Only visible on Home page */}
         {pathname === "/" && (

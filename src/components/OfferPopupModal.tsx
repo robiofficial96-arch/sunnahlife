@@ -125,7 +125,7 @@ export default function OfferPopupModal() {
         />
 
         {/* Modal Dialog */}
-        <div className="relative w-full max-w-3xl bg-[#DDF5FF] rounded-3xl overflow-y-auto md:overflow-hidden shadow-2xl border-2 border-[#70BF44]/30 ring-1 ring-black/10 flex flex-col md:flex-row max-h-[92vh] z-10 animate-in zoom-in-95 duration-200">
+        <div className="relative w-full max-w-3xl bg-[#F4FAFD] rounded-3xl overflow-y-auto md:overflow-hidden shadow-2xl border-2 border-[#70BF44]/30 ring-1 ring-black/10 flex flex-col md:flex-row max-h-[92vh] z-10 animate-in zoom-in-95 duration-200">
           {/* Floating Close Button */}
           <button
             onClick={handleDismiss}
@@ -215,7 +215,7 @@ export default function OfferPopupModal() {
             </div>
 
             {/* Action CTAs (Sticky on Mobile, Static on Desktop) */}
-            <div className="space-y-2 pt-2 sticky bottom-0 bg-[#DDF5FF]/95 backdrop-blur-md pb-2 md:static md:bg-transparent md:p-0 md:backdrop-blur-none border-t border-gray-200/80 md:border-0">
+            <div className="space-y-2 pt-2 sticky bottom-0 bg-[#F4FAFD]/95 backdrop-blur-md pb-2 md:static md:bg-transparent md:p-0 md:backdrop-blur-none border-t border-gray-200/80 md:border-0">
               <a
                 href={whatsappUrl}
                 target="_blank"

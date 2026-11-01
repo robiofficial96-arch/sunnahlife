@@ -188,7 +188,7 @@ export default function ResourcesPage() {
 
         <div className="space-y-3">
           {selectedGuide.contentLines.map((line, idx) => (
-            <div key={idx} className="flex items-start gap-3 p-3 rounded-xl bg-[#DDF5FF] border border-gray-100">
+            <div key={idx} className="flex items-start gap-3 p-3 rounded-xl bg-[#F4FAFD] border border-gray-100">
               <CheckCircle2 className="w-4 h-4 text-[#20A9DF] shrink-0 mt-0.5" />
               <span className="text-xs md:text-sm text-gray-800 leading-relaxed">{line}</span>
             </div>

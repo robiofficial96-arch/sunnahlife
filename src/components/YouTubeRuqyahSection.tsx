@@ -229,7 +229,7 @@ export default function YouTubeRuqyahSection() {
             </div>
 
             {/* Modal Footer / Description */}
-            <div className="p-5 overflow-y-auto space-y-3 bg-[#DDF5FF]">
+            <div className="p-5 overflow-y-auto space-y-3 bg-[#F4FAFD]">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span className="text-xs font-semibold text-[#20A9DF] px-2.5 py-1 rounded-md bg-emerald-100">
                   {activeModalVideo.categoryLabel} • {activeModalVideo.speaker}

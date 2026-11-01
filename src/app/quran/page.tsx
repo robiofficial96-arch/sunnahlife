@@ -390,13 +390,13 @@ function QuranPortalContent() {
 
             {/* Quick Stats Pill */}
             <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-xs font-medium text-gray-600 pt-2">
-              <span className="px-3 py-1 rounded-full bg-[#DDF5FF] border border-[#20A9DF]/15 text-[#20A9DF] font-semibold">
+              <span className="px-3 py-1 rounded-full bg-[#F4FAFD] border border-[#20A9DF]/15 text-[#20A9DF] font-semibold">
                 ১১৪টি সূরা
               </span>
-              <span className="px-3 py-1 rounded-full bg-[#DDF5FF] border border-[#20A9DF]/15">
+              <span className="px-3 py-1 rounded-full bg-[#F4FAFD] border border-[#20A9DF]/15">
                 ৬,২৩৬টি আয়াত
               </span>
-              <span className="px-3 py-1 rounded-full bg-[#DDF5FF] border border-[#20A9DF]/15">
+              <span className="px-3 py-1 rounded-full bg-[#F4FAFD] border border-[#20A9DF]/15">
                 ৮৬টি মাক্কী • ২৮টি মাদানী
               </span>
               <span className="px-3 py-1 rounded-full bg-[#70BF44]/15 border border-[#70BF44]/30 text-amber-900 font-semibold flex items-center gap-1">

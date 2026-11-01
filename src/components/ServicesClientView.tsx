@@ -184,7 +184,7 @@ export default function ServicesPage() {
       </div>
 
       {/* 2. DIAGNOSIS CARD */}
-      <div className="rounded-3xl bg-gradient-to-br from-white via-emerald-50/30 to-[#DDF5FF] border-2 border-[#20A9DF] p-6 sm:p-8 shadow-sm relative overflow-hidden">
+      <div className="rounded-3xl bg-gradient-to-br from-white via-emerald-50/30 to-[#F4FAFD] border-2 border-[#20A9DF] p-6 sm:p-8 shadow-sm relative overflow-hidden">
         <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#70BF44]/10 rounded-full blur-2xl pointer-events-none" />
 
         <div className="relative z-10 space-y-6">
@@ -305,7 +305,7 @@ export default function ServicesPage() {
                   </div>
 
                   {/* Fee & Duration Bar */}
-                  <div className="p-3 rounded-2xl bg-[#DDF5FF] border border-gray-200/70 flex items-center justify-between">
+                  <div className="p-3 rounded-2xl bg-[#F4FAFD] border border-gray-200/70 flex items-center justify-between">
                     <div>
                       <span className="text-[10px] text-gray-400 font-medium block">সেশন ফি</span>
                       <span className="text-base sm:text-lg font-black text-[#20A9DF] font-mono">

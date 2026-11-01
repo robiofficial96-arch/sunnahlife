@@ -142,7 +142,7 @@ export default function DuasPage() {
                 </h3>
 
                 {/* Arabic */}
-                <div className="bg-[#DDF5FF] p-3.5 sm:p-4 rounded-xl border border-[#20A9DF]/15">
+                <div className="bg-[#F4FAFD] p-3.5 sm:p-4 rounded-xl border border-[#20A9DF]/15">
                   <p className="font-arabic text-base sm:text-xl text-[#0796D2] leading-loose text-right font-medium">
                     {dua.arabic}
                   </p>

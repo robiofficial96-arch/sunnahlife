@@ -45,11 +45,11 @@
   --color-primary-dark: #0796D2;
   --color-gold: #70BF44;
   --color-gold-light: #8ED168;
-  --color-ivory: #DDF5FF;
+  --color-ivory: #F4FAFD;
   --color-sunnah-blue: #20A9DF;
   --color-life-green: #70BF44;
   --color-text-deep: #0796D2;
-  --color-bg-light: #DDF5FF;
+  --color-bg-light: #F4FAFD;
 
   --font-sans: 'SolaimanLipi', var(--font-hind-siliguri), 'Hind Siliguri', system-ui, -apple-system, sans-serif;
   --font-arabic: var(--font-amiri), "Amiri", serif;
@@ -60,11 +60,11 @@
   --primary-dark: #0796D2;
   --gold: #70BF44;
   --gold-light: #8ED168;
-  --ivory: #DDF5FF;
+  --ivory: #F4FAFD;
   --sunnah-blue: #20A9DF;
   --life-green: #70BF44;
   --text-deep: #0796D2;
-  --bg-light: #DDF5FF;
+  --bg-light: #F4FAFD;
 }
 
 /* Force SolaimanLipi as the primary font for all Bengali text across full website */
@@ -73,7 +73,7 @@ html, body, button, input, textarea, select {
 }
 
 html, body {
-  background-color: #DDF5FF !important;
+  background-color: #F4FAFD !important;
   color: #0A3547;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -85,8 +85,8 @@ html, body {
 
 /* Custom Islamic pattern background and subtle aesthetics */
 .bg-islamic-pattern {
-  background-color: #DDF5FF;
-  background-image: radial-gradient(#20A9DF 0.75px, transparent 0.75px), radial-gradient(#70BF44 0.75px, #DDF5FF 0.75px);
+  background-color: #F4FAFD;
+  background-image: radial-gradient(#20A9DF 0.75px, transparent 0.75px), radial-gradient(#70BF44 0.75px, #F4FAFD 0.75px);
   background-size: 30px 30px;
   background-position: 0 0, 15px 15px;
 }
@@ -101,7 +101,7 @@ html, body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #DDF5FF;
+  background: #F4FAFD;
 }
 ::-webkit-scrollbar-thumb {
   background: #20A9DF88;

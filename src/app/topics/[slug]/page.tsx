@@ -108,7 +108,7 @@ export default async function TopicDetailPage({ params }: Props) {
         <p className="text-sm md:text-base text-gray-700 leading-relaxed">
           {topic.whatIsIt}
         </p>
-        <div className="p-4 rounded-2xl bg-[#DDF5FF] border border-[#20A9DF]/15 text-xs md:text-sm text-emerald-900 leading-relaxed font-medium flex items-start gap-2">
+        <div className="p-4 rounded-2xl bg-[#F4FAFD] border border-[#20A9DF]/15 text-xs md:text-sm text-emerald-900 leading-relaxed font-medium flex items-start gap-2">
           <BookOpen className="w-4 h-4 text-[#20A9DF] shrink-0 mt-0.5" />
           <div><strong>হাদিসের দলিল:</strong> {topic.hadithEvidence}</div>
         </div>
@@ -125,7 +125,7 @@ export default async function TopicDetailPage({ params }: Props) {
         </p>
         <div className="space-y-2.5">
           {topic.commonSigns.map((sign, idx) => (
-            <div key={idx} className="flex items-start gap-3 p-3 rounded-xl bg-[#DDF5FF] border border-gray-100">
+            <div key={idx} className="flex items-start gap-3 p-3 rounded-xl bg-[#F4FAFD] border border-gray-100">
               <span className="w-6 h-6 rounded-full bg-[#20A9DF]/10 text-[#20A9DF] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                 {idx + 1}
               </span>
@@ -184,7 +184,7 @@ export default async function TopicDetailPage({ params }: Props) {
           </h3>
           <div className="space-y-2">
             {topic.recommendedDuas.map((d, i) => (
-              <p key={i} className="text-xs font-arabic text-emerald-950 bg-[#DDF5FF] p-3 rounded-xl border border-[#20A9DF]/10 leading-loose text-right">
+              <p key={i} className="text-xs font-arabic text-emerald-950 bg-[#F4FAFD] p-3 rounded-xl border border-[#20A9DF]/10 leading-loose text-right">
                 {d}
               </p>
             ))}
@@ -202,7 +202,7 @@ export default async function TopicDetailPage({ params }: Props) {
       </div>
 
       {/* CTAs */}
-      <div className="p-6 md:p-8 rounded-3xl bg-radial from-white to-[#DDF5FF] border-2 border-[#20A9DF] flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="p-6 md:p-8 rounded-3xl bg-radial from-white to-[#F4FAFD] border-2 border-[#20A9DF] flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
           <h3 className="text-base md:text-lg font-bold text-[#0796D2]">
             এই লক্ষণগুলো মিলিয়ে পরীক্ষা করতে চান?

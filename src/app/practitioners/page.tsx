@@ -139,7 +139,7 @@ export default function PractitionersPage() {
                 {p.services.map((s, idx) => (
                   <span
                     key={idx}
-                    className="text-[10px] bg-[#DDF5FF] text-gray-600 px-2 py-0.5 rounded-md border border-gray-200"
+                    className="text-[10px] bg-[#F4FAFD] text-gray-600 px-2 py-0.5 rounded-md border border-gray-200"
                   >
                     {s}
                   </span>

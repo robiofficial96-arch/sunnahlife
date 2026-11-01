@@ -40,7 +40,7 @@ export default function AyatPage() {
           </a>
           <a
             href="/audio"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#DDF5FF] border border-[#20A9DF]/20 text-[#20A9DF] text-xs font-semibold hover:bg-[#20A9DF]/10 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#F4FAFD] border border-[#20A9DF]/20 text-[#20A9DF] text-xs font-semibold hover:bg-[#20A9DF]/10 transition-colors"
           >
             <span>রুকইয়াহ অডিও লাইব্রেরি</span>
           </a>
@@ -71,7 +71,7 @@ export default function AyatPage() {
             </div>
 
             {/* Arabic */}
-            <div className="bg-[#DDF5FF] p-6 rounded-2xl border border-[#20A9DF]/15">
+            <div className="bg-[#F4FAFD] p-6 rounded-2xl border border-[#20A9DF]/15">
               <p className="font-arabic text-xl md:text-3xl text-emerald-950 leading-loose text-right font-medium">
                 {ayah.arabic}
               </p>

@@ -544,7 +544,7 @@ export default function AudioPlayer() {
             className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
               selectedCategory === cat.id
                 ? "bg-[#20A9DF] text-white shadow-xs"
-                : "bg-[#DDF5FF] text-gray-700 hover:bg-gray-100 hover:text-[#20A9DF] border border-gray-200/80"
+                : "bg-[#F4FAFD] text-gray-700 hover:bg-gray-100 hover:text-[#20A9DF] border border-gray-200/80"
             }`}
           >
             {cat.label}
@@ -576,7 +576,7 @@ export default function AudioPlayer() {
                 className={`p-4 sm:p-5 rounded-2xl border transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
                   isCurrent
                     ? "bg-[#20A9DF]/5 border-[#20A9DF] shadow-sm ring-1 ring-[#20A9DF]/30"
-                    : "bg-white border-gray-200 hover:border-[#20A9DF]/40 hover:bg-[#DDF5FF]"
+                    : "bg-white border-gray-200 hover:border-[#20A9DF]/40 hover:bg-[#F4FAFD]"
                 }`}
               >
                 <div className="flex items-center gap-3.5 min-w-0">
@@ -587,7 +587,7 @@ export default function AudioPlayer() {
                         ? "bg-[#20A9DF] text-white shadow-md animate-pulse"
                         : isCurrent
                         ? "bg-[#20A9DF] text-white shadow-xs"
-                        : "bg-[#DDF5FF] text-[#20A9DF] border border-[#20A9DF]/20"
+                        : "bg-[#F4FAFD] text-[#20A9DF] border border-[#20A9DF]/20"
                     }`}
                   >
                     {isCurrent && isPlaying ? (
