@@ -11,7 +11,7 @@ export const SITE_CONFIG = {
   socialLinks: {
     facebook: "https://www.facebook.com/sunnahlifecarebd",
     facebookGroup: "https://www.facebook.com/groups/403017251404070",
-    youtube: "https://www.youtube.com/@SunnahLifeCarebd",
+    youtube: "https://www.youtube.com/@Sunnahlife-BD",
     whatsapp: "https://wa.me/8801676820060",
     maps: "https://maps.app.goo.gl/qQHmNdEwtJU6apL48",
   },

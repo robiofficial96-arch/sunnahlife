@@ -71,7 +71,7 @@ export default function AudioPage() {
             </h2>
           </div>
           <a
-            href="https://www.youtube.com/@SunnahLifeCarebd"
+            href="https://www.youtube.com/@Sunnahlife-BD"
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs font-semibold text-red-600 hover:text-red-700 flex items-center gap-1 self-start sm:self-auto"

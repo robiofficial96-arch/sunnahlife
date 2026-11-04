@@ -152,7 +152,7 @@ const organizationSchema = {
   sameAs: [
     "https://www.facebook.com/sunnahlifecarebd",
     "https://www.facebook.com/groups/403017251404070",
-    "https://www.youtube.com/@SunnahLifeCarebd",
+    "https://www.youtube.com/@Sunnahlife-BD",
     "https://maps.app.goo.gl/qQHmNdEwtJU6apL48",
   ],
 };

@@ -69,7 +69,7 @@ export default function YouTubeRuqyahSection() {
 
           <div className="flex flex-wrap items-center gap-3 shrink-0">
             <a
-              href="https://www.youtube.com/@SunnahLifeCarebd?sub_confirmation=1"
+              href="https://www.youtube.com/@Sunnahlife-BD?sub_confirmation=1"
               target="_blank"
               rel="noopener noreferrer"
               className="px-5 py-2.5 rounded-xl bg-white text-red-700 hover:bg-red-50 font-bold text-sm flex items-center gap-2 shadow-md transition-all active:scale-95"
