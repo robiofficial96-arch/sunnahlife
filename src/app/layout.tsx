@@ -12,6 +12,8 @@ const AutoCloudSyncManager = dynamic(() => import("@/components/AutoCloudSyncMan
 import { SITE_CONFIG } from "@/config/site";
 
 import Script from "next/script";
+import FacebookPixel from "@/components/FacebookPixel";
+
 
 const hindSiliguri = Hind_Siliguri({
   weight: ["400", "700"],
@@ -252,6 +254,7 @@ export default function RootLayout({
         </Script>
       </head>
       <body className="notranslate min-h-screen flex flex-col bg-[#F4FAFD] text-[#1f2937] antialiased pb-20 md:pb-0 selection:bg-[#20A9DF] selection:text-white">
+        <FacebookPixel />
         <Header />
         <main className="flex-1 bg-[#F4FAFD]">{children}</main>
         <Footer />
