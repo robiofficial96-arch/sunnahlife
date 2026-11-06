@@ -1,26 +1,38 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, Suspense } from "react";
 import Script from "next/script";
 import { SITE_CONFIG } from "@/config/site";
 
 export const fbqTrack = (eventName: string, options?: Record<string, any>) => {
   if (typeof window !== "undefined" && (window as any).fbq) {
-    (window as any).fbq("track", eventName, options);
+    const testCode = SITE_CONFIG.facebookTestEventCode;
+    if (testCode) {
+      (window as any).fbq("track", eventName, options || {}, { test_event_code: testCode });
+    } else {
+      (window as any).fbq("track", eventName, options);
+    }
   }
 };
 
 function FacebookPixelInner() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const pixelId = SITE_CONFIG.facebookPixelId;
+  const urlTestCode = searchParams?.get("test_event_code");
+  const testCode = urlTestCode || SITE_CONFIG.facebookTestEventCode;
 
   useEffect(() => {
     if (!pixelId) return;
     if (typeof window !== "undefined" && (window as any).fbq) {
-      (window as any).fbq("track", "PageView");
+      if (testCode) {
+        (window as any).fbq("track", "PageView", {}, { test_event_code: testCode });
+      } else {
+        (window as any).fbq("track", "PageView");
+      }
     }
-  }, [pathname, pixelId]);
+  }, [pathname, searchParams, pixelId, testCode]);
 
   if (!pixelId) return null;
 
@@ -37,7 +49,11 @@ function FacebookPixelInner() {
           s.parentNode.insertBefore(t,s)}(window, document,'script',
           'https://connect.facebook.net/en_US/fbevents.js');
           fbq('init', '${pixelId}');
-          fbq('track', 'PageView');
+          ${
+            testCode
+              ? `fbq('track', 'PageView', {}, { test_event_code: '${testCode}' });`
+              : `fbq('track', 'PageView');`
+          }
         `}
       </Script>
       <noscript>
@@ -45,7 +61,9 @@ function FacebookPixelInner() {
           height="1"
           width="1"
           style={{ display: "none" }}
-          src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`}
+          src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1${
+            testCode ? `&test_event_code=${testCode}` : ""
+          }`}
           alt="facebook pixel"
         />
       </noscript>
