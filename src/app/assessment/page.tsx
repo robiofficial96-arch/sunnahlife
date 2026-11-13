@@ -17,7 +17,7 @@ export default function AssessmentPage() {
           <span>শারঈ স্ব-নিরীক্ষণ</span>
         </div>
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0796D2] tracking-tight">
-          লক্ষণ ও সমস্যা স্ব-নিরীক্ষণ
+          লক্ষণের যাচাইয়ের মাধ্যমে নিজেই প্রাথমিক পরীক্ষা করুন
         </h1>
         <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
           আপনার লক্ষণগুলো টিক দিন এবং স্বয়ংক্রিয় ফলাফলসহ WhatsApp-এ সরাসরি রাক্বীর পরামর্শ নিন।
