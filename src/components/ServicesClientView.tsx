@@ -215,6 +215,218 @@ export default function ServicesPage() {
         </ul>
       </div>
 
+      {/* 2. DIAGNOSIS CARD */}
+      <div className="rounded-3xl bg-gradient-to-br from-white via-emerald-50/30 to-[#F4FAFD] border-2 border-[#20A9DF] p-6 sm:p-8 shadow-sm relative overflow-hidden">
+        <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#70BF44]/10 rounded-full blur-2xl pointer-events-none" />
+
+        <div className="relative z-10 space-y-6">
+          {/* Top Banner Row */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#20A9DF]/15 pb-5">
+            <div className="flex items-center gap-3.5">
+              <div className="w-12 h-12 rounded-2xl bg-[#20A9DF] text-white flex items-center justify-center shadow-xs shrink-0">
+                <Stethoscope className="w-6 h-6 text-[#70BF44]" />
+              </div>
+              <div>
+                <span className="text-xs text-[#70BF44] font-bold uppercase tracking-wider block">
+                  প্রাথমিক চেকআপ
+                </span>
+                <h2 className="text-xl sm:text-2xl font-bold text-[#0796D2] mt-0.5">
+                  ডায়াগনোসিস ফি
+                </h2>
+              </div>
+            </div>
+
+            {/* Price Tags */}
+            <div className="flex items-center gap-2.5 shrink-0">
+              <div className="p-2.5 sm:px-4 sm:py-2 rounded-2xl bg-white border border-[#20A9DF]/20 text-center shadow-2xs">
+                <span className="text-[10px] text-gray-500 block font-medium">একক রোগী</span>
+                <span className="text-lg sm:text-xl font-black text-[#20A9DF] font-mono">১,০০০/=</span>
+              </div>
+              <div className="p-2.5 sm:px-4 sm:py-2 rounded-2xl bg-white border border-amber-300 text-center shadow-2xs">
+                <span className="text-[10px] text-gray-500 block font-medium">ফুল ফ্যামিলি</span>
+                <span className="text-lg sm:text-xl font-black text-[#B3830D] font-mono">২,০০০/=</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Reassuring Shariah Advice & Booking */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+            <div className="md:col-span-8 p-3.5 sm:p-4 rounded-2xl bg-white border border-[#20A9DF]/15 space-y-1.5">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#0796D2]">
+                <ThumbsUp className="w-4 h-4 text-[#70BF44] shrink-0" />
+                <span>শারঈ পরামর্শ ও উপদেশ:</span>
+              </div>
+              <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
+                ট্রিটমেন্ট খরচ ভাবার আগে শুধু ডায়াগনোসিস করে নিশ্চিত হোন। যদি কোনো আধ্যাত্মিক সমস্যা না থাকে, তবে আর কোনো চিকিৎসার খরচের প্রয়োজন নেই, ইনশাআল্লাহ।
+              </p>
+              <div className="text-[11px] text-gray-500 flex items-center gap-1.5 pt-0.5">
+                <Clock className="w-3.5 h-3.5 text-gray-400" />
+                <span>সময়কাল: ৩০ - ৪৫ মিনিট • চেম্বার বা অনলাইনে ভিডিও কলে সম্পন্ন হয়</span>
+              </div>
+            </div>
+
+            <div className="md:col-span-4 flex flex-col gap-2">
+              <Link
+                href="/appointment?service=diagnosis_single"
+                className="w-full py-3 px-4 rounded-2xl bg-[#20A9DF] hover:bg-[#0796D2] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition-all transform active:scale-95"
+              >
+                <Calendar className="w-4 h-4 text-[#70BF44]" />
+                <span>ডায়াগনোসিস বুকিং করুন</span>
+              </Link>
+              <a
+                href={`https://wa.me/${SITE_CONFIG.raqiWhatsAppNumber}?text=${encodeURIComponent("আসসালামু আলাইকুম। আমি ডায়াগনোসিস সেশন সম্পর্কে জানতে চাচ্ছি।")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-2 px-3 rounded-2xl bg-white hover:bg-emerald-50 border border-emerald-600/30 text-[#20A9DF] font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors text-center"
+              >
+                <MessageCircle className="w-3.5 h-3.5" />
+                <span>WhatsApp পরামর্শ</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 3. CORE SERVICES 2-COLUMN GRID */}
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-1 px-1">
+          <div>
+            <h2 className="text-xl sm:text-2xl font-bold text-[#0796D2]">
+              সমস্যাভিত্তিক পূর্ণাঙ্গ চিকিৎসা সেশন
+            </h2>
+            <p className="text-xs text-gray-500">
+              অভিজ্ঞ শারঈ রাক্বীর সরাসরি উপস্থিতি বা নিবিড় তত্ত্বাবধানে
+            </p>
+          </div>
+          <span className="text-xs text-emerald-800 font-semibold bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60 self-start sm:self-auto">
+            চেম্বার ও অনলাইন উভয় মাধ্যমে
+          </span>
+        </div>
+
+        {/* 2-Column Responsive Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {SERVICES_LIST.map((srv) => {
+            const isExpanded = expandedId === srv.id;
+
+            return (
+              <div
+                key={srv.id}
+                className={`rounded-3xl bg-white border-2 transition-all duration-300 shadow-xs hover:shadow-md flex flex-col justify-between overflow-hidden ${
+                  isExpanded ? "border-[#20A9DF] ring-2 ring-[#20A9DF]/10" : srv.accentColor
+                }`}
+              >
+                <div className="p-5 sm:p-6 space-y-4">
+                  {/* Card Header: Icon + Category + Price */}
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-xs shrink-0 ${srv.iconBg}`}>
+                        {srv.iconName === "flame" && <Flame className="w-6 h-6" />}
+                        {srv.iconName === "eye" && <Eye className="w-6 h-6" />}
+                        {srv.iconName === "sparkles" && <Sparkles className="w-6 h-6" />}
+                        {srv.iconName === "users" && <Users className="w-6 h-6" />}
+                      </div>
+                      <div>
+                        <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${srv.badgeBg}`}>
+                          {srv.categoryLabel}
+                        </span>
+                        <h3 className="text-lg sm:text-xl font-bold text-gray-900 leading-snug mt-1">
+                          {srv.title}
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Fee & Duration Bar */}
+                  <div className="p-3 rounded-2xl bg-[#F4FAFD] border border-gray-200/70 flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] text-gray-400 font-medium block">সেশন ফি</span>
+                      <span className="text-base sm:text-lg font-black text-[#20A9DF] font-mono">
+                        {srv.fee}
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-[10px] text-gray-400 font-medium block">সময়কাল</span>
+                      <span className="text-xs font-bold text-gray-700 flex items-center gap-1 justify-end">
+                        <Clock className="w-3 h-3 text-gray-400" />
+                        {srv.duration}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Short Summary */}
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    {srv.summary}
+                  </p>
+
+                  {/* 3 Bullet Highlights */}
+                  <ul className="space-y-1.5 text-xs text-gray-700 pt-1 border-t border-gray-100">
+                    {srv.highlights.map((point, pIdx) => (
+                      <li key={pIdx} className="flex items-start gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#20A9DF] shrink-0 mt-0.5" />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Expandable Section */}
+                  {isExpanded && (
+                    <div className="pt-3 border-t border-gray-100 space-y-3 text-xs animate-in fade-in-50 duration-200 bg-emerald-50/20 -mx-5 -mb-4 p-5 rounded-b-2xl">
+                      <div>
+                        <strong className="text-gray-900 block font-bold mb-1">কাদের জন্য প্রযোজ্য:</strong>
+                        <p className="text-gray-600 leading-relaxed">{srv.whoIsItFor}</p>
+                      </div>
+
+                      <div>
+                        <strong className="text-gray-900 block font-bold mb-1.5">শারঈ কার্যপ্রণালী:</strong>
+                        <ul className="space-y-1 text-gray-600">
+                          {srv.process.map((step, sIdx) => (
+                            <li key={sIdx} className="flex items-start gap-1.5">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#20A9DF] mt-1.5 shrink-0" />
+                              <span>{step}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Card Footer Actions */}
+                <div className="p-4 sm:p-5 pt-0 space-y-2">
+                  <div className="flex items-center justify-between gap-2 pt-2 border-t border-gray-100">
+                    <button
+                      onClick={() => toggleExpand(srv.id)}
+                      className="text-xs font-semibold text-[#20A9DF] hover:text-[#0796D2] flex items-center gap-1 py-1 px-2 rounded-lg hover:bg-emerald-50 transition-colors"
+                    >
+                      <span>{isExpanded ? "কার্যপ্রণালী সংক্ষেপ" : "কার্যপ্রণালী ও নিয়ম দেখুন"}</span>
+                      {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                    </button>
+
+                    <a
+                      href={`https://wa.me/${SITE_CONFIG.raqiWhatsAppNumber}?text=${encodeURIComponent(`আসসালামু আলাইকুম। আমি "${srv.title}" সেবাটির বিষয়ে জানতে চাচ্ছি।`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-gray-500 hover:text-[#20A9DF] flex items-center gap-1 font-medium transition-colors"
+                    >
+                      <MessageCircle className="w-3.5 h-3.5 text-[#25D366]" />
+                      <span>জিজ্ঞাসা</span>
+                    </a>
+                  </div>
+
+                  <Link
+                    href={`/appointment?service=${srv.bookingId}`}
+                    className="w-full py-2.5 rounded-xl bg-[#20A9DF] hover:bg-[#0796D2] text-white text-center font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-xs transition-all active:scale-98"
+                  >
+                    <Calendar className="w-3.5 h-3.5 text-[#70BF44]" />
+                    <span>অ্যাপয়েন্টমেন্ট বুকিং</span>
+                  </Link>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {/* 🩺 SYMPTOMS / CONDITIONS SECTION */}
       <div className="space-y-5">
         <div className="text-center space-y-1">
@@ -425,218 +637,6 @@ export default function ServicesPage() {
             <Stethoscope className="w-4 h-4 text-[#70BF44]" />
             লক্ষণ পরীক্ষা করুন
           </Link>
-        </div>
-      </div>
-
-      {/* 2. DIAGNOSIS CARD */}
-      <div className="rounded-3xl bg-gradient-to-br from-white via-emerald-50/30 to-[#F4FAFD] border-2 border-[#20A9DF] p-6 sm:p-8 shadow-sm relative overflow-hidden">
-        <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#70BF44]/10 rounded-full blur-2xl pointer-events-none" />
-
-        <div className="relative z-10 space-y-6">
-          {/* Top Banner Row */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#20A9DF]/15 pb-5">
-            <div className="flex items-center gap-3.5">
-              <div className="w-12 h-12 rounded-2xl bg-[#20A9DF] text-white flex items-center justify-center shadow-xs shrink-0">
-                <Stethoscope className="w-6 h-6 text-[#70BF44]" />
-              </div>
-              <div>
-                <span className="text-xs text-[#70BF44] font-bold uppercase tracking-wider block">
-                  প্রাথমিক চেকআপ
-                </span>
-                <h2 className="text-xl sm:text-2xl font-bold text-[#0796D2] mt-0.5">
-                  ডায়াগনোসিস ফি
-                </h2>
-              </div>
-            </div>
-
-            {/* Price Tags */}
-            <div className="flex items-center gap-2.5 shrink-0">
-              <div className="p-2.5 sm:px-4 sm:py-2 rounded-2xl bg-white border border-[#20A9DF]/20 text-center shadow-2xs">
-                <span className="text-[10px] text-gray-500 block font-medium">একক রোগী</span>
-                <span className="text-lg sm:text-xl font-black text-[#20A9DF] font-mono">১,০০০/=</span>
-              </div>
-              <div className="p-2.5 sm:px-4 sm:py-2 rounded-2xl bg-white border border-amber-300 text-center shadow-2xs">
-                <span className="text-[10px] text-gray-500 block font-medium">ফুল ফ্যামিলি</span>
-                <span className="text-lg sm:text-xl font-black text-[#B3830D] font-mono">২,০০০/=</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Reassuring Shariah Advice & Booking */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-            <div className="md:col-span-8 p-3.5 sm:p-4 rounded-2xl bg-white border border-[#20A9DF]/15 space-y-1.5">
-              <div className="flex items-center gap-2 text-xs font-bold text-[#0796D2]">
-                <ThumbsUp className="w-4 h-4 text-[#70BF44] shrink-0" />
-                <span>শারঈ পরামর্শ ও উপদেশ:</span>
-              </div>
-              <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
-                ট্রিটমেন্ট খরচ ভাবার আগে শুধু ডায়াগনোসিস করে নিশ্চিত হোন। যদি কোনো আধ্যাত্মিক সমস্যা না থাকে, তবে আর কোনো চিকিৎসার খরচের প্রয়োজন নেই, ইনশাআল্লাহ।
-              </p>
-              <div className="text-[11px] text-gray-500 flex items-center gap-1.5 pt-0.5">
-                <Clock className="w-3.5 h-3.5 text-gray-400" />
-                <span>সময়কাল: ৩০ - ৪৫ মিনিট • চেম্বার বা অনলাইনে ভিডিও কলে সম্পন্ন হয়</span>
-              </div>
-            </div>
-
-            <div className="md:col-span-4 flex flex-col gap-2">
-              <Link
-                href="/appointment?service=diagnosis_single"
-                className="w-full py-3 px-4 rounded-2xl bg-[#20A9DF] hover:bg-[#0796D2] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition-all transform active:scale-95"
-              >
-                <Calendar className="w-4 h-4 text-[#70BF44]" />
-                <span>ডায়াগনোসিস বুকিং করুন</span>
-              </Link>
-              <a
-                href={`https://wa.me/${SITE_CONFIG.raqiWhatsAppNumber}?text=${encodeURIComponent("আসসালামু আলাইকুম। আমি ডায়াগনোসিস সেশন সম্পর্কে জানতে চাচ্ছি।")}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-2 px-3 rounded-2xl bg-white hover:bg-emerald-50 border border-emerald-600/30 text-[#20A9DF] font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors text-center"
-              >
-                <MessageCircle className="w-3.5 h-3.5" />
-                <span>WhatsApp পরামর্শ</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 3. CORE SERVICES 2-COLUMN GRID */}
-      <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-1 px-1">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-[#0796D2]">
-              সমস্যাভিত্তিক পূর্ণাঙ্গ চিকিৎসা সেশন
-            </h2>
-            <p className="text-xs text-gray-500">
-              অভিজ্ঞ শারঈ রাক্বীর সরাসরি উপস্থিতি বা নিবিড় তত্ত্বাবধানে
-            </p>
-          </div>
-          <span className="text-xs text-emerald-800 font-semibold bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60 self-start sm:self-auto">
-            চেম্বার ও অনলাইন উভয় মাধ্যমে
-          </span>
-        </div>
-
-        {/* 2-Column Responsive Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {SERVICES_LIST.map((srv) => {
-            const isExpanded = expandedId === srv.id;
-
-            return (
-              <div
-                key={srv.id}
-                className={`rounded-3xl bg-white border-2 transition-all duration-300 shadow-xs hover:shadow-md flex flex-col justify-between overflow-hidden ${
-                  isExpanded ? "border-[#20A9DF] ring-2 ring-[#20A9DF]/10" : srv.accentColor
-                }`}
-              >
-                <div className="p-5 sm:p-6 space-y-4">
-                  {/* Card Header: Icon + Category + Price */}
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-center gap-3">
-                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-xs shrink-0 ${srv.iconBg}`}>
-                        {srv.iconName === "flame" && <Flame className="w-6 h-6" />}
-                        {srv.iconName === "eye" && <Eye className="w-6 h-6" />}
-                        {srv.iconName === "sparkles" && <Sparkles className="w-6 h-6" />}
-                        {srv.iconName === "users" && <Users className="w-6 h-6" />}
-                      </div>
-                      <div>
-                        <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${srv.badgeBg}`}>
-                          {srv.categoryLabel}
-                        </span>
-                        <h3 className="text-lg sm:text-xl font-bold text-gray-900 leading-snug mt-1">
-                          {srv.title}
-                        </h3>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Fee & Duration Bar */}
-                  <div className="p-3 rounded-2xl bg-[#F4FAFD] border border-gray-200/70 flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] text-gray-400 font-medium block">সেশন ফি</span>
-                      <span className="text-base sm:text-lg font-black text-[#20A9DF] font-mono">
-                        {srv.fee}
-                      </span>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-[10px] text-gray-400 font-medium block">সময়কাল</span>
-                      <span className="text-xs font-bold text-gray-700 flex items-center gap-1 justify-end">
-                        <Clock className="w-3 h-3 text-gray-400" />
-                        {srv.duration}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Short Summary */}
-                  <p className="text-xs text-gray-600 leading-relaxed">
-                    {srv.summary}
-                  </p>
-
-                  {/* 3 Bullet Highlights */}
-                  <ul className="space-y-1.5 text-xs text-gray-700 pt-1 border-t border-gray-100">
-                    {srv.highlights.map((point, pIdx) => (
-                      <li key={pIdx} className="flex items-start gap-2">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#20A9DF] shrink-0 mt-0.5" />
-                        <span>{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* Expandable Section */}
-                  {isExpanded && (
-                    <div className="pt-3 border-t border-gray-100 space-y-3 text-xs animate-in fade-in-50 duration-200 bg-emerald-50/20 -mx-5 -mb-4 p-5 rounded-b-2xl">
-                      <div>
-                        <strong className="text-gray-900 block font-bold mb-1">কাদের জন্য প্রযোজ্য:</strong>
-                        <p className="text-gray-600 leading-relaxed">{srv.whoIsItFor}</p>
-                      </div>
-
-                      <div>
-                        <strong className="text-gray-900 block font-bold mb-1.5">শারঈ কার্যপ্রণালী:</strong>
-                        <ul className="space-y-1 text-gray-600">
-                          {srv.process.map((step, sIdx) => (
-                            <li key={sIdx} className="flex items-start gap-1.5">
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#20A9DF] mt-1.5 shrink-0" />
-                              <span>{step}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Card Footer Actions */}
-                <div className="p-4 sm:p-5 pt-0 space-y-2">
-                  <div className="flex items-center justify-between gap-2 pt-2 border-t border-gray-100">
-                    <button
-                      onClick={() => toggleExpand(srv.id)}
-                      className="text-xs font-semibold text-[#20A9DF] hover:text-[#0796D2] flex items-center gap-1 py-1 px-2 rounded-lg hover:bg-emerald-50 transition-colors"
-                    >
-                      <span>{isExpanded ? "কার্যপ্রণালী সংক্ষেপ" : "কার্যপ্রণালী ও নিয়ম দেখুন"}</span>
-                      {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                    </button>
-
-                    <a
-                      href={`https://wa.me/${SITE_CONFIG.raqiWhatsAppNumber}?text=${encodeURIComponent(`আসসালামু আলাইকুম। আমি "${srv.title}" সেবাটির বিষয়ে জানতে চাচ্ছি।`)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs text-gray-500 hover:text-[#20A9DF] flex items-center gap-1 font-medium transition-colors"
-                    >
-                      <MessageCircle className="w-3.5 h-3.5 text-[#25D366]" />
-                      <span>জিজ্ঞাসা</span>
-                    </a>
-                  </div>
-
-                  <Link
-                    href={`/appointment?service=${srv.bookingId}`}
-                    className="w-full py-2.5 rounded-xl bg-[#20A9DF] hover:bg-[#0796D2] text-white text-center font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-xs transition-all active:scale-98"
-                  >
-                    <Calendar className="w-3.5 h-3.5 text-[#70BF44]" />
-                    <span>অ্যাপয়েন্টমেন্ট বুকিং</span>
-                  </Link>
-                </div>
-              </div>
-            );
-          })}
         </div>
       </div>
 
