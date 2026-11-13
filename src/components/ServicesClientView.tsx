@@ -643,14 +643,14 @@ export default function ServicesPage() {
       {/* 4. BOTTOM CONFIDENCE / FAQ BANNER */}
       <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#0796D2] via-[#005B4D] to-[#057aa9] text-white shadow-md border border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="space-y-1.5 text-center md:text-left">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-emerald-200 text-xs font-semibold">
-            <HeartHandshake className="w-3.5 h-3.5 text-[#70BF44]" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white text-gray-900 text-xs font-bold shadow-sm">
+            <HeartHandshake className="w-4 h-4 text-[#0796D2]" />
             <span>সরাসরি রাক্বীর গাইডেন্স</span>
           </div>
           <h3 className="text-lg sm:text-xl md:text-2xl font-bold">
             কোন সেবাটি আপনার প্রয়োজন বুঝতে পারছেন না?
           </h3>
-          <p className="text-xs sm:text-sm text-emerald-100/90 max-w-lg">
+          <p className="text-xs sm:text-sm text-white/95 max-w-lg">
             প্রথমে বিনামূল্যে লক্ষণ পরীক্ষা করুন অথবা সরাসরি WhatsApp-এ রাক্বীকে আপনার সমস্যার কথা জানিয়ে পরামর্শ নিন।
           </p>
         </div>
@@ -667,9 +667,9 @@ export default function ServicesPage() {
             href={`https://wa.me/${SITE_CONFIG.raqiWhatsAppNumber}?text=${encodeURIComponent("আসসালামু আলাইকুম। আমি রুকইয়াহ সেবা নেওয়ার জন্য রাক্বীর পরামর্শ চাই।")}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#70BF44] hover:bg-[#70BF44] text-[#057aa9] font-bold text-xs sm:text-sm shadow-md transition-transform active:scale-95 text-center flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#70BF44] hover:bg-[#5fa836] text-white font-bold text-xs sm:text-sm shadow-md transition-transform active:scale-95 text-center flex items-center justify-center gap-2"
           >
-            <MessageCircle className="w-4 h-4 text-[#057aa9]" />
+            <MessageCircle className="w-4 h-4 text-white" />
             <span>WhatsApp পরামর্শ</span>
           </a>
         </div>
