@@ -17,7 +17,13 @@ import {
   Stethoscope,
   ThumbsUp,
   HeartHandshake,
-  ArrowRight
+  ArrowRight,
+  AlertTriangle,
+  XCircle,
+  Baby,
+  Heart,
+  Briefcase,
+  Brain
 } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 
@@ -180,6 +186,245 @@ export default function ServicesPage() {
             <Clock className="w-3.5 h-3.5 text-emerald-600" />
             চেম্বার ও অনলাইন সেশন
           </span>
+        </div>
+      </div>
+
+      {/* ⚠️ WARNING BANNER */}
+      <div className="rounded-2xl border-2 border-red-400 bg-red-50 p-5 sm:p-6 shadow-sm">
+        <div className="flex items-center gap-2.5 mb-4">
+          <div className="w-9 h-9 rounded-xl bg-red-500 flex items-center justify-center shrink-0">
+            <AlertTriangle className="w-5 h-5 text-white" />
+          </div>
+          <h2 className="text-base sm:text-lg font-extrabold text-red-700 tracking-tight">
+            ❌ বিশেষ সতর্কতা ⚠️
+          </h2>
+        </div>
+        <ul className="space-y-2.5">
+          {[
+            "বশীকরণ করা হয় না",
+            "কাউকে ফিরিয়ে আনা হয় না",
+            "কাউকে বাধ্য করে বিয়ে দেওয়া / করানো হয় না",
+            "হারানো জিনিস ফিরে পাওয়ার কোনো ব্যবস্থা নেই",
+            "দূর থেকে ট্রিটমেন্ট করা হয় না",
+          ].map((item, idx) => (
+            <li key={idx} className="flex items-start gap-2.5 text-sm text-red-800 font-semibold">
+              <XCircle className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* 🩺 SYMPTOMS / CONDITIONS SECTION */}
+      <div className="space-y-5">
+        <div className="text-center space-y-1">
+          <h2 className="text-xl sm:text-2xl font-extrabold text-[#0796D2]">
+            কোন কোন সমস্যার চিকিৎসা করা হয়?
+          </h2>
+          <p className="text-xs text-gray-500">লক্ষণ দেখে বুঝুন — আপনার সমস্যাটি কোন ক্যাটাগরির</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+          {/* জিনের সমস্যা */}
+          <div className="rounded-2xl bg-white border border-rose-200 p-5 space-y-3 shadow-xs hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-2.5">
+              <div className="w-10 h-10 rounded-xl bg-rose-100 flex items-center justify-center shrink-0">
+                <Flame className="w-5 h-5 text-rose-600" />
+              </div>
+              <h3 className="font-bold text-rose-700 text-base">জিনের সমস্যা</h3>
+            </div>
+            <p className="text-xs text-gray-500 leading-relaxed">কারো শরীরে জিন শয়তান আছে বা দূর থেকে আছর করে (বদনজর হাসাদ)</p>
+            <ul className="space-y-1.5 text-xs text-gray-700">
+              {[
+                "সারারাত ঘুম হয় না, চমকে উঠে",
+                "ঘুমের মধ্যে চিৎকার করে",
+                "স্বপ্নে কুকুর, বিড়াল, সাপ আক্রমণ করতে দেখে",
+                "দীর্ঘ মাথা ব্যথা, শরীর গরম থাকে",
+                "অল্পতে মেজাজ গরম হয়ে যায়",
+                "ব্যাপক অলসতা এবং অস্থিরতা",
+              ].map((s, i) => (
+                <li key={i} className="flex items-start gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-rose-400 mt-1.5 shrink-0" />
+                  <span>{s}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* জাদুর সমস্যা */}
+          <div className="rounded-2xl bg-white border border-purple-200 p-5 space-y-3 shadow-xs hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-2.5">
+              <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center shrink-0">
+                <Sparkles className="w-5 h-5 text-purple-600" />
+              </div>
+              <h3 className="font-bold text-purple-700 text-base">জাদুর সমস্যা (সিহর)</h3>
+            </div>
+            <p className="text-xs text-gray-500 leading-relaxed">খাওয়ানো, ছিটানো, পুড়ানো, কবরস্থানে পুতে রাখা, চালানের মাধ্যমে জাদু</p>
+            <ul className="space-y-1.5 text-xs text-gray-700">
+              {[
+                "মাঝেমধ্যে বা সব সময় অসুস্থ থাকে",
+                "মাথা ও বুক ভারী লাগে",
+                "পেটে ব্যথা (খাওয়ানো জাদুর কারণে)",
+                "ঘুমের মধ্যে অস্থিরতা, ভয় ভয় লাগে",
+                "ভয়ংকর স্বপ্ন দেখা",
+              ].map((s, i) => (
+                <li key={i} className="flex items-start gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-purple-400 mt-1.5 shrink-0" />
+                  <span>{s}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* বদনজর ও হাসাদ */}
+          <div className="rounded-2xl bg-white border border-amber-200 p-5 space-y-3 shadow-xs hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-2.5">
+              <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center shrink-0">
+                <Eye className="w-5 h-5 text-amber-600" />
+              </div>
+              <h3 className="font-bold text-amber-700 text-base">বদনজর ও হাসাদ</h3>
+            </div>
+            <ul className="space-y-1.5 text-xs text-gray-700">
+              {[
+                "ঘুমের মধ্যে চমকে ওঠা",
+                "বমি বমি লাগে, শরীরে জ্বর থাকে",
+                "জয়েন্টে ব্যথা, মাইগ্রেনের ব্যথা",
+                "কাজে মন বসে না, বুক ধরফর করে",
+                "শরীর দুর্বল লাগে, সব কাজে বাধা",
+                "কোনো কিছু করতে ভালো লাগে না",
+              ].map((s, i) => (
+                <li key={i} className="flex items-start gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 shrink-0" />
+                  <span>{s}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* ব্যবসায়িক সমস্যা */}
+          <div className="rounded-2xl bg-white border border-sky-200 p-5 space-y-3 shadow-xs hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-2.5">
+              <div className="w-10 h-10 rounded-xl bg-sky-100 flex items-center justify-center shrink-0">
+                <Briefcase className="w-5 h-5 text-sky-600" />
+              </div>
+              <h3 className="font-bold text-sky-700 text-base">ব্যবসায়িক সমস্যা</h3>
+            </div>
+            <ul className="space-y-1.5 text-xs text-gray-700">
+              {[
+                "ব্যবসায় শুধুই লস হতে থাকে",
+                "দোকানে বা অফিসে যেতে মনে চায় না",
+                "সব সময় অস্থির লাগে",
+                "অকারণে মন খারাপ হয়",
+              ].map((s, i) => (
+                <li key={i} className="flex items-start gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-sky-400 mt-1.5 shrink-0" />
+                  <span>{s}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* বিয়ের সমস্যা */}
+          <div className="rounded-2xl bg-white border border-pink-200 p-5 space-y-3 shadow-xs hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-2.5">
+              <div className="w-10 h-10 rounded-xl bg-pink-100 flex items-center justify-center shrink-0">
+                <Heart className="w-5 h-5 text-pink-600" />
+              </div>
+              <h3 className="font-bold text-pink-700 text-base">বিয়ের সমস্যা</h3>
+            </div>
+            <p className="text-xs text-gray-500">বিয়ের বয়স হয়েছে কিন্তু বিয়ে হচ্ছে না</p>
+            <ul className="space-y-1.5 text-xs text-gray-700">
+              {[
+                "দেখতে আসলেই অসুস্থ হয়ে যায়",
+                "চেহারা অসুন্দর হয়ে যায়",
+                "সব সময় মন খারাপ থাকে",
+                "শরীরের বিভিন্ন স্থানে ব্যথা করে",
+                "সবসময়ই টেনশন লাগে",
+              ].map((s, i) => (
+                <li key={i} className="flex items-start gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-pink-400 mt-1.5 shrink-0" />
+                  <span>{s}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* স্বামী স্ত্রীর সমস্যা */}
+          <div className="rounded-2xl bg-white border border-teal-200 p-5 space-y-3 shadow-xs hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-2.5">
+              <div className="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center shrink-0">
+                <Users className="w-5 h-5 text-teal-600" />
+              </div>
+              <h3 className="font-bold text-teal-700 text-base">স্বামী-স্ত্রীর সমস্যা</h3>
+            </div>
+            <p className="text-xs text-gray-500">জিন, জাদু, বদনজরের কারণে দাম্পত্য সমস্যা হয়ে থাকে</p>
+            <ul className="space-y-1.5 text-xs text-gray-700">
+              {[
+                "সামান্য কারণেই ঝগড়াঝাটি",
+                "একে অপরকে দেখলেই বিরক্ত লাগে",
+                "সহবাস করতে ইচ্ছা করে না",
+                "রাতে ঘুম হয় না",
+                "অকারণে মন খারাপ থাকে",
+              ].map((s, i) => (
+                <li key={i} className="flex items-start gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5 shrink-0" />
+                  <span>{s}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+        </div>
+
+        {/* বাচ্চাদের সমস্যা — full width */}
+        <div className="rounded-2xl bg-white border border-orange-200 p-5 space-y-3 shadow-xs hover:shadow-md transition-shadow">
+          <div className="flex items-center gap-2.5">
+            <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center shrink-0">
+              <Baby className="w-5 h-5 text-orange-600" />
+            </div>
+            <h3 className="font-bold text-orange-700 text-base">বাচ্চাদের সমস্যা</h3>
+          </div>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5 text-xs text-gray-700">
+            {[
+              "মাঝে মাঝে অসুস্থ থাকে",
+              "সব সময় কান্না করে",
+              "রাত্রে ঘুমে চমকে উঠে",
+              "অতিরিক্ত দুষ্টামি করে",
+            ].map((s, i) => (
+              <li key={i} className="flex items-start gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-orange-400 mt-1.5 shrink-0" />
+                <span>{s}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-2 p-3 rounded-xl bg-orange-50 border border-orange-200/60">
+            <p className="text-xs text-orange-800 font-semibold">
+              📌 বিশেষ দ্রষ্টব্য: বাচ্চা ৭ বছরের নিচে হলে মাকে সাথে নিয়ে আসতে হবে। মায়ের কারণেও সমস্যা হতে পারে।
+            </p>
+          </div>
+        </div>
+
+        {/* পরামর্শ banner */}
+        <div className="rounded-2xl bg-gradient-to-r from-[#20A9DF]/10 to-[#70BF44]/10 border border-[#20A9DF]/30 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-start gap-3">
+            <div className="w-9 h-9 rounded-xl bg-[#20A9DF] flex items-center justify-center shrink-0 mt-0.5">
+              <Brain className="w-5 h-5 text-white" />
+            </div>
+            <div className="space-y-1">
+              <p className="text-sm font-bold text-[#0796D2]">💡 পরামর্শ</p>
+              <p className="text-xs text-gray-700 leading-relaxed">
+                ট্রিটমেন্টের খরচ ভাবার আগে শুধু <strong>ডায়াগনোসিস (চেকআপ)</strong> করে দেখে নিন — আদৌ আপনার মধ্যে সমস্যা আছে কিনা। হয়তো সমস্যা নাও থাকতে পারে। <strong>সমস্যা না থাকলে আর কোনো খরচ নেই, ইনশাআল্লাহ।</strong>
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/assessment"
+            className="shrink-0 px-4 py-2.5 rounded-xl bg-[#20A9DF] hover:bg-[#0796D2] text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-sm"
+          >
+            <Stethoscope className="w-4 h-4 text-[#70BF44]" />
+            লক্ষণ পরীক্ষা করুন
+          </Link>
         </div>
       </div>
 
